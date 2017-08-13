@@ -93,16 +93,18 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.简单介绍一下:Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本同时在编译之前需要安装gcc安装步骤挺简单的,首先先下载对应的版本,然后进行解">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/08/13/hello-world/index.html">
+<meta property="og:title" content="Centos7 安装Redis">
+<meta property="og:url" content="http://yoursite.com/2017/05/20/1-5/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2017-08-13T02:38:45.447Z">
+<meta property="og:description" content="由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.简单介绍一下:Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本同时在编译之前需要安装gcc安装步骤挺简单的,首先先下载对应的版本,然后进行解">
+<meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png">
+<meta property="og:updated_time" content="2017-08-13T04:43:15.487Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Centos7 安装Redis">
+<meta name="twitter:description" content="由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.简单介绍一下:Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本同时在编译之前需要安装gcc安装步骤挺简单的,首先先下载对应的版本,然后进行解">
+<meta name="twitter:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png">
 
 
 
@@ -131,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/13/hello-world/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/20/1-5/"/>
 
 
 
 
 
-  <title>Hello World | Hexo</title>
+  <title>Centos7 安装Redis | Hexo</title>
   
 
 
@@ -254,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/13/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/20/1-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -271,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">Centos7 安装Redis</h1>
         
 
         <div class="post-meta">
@@ -283,8 +285,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-13T10:38:45+08:00">
-                2017-08-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-20T18:18:39+08:00">
+                2017-05-20
               </time>
             
 
@@ -293,6 +295,39 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GEEK/" itemprop="url" rel="index">
+                    <span itemprop="name">GEEK</span>
+                  </a>
+                </span>
+
+                
+                
+                  . 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GEEK/服务器/" itemprop="url" rel="index">
+                    <span itemprop="name">服务器</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -321,15 +356,35 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.<br>简单介绍一下:<br><a href="http://baike.baidu.com/link?url=8ii2v7YCVGQ2UtIftwOhLyXvjyl6T8iSTPWwFJS490CqilrTqY0d5ImOnlAmWSld_vhrop68L-KF2nQamGNxm_" target="_blank" rel="external">Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。</a><br>选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本<br>同时在编译之前需要安装gcc<br>安装步骤挺简单的,首先先下载对应的版本,然后进行解压,进入根目录然后进行进行编译</p>
+<pre><code>[root@VM_52_146_centos ~]#yum install gcc-c++
+[root@VM_52_146_centos ~]# cd /home
+[root@VM_52_146_centos home]# wget http://download.redis.io/releases/redis-3.2.8.tar.gz
+[root@VM_52_146_centos home]# tar xzf redis-3.2.8.tar.gz
+[root@VM_52_146_centos home]# cd redis-3.2.8
+[root@VM_52_146_centos redis-3.2.8]# make
+
+`&lt;/pre&gt;
+
+[![](http://www.sevenyuan.cn/wp-content/uploads/2017/05/Reids解压成功.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/05/Reids解压成功.png)
+
+安装好之后进行基本配置
+
+&lt;pre&gt;`[root@VM_52_146_centos redis-3.2.8]# ./utils/install_server.sh
+`&lt;/pre&gt;
+
+我是按照默认进行配置的,所以显示一个就回车确认一个.
+
+[![](http://www.sevenyuan.cn/wp-content/uploads/2017/05/进行配置.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/05/进行配置.png)
+
+最后使用redis-cli进入.
+
+&lt;pre&gt;`[root@VM_52_146_centos redis-3.2.8]# redis-cli
+127.0.0.1:6379&amp;gt; ping
+PONG
+127.0.0.1:6379&amp;gt; 
+</code></pre><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png" target="_blank" rel="external"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png" alt=""></a></p>
+<p>这样就能进行基本的使用,具体更多使用和配置文件修改还需更多学习.</p>
 
       
     </div>
@@ -354,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/29/redis02/" rel="next" title="Redis对象">
-                <i class="fa fa-chevron-left"></i> Redis对象
+              <a href="/2017/04/29/2-3/" rel="next" title="近期概况&学习计划">
+                <i class="fa fa-chevron-left"></i> 近期概况&学习计划
               </a>
             
           </div>
@@ -363,6 +418,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/06/1-6/" rel="prev" title="Redis基础使用">
+                Redis基础使用 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -414,17 +473,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://oo5aasoph.bkt.clouddn.com/%E6%9C%89%E9%A9%AC%E5%85%AC%E7%94%9F.jpg"
@@ -439,7 +489,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
@@ -477,22 +527,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
