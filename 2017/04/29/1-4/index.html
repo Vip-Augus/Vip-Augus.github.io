@@ -93,17 +93,20 @@
 
 
 
-<meta name="description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m `&amp;lt;/pre&amp;gt;  [![](http://www.sevenyuan.cn/wp">
+<meta name="description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m  Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库内存不足">
 <meta property="og:url" content="http://yoursite.com/2017/04/29/1-4/index.html">
 <meta property="og:site_name" content="JingQ">
-<meta property="og:description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m `&amp;lt;/pre&amp;gt;  [![](http://www.sevenyuan.cn/wp">
+<meta property="og:description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m  Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空">
 <meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png">
-<meta property="og:updated_time" content="2017-08-13T04:43:15.487Z">
+<meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png">
+<meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png">
+<meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png">
+<meta property="og:updated_time" content="2017-09-15T07:16:32.872Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库内存不足">
-<meta name="twitter:description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m `&amp;lt;/pre&amp;gt;  [![](http://www.sevenyuan.cn/wp">
+<meta name="twitter:description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m  Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空">
 <meta name="twitter:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png">
 
 
@@ -199,7 +202,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -209,7 +212,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -283,7 +286,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-29T16:38:09+08:00">
                 2017-04-29
@@ -304,7 +307,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -315,7 +318,7 @@
 
                 
                 
-                  , 
+                  . 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -360,58 +363,26 @@
 <p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png" target="_blank" rel="external"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png" alt=""></a></p>
 <p>发现了是内存不足导致数据库自动关闭.<br>运行下列语句查看服务器内存使用情况:</p>
 <pre><code>#[root@VM_247_254_centos ~]free -m
-`&lt;/pre&gt;
-
-[![](http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png)
-
-Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空间释放出来，以供当前运行的程序使用.
-于是在服务器内存不足的情况下,不能使用swap分区,导致了数据库意外关闭.
-
-现在来创建一个1024MB的Swap分区
-1\. 创建swapfile
-
-&lt;pre&gt;`[root@VM_247_254_centos ~]# dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+</code></pre><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png" target="_blank" rel="external"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png" alt=""></a></p>
+<p>Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空间释放出来，以供当前运行的程序使用.<br>于是在服务器内存不足的情况下,不能使用swap分区,导致了数据库意外关闭.</p>
+<p>现在来创建一个1024MB的Swap分区</p>
+<h3 id="1-创建swapfile"><a href="#1-创建swapfile" class="headerlink" title="1. 创建swapfile"></a>1. 创建swapfile</h3><pre><code>[root@VM_247_254_centos ~]# dd if=/dev/zero of=/swapfile bs=1024 count=1048576
 1048576+0 records in
 1048576+0 records out
 1073741824 bytes (1.1 GB) copied, 20.8217 s, 51.6 MB/s
-`&lt;/pre&gt;
-
-在分配过程中会明显感觉卡住,等待一会就能够分配成功
-
-2.使用下面的命令配置 swap 文件：
-
-&lt;pre&gt;`[root@VM_247_254_centos ~]# mkswap /swapfile
+</code></pre><p>在分配过程中会明显感觉卡住,等待一会就能够分配成功</p>
+<h3 id="2-使用下面的命令配置-swap-文件："><a href="#2-使用下面的命令配置-swap-文件：" class="headerlink" title="2.使用下面的命令配置 swap 文件："></a>2.使用下面的命令配置 swap 文件：</h3><pre><code>[root@VM_247_254_centos ~]# mkswap /swapfile
 Setting up swapspace version 1, size = 1048572 KiB
 no label, UUID=2c52576d-5773-4e5a-9e7e-76754c0155da
-`&lt;/pre&gt;
-
-3.接下来，使用下面的命令立即启用 swapfile
-
-&lt;pre&gt;`[root@VM_247_254_centos ~]# swapon /swapfile
+</code></pre><h3 id="3-接下来，使用下面的命令立即启用-swapfile"><a href="#3-接下来，使用下面的命令立即启用-swapfile" class="headerlink" title="3.接下来，使用下面的命令立即启用 swapfile"></a>3.接下来，使用下面的命令立即启用 swapfile</h3><pre><code>[root@VM_247_254_centos ~]# swapon /swapfile
 swapon: /swapfile: insecure permissions 0644, 0600 suggested.
-`&lt;/pre&gt;
-
-4.最后，我们在 /etc/fstab 中添加下面一行，这样可以在系统下次重启时自动生效创建的 swapfile
-
-&lt;pre&gt;`[root@VM_247_254_centos ~]# vi /etc/fstab
-`&lt;/pre&gt;
-
-使用vi进入到/etc/stab文件,然后通过i命令在文件最后插入下面这句
-
-&lt;pre&gt;`/swapfile swap swap defaults 0 0
-`&lt;/pre&gt;
-
-最后该文件应该是这样的
-
-[![](http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png)
-
-5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况
-
-[![](http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png)
-
-6.重启httpd服务和mariadb服务
-
-&lt;pre&gt;`[root@VM_247_254_centos ~]# systemctl restart httpd.service
+</code></pre><h3 id="4-最后，我们在-etc-fstab-中添加下面一行，这样可以在系统下次重启时自动生效创建的-swapfile"><a href="#4-最后，我们在-etc-fstab-中添加下面一行，这样可以在系统下次重启时自动生效创建的-swapfile" class="headerlink" title="4.最后，我们在 /etc/fstab 中添加下面一行，这样可以在系统下次重启时自动生效创建的 swapfile"></a>4.最后，我们在 /etc/fstab 中添加下面一行，这样可以在系统下次重启时自动生效创建的 swapfile</h3><pre><code>[root@VM_247_254_centos ~]# vi /etc/fstab
+</code></pre><p>使用vi进入到/etc/stab文件,然后通过i命令在文件最后插入下面这句</p>
+<pre><code>/swapfile swap swap defaults 0 0
+</code></pre><p>最后该文件应该是这样的</p>
+<p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png" target="_blank" rel="external"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png" alt=""></a></p>
+<h3 id="5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况"><a href="#5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况" class="headerlink" title="5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况"></a>5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况</h3><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png" target="_blank" rel="external"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png" alt=""></a></p>
+<h3 id="6-重启httpd服务和mariadb服务"><a href="#6-重启httpd服务和mariadb服务" class="headerlink" title="6.重启httpd服务和mariadb服务"></a>6.重启httpd服务和mariadb服务</h3><pre><code>[root@VM_247_254_centos ~]# systemctl restart httpd.service
 [root@VM_247_254_centos ~]# systemctl restart mariadb.service
 </code></pre><p>在这时应该能够解决数据库内存不足的问题了.</p>
 <p>参考链接:<br><a href="http://www.111cn.net/database/MongoDB/119739.htm" target="_blank" rel="external">mariadb 在低配 VPS 上崩溃问题</a></p>
@@ -503,8 +474,17 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://oo5aasoph.bkt.clouddn.com/%E6%9C%89%E9%A9%AC%E5%85%AC%E7%94%9F.jpg"
@@ -520,7 +500,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">16</span>
-                <span class="site-state-item-name">posts</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -531,7 +511,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">12</span>
-                <span class="site-state-item-name">categories</span>
+                <span class="site-state-item-name">Kategorien</span>
               
             </div>
           
@@ -582,6 +562,22 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建swapfile"><span class="nav-number">1.</span> <span class="nav-text">1. 创建swapfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用下面的命令配置-swap-文件："><span class="nav-number">2.</span> <span class="nav-text">2.使用下面的命令配置 swap 文件：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-接下来，使用下面的命令立即启用-swapfile"><span class="nav-number">3.</span> <span class="nav-text">3.接下来，使用下面的命令立即启用 swapfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-最后，我们在-etc-fstab-中添加下面一行，这样可以在系统下次重启时自动生效创建的-swapfile"><span class="nav-number">4.</span> <span class="nav-text">4.最后，我们在 /etc/fstab 中添加下面一行，这样可以在系统下次重启时自动生效创建的 swapfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况"><span class="nav-number">5.</span> <span class="nav-text">5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-重启httpd服务和mariadb服务"><span class="nav-number">6.</span> <span class="nav-text">6.重启httpd服务和mariadb服务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -614,7 +610,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
