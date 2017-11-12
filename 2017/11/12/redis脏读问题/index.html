@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -99,6 +99,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/11/12/redis脏读问题/index.html">
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E7%BC%93%E5%AD%98%E5%B1%82+%E6%8C%81%E4%B9%85%E5%B1%82%E8%AE%BE%E8%AE%A1.png">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E8%84%8F%E8%AF%BB%E6%B5%8B%E8%AF%95.png">
 <meta property="og:updated_time" content="2017-11-12T11:05:15.472Z">
@@ -114,7 +115,7 @@
   var CONFIG = {
     root: '/',
     scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: true,
@@ -152,7 +153,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -200,7 +201,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -210,7 +211,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -220,7 +221,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -284,9 +285,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-12T19:04:37+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-12T19:04:37+08:00">
                 2017-11-12
               </time>
             
@@ -305,7 +306,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -316,7 +317,7 @@
 
                 
                 
-                  . 
+                  ， 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -481,7 +482,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
@@ -492,7 +493,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">13</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -524,6 +525,28 @@
                   
                     
                       Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
                     
                 </a>
               </span>
@@ -575,11 +598,11 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -99,6 +99,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/06/1-6/index.html">
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted set objec">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-08-13T04:43:15.487Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis基础使用">
@@ -111,7 +112,7 @@
   var CONFIG = {
     root: '/',
     scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: true,
@@ -149,7 +150,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -197,7 +198,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -207,7 +208,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -217,7 +218,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -281,9 +282,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-06T23:34:23+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T23:34:23+08:00">
                 2017-06-06
               </time>
             
@@ -302,7 +303,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -313,7 +314,7 @@
 
                 
                 
-                  . 
+                  ， 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -562,10 +563,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
+            文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
+            站点概览
           </li>
         </ul>
       
@@ -586,7 +587,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
@@ -597,7 +598,7 @@
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">13</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -629,6 +630,28 @@
                   
                     
                       Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
                     
                 </a>
               </span>
@@ -696,11 +719,11 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>

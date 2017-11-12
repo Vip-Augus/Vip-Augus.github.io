@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -99,6 +99,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/04/29/1-4/index.html">
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="现在使用的 Centos7.2 系统,数据库版本是 Mariadb5.5.52.很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:  发现了是内存不足导致数据库自动关闭.运行下列语句查看服务器内存使用情况: #[root@VM_247_254_centos ~]free -m  Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png">
 <meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png">
 <meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png">
@@ -116,7 +117,7 @@
   var CONFIG = {
     root: '/',
     scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: true,
@@ -154,7 +155,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -202,7 +203,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            首页
           </a>
         </li>
       
@@ -212,7 +213,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            归档
           </a>
         </li>
       
@@ -222,7 +223,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
-            Tags
+            标签
           </a>
         </li>
       
@@ -286,9 +287,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-29T16:38:09+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T16:38:09+08:00">
                 2017-04-29
               </time>
             
@@ -307,7 +308,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -318,7 +319,7 @@
 
                 
                 
-                  . 
+                  ， 
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -476,10 +477,10 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
+            文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
+            站点概览
           </li>
         </ul>
       
@@ -500,7 +501,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
@@ -511,7 +512,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">13</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">分类</span>
               
             </div>
           
@@ -543,6 +544,28 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
                   
                     
                       Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
                     
                 </a>
               </span>
@@ -610,11 +633,11 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
-  Theme -
+  主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Muse
   </a>
