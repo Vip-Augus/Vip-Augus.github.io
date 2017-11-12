@@ -93,18 +93,19 @@
 
 
 
-<meta name="description" content="由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.简单介绍一下:Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本同时在编译之前需要安装gcc安装步骤挺简单的,首先先下载对应的版本,然后进行解">
+<meta name="description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Centos7 安装Redis">
-<meta property="og:url" content="http://yoursite.com/2017/05/20/1-5/index.html">
+<meta property="og:title" content="记一次Redis脏读问题">
+<meta property="og:url" content="http://yoursite.com/2017/11/12/redis脏读问题/index.html">
 <meta property="og:site_name" content="JingQ">
-<meta property="og:description" content="由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.简单介绍一下:Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本同时在编译之前需要安装gcc安装步骤挺简单的,首先先下载对应的版本,然后进行解">
-<meta property="og:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png">
-<meta property="og:updated_time" content="2017-08-13T04:43:15.487Z">
+<meta property="og:description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
+<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E7%BC%93%E5%AD%98%E5%B1%82+%E6%8C%81%E4%B9%85%E5%B1%82%E8%AE%BE%E8%AE%A1.png">
+<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E8%84%8F%E8%AF%BB%E6%B5%8B%E8%AF%95.png">
+<meta property="og:updated_time" content="2017-11-12T11:05:15.472Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Centos7 安装Redis">
-<meta name="twitter:description" content="由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.简单介绍一下:Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本同时在编译之前需要安装gcc安装步骤挺简单的,首先先下载对应的版本,然后进行解">
-<meta name="twitter:image" content="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png">
+<meta name="twitter:title" content="记一次Redis脏读问题">
+<meta name="twitter:description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
+<meta name="twitter:image" content="http://oo5aasoph.bkt.clouddn.com/%E7%BC%93%E5%AD%98%E5%B1%82+%E6%8C%81%E4%B9%85%E5%B1%82%E8%AE%BE%E8%AE%A1.png">
 
 
 
@@ -133,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/20/1-5/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/12/redis脏读问题/"/>
 
 
 
 
 
-  <title>Centos7 安装Redis | JingQ</title>
+  <title>记一次Redis脏读问题 | JingQ</title>
   
 
 
@@ -256,7 +257,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/20/1-5/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/12/redis脏读问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -273,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Centos7 安装Redis</h1>
+          <h1 class="post-title" itemprop="name headline">记一次Redis脏读问题</h1>
         
 
         <div class="post-meta">
@@ -285,8 +286,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-20T18:18:39+08:00">
-                2017-05-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-12T19:04:37+08:00">
+                2017-11-12
               </time>
             
 
@@ -319,8 +320,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GEEK/服务器/" itemprop="url" rel="index">
-                    <span itemprop="name">服务器</span>
+                  <a href="/categories/GEEK/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -356,35 +357,29 @@
       
 
       
-        <p>由于项目中有使用到Redis这个key-value数据库,于是在自己服务器上面进行安装进行学习.<br>简单介绍一下:<br><a href="http://baike.baidu.com/link?url=8ii2v7YCVGQ2UtIftwOhLyXvjyl6T8iSTPWwFJS490CqilrTqY0d5ImOnlAmWSld_vhrop68L-KF2nQamGNxm_" target="_blank" rel="external">Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。</a><br>选择你需要下载的redis版本,个人安装的是redis-3.2.8这个版本<br>同时在编译之前需要安装gcc<br>安装步骤挺简单的,首先先下载对应的版本,然后进行解压,进入根目录然后进行进行编译</p>
-<pre><code>[root@VM_52_146_centos ~]#yum install gcc-c++
-[root@VM_52_146_centos ~]# cd /home
-[root@VM_52_146_centos home]# wget http://download.redis.io/releases/redis-3.2.8.tar.gz
-[root@VM_52_146_centos home]# tar xzf redis-3.2.8.tar.gz
-[root@VM_52_146_centos home]# cd redis-3.2.8
-[root@VM_52_146_centos redis-3.2.8]# make
-
-`&lt;/pre&gt;
-
-[![](http://www.sevenyuan.cn/wp-content/uploads/2017/05/Reids解压成功.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/05/Reids解压成功.png)
-
-安装好之后进行基本配置
-
-&lt;pre&gt;`[root@VM_52_146_centos redis-3.2.8]# ./utils/install_server.sh
-`&lt;/pre&gt;
-
-我是按照默认进行配置的,所以显示一个就回车确认一个.
-
-[![](http://www.sevenyuan.cn/wp-content/uploads/2017/05/进行配置.png)](http://www.sevenyuan.cn/wp-content/uploads/2017/05/进行配置.png)
-
-最后使用redis-cli进入.
-
-&lt;pre&gt;`[root@VM_52_146_centos redis-3.2.8]# redis-cli
-127.0.0.1:6379&amp;gt; ping
-PONG
-127.0.0.1:6379&amp;gt; 
-</code></pre><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png" target="_blank" rel="external"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/05/成功使用.png" alt=""></a></p>
-<p>这样就能进行基本的使用,具体更多使用和配置文件修改还需更多学习.</p>
+        <hr>
+<p>这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。</p>
+<p>于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。</p>
+<p>所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：</p>
+<p><img src="http://oo5aasoph.bkt.clouddn.com/%E7%BC%93%E5%AD%98%E5%B1%82+%E6%8C%81%E4%B9%85%E5%B1%82%E8%AE%BE%E8%AE%A1.png" alt="缓存层+持久层"></p>
+<p>使用这个设计的好处是：</p>
+<ol>
+<li>加速读写：因为缓存放在内存中，可以有效加速读写。</li>
+<li>降低后端负载：帮助后端减少访问量和复杂计算（例如复杂的SQL语句）</li>
+</ol>
+<p>同样也存在一些问题：</p>
+<ol>
+<li>数据不一致性：缓存层和存储层的数据存在着一定时间窗口的不一致性，这个跟更新策略有关。</li>
+<li>代码维护成本：加入缓存后，需要同时处理缓存层和存储层的逻辑。<br>…</li>
+</ol>
+<p>现在采用的更新策略是：<strong>超时删除+主动更新</strong><br>不经常更新的值存进缓存中，设定超时时间，让其在过期时间后自动删除，如果进行数据修改操作（更新、删除、新增），会主动删除这个键，而读操作就跟上图一样，先访问缓存，没有命中会去持久层查询，然后将结果写到缓存中，下次读取就能直接从缓存中读取。</p>
+<hr>
+<p>回到正题，初步判断出现是因为<strong>新增数据的时候，并没有将这个key删除</strong>，于是用户刷新页面，后端返回给前端的还是<strong>缓存里面的数据</strong>，但这个问题是怎么产生的呢？</p>
+<p><img src="http://oo5aasoph.bkt.clouddn.com/%E8%84%8F%E8%AF%BB%E6%B5%8B%E8%AF%95.png" alt=""></p>
+<p>经过同事金伟的排查，发现有可能是用户新增数据的时候，鼠标焦点还在输入框，在这时点击了导航栏，这样会同时发起两个请求，一个是新增数据的请求，另一个是读取科目的请求。</p>
+<p>正常来说，新增数据会将缓存里面对应的key删除，但由于并发操作，存在一定概率没有将缓存的key删除掉，详细解决方法还有待讨论。</p>
+<p>对于redis，我了解不够多，所以趁着这个机会，好好拜读了付磊和张益军著作的《Redis开发与运维》，初步了解了主从、哨兵、集群的概念，还有不同参数的设定会起到什么效果。</p>
+<p>先给自己挖个坑，慢慢填Redis学习这个坑吧~</p>
 
       
     </div>
@@ -409,8 +404,8 @@ PONG
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/29/2-3/" rel="next" title="近期概况&学习计划">
-                <i class="fa fa-chevron-left"></i> 近期概况&学习计划
+              <a href="/2017/10/21/HashMap实现原理/" rel="next" title="HashMap实现原理">
+                <i class="fa fa-chevron-left"></i> HashMap实现原理
               </a>
             
           </div>
@@ -418,10 +413,6 @@ PONG
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/06/1-6/" rel="prev" title="Redis基础使用">
-                Redis基础使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
