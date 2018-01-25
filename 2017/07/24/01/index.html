@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/dubbo-architecture.png">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/dubbo-relation.png">
-<meta property="og:updated_time" content="2017-08-13T04:43:15.487Z">
+<meta property="og:updated_time" content="2017-08-13T04:43:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web入门学习">
 <meta name="twitter:description" content="首先十分感谢祥哥的建议: 一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。 但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。 不过从职场的角度，可能开始走广度会更有利于以后发展。 深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。  项目中常使用到的技术（基于SSM）   分布式技术">
@@ -377,14 +377,14 @@
 </ul>
 <p>最后简单介绍一下Dubbo基于RPC层，服务提供方和服务消费方之间的关系</p>
 <p><img src="http://oo5aasoph.bkt.clouddn.com/dubbo-relation.png" alt="Dubbo调用关系"><br>上图中蓝色的表示与业务有交互，绿色的表示只对Dubbo内部交互。上述图所描述的调用流程如下：<br>    1. 服务提供方发布服务到服务注册中心；<br>    2. 服务消费方从服务注册中心订阅服务；<br>    3. 服务消费方调用已经注册的可用服务。</p>
-<p>更多调用流程请看这篇文章：<strong><a href="http://shiyanjun.cn/archives/325.html" target="_blank" rel="external">Dubbo文章参考</a></strong></p>
+<p>更多调用流程请看这篇文章：<strong><a href="http://shiyanjun.cn/archives/325.html" target="_blank" rel="noopener">Dubbo文章参考</a></strong></p>
 <p><strong>Zookeeper</strong><br>用来注册服务和进行负载均衡，哪一个服务由哪一个机器来提供必须让调用者知道。<br>zookeeper通过心跳机制可以检测挂掉的机器并将挂掉机器的ip和服务对应关系从列表中删除。<br>通过添加新的机器向zookeeper注册服务，服务的提供者增加，能够服务的客户就能增加。</p>
 <p><strong>Zookeeper与Dubbo的关系</strong><br>   Dubbo的将注册中心进行抽象，是得它可以外接不同的存储媒介给注册中心提供服务，有ZooKeeper，Memcached，Redis等。<br>      引入了ZooKeeper作为存储媒介，也就把ZooKeeper的特性引进来。首先是负载均衡，单注册中心的承载能力是有限的，在流量达到一定程度的时候就需要分流，负载均衡就是为了分流而存在的，一个ZooKeeper群配合相应的Web应用就可以很容易达到负载均衡；资源同步，单单有负载均衡还不够，节点之间的数据和资源需要同步，ZooKeeper集群就天然具备有这样的功能；命名服务，将树状结构用于维护全局的服务地址列表，服务提供者在启动的时候，向ZK上的指定节点/dubbo/${serviceName}/providers目录下写入自己的URL地址，这个操作就完成了服务的发布。其他特性还有Mast选举，分布式锁等。</p>
-<p>Zookeeper基础概念了解请看这篇文章： <strong><a href="http://blog.csdn.net/daiqinge/article/details/51282874" target="_blank" rel="external">zookeeper基础了解</a></strong></p>
+<p>Zookeeper基础概念了解请看这篇文章： <strong><a href="http://blog.csdn.net/daiqinge/article/details/51282874" target="_blank" rel="noopener">zookeeper基础了解</a></strong></p>
 <blockquote>
 <p><strong>Redis</strong></p>
 </blockquote>
-<p><strong>Redis简介</strong>（<strong><a href="http://www.redis.cn/" target="_blank" rel="external">中文网站</a></strong>）：<br>Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过 Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。</p>
+<p><strong>Redis简介</strong>（<strong><a href="http://www.redis.cn/" target="_blank" rel="noopener">中文网站</a></strong>）：<br>Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过 Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。</p>
 <p><strong>Redis 优势:</strong></p>
 <ul>
 <li>速度快，因为数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)</li>
@@ -401,7 +401,7 @@
 <p>接着介绍JMS（Java Message Service）：<br><strong>JMS</strong>是Java平台上有关面向消息中间件(MOM)的技术规范，它便于消息系统中的Java应用程序进行消息交换,并且通过提供标准的产生、发送、接收消息的接口简化企业应用的开发，翻译为Java消息服务。</p>
 <p><strong>ActiveMq优点：</strong><br>是一个快速的开源消息组件(框架)，支持集群，同等网络，自动检测，TCP，SSL，广播，持久化，XA，和J2EE1.4容器无缝结合，并且支持轻量级容器和大多数跨语言客户端上的Java虚拟机。消息异步接受，减少软件多系统集成的耦合度。消息可靠接收，确保消息在中间件可靠保存，多个消息也可以组成原子事务。</p>
 <p>个人理解是通过发送消息到队列中，不直接调用服务处理，而是配置处理器进行事件的处理，异步处理消息用来进行应用间的解耦，节省了服务器的请求响应时间，从而提高了系统的吞吐量，最后确保最终一致性。</p>
-<p>关于ActiveMq的了解可以看这篇文章：<a href="http://blog.csdn.net/u012325073/article/details/53385322" target="_blank" rel="external">ActiveMq基础了解</a></p>
+<p>关于ActiveMq的了解可以看这篇文章：<a href="http://blog.csdn.net/u012325073/article/details/53385322" target="_blank" rel="noopener">ActiveMq基础了解</a></p>
 <blockquote>
 <p><strong>文件存储FTP和OSS</strong></p>
 </blockquote>
@@ -415,7 +415,7 @@
 <li>OSS性价比高，多线BGP骨干网络，无带宽限制，上行流量免费，无需运维人员与托管费用，0成本运维。</li>
 <li>OSS还提供图片处理、音视频转码、内容加速分发、鉴黄服务、归档服务等多种数据增值服务，并在不断丰富着。</li>
 </ul>
-<p>基于以上优点，学习使用OSS也是很有必要的，<strong><a href="https://help.aliyun.com/document_detail/31827.html" target="_blank" rel="external">官方文档</a></strong> 的介绍很详细了。</p>
+<p>基于以上优点，学习使用OSS也是很有必要的，<strong><a href="https://help.aliyun.com/document_detail/31827.html" target="_blank" rel="noopener">官方文档</a></strong> 的介绍很详细了。</p>
 
       
     </div>
@@ -520,7 +520,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -542,7 +542,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -631,7 +631,7 @@
 <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>
