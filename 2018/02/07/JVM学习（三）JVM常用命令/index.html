@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="本篇记录JVM常用的指令，通过Java的bin目录下强大的工具就能进行查看。参考《jvm系列(四):jvm调优-命令大全（jps jstat jmap jhat jstack jinfo）》Java8内存模型—永久代(PermGen)和元空间(Metaspace)周志明的《深入理解JVM》其中很多命令参考option参数，自己要多敲几遍才能记住。 JVM常用命令其中[]方括号内的参数，表示可有可无">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-07T15:53:48.480Z">
+<meta property="og:updated_time" content="2018-02-07T15:57:48.685Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM学习（三）JVM常用命令">
 <meta name="twitter:description" content="本篇记录JVM常用的指令，通过Java的bin目录下强大的工具就能进行查看。参考《jvm系列(四):jvm调优-命令大全（jps jstat jmap jhat jstack jinfo）》Java8内存模型—永久代(PermGen)和元空间(Metaspace)周志明的《深入理解JVM》其中很多命令参考option参数，自己要多敲几遍才能记住。 JVM常用命令其中[]方括号内的参数，表示可有可无">
@@ -329,7 +329,65 @@
 <h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a><strong>jstat</strong></h2><hr>
 <p>jstat(JVM statistics Monitoring)是用于监视虚拟机运行时状态信息的命令，它可以显示出虚拟机进程中的类装载、内存、垃圾收集、JIT编译等运行数据。</p>
 <p><strong>命令格式</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">jstat [option] LVMID [interval] [count]</div><div class="line"></div><div class="line">[option] : 操作参数</div><div class="line">LVMID : 本地虚拟机进程ID</div><div class="line">[interval] : 连续输出的时间间隔</div><div class="line">[count] : 连续输出的次数</div></pre></td></tr></table></figure></p>
-<p><strong>option参数</strong><br>| Option           | 解释                                       |<br>| —————- | —————————————- |<br>| class            | class loader的行为统计。Statistics on the behavior of the class loader. |<br>| compiler         | HotSpt JIT编译器行为统计。Statistics of the behavior of the HotSpot Just-in-Time compiler. |<br>| gc               | 垃圾回收堆的行为统计。Statistics of the behavior of the garbage collected heap. |<br>| gccapacity       | 各个垃圾回收代容量(young,old,perm)和他们相应的空间统计。Statistics of the capacities of the generations and their corresponding spaces. |<br>| gcutil           | 垃圾回收统计概述。Summary of garbage collection statistics. |<br>| gccause          | 垃圾收集统计概述（同-gcutil），附加最近两次垃圾回收事件的原因。Summary of garbage collection statistics (same as -gcutil), with the cause of the last and |<br>| gcnew            | 新生代行为统计。Statistics of the behavior of the new generation. |<br>| gcnewcapacity    | 新生代与其相应的内存空间的统计。Statistics of the sizes of the new generations and its corresponding spaces. |<br>| gcold            | 年老代和永生代行为统计。Statistics of the behavior of the old and permanent generations. |<br>| gcoldcapacity    | 年老代行为统计。Statistics of the sizes of the old generation. |<br>| gcpermcapacity   | 永生代行为统计。Statistics of the sizes of the permanent generation. |<br>| printcompilation | HotSpot编译方法统计。HotSpot compilation method statistics. |</p>
+<p><strong>option参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>class</td>
+<td>class loader的行为统计。Statistics on the behavior of the class loader.</td>
+</tr>
+<tr>
+<td>compiler</td>
+<td>HotSpt JIT编译器行为统计。Statistics of the behavior of the HotSpot Just-in-Time compiler.</td>
+</tr>
+<tr>
+<td>gc</td>
+<td>垃圾回收堆的行为统计。Statistics of the behavior of the garbage collected heap.</td>
+</tr>
+<tr>
+<td>gccapacity</td>
+<td>各个垃圾回收代容量(young,old,perm)和他们相应的空间统计。Statistics of the capacities of the generations and their corresponding spaces.</td>
+</tr>
+<tr>
+<td>gcutil</td>
+<td>垃圾回收统计概述。Summary of garbage collection statistics.</td>
+</tr>
+<tr>
+<td>gccause</td>
+<td>垃圾收集统计概述（同-gcutil），附加最近两次垃圾回收事件的原因。Summary of garbage collection statistics (same as -gcutil), with the cause of the last and</td>
+</tr>
+<tr>
+<td>gcnew</td>
+<td>新生代行为统计。Statistics of the behavior of the new generation.</td>
+</tr>
+<tr>
+<td>gcnewcapacity</td>
+<td>新生代与其相应的内存空间的统计。Statistics of the sizes of the new generations and its corresponding spaces.</td>
+</tr>
+<tr>
+<td>gcold</td>
+<td>年老代和永生代行为统计。Statistics of the behavior of the old and permanent generations.</td>
+</tr>
+<tr>
+<td>gcoldcapacity</td>
+<td>年老代行为统计。Statistics of the sizes of the old generation.</td>
+</tr>
+<tr>
+<td>gcpermcapacity</td>
+<td>永生代行为统计。Statistics of the sizes of the permanent generation.</td>
+</tr>
+<tr>
+<td>printcompilation</td>
+<td>HotSpot编译方法统计。HotSpot compilation method statistics.</td>
+</tr>
+</tbody>
+</table>
 <p><strong>例如查看垃圾回收堆的行为统计</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@VM_247_254_centos ~]# jstat -gc 25446</div><div class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT</div><div class="line">6400.0 6400.0  0.0   1601.4 51712.0  50837.0   128808.0   88450.0   67584.0 66167.7 7936.0 7630.5    401    5.939  10      1.247    7.186</div></pre></td></tr></table></figure></p>
 <p>顺便介绍一下参数意义：<br><strong>C：Capacity表示的是容量 U：Used表示的是已使用</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">S0C : survivor0区的总容量</div><div class="line">S1C : survivor1区的总容量</div><div class="line">S0U : survivor0区已使用的容量</div><div class="line">S1C : survivor1区已使用的容量</div><div class="line">EC : Eden区的总容量</div><div class="line">EU : Eden区已使用的容量</div><div class="line">OC : Old区的总容量</div><div class="line">OU : Old区已使用的容量</div><div class="line">PC 当前perm的容量 (KB)</div><div class="line">PU perm的使用 (KB)</div><div class="line">YGC : 新生代垃圾回收次数</div><div class="line">YGCT : 新生代垃圾回收时间</div><div class="line">FGC : 老年代垃圾回收次数</div><div class="line">FGCT : 老年代垃圾回收时间</div><div class="line">GCT : 垃圾回收总消耗时间</div></pre></td></tr></table></figure></p>
 <p>上面有很多个option参数，可以一个个敲过去看看具体的作用。</p>
