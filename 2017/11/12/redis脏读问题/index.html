@@ -72,7 +72,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Redis," />
 
 
 
@@ -89,6 +89,7 @@
 
 
 <meta name="description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记一次Redis脏读问题">
 <meta property="og:url" content="http://yoursite.com/2017/11/12/redis脏读问题/index.html">
@@ -97,7 +98,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E7%BC%93%E5%AD%98%E5%B1%82+%E6%8C%81%E4%B9%85%E5%B1%82%E8%AE%BE%E8%AE%A1.png">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E8%84%8F%E8%AF%BB%E6%B5%8B%E8%AF%95.png">
-<meta property="og:updated_time" content="2017-11-12T11:05:16.000Z">
+<meta property="og:updated_time" content="2018-03-19T15:37:23.095Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次Redis脏读问题">
 <meta name="twitter:description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
@@ -212,7 +213,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/tags" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -391,6 +392,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
 
       
       
@@ -490,10 +497,10 @@
             
             
             <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">13</span>
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
-              
+              </a>
             </div>
           
 
@@ -501,10 +508,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
-                <span class="site-state-item-count">4</span>
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 
