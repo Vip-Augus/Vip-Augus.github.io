@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创建一个不">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-24T16:49:45.829Z">
+<meta property="og:updated_time" content="2018-03-24T16:56:21.847Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis哨兵">
 <meta name="twitter:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创建一个不">
@@ -366,14 +366,14 @@
 </ul>
 <h2 id="启动并初始化Sentinel"><a href="#启动并初始化Sentinel" class="headerlink" title="启动并初始化Sentinel"></a>启动并初始化Sentinel</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> redis-sentinel /path/to/your/sentinel.conf</div><div class="line">或者</div><div class="line"><span class="meta">$</span> redis-server /path/to/your/sentinel.conf --sentinel</div></pre></td></tr></table></figure>
 <p>当一个Sentinel启动时，它需要执行以下五个步骤：</p>
-<p>**1. 初始化服务器</p>
-<ol>
+<ul>
+<li>初始化服务器</li>
 <li>将普通的Redis服务器使用的代码替换成Sentinel专用代码</li>
 <li>初始化Sentinel状态</li>
 <li>根据给定的配置文件，初始化Sentinel监视的主服务器列表</li>
-<li>创建连接主服务器的网络连接**</li>
-</ol>
-<p>插入一个master和slave的设定，举个🌰：<br>Redis的master和slave主从设定可以通过slaveof命令操作，举个🌰：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis-cli -p 6380</div><div class="line">127.0.0.1:6380&gt; ping</div><div class="line">PONG</div><div class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</div></pre></td></tr></table></figure></p>
+<li>创建连接主服务器的网络连接</li>
+</ul>
+<p>Redis的master和slave主从设定可以通过slaveof命令操作，举个🌰：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis-cli -p 6380</div><div class="line">127.0.0.1:6380&gt; ping</div><div class="line">PONG</div><div class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</div></pre></td></tr></table></figure></p>
 <p>通过Mac的HomeBrew安装Redis的话，默认配置文件在/usr/local/etc/redis-sentinel.conf目录<br>复制出两份相同文件，修改port端口号，简单的配置如下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">port 26379</div><div class="line"><span class="meta">#</span> monitor后面的mymsater标志master和它的slave，最后一个参数2表示quoram设置</div><div class="line">sentinel monitor mymaster 127.0.0.1 6379 2</div><div class="line"><span class="meta">#</span> 在这个时间范围内不能接收响应，master将会被标记为故障</div><div class="line">sentinel down-after-milliseconds mymaster 5000</div><div class="line">sentinel failover-timeout mymaster 60000</div><div class="line">sentinel parallel-syncs mymaster 1</div></pre></td></tr></table></figure></p>
 <p>默认运行在26379端口号，本地服务开多个哨兵的话，将26379改成26380、26381尝试。</p>
 <p>启动日志如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2285:X 24 Mar 23:34:17.514 # Sentinel ID is 0440e012ba17a7a5b4b517cab3589e764bbc03e3</div><div class="line">2285:X 24 Mar 23:34:17.514 # +monitor master mymaster 127.0.0.1 6379 quorum 2</div></pre></td></tr></table></figure></p>
