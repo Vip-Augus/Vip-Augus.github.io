@@ -98,7 +98,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E7%BC%93%E5%AD%98%E5%B1%82+%E6%8C%81%E4%B9%85%E5%B1%82%E8%AE%BE%E8%AE%A1.png">
 <meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/%E8%84%8F%E8%AF%BB%E6%B5%8B%E8%AF%95.png">
-<meta property="og:updated_time" content="2018-03-19T15:37:23.000Z">
+<meta property="og:updated_time" content="2018-08-17T01:41:21.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次Redis脏读问题">
 <meta name="twitter:description" content="这周二遇到一个问题：用户刚新增了一个数据，但是刷新的时候没能显示出来。 于是开始进行问题排查，首先登陆用户的界面，发现果然没有显示数据，然后查了一下线上的数据库，发现新增的数据已经入库了，接着判断是不是代码层面存在什么漏洞。 所以开始猜测引起的原因是数据脏读，现在项目中使用的数据存储结构如下：  使用这个设计的好处是：  加速读写：因为缓存放在内存中，可以有效加速读写。 降低后端负载：帮助后端减">
@@ -306,8 +306,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GEEK/" itemprop="url" rel="index">
-                    <span itemprop="name">GEEK</span>
+                  <a href="/categories/NoSQL/" itemprop="url" rel="index">
+                    <span itemprop="name">NoSQL</span>
                   </a>
                 </span>
 
@@ -317,8 +317,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GEEK/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
+                  <a href="/categories/NoSQL/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
                   </a>
                 </span>
 
@@ -367,7 +367,7 @@
 <p>同样也存在一些问题：</p>
 <ol>
 <li>数据不一致性：缓存层和存储层的数据存在着一定时间窗口的不一致性，这个跟更新策略有关。</li>
-<li>代码维护成本：加入缓存后，需要同时处理缓存层和存储层的逻辑。<br>…</li>
+<li>代码维护成本：加入缓存后，需要同时处理缓存层和存储层的逻辑。<br> …</li>
 </ol>
 <p>现在采用的更新策略是：<strong>超时删除+主动更新</strong><br>不经常更新的值存进缓存中，设定超时时间，让其在过期时间后自动删除，如果进行数据修改操作（更新、删除、新增），会主动删除这个键，而读操作就跟上图一样，先访问缓存，没有命中会去持久层查询，然后将结果写到缓存中，下次读取就能直接从缓存中读取。</p>
 <hr>
@@ -489,7 +489,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -500,7 +500,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
