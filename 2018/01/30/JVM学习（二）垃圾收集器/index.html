@@ -96,12 +96,12 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="上一篇介绍的垃圾回收算法是内存回收的方法论，垃圾收集器就是垃圾回收的具体实现。 不同厂商、不同版本的虚拟机所提供的垃圾收集器可能会有很大差别，书中主要讲的是HotSpot虚拟机的垃圾收集器（在JDK1.7中正式提供了商用的G1收集器）。  （图片来源网络，侵权删） 图中展示了7种作用于不同年代的收集器，如果两个收集器之间存在连线，就说明它们可以搭配使用。虚拟机所处的区域，则表示它是属于新生代还是老">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.jpg">
-<meta property="og:updated_time" content="2018-08-16T09:21:36.755Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.jpg">
+<meta property="og:updated_time" content="2018-11-11T14:27:07.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM学习（二）垃圾收集器">
 <meta name="twitter:description" content="上一篇介绍的垃圾回收算法是内存回收的方法论，垃圾收集器就是垃圾回收的具体实现。 不同厂商、不同版本的虚拟机所提供的垃圾收集器可能会有很大差别，书中主要讲的是HotSpot虚拟机的垃圾收集器（在JDK1.7中正式提供了商用的G1收集器）。  （图片来源网络，侵权删） 图中展示了7种作用于不同年代的收集器，如果两个收集器之间存在连线，就说明它们可以搭配使用。虚拟机所处的区域，则表示它是属于新生代还是老">
-<meta name="twitter:image" content="http://oo5aasoph.bkt.clouddn.com/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.jpg">
 
 
 
@@ -344,7 +344,7 @@
       
         <p>上一篇介绍的垃圾回收算法是内存回收的方法论，垃圾收集器就是垃圾回收的具体实现。</p>
 <p>不同厂商、不同版本的虚拟机所提供的垃圾收集器可能会有很大差别，书中主要讲的是HotSpot虚拟机的垃圾收集器（在JDK1.7中正式提供了商用的G1收集器）。</p>
-<p><img src="http://oo5aasoph.bkt.clouddn.com/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.jpg" alt="HotSpot虚拟机的垃圾收集器"></p>
+<p><img src="http://img.sevenyuan.cn/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8.jpg" alt="HotSpot虚拟机的垃圾收集器"></p>
 <p>（图片来源网络，侵权删）</p>
 <p>图中展示了7种作用于不同年代的收集器，如果两个收集器之间存在连线，就说明它们可以搭配使用。虚拟机所处的区域，则表示它是属于新生代还是老年代收集器。</p>
 <h2 id="一、Serial收集器"><a href="#一、Serial收集器" class="headerlink" title="一、Serial收集器"></a><strong>一、Serial收集器</strong></h2><p>Serial收集器是最基本、发展历史最悠久的收集器，曾经（在JDK1.3.1之前）是虚拟机新生代收集的唯一选择。</p>

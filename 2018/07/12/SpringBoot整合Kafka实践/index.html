@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="飘了飘了，最近都没好好学习，加把劲吧😔">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/mountains-2532825_1920.jpg">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/kafka%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86.png">
-<meta property="og:updated_time" content="2018-07-12T02:31:22.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/mountains-2532825_1920.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/kafka%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86.png">
+<meta property="og:updated_time" content="2018-11-11T14:28:17.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot整合Kafka实践">
 <meta name="twitter:description" content="飘了飘了，最近都没好好学习，加把劲吧😔">
-<meta name="twitter:image" content="http://oo5aasoph.bkt.clouddn.com/mountains-2532825_1920.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/mountains-2532825_1920.jpg">
 
 
 
@@ -321,7 +321,7 @@
       
 
       
-        <p><img src="http://oo5aasoph.bkt.clouddn.com/mountains-2532825_1920.jpg" alt=""></p>
+        <p><img src="http://img.sevenyuan.cn/mountains-2532825_1920.jpg" alt=""></p>
 <center>飘了飘了，最近都没好好学习，加把劲吧😔</center>
 
 <a id="more"></a>
@@ -355,7 +355,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestKafkaMessageHandler</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//  参数对应的是topic名称，可以监听多个topic，中间用逗号分开</span></div><div class="line">    <span class="meta">@KafkaListener</span>(topics = &#123;<span class="string">"test"</span>&#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">processMessage</span><span class="params">(String content)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            User m = JSON.parseObject(content, User.class);</div><div class="line">            System.out.println(m.toString());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            System.out.println(e.toString());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="发送消息测试"><a href="#发送消息测试" class="headerlink" title="发送消息测试"></a>发送消息测试</h3><p><strong>正常启动之后，发送消息后，能够看到消息处理的结果</strong></p>
 <p><strong>举个🌰，示例代码的执行结果如下所示：</strong></p>
-<p><img src="http://oo5aasoph.bkt.clouddn.com/kafka%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/kafka%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86.png" alt=""></p>
 <p><strong>Springboot配置简易化了许多，简单调用API就能进行消息的发送和消息处理，当然Kafka还有更强的功能和作用，可以深入去了解一下</strong></p>
 <hr>
 <h2 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h2><p>个人环境</p>

@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="又懒了，要多看书和总结，然后早点写博客😝">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/tree-3089993_1920.jpg">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/QQ_MAIL.png">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/mail_sender.png">
-<meta property="og:image" content="http://oo5aasoph.bkt.clouddn.com/demo.png">
-<meta property="og:updated_time" content="2018-08-16T09:21:29.023Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/tree-3089993_1920.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/QQ_MAIL.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/mail_sender.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/demo.png">
+<meta property="og:updated_time" content="2018-11-11T14:27:04.495Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java整合Spring发送邮件">
 <meta name="twitter:description" content="又懒了，要多看书和总结，然后早点写博客😝">
-<meta name="twitter:image" content="http://oo5aasoph.bkt.clouddn.com/tree-3089993_1920.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/tree-3089993_1920.jpg">
 
 
 
@@ -345,7 +345,7 @@
       
 
       
-        <p><img src="http://oo5aasoph.bkt.clouddn.com/tree-3089993_1920.jpg" alt=""></p>
+        <p><img src="http://img.sevenyuan.cn/tree-3089993_1920.jpg" alt=""></p>
 <center>又懒了，要多看书和总结，然后早点写博客😝</center>
 
 <a id="more"></a>
@@ -367,9 +367,9 @@
 　　</p>
 <h3 id="SMTP协议"><a href="#SMTP协议" class="headerlink" title="SMTP协议"></a>SMTP协议</h3><p>要使用QQ邮箱发送邮件，就要遵守SMTP协议。<strong>SMTP（Simple Mail Transfer Protocol）即简单邮件传输协议</strong>,它是一组用于由源地址到目的地址传送邮件的规则，由它来控制信件的中转方式。</p>
 <p>需要在QQ邮箱中<strong>打开SMTP服务和生成授权码</strong></p>
-<p><img src="http://oo5aasoph.bkt.clouddn.com/QQ_MAIL.png" alt="QQ邮箱"></p>
+<p><img src="http://img.sevenyuan.cn/QQ_MAIL.png" alt="QQ邮箱"></p>
 <hr>
-<h2 id="Demo的时序图"><a href="#Demo的时序图" class="headerlink" title="Demo的时序图"></a>Demo的时序图</h2><p><img src="http://oo5aasoph.bkt.clouddn.com/mail_sender.png" alt=""></p>
+<h2 id="Demo的时序图"><a href="#Demo的时序图" class="headerlink" title="Demo的时序图"></a>Demo的时序图</h2><p><img src="http://img.sevenyuan.cn/mail_sender.png" alt=""></p>
 <hr>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>demo使用的是Velocity模板引擎进行html渲染，其它渲染方式类似，最后都是生成context内容。</p>
 <h3 id="基础依赖"><a href="#基础依赖" class="headerlink" title="基础依赖"></a>基础依赖</h3><p>java mail/spring-context-support/velocity<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'com.sun.mail'</span>, name: <span class="string">'javax.mail'</span>, version: <span class="string">'1.6.1'</span></div><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'org.springframework'</span>, name: <span class="string">'spring-context-support'</span>, version: <span class="string">'5.0.8.RELEASE'</span></div><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'org.apache.velocity'</span>, name: <span class="string">'velocity'</span>, version: <span class="string">'1.7'</span></div></pre></td></tr></table></figure></p>
@@ -380,7 +380,7 @@
 <h3 id="demo-vm-模板文件"><a href="#demo-vm-模板文件" class="headerlink" title="demo.vm(模板文件)"></a>demo.vm(模板文件)</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/xhtml "</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">class</span>=<span class="string">"word-style"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"title"</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span>DEMO<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"indent"</span>&gt;</span>$!&#123;msg&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
 <hr>
 <h2 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h2><p>最后通过调用<strong>MailService</strong>进行邮件发送<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">MailBean mailBean = <span class="keyword">new</span> MailBean();</div><div class="line">mailBean.setFrom(<span class="string">"xxxxxx@qq.com"</span>);</div><div class="line">mailBean.setFromName(<span class="string">"DEMO"</span>);</div><div class="line">mailBean.setSubject(<span class="string">"Are you ok"</span>);</div><div class="line"><span class="comment">//模板</span></div><div class="line">mailBean.setMailVmName(<span class="string">"demo.vm"</span>);</div><div class="line"><span class="comment">//收件人地址</span></div><div class="line">String[] toList = &#123;<span class="string">"xxxxx@xxxx.com"</span>&#125;;</div><div class="line">mailBean.setToList(toList);</div><div class="line">Map&lt;String, Object&gt; context = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">context.put(<span class="string">"msg"</span>, <span class="string">"I'm fine, thank you~"</span>);</div><div class="line">mailBean.setMailContext(context);</div><div class="line">mailService.sendMail(mailBean);</div></pre></td></tr></table></figure></p>
-<p><img src="http://oo5aasoph.bkt.clouddn.com/demo.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/demo.png" alt=""></p>
 <p>当然，你可以制作更加好看的html邮件~</p>
 <hr>
 <p>参考资料</p>
