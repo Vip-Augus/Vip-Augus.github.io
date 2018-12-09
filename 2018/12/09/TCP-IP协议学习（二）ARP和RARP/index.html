@@ -72,7 +72,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Redis," />
+  <meta name="keywords" content="网络学习," />
 
 
 
@@ -88,20 +88,22 @@
 
 
 
-<meta name="description" content="发送命令在上一篇文章中，已经将16384个槽都进行了指派之后，集群已经进入上线状态123456789101112127.0.0.1:7000&amp;gt; cluster info// 集群状态：OK表示上线cluster_state:okcluster_slots_assigned:16384cluster_slots_ok:16384cluster_slots_pfail:0cluster_slot">
-<meta name="keywords" content="Redis">
+<meta name="description" content="来自网络小白的笔记二">
+<meta name="keywords" content="网络学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis集群（二）发送命令和故障转移">
-<meta property="og:url" content="http://yoursite.com/2018/04/10/Redis集群（二）发送命令和故障转移/index.html">
+<meta property="og:title" content="TCP&#x2F;IP协议学习（二）ARP和RARP">
+<meta property="og:url" content="http://yoursite.com/2018/12/09/TCP-IP协议学习（二）ARP和RARP/index.html">
 <meta property="og:site_name" content="JingQ">
-<meta property="og:description" content="发送命令在上一篇文章中，已经将16384个槽都进行了指派之后，集群已经进入上线状态123456789101112127.0.0.1:7000&amp;gt; cluster info// 集群状态：OK表示上线cluster_state:okcluster_slots_assigned:16384cluster_slots_ok:16384cluster_slots_pfail:0cluster_slot">
+<meta property="og:description" content="来自网络小白的笔记二">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%BF%81%E7%A7%BB%E9%94%AE%E8%BF%87%E7%A8%8B.png">
-<meta property="og:updated_time" content="2018-11-11T14:27:58.182Z">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/7097c713ly1fy0qijcwybj21hc0u0gq9.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/7097c713ly1fy0qptnjzaj20dq09974j.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/7097c713ly1fy0rgvc5j1j20ln08njs8.jpg">
+<meta property="og:updated_time" content="2018-12-09T12:35:13.589Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis集群（二）发送命令和故障转移">
-<meta name="twitter:description" content="发送命令在上一篇文章中，已经将16384个槽都进行了指派之后，集群已经进入上线状态123456789101112127.0.0.1:7000&amp;gt; cluster info// 集群状态：OK表示上线cluster_state:okcluster_slots_assigned:16384cluster_slots_ok:16384cluster_slots_pfail:0cluster_slot">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/%E8%BF%81%E7%A7%BB%E9%94%AE%E8%BF%87%E7%A8%8B.png">
+<meta name="twitter:title" content="TCP&#x2F;IP协议学习（二）ARP和RARP">
+<meta name="twitter:description" content="来自网络小白的笔记二">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/7097c713ly1fy0qijcwybj21hc0u0gq9.jpg">
 
 
 
@@ -130,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/10/Redis集群（二）发送命令和故障转移/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/12/09/TCP-IP协议学习（二）ARP和RARP/"/>
 
 
 
 
 
-  <title>Redis集群（二）发送命令和故障转移 | JingQ</title>
+  <title>TCP/IP协议学习（二）ARP和RARP | JingQ</title>
   
 
 
@@ -253,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/10/Redis集群（二）发送命令和故障转移/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/09/TCP-IP协议学习（二）ARP和RARP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -270,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis集群（二）发送命令和故障转移</h1>
+          <h1 class="post-title" itemprop="name headline">TCP/IP协议学习（二）ARP和RARP</h1>
         
 
         <div class="post-meta">
@@ -282,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T20:08:20+08:00">
-                2018-04-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T20:34:26+08:00">
+                2018-12-09
               </time>
             
 
@@ -325,52 +327,49 @@
       
 
       
-        <h2 id="发送命令"><a href="#发送命令" class="headerlink" title="发送命令"></a>发送命令</h2><p>在上一篇文章中，已经将16384个槽都进行了指派之后，集群已经进入上线状态<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:7000&gt; cluster info</div><div class="line">// 集群状态：OK表示上线</div><div class="line">cluster_state:ok</div><div class="line">cluster_slots_assigned:16384</div><div class="line">cluster_slots_ok:16384</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_known_nodes:3</div><div class="line">cluster_size:3</div><div class="line">cluster_current_epoch:3</div><div class="line">cluster_my_epoch:1</div><div class="line">···</div></pre></td></tr></table></figure></p>
-<p>现在客户端就可以向集群中的节点发送命令了。</p>
-<p>当客户端向节点发送与数据库键有关的命令时，接收命令的节点会计算出命令要处理的数据库键属于哪个槽，并检查这个槽是否指派给了自己：</p>
+        <p><img src="http://ww1.sinaimg.cn/large/7097c713ly1fy0qijcwybj21hc0u0gq9.jpg" alt=""></p>
+<center>来自网络小白的笔记二</center>
+
+<a id="more"></a>
+<hr>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>ARP为IP地址到对应的硬件地址之间提供动态映射。</strong><br><strong>RARP是被哪些没有磁盘驱动器的系统使用，它需要系统管理员进行手工设置。</strong></p>
+<p><img src="http://ww1.sinaimg.cn/large/7097c713ly1fy0qptnjzaj20dq09974j.jpg" alt=""></p>
+<hr>
+<h2 id="ARP工作过程"><a href="#ARP工作过程" class="headerlink" title="ARP工作过程"></a>ARP工作过程</h2><ul>
+<li>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。这个过程称为广播，ARP请求数据帧中包含目的主机的IP地址，表示“如果你是这个IP地址的拥有者，请回答你的硬件地址”。</li>
+<li>目的主机的ARP层收到这份广播后，识别出这是发送端在询问它的IP地址，于是发送一个ARP应答。这个ARP应答包含IP地址和对应的硬件地址。</li>
+<li>收到ARP应答后，使ARP进行请求-应答交换的IP数据报现在就可以传送了。</li>
+</ul>
+<p>点对点链路（PPP）不使用ARP。</p>
+<hr>
+<h2 id="ARP高速缓存"><a href="#ARP高速缓存" class="headerlink" title="ARP高速缓存"></a>ARP高速缓存</h2><p>这是ARP高效运行的关键：每个主机上都有一个ARP告诉缓存。这个高速缓存存放了最近Internet地址到硬件地址之间的映射记录。</p>
+<p>使用“arp -a”查看系统中高速缓存的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># arp -a</div><div class="line">? (10.200.100.1) at 9c:6:1b:5:c7:f8 on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.10) at c8:ff:28:5c:6e:1d on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.55) at 2c:6f:c9:6:ae:5f on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.57) at c0:d0:12:d6:28:6c on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.71) at d0:25:98:3a:c0:c8 on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.198) at a0:99:9b:f:7a:9f on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.204) at c8:f6:50:1:a4:e7 on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.252) at 34:e1:2d:6b:33:ed on en0 ifscope [ethernet]</div><div class="line">? (10.200.101.137) at ac:e0:10:27:2d:bf on en0 ifscope [ethernet]</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="ARP报文格式"><a href="#ARP报文格式" class="headerlink" title="ARP报文格式"></a>ARP报文格式</h2><p><img src="http://ww1.sinaimg.cn/large/7097c713ly1fy0rgvc5j1j20ln08njs8.jpg" alt=""></p>
 <ul>
-<li>如果键所在的槽刚好指派给当前节点，那么节点就回直接执行这个命令。</li>
-<li>如果不在当前节点，那么节点会向客户端返回一个MOVED错误，指引客户端转向(redirect)至正确的节点，并再次发送之前想要执行的命令。</li>
+<li>硬件类型：指明了发送方想知道的硬件接口类型，以太网的值为1；</li>
+<li>协议类型：指明了发送方提供的高层协议类型，IP为0800（16进制）；</li>
+<li>硬件地址长度和协议长度：指明了硬件地址和高层协议地址的长度，这样ARP报文就可以在任意硬件和任意协议的网络中使用；</li>
+<li>操作类型：用来表示这个报文的类型，ARP请求为1，ARP响应为2，RARP请求为3，RARP响应为4；</li>
+<li>发送方硬件地址（0-3字节）：源主机硬件地址的前3个字节；</li>
+<li>发送方硬件地址（4-5字节）：源主机硬件地址的后3个字节；</li>
+<li>发送方IP地址（0-1字节）：源主机硬件地址的前2个字节；</li>
+<li>发送方IP地址（2-3字节）：源主机硬件地址的后2个字节；</li>
+<li>目标硬件地址（0-1字节）：目的主机硬件地址的前2个字节；</li>
+<li>目标硬件地址（2-5字节）：目的主机硬件地址的后4个字节；<br>目标IP地址（0-3字节）：目的主机的IP地址。</li>
 </ul>
 <hr>
-<h3 id="计算键属于哪个槽"><a href="#计算键属于哪个槽" class="headerlink" title="计算键属于哪个槽"></a>计算键属于哪个槽</h3><p>CLUSTER KEYSLOT <code>&lt;key&gt;</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:7000&gt; cluster keyslot &quot;date&quot;</div><div class="line">(integer) 2022</div></pre></td></tr></table></figure></p>
-<p>说明”date”键会分配在2022这个槽。</p>
-<p>当节点计算出键所属的槽i后，节点就回检查自己在clusterState.slots数组中的项i，判断键是否由自己负责。</p>
-<h3 id="MOVED错误"><a href="#MOVED错误" class="headerlink" title="MOVED错误"></a>MOVED错误</h3><p>当节点发现键所在的槽并非自己负责处理的时候，节点就会向客户端返回一个MOVED错误，指引客户端转向至正在负责槽的节点。</p>
-<h3 id="节点数据库的实现"><a href="#节点数据库的实现" class="headerlink" title="节点数据库的实现"></a>节点数据库的实现</h3><p>集群节点保存键值对以及键值对过期时间的方式与单机Redis服务器一样，它们两者只有一个区别，节点只能使用0号数据库，而单机Redis服务器没有这一限制。</p>
-<h2 id="重新分片"><a href="#重新分片" class="headerlink" title="重新分片"></a>重新分片</h2><p>Redis集群的重新分片操作可以将任意数量已经指派给某个节点（源节点）的槽改为指派给另一个节点（目标节点），并且相关槽所属的键值对也会从源节点被移动到目标节点。</p>
-<p>在重新分片过程，集群不需要下线，并且源节点和目标节点都可以继续进行命令请求。</p>
-<p>这时需要Redis的集群管理软件redis-trib负责执行，Redis提供了进行重新分片所需的所有命令，而redis-trib则通过向源节点和目标节点发送命令来进行重新分片操作。</p>
-<p><img src="http://img.sevenyuan.cn/%E8%BF%81%E7%A7%BB%E9%94%AE%E8%BF%87%E7%A8%8B.png" alt=""></p>
-<h2 id="ASK错误"><a href="#ASK错误" class="headerlink" title="ASK错误"></a>ASK错误</h2><p>在进行重新分片过程中，源节点向目标节点迁移一个槽的过程中，可能会出现这种情况：属于被迁移槽的一部分键值对保存在源节点里面，而另一部分键值对则保存在目标节点里面。</p>
-<p>当客户端向源节点发送一个与数据库键有关的命令，并且命令要处理的数据库键就在正在被迁移的槽时：</p>
-<ul>
-<li>源节点会先在自己的数据库里面查找指定的键，如果找到就回执行命令</li>
-<li>相反地，没有找到，这个键可能被迁移到目标节点，源节点将想客户端返回一个ASK错误，指引客户端转向正在导入槽的目标节点，并再次发送之前想要执行的命令。</li>
-</ul>
-<h3 id="ASK错误和MOVED错误的区别："><a href="#ASK错误和MOVED错误的区别：" class="headerlink" title="ASK错误和MOVED错误的区别："></a><strong>ASK错误和MOVED错误的区别：</strong></h3><ul>
-<li><p>MOVED错误代表槽的负责权已经从一个节点转移到了另一个节点：在客户端收到关于槽i的MOVED错误之后，客户端每次遇到关于槽i的命令请求时，都可以直接将命令请求发送至MOVED错误所指向的节点，因为该节点就是目前负责槽i的节点。</p>
-</li>
-<li><p>ASK错误只是两个节点在迁移槽的过程中使用的一种临时措施：在客户端收到槽i的ASK错误之后，客户端只会在接下来的一次命令请求中将关于槽i的命令请求发送至ASK错误所指示的节点，但这种转向不会对客户端今后发送关于槽i的命令请求产生任何影响，客户端仍然会将关于槽i的命令请求发送至目前负责处理槽i的节点，除非ASK错误再次出现</p>
-</li>
-</ul>
+<h2 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h2><p>如果ARP请求是从一个网络的主机发往另一个网络上的主机，那么连接这两个网络的路由器就可以回答该请求，这个过程称作委托ARP或ARP代理（Proxy ARP）。这样可以欺骗发起ARP请求的发送端，使它误以为路由器就是目的主机，而事实上目的主机是在路由器的“另一边”。路由器的功能相当于目的主机的代理，把分组从其他主机转发给它。</p>
 <hr>
-<h2 id="复制与故障转移"><a href="#复制与故障转移" class="headerlink" title="复制与故障转移"></a>复制与故障转移</h2><p>Redis集群中的节点分为<strong>主节点（Master）和从节点（slave）</strong>，其中主节点负责处理槽，而从节点则用于负责某个主节点，并在被复制的主节点下线时，<strong>代替下线主节点继续处理命令请求</strong>。</p>
-<p>个人感觉与单机版时的主从配置很相似，多了一步，就是主节点挂了之后，从节点继承负责处理槽的职责。</p>
-<h3 id="集群中设置从节点"><a href="#集群中设置从节点" class="headerlink" title="集群中设置从节点"></a>集群中设置从节点</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CLUSTER REPLICATE &lt;node_id&gt;</div></pre></td></tr></table></figure>
-<p>可以让接收命令的节点成为node_id所指定节点的从节点，并开始对主机进行复制。</p>
-<h3 id="故障检测"><a href="#故障检测" class="headerlink" title="故障检测"></a>故障检测</h3><p>集群中每个节点都会定期地想几区中的其他节点发送PING消息，以此来检测对方是否在线，如果接收PING消息的节点没有在规定时间内回复PONG消息，那么发送PING消息的节点就会将接收PING消息的节点标记为<strong>疑似下线（probable fail, PFAIL)</strong>。</p>
-<p>在一个集群中，<strong>超过半数以上</strong>负责处理槽的主节点都将这个主节点x报告为疑似下线，那么这个主节点x将被标记为以下线（FAIL），并向<strong>集群广播一条关于主节点x的FAIL消息</strong>。</p>
-<h3 id="故障转移"><a href="#故障转移" class="headerlink" title="故障转移"></a>故障转移</h3><p>主节点下线后，从节点将开始对下线主节点进行故障转移，有以下几个步骤：</p>
-<ul>
-<li>从从节点中选出新的主节点</li>
-<li>被选中的从节点会执行<strong>SLAVEOF no one命令</strong>，成为新的主节点</li>
-<li>新的主节点会撤销所有对已下线主节点的槽指派，并将这些槽全部指派给自己</li>
-<li>新的主节点像集群广播PONG消息，让其它节点了解这个节点已经成为新的主节点，接管原本已下线节点负责处理的槽</li>
-<li>新的主节点开始接受和自己负责处理的槽有关的命令请求，故障转移完成。</li>
-</ul>
+<h2 id="RARP工作原理"><a href="#RARP工作原理" class="headerlink" title="RARP工作原理"></a>RARP工作原理</h2><p>1、网络上的每台设备都会有一个独一无二的硬件地址，通常是由设备厂商分配的MAC地址。PC1从网卡上读取MAC地址，然后在网络上发送一个RARP请求的广播数据包，请求RARP服务器回复该PC的IP地址。<br>2、RARP服务器收到了RARP请求数据包，为其分配IP地址，并将RARP回应发送给PC1。<br>3、PC1收到RARP回应后，就使用得到的IP地址进行通讯。</p>
 <hr>
-<p>小结：Redis集群的坑只填了一点，还有关于Redis消息的没填，这个先留着吧，先去写论文。之后开始撸NIO还是SPRING呢，日常纠结😖</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在大多数TCP/IP实现中，ARP是一个基础协议，但是它的运行对于应用程序或系统管理员来说一般是透明的。ARP告诉缓存在它的运行过程中非常关键，我们可以用arp命令对高速缓存进行检查和操作。高速缓存中的每一项内容都有一个定时器，根据它来删除不完整和完整的表项。</p>
+<hr>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://baike.baidu.com/item/ARP/609343?fr=aladdin" target="_blank" rel="noopener">ARP （地址解析协议）</a></li>
+<li><a href="https://baike.baidu.com/item/%E5%8F%8D%E5%90%91%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2%E5%8D%8F%E8%AE%AE/2991811?fr=aladdin" target="_blank" rel="noopener">反向地址转换协议</a></li>
+</ol>
 
       
     </div>
@@ -388,7 +387,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
+            <a href="/tags/网络学习/" rel="tag"># 网络学习</a>
           
         </div>
       
@@ -401,8 +400,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/10/Redis集群（一）安装配置和简便槽分配/" rel="next" title="Redis集群（一）安装配置和简便槽分配">
-                <i class="fa fa-chevron-left"></i> Redis集群（一）安装配置和简便槽分配
+              <a href="/2018/12/09/TCP-IP协议学习（一）IP协议/" rel="next" title="TCP/IP协议学习（一）IP协议">
+                <i class="fa fa-chevron-left"></i> TCP/IP协议学习（一）IP协议
               </a>
             
           </div>
@@ -410,10 +409,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/《数学之美》——读后感/" rel="prev" title="《数学之美》——读后感">
-                《数学之美》——读后感 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -595,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#发送命令"><span class="nav-number">1.</span> <span class="nav-text">发送命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算键属于哪个槽"><span class="nav-number">1.1.</span> <span class="nav-text">计算键属于哪个槽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MOVED错误"><span class="nav-number">1.2.</span> <span class="nav-text">MOVED错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点数据库的实现"><span class="nav-number">1.3.</span> <span class="nav-text">节点数据库的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新分片"><span class="nav-number">2.</span> <span class="nav-text">重新分片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASK错误"><span class="nav-number">3.</span> <span class="nav-text">ASK错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ASK错误和MOVED错误的区别："><span class="nav-number">3.1.</span> <span class="nav-text">ASK错误和MOVED错误的区别：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制与故障转移"><span class="nav-number">4.</span> <span class="nav-text">复制与故障转移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群中设置从节点"><span class="nav-number">4.1.</span> <span class="nav-text">集群中设置从节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障检测"><span class="nav-number">4.2.</span> <span class="nav-text">故障检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障转移"><span class="nav-number">4.3.</span> <span class="nav-text">故障转移</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP工作过程"><span class="nav-number">2.</span> <span class="nav-text">ARP工作过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP高速缓存"><span class="nav-number">3.</span> <span class="nav-text">ARP高速缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP报文格式"><span class="nav-number">4.</span> <span class="nav-text">ARP报文格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP代理"><span class="nav-number">5.</span> <span class="nav-text">ARP代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RARP工作原理"><span class="nav-number">6.</span> <span class="nav-text">RARP工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">7.</span> <span class="nav-text">小结</span></a></li></ol></div>
             
 
           </div>
