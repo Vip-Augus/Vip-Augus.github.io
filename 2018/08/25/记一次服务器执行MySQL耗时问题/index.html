@@ -350,7 +350,7 @@
 <hr>
 <h2 id="通过JMC远程监控Tomcat"><a href="#通过JMC远程监控Tomcat" class="headerlink" title="通过JMC远程监控Tomcat"></a>通过JMC远程监控Tomcat</h2><p><strong>JMC(java mission control)是jdk自带的一个监控工具</strong>，在jdk的bin目录下（java大法好，该目录下有很多实用的工具）。</p>
 <p>具体要<a href="https://blog.csdn.net/kong2030/article/details/80312417" target="_blank" rel="noopener">怎么配置和加的参数请参考此文</a></p>
-<p>为了简单，我加了一个tomcat无验证模式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>在tomcat的conf目录下的catalina.sh增加如下java启动参数： </div><div class="line">-Dcom.sun.management.jmxremote=true</div><div class="line">-Dcom.sun.management.jmxremote.port=8888</div><div class="line">-Dcom.sun.management.jmxremote.ssl=false</div><div class="line">-Dcom.sun.management.jmxremote.authenticate=false</div><div class="line">-XX:+UnlockCommercialFeatures -XX:+FlightRecorder</div></pre></td></tr></table></figure></p>
+<p>为了简单，我加了一个tomcat无验证模式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">在tomcat的conf目录下的catalina.sh增加如下java启动参数： </span></div><div class="line">-Dcom.sun.management.jmxremote=true</div><div class="line">-Dcom.sun.management.jmxremote.port=8888</div><div class="line">-Dcom.sun.management.jmxremote.ssl=false</div><div class="line">-Dcom.sun.management.jmxremote.authenticate=false</div><div class="line">-XX:+UnlockCommercialFeatures -XX:+FlightRecorder</div></pre></td></tr></table></figure></p>
 <p>下面是自己本地调试的截图</p>
 <p><img src="http://ww1.sinaimg.cn/large/7097c713gy1fulvujaw1ij20nj0e10un.jpg" alt=""></p>
 <p>然后打开jmc，创建一个JMX连接，输入对应的ip和JMX端口。接着可以设定一段时间内的飞行监控，监测这一分钟内jvm具体参数</p>
@@ -503,7 +503,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -525,7 +525,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
