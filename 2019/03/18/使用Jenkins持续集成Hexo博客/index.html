@@ -98,6 +98,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.sevenyuan.cn/LeopardNamibia_ZH-CN9585068449_1920x1080.jpg">
 <meta property="og:image" content="http://img.sevenyuan.cn/Jenkins%E9%85%8D%E7%BD%AEgit%E7%A7%81%E9%92%A5.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E5%BC%80%E6%94%BE%E8%BF%99%E4%B8%A4%E9%A1%B9%E6%9D%83%E9%99%90.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEwebhook.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E6%B7%BB%E5%8A%A0github%E6%9C%8D%E5%8A%A1%E5%99%A8.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEaccess_token.png">
@@ -108,7 +109,7 @@
 <meta property="og:image" content="http://img.sevenyuan.cn/%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E6%88%90%E5%8A%9F%E6%8E%A8%E9%80%81%E6%9E%84%E5%BB%BA.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/Webhook%E7%9A%84%E7%BC%BA%E7%82%B9.png">
-<meta property="og:updated_time" content="2019-03-17T16:44:56.512Z">
+<meta property="og:updated_time" content="2019-03-17T16:47:36.046Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Jenkins持续集成Hexo博客">
 <meta name="twitter:description" content="骚年，来一个自动集成的Hexo博客吧😉">
@@ -393,15 +394,18 @@
 </ul>
 <hr>
 <h2 id="在GitHub中生成token"><a href="#在GitHub中生成token" class="headerlink" title="在GitHub中生成token"></a>在GitHub中生成token</h2><ul>
-<li><p>在个人setting中，添加用户访问的token（personal access token），路径<figure class="highlight plain"><figcaption><span>setting->Person access token```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">![](http://img.sevenyuan.cn/%E5%BC%80%E6%94%BE%E8%BF%99%E4%B8%A4%E9%A1%B9%E6%9D%83%E9%99%90.png)</div><div class="line"></div><div class="line">记得将待会生成的密码保存下来，因为下一次你就看不见了=-=</div><div class="line"></div><div class="line">- 在项目中添加webhooks，路径：```repo-&gt;settings-&gt;webhooks</div></pre></td></tr></table></figure></p>
-<p><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEwebhook.png" alt=""><br>这个钩子待会在Jenkins中会使用到</p>
-</li>
+<li>在个人setting中，添加用户访问的token（personal access token），路径setting-&gt;Developer setting-&gt;Person access token</li>
+</ul>
+<p><img src="http://img.sevenyuan.cn/%E5%BC%80%E6%94%BE%E8%BF%99%E4%B8%A4%E9%A1%B9%E6%9D%83%E9%99%90.png" alt=""></p>
+<p>记得将待会生成的密码保存下来，因为下一次你就看不见了=-=</p>
+<ul>
+<li>在项目中添加webhooks，路径：repo-&gt;settings-&gt;webhooks<br><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEwebhook.png" alt=""><br>这个钩子待会在Jenkins中会使用到</li>
 </ul>
 <hr>
 <h2 id="Jenkins新建Job以及GitHub新建仓库"><a href="#Jenkins新建Job以及GitHub新建仓库" class="headerlink" title="Jenkins新建Job以及GitHub新建仓库"></a>Jenkins新建Job以及GitHub新建仓库</h2><ul>
 <li><p>在GitHub中新建两个一个仓库（我的叫test_blog）</p>
 </li>
-<li><p>在Jenkins中的<code>系统配置-&gt;全局配置</code>添加GitHub服务器<br><img src="http://img.sevenyuan.cn/%E6%B7%BB%E5%8A%A0github%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt=""></p>
+<li><p>在Jenkins中的【系统配置】-&gt;【全局配置】添加GitHub服务器<br><img src="http://img.sevenyuan.cn/%E6%B7%BB%E5%8A%A0github%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt=""></p>
 </li>
 <li><p>新增的凭据选择<br><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEaccess_token.png" alt=""></p>
 </li>
