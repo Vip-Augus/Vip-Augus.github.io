@@ -109,7 +109,7 @@
 <meta property="og:image" content="http://img.sevenyuan.cn/%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E6%88%90%E5%8A%9F%E6%8E%A8%E9%80%81%E6%9E%84%E5%BB%BA.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/Webhook%E7%9A%84%E7%BC%BA%E7%82%B9.png">
-<meta property="og:updated_time" content="2019-03-17T16:47:36.046Z">
+<meta property="og:updated_time" content="2019-03-18T00:56:33.885Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Jenkins持续集成Hexo博客">
 <meta name="twitter:description" content="骚年，来一个自动集成的Hexo博客吧😉">
@@ -381,7 +381,11 @@
 <p>这次搭建的Demo是使用Jenkins给Hexo进行持续集成（当然如果小伙伴不想专门弄一个服务器搭建Hexo，可以直接使用GitHub爸爸现成的GitHub page~~）</p>
 <hr>
 <h2 id="前置工作"><a href="#前置工作" class="headerlink" title="前置工作"></a>前置工作</h2><ul>
-<li>安装Jenkins（Linux的yum就很好用啦：yum install -y jenkins）<br>安装Jenkins后，要记得在插件界面安装git plugin~~<br>然后可以通过<figure class="highlight plain"><figcaption><span>start jenkins```，在linux机器上作为服务来启动</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- [安装Hexo](https://hexo.io/zh-cn/)（详细查看官网，还能选择很多好看的样式~）</div><div class="line">```shell</div><div class="line">$ npm install hexo-cli -g</div><div class="line">$ hexo init blog </div><div class="line">$ cd blog</div><div class="line">$ npm install</div><div class="line">$ hexo server</div></pre></td></tr></table></figure></li>
+<li><p>安装Jenkins（Linux的yum就很好用啦：yum install -y jenkins）<br>安装Jenkins后，要记得在插件界面安装git plugin~~<br>然后可以通过systemctl start jenkins，在linux机器上作为服务来启动</p>
+</li>
+<li><p><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">安装Hexo</a>（详细查看官网，还能选择很多好看的样式~）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> npm install hexo-cli -g</span></div><div class="line"><span class="meta">$</span><span class="bash"> hexo init blog </span></div><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> blog</span></div><div class="line"><span class="meta">$</span><span class="bash"> npm install</span></div><div class="line"><span class="meta">$</span><span class="bash"> hexo server</span></div></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>这时可以查看服务器对应的ip加上默认的端口号4000，查看搭建出来的Hexo默认界面~</p>
 <ul>
@@ -475,6 +479,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/03/19/Spring自定义注解实现AOP/" rel="prev" title="Spring自定义注解实现AOP">
+                Spring自定义注解实现AOP <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -552,7 +560,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -563,7 +571,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
