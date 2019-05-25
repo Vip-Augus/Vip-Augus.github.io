@@ -98,7 +98,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.sevenyuan.cn/HashMap%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/hash%E5%80%BC%E8%BF%90%E7%AE%97.png">
-<meta property="og:updated_time" content="2018-11-11T14:26:42.000Z">
+<meta property="og:updated_time" content="2019-05-25T07:37:11.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap实现原理">
 <meta name="twitter:description" content="HashMap在编程开发中经常使用到，用来存储key-value，但是一直没深入学习它的实现原理，这次学习了记录一下。 HashMap类123public class HashMap&amp;lt;K,V&amp;gt;    extends AbstractMap&amp;lt;K,V&amp;gt;    implements Map&amp;lt;K,V&amp;gt;, Cloneable, Serializable 　HashMap继">
@@ -403,7 +403,10 @@
 <hr>
 <h2 id="HashMap不是线程安全的"><a href="#HashMap不是线程安全的" class="headerlink" title="HashMap不是线程安全的"></a><strong>HashMap不是线程安全的</strong></h2><p>因为看到有<strong>modCount</strong>这个字段，查询了资料，发现这个代表这修改次数，对HashMap内容修改都将增加这个值，在迭代器初始化过程中会将这个值赋给迭代器的expectedModCount，在迭代过程中，判断modCount跟expectedModCount是否相等，如果不相等，表示已经有其它线程需改了Map。</p>
 <p>有个同步机制：<br>如果多个线程同时访问一个哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须保持外部同步。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Map m = Collections.synchronizedMap(<span class="keyword">new</span> HashMap(...));</div></pre></td></tr></table></figure></p>
-<p>参考资料<br><a href="http://blog.csdn.net/jeffleo/article/details/54946424" target="_blank" rel="noopener">Java容器（四）：HashMap（Java 7）的实现原理</a><br><a href="http://blog.csdn.net/jiary5201314/article/details/51439982" target="_blank" rel="noopener">深入理解HashMap（及hash函数的真正巧妙之处）</a><br><a href="http://www.cnblogs.com/nulisaonian/p/5946382.html" target="_blank" rel="noopener">modCount到底是干什么的呢</a></p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="http://blog.csdn.net/jeffleo/article/details/54946424" target="_blank" rel="noopener">Java容器（四）：HashMap（Java 7）的实现原理</a></p>
+<p>2、<a href="http://blog.csdn.net/jiary5201314/article/details/51439982" target="_blank" rel="noopener">深入理解HashMap（及hash函数的真正巧妙之处）</a></p>
+<p>3、<a href="http://www.cnblogs.com/nulisaonian/p/5946382.html" target="_blank" rel="noopener">modCount到底是干什么的呢</a></p>
 
       
     </div>
@@ -536,7 +539,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -628,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap类"><span class="nav-number">1.</span> <span class="nav-text">HashMap类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap源码定义的变量和常量"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap源码定义的变量和常量:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的构造函数"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap的构造函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的数据结构"><span class="nav-number">2.</span> <span class="nav-text">HashMap的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的存储实现Put-K-V"><span class="nav-number">3.</span> <span class="nav-text">HashMap的存储实现Put(K, V)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hash值的计算"><span class="nav-number">3.1.</span> <span class="nav-text">hash值的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#真正创建新节点"><span class="nav-number">3.2.</span> <span class="nav-text">真正创建新节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组扩容问题"><span class="nav-number">3.3.</span> <span class="nav-text">数组扩容问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的get（K）"><span class="nav-number">4.</span> <span class="nav-text">HashMap的get（K）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap是无序的"><span class="nav-number">5.</span> <span class="nav-text">为什么HashMap是无序的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap不是线程安全的"><span class="nav-number">6.</span> <span class="nav-text">HashMap不是线程安全的</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap类"><span class="nav-number">1.</span> <span class="nav-text">HashMap类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap源码定义的变量和常量"><span class="nav-number">1.1.</span> <span class="nav-text">HashMap源码定义的变量和常量:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的构造函数"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap的构造函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的数据结构"><span class="nav-number">2.</span> <span class="nav-text">HashMap的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的存储实现Put-K-V"><span class="nav-number">3.</span> <span class="nav-text">HashMap的存储实现Put(K, V)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hash值的计算"><span class="nav-number">3.1.</span> <span class="nav-text">hash值的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#真正创建新节点"><span class="nav-number">3.2.</span> <span class="nav-text">真正创建新节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组扩容问题"><span class="nav-number">3.3.</span> <span class="nav-text">数组扩容问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap的get（K）"><span class="nav-number">4.</span> <span class="nav-text">HashMap的get（K）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么HashMap是无序的"><span class="nav-number">5.</span> <span class="nav-text">为什么HashMap是无序的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap不是线程安全的"><span class="nav-number">6.</span> <span class="nav-text">HashMap不是线程安全的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

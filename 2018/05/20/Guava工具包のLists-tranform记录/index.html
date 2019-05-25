@@ -98,7 +98,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E5%91%A8%E6%9D%B0%E4%BC%A6%E9%87%91%E5%8D%8E%E6%BC%94%E5%94%B1%E4%BC%9A.jpg">
 <meta property="og:image" content="http://img.sevenyuan.cn/ListsTranform.gif">
-<meta property="og:updated_time" content="2018-11-11T14:26:33.000Z">
+<meta property="og:updated_time" content="2019-05-25T07:38:35.966Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Guava工具包のLists.tranform记录">
 <meta name="twitter:description" content="浪完杰伦演唱会，回来好好学习😝">
@@ -353,12 +353,15 @@
 
 
 <a id="more"></a>
+<hr>
 <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Guava工具包是Google推出的Java工具包，想要完整学习的话，推荐去并发编程网(ifeve)进行学习，<a href="http://ifeve.com/google-guava/" target="_blank" rel="noopener">传送门</a>。</p>
 <p>我们在开发过程中，会经常使用到java.util.Collections这个Java自带的工具类，Guava在这个基础上，提供了更多工具方法，而且很多是静态方法。</p>
 <p>这篇文章记录的是自己使用Lists.tranform()方法遇到的一个小问题，如有错误请提出~~</p>
+<hr>
 <h2 id="常用场景和使用示例"><a href="#常用场景和使用示例" class="headerlink" title="常用场景和使用示例"></a>常用场景和使用示例</h2><p>在写代码时，经常会要与外部系统进行联调，RPC获取到基础信息列表，例如用户信息List，我们需要在自己系统中根据用户ID列表进行一些信息查询，这样我们需要从Result列表里面拿出ID列表就足够了，不需要其他字段。简单来写，直接用foreach就行了，但使用Lists.tranform这个方法<strong>可以更加简单和简洁</strong></p>
 <p>举个🌰：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt; users = Lists.newArrayList(<span class="keyword">new</span> User(<span class="number">1</span>, <span class="string">"ceshi1"</span>), <span class="keyword">new</span> User(<span class="number">2</span>, <span class="string">"ceshi2"</span>));</div><div class="line">List&lt;String&gt; names = Lists.transform(users, <span class="keyword">new</span> Function&lt;User, String&gt;() &#123;</div><div class="line">            <span class="meta">@Nullable</span></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">apply</span><span class="params">(@Nullable User input)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> input.getName();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure></p>
 <p>通过Lists.tranform这个方法，就能从User列表（用户列表）中取出String列表（姓名列表）。</p>
+<hr>
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>还是上面那个例子，取出一个新列表后，对原来的list中的name进行了修改，新列表的name同样也会修改，为什么会出现这种情况呢？先来看看Lists.tranform源码注解</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">   * Returns a list that applies &#123;<span class="doctag">@code</span> function&#125; to each element of &#123;<span class="doctag">@code</span></span></div><div class="line"><span class="comment">   * fromList&#125;. The returned list is a transformed view of &#123;<span class="doctag">@code</span> fromList&#125;;</span></div><div class="line"><span class="comment">   * changes to &#123;<span class="doctag">@code</span> fromList&#125; will be reflected in the returned list and vice</span></div><div class="line"><span class="comment">   * versa.</span></div><div class="line"><span class="comment">   </span></div><div class="line"><span class="comment">   返回一个列表，该列表将&#123;@ code函数&#125;应用到&#123;@ code from list&#125;的每个元素。返回的列表是&#123;@代码从列表&#125;转换的视图;将fromList代码的更改将反映在返回的列表中，反之亦然</span></div><div class="line"><span class="comment">   ···</span></div><div class="line"><span class="comment">   **/</span></div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> &lt;F, T&gt; <span class="function">List&lt;T&gt; <span class="title">transform</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">      List&lt;F&gt; fromList, Function&lt;? <span class="keyword">super</span> F, ? extends T&gt; function)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> (fromList <span class="keyword">instanceof</span> RandomAccess)</div><div class="line">        ? <span class="keyword">new</span> TransformingRandomAccessList&lt;&gt;(fromList, function)</div><div class="line">        : <span class="keyword">new</span> TransformingSequentialList&lt;&gt;(fromList, function);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <p>翻译了一下注解，大概意思就是，使用这个方法会<strong>返回一个列表</strong>，如果对源list或者返回的list进行修改后，<strong>会同时影响到对方</strong>，同样可以看该静态方法返回的是一个内部静态类对象：</p>
@@ -497,7 +500,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

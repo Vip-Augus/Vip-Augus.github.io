@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://img.sevenyuan.cn/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E8%B7%B3%E8%B7%83%E8%A1%A8.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png">
-<meta property="og:updated_time" content="2018-11-11T14:28:08.000Z">
+<meta property="og:updated_time" content="2019-05-25T06:57:06.335Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis数据结构">
 <meta name="twitter:description" content="1. 简单动态字符串(SDS)Redis没有直接使用C语言传统的字符串表示(以空字符结尾的字符数据)，而是自己构建了一种名为简单动态字符串(simple dynamic string, SDS)的抽象类型，并将SDS用作Redis的默认字符串表示。 在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。 1.1 SDS的定义每个sds.h/sdshdr结构表示一个SDS值： 1">
@@ -419,54 +419,54 @@
 <h5 id="3-1-2-字典结构"><a href="#3-1-2-字典结构" class="headerlink" title="3.1.2 字典结构"></a><strong>3.1.2 字典结构</strong></h5><p>Redis中的字典由dict.h/dict结构表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct *type &#123;</div><div class="line">    //类型特定函数</div><div class="line">    dictType *type;</div><div class="line">    //私有数据</div><div class="line">    void *privdata;</div><div class="line">    //哈希表</div><div class="line">    dictht ht[2];</div><div class="line">    //rehash 索引</div><div class="line">    //当rehash不在进行时，值为-1</div><div class="line">    in trehashidx; /*rehashing not in progress if rehashidx == -1*/</div><div class="line">&#125;dict;</div></pre></td></tr></table></figure></p>
 <p><img src="http://img.sevenyuan.cn/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png" alt="普通状态下的字典"></p>
 <h4 id="3-2-哈希算法"><a href="#3-2-哈希算法" class="headerlink" title="3.2 哈希算法"></a><strong>3.2 哈希算法</strong></h4><p>当要将一个新的键值对添加到字典里面时，程序需要先更具键值对的键计算出哈希值和索引值，然后再根据<strong>索引值</strong>，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p>
-<p>#计算哈希值的方法：<br>hash = dict-&gt;type=&gt;hashFunction(key);</p>
-<p>#使用哈希表的sizemask属性和哈希值，计算出索引值：<br>index = hash &amp; dict-&gt;ht[x].sizemask;</p>
+<p>#计算哈希值的方法：<br>hash = dict -&gt; type =&gt; hashFunction(key);</p>
+<p>#使用哈希表的sizemask属性和哈希值，计算出索引值：<br>index = hash &amp; dict -&gt; ht[x].sizemask;</p>
 <h4 id="3-3-解决键冲突"><a href="#3-3-解决键冲突" class="headerlink" title="3.3 解决键冲突"></a><strong>3.3 解决键冲突</strong></h4><p>当有两个或以上数量的键被分配到哈希表数组的同一个索引上面时，我们称这些键发生了冲突（collision）。</p>
-<p>Redis的哈希表使用<strong>链地址法（separate chaining）</strong>来解决键冲突，每个哈希表节点都有一个next指针，多个哈希节点可以用next指针构成一个单向链表。<br>被分配到同一个索引上的多个节点可以用这个<strong>单向链表</strong>链接起来，折旧解决了键冲突的问题。</p>
+<p>Redis的哈希表使用<strong>链地址法（separate chaining）</strong>来解决键冲突，每个哈希表节点都有一个 next 指针，多个哈希节点可以用next指针构成一个单向链表。<br>被分配到同一个索引上的多个节点可以用这个<strong>单向链表</strong>链接起来，折旧解决了键冲突的问题。</p>
 <p>程序总是将新节点添加到链表的<strong>表头位置（复杂度为O(1)）</strong>，排在其它已有节点的前面。</p>
-<h4 id="3-4-rehash"><a href="#3-4-rehash" class="headerlink" title="3.4 rehash"></a><strong>3.4 rehash</strong></h4><p>扩展和收缩哈希表的工作可以通过rehash（重新散列）操作完成，Redis对字典的哈希表执行rehash的步骤如下：</p>
-<p><strong>1.</strong>  为字典的ht[1]哈希表分配空间，这个哈希表的空间大小取决于要执行的操作，以及ht[0]当前包含的键值对数量（也就是ht[0].used属性的值）</p>
+<h4 id="3-4-rehash"><a href="#3-4-rehash" class="headerlink" title="3.4 rehash"></a><strong>3.4 rehash</strong></h4><p>扩展和收缩哈希表的工作可以通过rehash（重新散列）操作完成，Redis对字典的哈希表执行 rehash 的步骤如下：</p>
+<p><strong>1.</strong>  为字典的 ht[1] 哈希表分配空间，这个哈希表的空间大小取决于要执行的操作，以及 ht[0] 当前包含的键值对数量（也就是 ht[0].used 属性的值）</p>
 <ul>
-<li>如果执行的是扩展操作，那么ht[1]的大小为第一个大于等于ht[0].used*2的2的n次方。</li>
-<li>如果执行的是收缩操作，那么ht[1]的大小为第一个大于等于ht[0].used的2的n次方。</li>
+<li>如果执行的是扩展操作，那么ht[1]的大小为第一个大于等于 ht[0].used * 2的 2 的 n 次方。</li>
+<li>如果执行的是收缩操作，那么ht[1]的大小为第一个大于等于 ht[0].used 的 2 的 n 次方。</li>
 </ul>
-<p><strong>2.</strong>  将保存在ht[0]中的所有键值对rehash到ht[1]上面：rehash指的是重新计算键的哈希值和索引值，然后将降至对放置到ht[1]哈希表的指定位置上。</p>
-<p><strong>3.</strong>  当ht[0]包含的所有键值对都迁移到ht[1]之后（ht[0]变为空表），释放ht[0]，将ht[1]设置为ht[0]，并在ht[1]新创建一个空白哈希表，为下一次rehash做准备。</p>
+<p><strong>2.</strong>  将保存在 ht[0] 中的所有键值对 rehash 到 ht[1] 上面：rehash 指的是重新计算键的哈希值和索引值，然后将降至对放置到 ht[1] 哈希表的指定位置上。</p>
+<p><strong>3.</strong>  当 ht[0] 包含的所有键值对都迁移到 ht[1] 之后（ht[0] 变为空表），释放 ht[0]，将 ht[1] 设置为 ht[0]，并在ht[1]新创建一个空白哈希表，为下一次 rehash 做准备。</p>
 <h4 id="3-5-哈希表的扩展和收缩"><a href="#3-5-哈希表的扩展和收缩" class="headerlink" title="3.5 哈希表的扩展和收缩"></a><strong>3.5 哈希表的扩展和收缩</strong></h4><p>先说一下哈希表的<strong>负载因子</strong>：<br>load_factor = ht[0].used / ht[0].size</p>
 <p>扩展的条件：</p>
 <ol>
-<li>服务器目前没有正在执行BGSAVE命令或者BGREWRITEAOF命令，哈比表的负载因子大于等于1.</li>
-<li>服务器目前正在执行BGSAVE命令或者BGREWRITEAOF命令，哈希表的负载因子大于等于5.</li>
+<li>服务器目前没有正在执行 BGSAVE 命令或者 BGREWRITEAOF 命令，哈比表的负载因子大于等于 1.</li>
+<li>服务器目前正在执行 BGSAVE 命令或者 BGREWRITEAOF 命令，哈希表的负载因子大于等于 5.</li>
 </ol>
 <p>收缩操作的条件：<br>哈希表的负载因子小于0.1.</p>
 <hr>
 <h3 id="4-跳跃表"><a href="#4-跳跃表" class="headerlink" title="4. 跳跃表"></a><strong>4. 跳跃表</strong></h3><p>跳跃表（skiplist）是一种有序数据结构，它通过在每个节点中维持多个指向其它节点的指针，从而达到快速访问节点的目的。</p>
 <p>跳跃表支持平均O（logN）、最坏O（N）复杂度的节点查找，还可以通过顺序性操作来批量处理节点。</p>
-<p>Redis只在两个地方用到了跳跃表，一个是实现有序集合键，另一个是在集群节点中用作内部数据结构。</p>
-<h4 id="4-1-跳跃表的实现"><a href="#4-1-跳跃表的实现" class="headerlink" title="4.1 跳跃表的实现"></a><strong>4.1 跳跃表的实现</strong></h4><p>Redis的跳跃表由<strong>redis.h/zskiplistNode</strong>和<strong>redis.h/zskiplist</strong>两个结构定义，其中zskipistNode结构用于表示跳跃表节点，而zskiplist结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向及表头节点和表尾节点的指针等等。</p>
+<p>Redis 只在两个地方用到了跳跃表，一个是实现有序集合键，另一个是在集群节点中用作内部数据结构。</p>
+<h4 id="4-1-跳跃表的实现"><a href="#4-1-跳跃表的实现" class="headerlink" title="4.1 跳跃表的实现"></a><strong>4.1 跳跃表的实现</strong></h4><p>Redis 的跳跃表由 <strong>redis.h/zskiplistNode</strong> 和 <strong>redis.h/zskiplist</strong> 两个结构定义，其中 zskipistNode 结构用于表示跳跃表节点，而 zskiplist 结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向及表头节点和表尾节点的指针等等。</p>
 <p><img src="http://img.sevenyuan.cn/%E8%B7%B3%E8%B7%83%E8%A1%A8.png" alt="跳跃表结构"></p>
-<p>zskiplist比较简单，用于存放zskiplistNode，属性值也比较易懂。</p>
-<p>zskiplistNode的<strong>结构</strong>：</p>
+<p>zskiplist 比较简单，用于存放 zskiplistNode，属性值也比较易懂。</p>
+<p>zskiplistNode 的<strong>结构</strong>：</p>
 <ul>
 <li>层（level）：节点中用L1、L2、L3等字样标记节点的各个层，每个层都带有两个属性：前进指针和跨度。</li>
 <li>后退（backward）指针：节点中用BW字样标记节点的后腿指针，它指向位于当前节点的前一个节点。后退指针在程序从表尾向表头遍历时使用。</li>
-<li>分值（score）：各个节点中的1.0、2.0和3.0都是节点所保存的分支。在跳跃表中，节点按各自所保存的分值从最小到大排列。</li>
-<li>成员对象（obj）：哥哥几点中的o1、o2和o3及诶但所保存的成员对象。</li>
+<li>分值（score）：各个节点中的 1.0、2.0 和 3.0 都是节点所保存的分支。在跳跃表中，节点按各自所保存的分值从最小到大排列。</li>
+<li>成员对象（obj）：各个节点中的 o1、o2 和 o3 以及所保存的成员对象。</li>
 </ul>
 <h5 id="4-1-1-跳跃表节点"><a href="#4-1-1-跳跃表节点" class="headerlink" title="4.1.1 跳跃表节点"></a><strong>4.1.1 跳跃表节点</strong></h5><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> &#123;</span></div><div class="line">    <span class="comment">//层</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistLevel</span> &#123;</span></div><div class="line">        <span class="comment">//前进指针</span></div><div class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> * <span class="title">forward</span>;</span></div><div class="line">        <span class="comment">//跨度</span></div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> span;</div><div class="line">    &#125; level[];</div><div class="line">    <span class="comment">//后退指针</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">backward</span>;</span></div><div class="line">    <span class="comment">//分数</span></div><div class="line">    <span class="keyword">double</span> score;</div><div class="line">    <span class="comment">//成员对象</span></div><div class="line">    robj *obj;</div><div class="line">&#125; zskiplistNode;</div></pre></td></tr></table></figure>
 <p>有以下属性：</p>
 <ul>
-<li>层：跳跃表节点的level数字可以包含多个元素，程序可以通过这些层来加快访问其它节点的速度。<br>level数组大小就是ceng的“高度”。</li>
-<li>前进指针：每个层都有一个指向表尾的前进指针（level[i].forward属性），用于从表头向表尾访问节点，可以一次跳过多个节点。</li>
-<li>跨度：层的跨度（level[i].span属性）用于记录两个节点之间的距离，跨度实际上是用来计算排位(rank)的。</li>
-<li>后退指针：节点的后腿指针（backward属性）用于从表尾向表头方向访问节点，每个节点只有一个后退指针，所以每次只能后退至前一个节点。</li>
-<li>分值和成员：节点的分值（score属性）是一个double类型的浮点数，跳跃表中的所有节点都按分值从小到大排序。<br>节点的成员对象（obj对象）是一个指针，它指向一个字符串对象，而字符串对象则保存着一个SDS值。</li>
+<li>层：跳跃表节点的 level 数字可以包含多个元素，程序可以通过这些层来加快访问其它节点的速度。<br> level 数组大小就是层的“高度”。</li>
+<li>前进指针：每个层都有一个指向表尾的前进指针（level[i].forward 属性），用于从表头向表尾访问节点，可以一次跳过多个节点。</li>
+<li>跨度：层的跨度（level[i].span 属性）用于记录两个节点之间的距离，跨度实际上是用来计算排位(rank)的。</li>
+<li>后退指针：节点的后腿指针（backward 属性）用于从表尾向表头方向访问节点，每个节点只有一个后退指针，所以每次只能后退至前一个节点。</li>
+<li>分值和成员：节点的分值（score 属性）是一个double类型的浮点数，跳跃表中的所有节点都按分值从小到大排序。<br>节点的成员对象（obj 对象）是一个指针，它指向一个字符串对象，而字符串对象则保存着一个 SDS 值。</li>
 </ul>
 <h4 id="4-1-2-跳跃表"><a href="#4-1-2-跳跃表" class="headerlink" title="4.1.2 跳跃表"></a><strong>4.1.2 跳跃表</strong></h4><p>通过一个zskiplist结构来持有节点，程序可以更方便地对整个跳跃表进行处理。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplist</span> &#123;</span></div><div class="line">    <span class="comment">//表头节点和表尾节点</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">skiplistNode</span> *<span class="title">header</span>, *<span class="title">tail</span>;</span></div><div class="line">    <span class="comment">//表中节点的数量</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> length;</div><div class="line">    <span class="comment">//表中层数最大的节点的层数（不包括表头节点）</span></div><div class="line">    <span class="keyword">int</span> level;</div><div class="line">&#125;zskiplist;</div></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="5-整数集合"><a href="#5-整数集合" class="headerlink" title="5. 整数集合"></a><strong>5. 整数集合</strong></h3><p>整数集合（intest）是集合键的底层实现之一，当一个集合只包含整数值元素，并且这个集合的元素数量不多时，Redis就会使用整数集合作为集合键的底层实现。</p>
-<h4 id="5-1-整数集合的实现"><a href="#5-1-整数集合的实现" class="headerlink" title="5.1 整数集合的实现"></a><strong>5.1 整数集合的实现</strong></h4><p>整数集合（intset）是Redis用于保存整数值的集合抽象数据结构，它可以保存类型为int16_t、int32_t、int64_t的整数值，并且保证集合中不会出现重复元素。</p>
-<p>每个intset.h/intset结构表示一个整数集合：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">intset</span> &#123;</span></div><div class="line">    <span class="comment">//编码方式</span></div><div class="line">    <span class="keyword">unint32_t</span> encoding;</div><div class="line">    <span class="comment">//集合包含的元素数量</span></div><div class="line">    <span class="keyword">unint32_t</span> length;</div><div class="line">    <span class="comment">//保存元素的数组</span></div><div class="line">    <span class="keyword">int8_t</span> contents[];</div><div class="line">&#125;intset;</div></pre></td></tr></table></figure></p>
+<h4 id="5-1-整数集合的实现"><a href="#5-1-整数集合的实现" class="headerlink" title="5.1 整数集合的实现"></a><strong>5.1 整数集合的实现</strong></h4><p>整数集合（intset）是 Redis 用于保存整数值的集合抽象数据结构，它可以保存类型为 int16_t、int32_t、int64_t的整数值，并且保证集合中不会出现重复元素。</p>
+<p>每个 intset.h/intset 结构表示一个整数集合：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">intset</span> &#123;</span></div><div class="line">    <span class="comment">//编码方式</span></div><div class="line">    <span class="keyword">unint32_t</span> encoding;</div><div class="line">    <span class="comment">//集合包含的元素数量</span></div><div class="line">    <span class="keyword">unint32_t</span> length;</div><div class="line">    <span class="comment">//保存元素的数组</span></div><div class="line">    <span class="keyword">int8_t</span> contents[];</div><div class="line">&#125;intset;</div></pre></td></tr></table></figure></p>
 <h4 id="5-2-升级"><a href="#5-2-升级" class="headerlink" title="5.2 升级"></a><strong>5.2 升级</strong></h4><p>当添加一个新元素添加到整数集合里面，并且新元素的类型那个比整数集合现有所有元素的类型都要长时，整数集合需要先进行升级（upgrade），然后才能将新元素添加到整数集合里面。</p>
 <p>升级整数集合并添加新元素共分为三步进行：</p>
 <ol>
@@ -522,16 +522,15 @@
 </tbody>
 </table>
 <h4 id="6-2-压缩列表节点的构成"><a href="#6-2-压缩列表节点的构成" class="headerlink" title="6.2 压缩列表节点的构成"></a><strong>6.2 压缩列表节点的构成</strong></h4><p>每个压缩列表节点（上面提到的entryX）可以保存一个字节数组或者一个整数值。</p>
-<center><br><img src="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png" alt="压缩列表节点的各个组成部分"><br></center>
-
+<p><img src="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png" alt="压缩列表节点的各个组成部分"></p>
 <ol>
-<li>previous_entry_legth的作用：<br> 节点的previous_entry_lenght属性记录了前一个节点的长度，程序通过当前节点的起始地址计算出前一个节点的起始地址： p = c - current_entry_length;</li>
+<li>previous_entry_legth 的作用：<br> 节点的 previous_entry_lenght 属性记录了前一个节点的长度，程序通过当前节点的起始地址计算出前一个节点的起始地址： p = c - current_entry_length;</li>
 <li>encoding:<br> 该属性记录了节点的content属性所保存数据的类型以及长度</li>
 <li>content:<br> 该属性保存节点的值，节点值可以是一个字节数组或者整数，值的类型和长度由节点的encoding属性决定。</li>
 </ol>
-<h4 id="6-3-连锁更新"><a href="#6-3-连锁更新" class="headerlink" title="6.3 连锁更新"></a><strong>6.3 连锁更新</strong></h4><p>如果在压缩列表中插入一个新的节点，长度超出下一节点所保存的previous_entry_length，这时就需要更新下一节点的previous_entry_length。</p>
-<p>同样，有可能导致第二个节点的空间变大，第三个节点也需要更新保存着第二个节点的previous_entry_length，以此类推，导致连锁更新。</p>
-<p>在删除节点的时候，也有可能导致previous_entry_length的更新，也是会引起连锁更新的。</p>
+<h4 id="6-3-连锁更新"><a href="#6-3-连锁更新" class="headerlink" title="6.3 连锁更新"></a><strong>6.3 连锁更新</strong></h4><p>如果在压缩列表中插入一个新的节点，长度超出下一节点所保存的 previous_entry_length，这时就需要更新下一节点的 previous_entry_length。</p>
+<p>同样，有可能导致第二个节点的空间变大，第三个节点也需要更新保存着第二个节点的 previous_entry_length，以此类推，导致连锁更新。</p>
+<p>在删除节点的时候，也有可能导致 previous_entry_length 的更新，也是会引起连锁更新的。</p>
 <p>因为连锁更新在最坏情况下需要对压缩列表执行N次空间重分配操作，而每次空间重分配的最坏复杂对为O（N），<br>所以连锁更新的最坏复杂度为O（N的平方）</p>
 <hr>
 <p><a href="http://redisbook.com" target="_blank" rel="noopener">学习参看地址</a></p>
@@ -667,7 +666,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted set objec">
+<meta name="description" content="简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存  每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted se">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis基础使用">
 <meta property="og:url" content="http://yoursite.com/2017/06/06/Redis基础使用/index.html">
 <meta property="og:site_name" content="JingQ">
-<meta property="og:description" content="Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted set objec">
+<meta property="og:description" content="简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存  每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted se">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-17T01:41:32.000Z">
+<meta property="og:updated_time" content="2019-05-25T06:49:01.140Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis基础使用">
-<meta name="twitter:description" content="Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted set objec">
+<meta name="twitter:description" content="简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存  每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted se">
 
 
 
@@ -356,13 +356,16 @@
       
 
       
-        <h2 id="Redis是用来做缓存的工具-简单-高效且对服务器要求较小-用于大数据量下的缓存"><a href="#Redis是用来做缓存的工具-简单-高效且对服务器要求较小-用于大数据量下的缓存" class="headerlink" title="Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存"></a>Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存</h2><p>每个键值对(key-value pair)都是由对象(object)组成的.</p>
+        <blockquote>
+<p>简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存</p>
+</blockquote>
+<p>每个键值对(key-value pair)都是由对象(object)组成的.</p>
 <ul>
 <li>数据库键总是一个字符串对象(string object)</li>
 <li>数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted set object)这五种对象中的其中一种.</li>
 </ul>
-<h2 id="简单动态字符串SDS-simple-dynamic-string"><a href="#简单动态字符串SDS-simple-dynamic-string" class="headerlink" title="简单动态字符串SDS(simple dynamic string)"></a>简单动态字符串SDS(simple dynamic string)</h2><p>#####链表(LinkList)</p>
-<blockquote>
+<hr>
+<h2 id="简单动态字符串SDS-simple-dynamic-string"><a href="#简单动态字符串SDS-simple-dynamic-string" class="headerlink" title="简单动态字符串SDS(simple dynamic string)"></a>简单动态字符串SDS(simple dynamic string)</h2><h5 id="链表-LinkList"><a href="#链表-LinkList" class="headerlink" title="链表(LinkList)"></a>链表(LinkList)</h5><blockquote>
 <ul>
 <li>广泛用于实现Redis的各种功能,比如列表键,发布和订阅,慢查询,监视器等</li>
 <li>每个链表节点由一个listNode结构来表示,每个节点都有一个指向前置节点和后置节点的指针,所以Redis是一个双端链表.</li>
@@ -371,11 +374,10 @@
 <li>通过为链表设置不同的类型设定函数,Redis的链表可以用于保存各种不同的类型的值.</li>
 </ul>
 </blockquote>
-<p>字典,又称为符号表(symbol table),关联数组(associative array)或映射(map),是一种用于保存键值对(key-value pair)的抽象数据结构.</p>
+<h5 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h5><p>字典又称为符号表(symbol table),关联数组(associative array)或映射(map),是一种用于保存键值对(key-value pair)的抽象数据结构.</p>
 <p>解决键冲突的方法:Redis的哈希表使用链地址法(separate chaining)来解决键冲突,每个哈希表节点都有一个next指针,多个哈希表节点可以用next指针构成一个单向链表,被分配到同一个索引上的多个节点可以用这个单向里哦按表连接起来.</p>
 <p>扩展和收缩哈希表的工作可以通过执行rehash(重新散列)操作来完成</p>
-<p>#####字典重点</p>
-<blockquote>
+<h5 id="字典重点"><a href="#字典重点" class="headerlink" title="字典重点"></a>字典重点</h5><blockquote>
 <ul>
 <li>包括数据库和哈希键</li>
 <li>Redis中的字典使用哈希表座位底层实现,每个字典带有两个哈希表,一个平时使用,另一个仅在进行rehash时使用.</li>
@@ -384,8 +386,7 @@
 <li>在对哈希表进行扩展货站收缩操作时,程序需要将现有哈希表包含的所有键值对rehash到新哈希表里面,并且这个rehash过程并不是一次性得完成的,而是渐进式地完成的.</li>
 </ul>
 </blockquote>
-<p>#####跳跃表的重点#####</p>
-<blockquote>
+<h5 id="跳跃表的重点"><a href="#跳跃表的重点" class="headerlink" title="跳跃表的重点"></a>跳跃表的重点</h5><blockquote>
 <ul>
 <li>是有序集合的底层实现之一.</li>
 <li>Redis的跳跃表实现由zskiplist和zskiplistNode两个结构组成,其中zskiplist用于保存跳跃表信息(比如表头节点,表尾节点,长度),而zskiplistNode则用于表示跳跃表节点.</li>
@@ -394,8 +395,7 @@
 <li>跳跃表中的节点按照分值大小进行排序,当分值相同时,节点按照成员对象的大小进行排序.</li>
 </ul>
 </blockquote>
-<p>#####整数集合</p>
-<blockquote>
+<h5 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h5><blockquote>
 <ul>
 <li>整数集合是集合键的底层实现之一.</li>
 <li>整数结合的底层实现为数组,这个数组以有序,无重复的方式保存结合元素,在有需要时,程序会根据新添加元素的类型,改变这个数组的类型.</li>
@@ -403,11 +403,22 @@
 <li>整数集合只支持升级操作,不支持降级操作.</li>
 </ul>
 </blockquote>
-<p>Redis中用于操作键的命令基本上可以分为两种类型.<br>其中一种命令可以对任何类型的键执行,比如说DEL命令,EXPIRE命令,RENAME命令,TYPE命令,OBJECT命令.</p>
-<p>###默认情况下,Redis客户端的目标数据库为0号数据库,但客户端可以通过执行SELECT命令来切换目标客户端.</p>
-<p>RDB持久化功能所生成的RDB文件是一个经过压缩的二进制文件,通过该文件可以还原生成RDB文件时的数据库状态.<br>有两个命令Redis命令可以用于生成RDB文件,一个是SAVE,另一个是BGSAVE.<br>AOF(Append Only File)持久化功能.AOG持久化是通过保存Redis服务器所执行的写命令来记录数据库状态的.</p>
-<p>#####Redis hash命令</p>
-<blockquote>
+<hr>
+<h3 id="命令使用"><a href="#命令使用" class="headerlink" title="命令使用"></a>命令使用</h3><p>Redis中用于操作键的命令基本上可以分为两种类型.<strong>（默认情况下,Redis客户端的目标数据库为0号数据库,但客户端可以通过执行SELECT命令来切换目标客户端.）</strong></p>
+<ul>
+<li><p>基础命令</p>
+<p>对任何类型的键执行,比如说DEL命令,EXPIRE命令,RENAME命令,TYPE命令,OBJECT命令.</p>
+</li>
+</ul>
+<ul>
+<li><p>持久化功能</p>
+<p>RDB 持久化功能所生成的RDB文件是一个经过压缩的二进制文件,通过该文件可以还原生成RDB文件时的数据库状态.</p>
+<p>有两个命令Redis命令可以用于生成RDB文件,一个是SAVE,另一个是BGSAVE.</p>
+<p>AOF(Append Only File)持久化功能.AOG持久化是通过保存Redis服务器所执行的写命令来记录数据库状态的.</p>
+</li>
+</ul>
+<hr>
+<h5 id="Redis-hash命令"><a href="#Redis-hash命令" class="headerlink" title="Redis hash命令"></a>Redis hash命令</h5><blockquote>
 <ul>
 <li>HDEL key field1 [field2]      删除一个或多个哈希表字段</li>
 <li>HEXISTS key field               查看哈希表key中,指定的字段是否存在</li>
@@ -420,8 +431,8 @@
 <li>HVALS key                         获取哈希表中所有值</li>
 </ul>
 </blockquote>
-<p>#####Redis List 命令</p>
-<blockquote>
+<hr>
+<h5 id="Redis-List-命令"><a href="#Redis-List-命令" class="headerlink" title="Redis List 命令"></a>Redis List 命令</h5><blockquote>
 <ul>
 <li>BLPOP key1 [key2] timeout     列出并获取列表的第一个元素,如果列表没有元素会阻塞 列表直到等待超时或发现可弹出元素为止</li>
 <li>BRPPOP key1 [key2] timeout     列出并获取列表的最后一个元素,如果列表没有元素会阻塞 列表直到等待超时或发现可弹出元素为止</li>
@@ -438,8 +449,8 @@
 <li>RPUSHX key value                  在已存在的列表添加值</li>
 </ul>
 </blockquote>
-<p>#####Redis Set命令</p>
-<blockquote>
+<hr>
+<h5 id="Redis-Set命令"><a href="#Redis-Set命令" class="headerlink" title="Redis Set命令"></a>Redis Set命令</h5><blockquote>
 <ul>
 <li>SADD key member1 [member2]     向集合添加一个或多个成员</li>
 <li>SCARD key                                     获取集合的成员数</li>
@@ -454,8 +465,8 @@
 <li>SSCAN key cursor [MATCH pattern] [COUNT count]     迭代集合中的元素</li>
 </ul>
 </blockquote>
-<p>####Redis Sorted Set命令</p>
-<blockquote>
+<hr>
+<h5 id="Redis-Sorted-Set命令"><a href="#Redis-Sorted-Set命令" class="headerlink" title="Redis Sorted Set命令"></a>Redis Sorted Set命令</h5><blockquote>
 <ul>
 <li>ZADD key score1 member1[score2 member2] 向有序集合添加一个或多个成员,或者更新已存在的成员的分数</li>
 <li>ZCARD key                                                      获取有序集合的成员数</li>
@@ -606,7 +617,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -698,7 +709,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis是用来做缓存的工具-简单-高效且对服务器要求较小-用于大数据量下的缓存"><span class="nav-number">1.</span> <span class="nav-text">Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单动态字符串SDS-simple-dynamic-string"><span class="nav-number">2.</span> <span class="nav-text">简单动态字符串SDS(simple dynamic string)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单动态字符串SDS-simple-dynamic-string"><span class="nav-number">1.</span> <span class="nav-text">简单动态字符串SDS(simple dynamic string)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#链表-LinkList"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">链表(LinkList)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字典"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字典重点"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">字典重点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳跃表的重点"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">跳跃表的重点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整数集合"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">整数集合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令使用"><span class="nav-number">1.1.</span> <span class="nav-text">命令使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-hash命令"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">Redis hash命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-List-命令"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">Redis List 命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-Set命令"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">Redis Set命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-Sorted-Set命令"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">Redis Sorted Set命令</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>

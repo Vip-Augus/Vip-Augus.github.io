@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创建一个不">
+<meta name="description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis哨兵">
 <meta property="og:url" content="http://yoursite.com/2018/03/25/Redis哨兵/index.html">
 <meta property="og:site_name" content="JingQ">
-<meta property="og:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创建一个不">
+<meta property="og:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-17T01:38:11.000Z">
+<meta property="og:updated_time" content="2019-05-25T07:00:26.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis哨兵">
-<meta name="twitter:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创建一个不">
+<meta name="twitter:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创">
 
 
 
@@ -357,16 +357,16 @@
 
       
         <p>Sentinel是Redis的<strong>高可用性（high availability）解决方案</strong>：</p>
-<p>由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。</p>
+<p>由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。</p>
 <p>实际上这意味着使用哨兵模式，可以创建一个不用人为干预而应对各种故障的Redis部署。</p>
 <h2 id="哨兵模式的功能列表"><a href="#哨兵模式的功能列表" class="headerlink" title="哨兵模式的功能列表"></a>哨兵模式的功能列表</h2><ul>
-<li><p>监听：哨兵不断的检查master和slave是否正常的运行。</p>
+<li><p>监听：哨兵不断的检查 master 和 slave 是否正常的运行。</p>
 </li>
-<li><p>通知：当监控的某台Redis实例发生问题时，可以通过API通知系统管理员和其他的应用程序。</p>
+<li><p>通知：当监控的某台 Redis 实例发生问题时，可以通过API通知系统管理员和其他的应用程序。</p>
 </li>
-<li><p>自动故障转移：如果一个master不正常运行了，哨兵可以启动一个故障转移进程，将一个slave升级成为master，其他的slave被重新配置使用新的master，并且应用程序使用Redis服务端通知的新地址。</p>
+<li><p>自动故障转移：如果一个 master 不正常运行了，哨兵可以启动一个故障转移进程，将一个 slave 升级成为 master，其他的 slave 被重新配置使用新的 master，并且应用程序使用 Redis 服务端通知的新地址。</p>
 </li>
-<li><p>配置提供者：哨兵作为Redis客户端发现的权威来源：客户端连接到哨兵请求当前可靠的master的地址。如果发生故障，哨兵将报告新地址。</p>
+<li><p>配置提供者：哨兵作为 Redis 客户端发现的权威来源：客户端连接到哨兵请求当前可靠的 master 的地址。如果发生故障，哨兵将报告新地址。</p>
 </li>
 </ul>
 <h2 id="启动并初始化Sentinel"><a href="#启动并初始化Sentinel" class="headerlink" title="启动并初始化Sentinel"></a>启动并初始化Sentinel</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> redis-sentinel /path/to/your/sentinel.conf</span></div><div class="line">或者</div><div class="line"><span class="meta">$</span><span class="bash"> redis-server /path/to/your/sentinel.conf --sentinel</span></div></pre></td></tr></table></figure>
@@ -390,7 +390,7 @@
 <h4 id="故障转移测试"><a href="#故障转移测试" class="headerlink" title="故障转移测试"></a>故障转移测试</h4><p>关掉Master服务器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6379 shundown</span></div></pre></td></tr></table></figure></p>
 <p>Sentinel哨兵的打印日志：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2379:X 25 Mar 00:27:52.341 # +switch-master mymaster 127.0.0.1 6379 127.0.0.1 6380</div><div class="line">2379:X 25 Mar 00:27:52.341 * +slave slave 127.0.0.1:6379 127.0.0.1 6379 @ mymaster 127.0.0.1 6380</div></pre></td></tr></table></figure></p>
 <p>重新启动6379的Redis<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6379</span></div><div class="line"></div><div class="line">2604:M 25 Mar 00:29:38.000 # Server initialized</div><div class="line">2604:M 25 Mar 00:29:38.000 * DB loaded from disk: 0.000 seconds</div><div class="line">2604:M 25 Mar 00:29:38.000 * Ready to accept connections</div><div class="line">2604:S 25 Mar 00:29:48.168 * Before turning into a slave, using my master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.</div><div class="line">2604:S 25 Mar 00:29:48.168 * SLAVE OF 127.0.0.1:6380 enabled (user request from 'id=2 addr=127.0.0.1:58752 fd=8 name=sentinel-fe82d064-cmd age=10 idle=0 flags=x db=0 sub=0 psub=0 multi=3 qbuf=0 qbuf-free=32768 obl=36 oll=0 omem=0 events=r cmd=exec')</div><div class="line">2604:S 25 Mar 00:29:48.371 * Connecting to MASTER 127.0.0.1:6380</div><div class="line">2604:S 25 Mar 00:29:48.371 * MASTER &lt;-&gt; SLAVE sync started</div><div class="line">2604:S 25 Mar 00:29:48.371 * Non blocking connect for SYNC fired the event.</div><div class="line">2604:S 25 Mar 00:29:48.371 * Master replied to PING, replication can continue...</div><div class="line">2604:S 25 Mar 00:29:48.372 * Trying a partial resynchronization (request 14da919a7f784c20260fe79893734941b6098734:1).</div><div class="line">2604:S 25 Mar 00:29:48.373 * Full resync from master: d2b5bdafe3c3fd8c7f8e0dfe7e0159e33c9a40fb:608136</div><div class="line">2604:S 25 Mar 00:29:48.373 * Discarding previously cached master state.</div><div class="line">2604:S 25 Mar 00:29:48.464 * MASTER &lt;-&gt; SLAVE sync: receiving 190 bytes from master</div><div class="line">2604:S 25 Mar 00:29:48.464 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</div><div class="line">2604:S 25 Mar 00:29:48.464 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</div><div class="line">2604:S 25 Mar 00:29:48.465 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div></pre></td></tr></table></figure></p>
-<p>从上面可以看出，6379服务器挂掉后，哨兵可以启动一个故障转移进程，将一个slave（例如：6380）升级成为master。接着6379启动后，哨兵系统会将6379设定为master（6380）的slave，开始复制master的数据。</p>
+<p>从上面可以看出，6379 服务器挂掉后，哨兵可以启动一个故障转移进程，将一个 slave（例如：6380）升级成为master。接着 6379 启动后，哨兵系统会将 6379 设定为 master（6380）的 slave，开始复制 maste r的数据。</p>
 <p>通过测试，发现当主服务器出现故障的时候，<strong>会自动让从服务器成为主服务器</strong>，继续正常的工作，如果挂掉的主服务器重新启动的话，<strong>会让它成为新任主服务器的slave</strong>，完成故障转移。</p>
 <p>还有很多API就不列举了，详细可看第一个参考资料。</p>
 <hr>
@@ -529,7 +529,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

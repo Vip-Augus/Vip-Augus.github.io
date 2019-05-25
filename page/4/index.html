@@ -618,7 +618,7 @@
       
         
           
-          发送命令在上一篇文章中，已经将16384个槽都进行了指派之后，集群已经进入上线状态123456789101112127.0.0.1:7000&gt; cluster info// 集群状态：OK表示上线cluster_state:okcluster_slots_assigned:16384clust
+          发送命令在上一篇文章中，已经将 16384 个槽都进行了指派之后，集群已经进入上线状态123456789101112127.0.0.1:7000&gt; cluster info// 集群状态：OK表示上线cluster_state:okcluster_slots_assigned:16384clu
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -744,7 +744,7 @@
       
         
           
-          为什么要用Redis集群Redis集群是Redis提供的分布式数据库方案，集群通过分片(sharding)来进行数据提供，并提供复制和故障转移功能。
+          为什么要用 Redis 集群Redis 集群是 Redis 提供的分布式数据库方案，集群通过分片(sharding)来进行数据提供，并提供复制和故障转移功能。
 学习记录以下几点：
 
 节点
@@ -755,7 +755,7 @@
 故障转移
 消息
 
-首先先看如何以集群模式启动Redis1.复制三份配置redis.con
+首先先看如何以集群模式启动Redis1.复制三份配置 red
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -915,7 +915,7 @@
         
           
           Sentinel是Redis的高可用性（high availability）解决方案：
-由一个或多个Sentinel实例（instance）组成的Sentinel系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，
+由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1077,7 +1077,7 @@
           Redis的单机模式不难，配置文件参数了解具体含义，设定业务上符合自己的就好了。
 之前记录了关于Redis的数据结构和对象的知识（可以点Redis标签看看），下面开始填坑。
 
-复制在Redis中，用户可以通过执行SLAVEOF命令或者设置slaveof选项，让一个服务去复制（replicate）另一
+复制在Redis中，用户可以通过执行 SLAVEOF 命令或者设置 slaveof 选项，让一个服务去复制（replicat
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1525,7 +1525,14 @@ synchronized 关键字，代表这个方法加锁,相当于不管哪一个线程
       
         
           
-          本篇记录JVM常用的指令，通过Java的bin目录下强大的工具就能进行查看。参考《jvm系列(四):jvm调优-命令大全（jps jstat jmap jhat jstack jinfo）》Java8内存模型—永久代(PermGen)和元空间(Metaspace)周志明的《深入理解JVM》其中很多命
+          本篇记录JVM常用的指令，通过Java的bin目录下强大的工具就能进行查看。
+其中很多命令参考option参数，自己要多敲几遍才能记住。
+
+JVM常用命令其中[]方括号内的参数，表示可有可无。
+
+jps
+JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1780,7 +1787,7 @@ synchronized 关键字，代表这个方法加锁,相当于不管哪一个线程
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
