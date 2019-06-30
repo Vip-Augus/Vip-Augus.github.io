@@ -261,7 +261,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/Spring 源码学习(六)扩展功能 上篇-BeanFactoryPostProcessor /">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/Spring 源码学习(六)扩展功能 上篇 /">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -280,7 +280,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/22/Spring 源码学习(六)扩展功能 上篇-BeanFactoryPostProcessor /" itemprop="url">Spring Spring 源码学习(六)扩展功能 上篇-BeanFactoryPostProcessor</a></h1>
+                <a class="post-title-link" href="/2019/06/30/Spring 源码学习(六)扩展功能 上篇 /" itemprop="url">Spring Spring 源码学习(七)扩展功能 下篇</a></h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T00:06:00+08:00">
-                2019-06-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-30T14:06:00+08:00">
+                2019-06-30
               </time>
             
 
@@ -353,11 +353,19 @@
 
       
         
-          <p><img src="http://img.sevenyuan.cn/PantheraLeoDad_ZH-CN9580668524_1920x1080.jpg" alt=""></p>
-<center>Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器</center>
+          <p><img src="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg" alt=""></p>
+<p>在上一篇文章中，深入分析和学习了 <code>BeanFactoryPostProcessor</code> ，主体是 <code>BeanFactory</code> 的后处理器，这次来学习主体是 <code>Bean</code> 的后处理器：<code>BeanPostProcessor</code>。</p>
+<p><strong>定义：它也是 <code>Spring</code> 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 <code>bean</code> 实例化阶段前后</strong></p>
+<p>本篇思路：</p>
+<ol>
+<li><code>BeanPostProcessor</code> 定义</li>
+<li>如何使用</li>
+<li>代码实现分析</li>
+<li>介绍剩余的扩展功能</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/22/Spring 源码学习(六)扩展功能 上篇-BeanFactoryPostProcessor /#more" rel="contents">
+            <a class="btn" href="/2019/06/30/Spring 源码学习(六)扩展功能 上篇 /#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -505,6 +513,153 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2019/06/22/Spring 源码学习(四) bean 的加载/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/Spring 源码学习(七)扩展功能 下篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/22/Spring 源码学习(七)扩展功能 下篇/" itemprop="url">Spring Spring 源码学习(六)扩展功能 上篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T00:06:00+08:00">
+                2019-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://img.sevenyuan.cn/PantheraLeoDad_ZH-CN9580668524_1920x1080.jpg" alt=""></p>
+<center>Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器</center>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/22/Spring 源码学习(七)扩展功能 下篇/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1582,164 +1737,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/LeetCode-题解记录-双指针/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JingQ">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/12/LeetCode-题解记录-双指针/" itemprop="url">LeetCode 题解记录 - 双指针</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T17:47:02+08:00">
-                2019-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="http://img.sevenyuan.cn/HopeValley_ZH-CN2208363231_1920x1080.jpg" alt=""></p>
-<center>刷题 - 双指针</center>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/05/12/LeetCode-题解记录-双指针/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1790,7 +1787,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-count">69</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
