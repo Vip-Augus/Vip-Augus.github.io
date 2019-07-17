@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java 设计模式," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="设计模式-模板方法&amp;amp;策略模式">
+<meta name="keywords" content="Java 设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java设计模式学习 - 模版方法模式&amp;策略模式">
+<meta property="og:url" content="http://yoursite.com/2018/09/08/java/Java设计模式学习 - 模版方法模式&策略模式/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="设计模式-模板方法&amp;amp;策略模式">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.gif">
+<meta property="og:updated_time" content="2019-05-25T07:51:36.023Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java设计模式学习 - 模版方法模式&amp;策略模式">
+<meta name="twitter:description" content="设计模式-模板方法&amp;amp;策略模式">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/08/java/Java设计模式学习 - 模版方法模式&策略模式/"/>
+
+
+
+
+
+  <title>Java设计模式学习 - 模版方法模式&策略模式 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/08/java/Java设计模式学习 - 模版方法模式&策略模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java设计模式学习 - 模版方法模式&策略模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-08T17:49:47+08:00">
+                2018-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg" alt=""></p>
+<center><strong>设计模式-模板方法&amp;策略模式</strong></center>
+
+<a id="more"></a>
+<hr>
+<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p><strong>模板方法模式（Template）：定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。</strong></p>
+<p>模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。</p>
+<p><img src="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png" alt=""></p>
+<p><strong>策略模式（Strategy）：定义了一系列的算法，并将每一个算法封装起来，而且使他们可以相互替换，让算法独立于使用它的客户而独立变化。</strong></p>
+<p>定义公共方法，创建一个工厂，通过策略模式，让它的子类可以根据策略相互替换。</p>
+<p><img src="http://img.sevenyuan.cn/%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png" alt=""></p>
+<hr>
+<h2 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h2><p>一群小动物要出门秋游，每个动物一开始都要准备出门远行的物品，不过不同动物穿的衣服和出门方式不同，例如酷酷的雪纳瑞，穿的是时髦的当季衣服，出门方式是小轿车；机智的拉布拉多，穿的是朴素的T恤，骑着拉风的小电驴；还有富有的🐶，穿的是钻石风衣，乘着🚁出门。</p>
+<p>从上所述，可以抽象出一个总的动作：出门秋游，然后分成三个步骤：</p>
+<p><strong>一致的：</strong></p>
+<ul>
+<li>准备出门远行的物品</li>
+</ul>
+<p><strong>不一致的：</strong></p>
+<ul>
+<li>穿衣服</li>
+<li>交通工具</li>
+</ul>
+<hr>
+<h2 id="代码设计"><a href="#代码设计" class="headerlink" title="代码设计"></a>代码设计</h2><h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> JingQ at 2018/9/8</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAutumnOuting</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 定义总的操作，返回值可以按实际设定</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> animalName 小动物</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">outing</span><span class="params">(String animalName)</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="抽象模板"><a href="#抽象模板" class="headerlink" title="抽象模板"></a>抽象模板</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractAutumnOuting</span> <span class="keyword">implements</span> <span class="title">IAutumnOuting</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">outing</span><span class="params">(String animalName)</span> </span>&#123;</div><div class="line">        step1(animalName);</div><div class="line">        step2();</div><div class="line">        step3();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 公共操作</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> animalName    小动物的名字</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">step1</span><span class="params">(String animalName)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"I'm preparing goods : "</span> + animalName);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 差异化操作</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">step2</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 差异化操作</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">step3</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="模板1-酷酷的雪纳瑞"><a href="#模板1-酷酷的雪纳瑞" class="headerlink" title="模板1 - 酷酷的雪纳瑞"></a>模板1 - 酷酷的雪纳瑞</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SchnauzerAutumnOuting</span> <span class="keyword">extends</span> <span class="title">AbstractAutumnOuting</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">step2</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"I'm a cool cool schnauzer, wear fashionable clothes（时尚时尚最时尚）"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">step3</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"I'm a cool cool schnauzer, driving the small car（搽亮我的小汽车模型）"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="模板2-机智的拉布拉多"><a href="#模板2-机智的拉布拉多" class="headerlink" title="模板2 - 机智的拉布拉多"></a>模板2 - 机智的拉布拉多</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SchnauzerAutumnOuting</span> <span class="keyword">extends</span> <span class="title">AbstractAutumnOuting</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">step2</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"I'm a cool cool schnauzer, wear fashionable clothes（时尚时尚最时尚）"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">step3</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"I'm a cool cool schnauzer, driving the small car（搽亮我的小汽车模型）"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="模板3-🐶"><a href="#模板3-🐶" class="headerlink" title="模板3 - 🐶"></a>模板3 - 🐶</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleAutumnOuting</span> <span class="keyword">extends</span> <span class="title">AbstractAutumnOuting</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">step2</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"you're a single, want to travel everywhere"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">step3</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"you're a single, and will be very powerful"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="工厂-策略模式"><a href="#工厂-策略模式" class="headerlink" title="工厂-策略模式"></a>工厂-策略模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> JingQ at 2018/9/8</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AutumnOutingFactory</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"schnauzerAutumnOuting"</span>)</div><div class="line">    <span class="keyword">private</span> AbstractAutumnOuting schnauzerAutumnOuting;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"labradorAutumnOuting"</span>)</div><div class="line">    <span class="keyword">private</span> AbstractAutumnOuting labradorAutumnOuting;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"singleAutumnOuting"</span>)</div><div class="line">    <span class="keyword">private</span> AbstractAutumnOuting singleAutumnOuting;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> AbstractAutumnOuting <span class="title">getInstance</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (type) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">"1"</span>:</div><div class="line">                <span class="keyword">return</span> schnauzerAutumnOuting;</div><div class="line">            <span class="keyword">case</span> <span class="string">"2"</span>:</div><div class="line">                <span class="keyword">return</span> labradorAutumnOuting;</div><div class="line">            <span class="keyword">case</span> <span class="string">"3"</span>:</div><div class="line">                <span class="keyword">return</span> singleAutumnOuting;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">return</span> singleAutumnOuting;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h3><p><img src="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.gif" alt=""></p>
+<p>从执行效果可以看出，通过策略模式（类似switch操作），工厂判断出真正执行的对象，然后模板方法中，step1是公有的，step2和step3是子类中差异化实现的操作。</p>
+<p>从控制台的打印结果可以看出，三个小动物的step操作都顺利执行了，而且代码的逻辑性看起来更强了。</p>
+<hr>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a href="https://www.cnblogs.com/liaoweipeng/p/5790395.html" target="_blank" rel="noopener">java设计模式之模板方法模式</a></li>
+<li><a href="https://blog.csdn.net/u012124438/article/details/70039943/" target="_blank" rel="noopener">设计模式学习之策略模式</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-设计模式/" rel="tag"># Java 设计模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/08/java/Java设计模式学习-责任链模式/" rel="next" title="Java设计模式学习 - 责任链模式">
+                <i class="fa fa-chevron-left"></i> Java设计模式学习 - 责任链模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/25/DRDS-新增字段报错-ERR-1062-Duplicate-entry/" rel="prev" title="DRDS 新增字段报错 ERR 1062 - Duplicate entry">
+                DRDS 新增字段报错 ERR 1062 - Duplicate entry <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单介绍"><span class="nav-number">1.</span> <span class="nav-text">简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举个🌰"><span class="nav-number">2.</span> <span class="nav-text">举个🌰</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码设计"><span class="nav-number">3.</span> <span class="nav-text">代码设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口"><span class="nav-number">3.1.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象模板"><span class="nav-number">3.2.</span> <span class="nav-text">抽象模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板1-酷酷的雪纳瑞"><span class="nav-number">3.3.</span> <span class="nav-text">模板1 - 酷酷的雪纳瑞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板2-机智的拉布拉多"><span class="nav-number">3.4.</span> <span class="nav-text">模板2 - 机智的拉布拉多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板3-🐶"><span class="nav-number">3.5.</span> <span class="nav-text">模板3 - 🐶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂-策略模式"><span class="nav-number">3.6.</span> <span class="nav-text">工厂-策略模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行效果"><span class="nav-number">3.7.</span> <span class="nav-text">执行效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">4.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

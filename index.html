@@ -261,7 +261,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/Spring 源码学习(六)扩展功能 上篇 /">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/17/spring/2019-07-17-spring-analysis-note-8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -280,7 +280,157 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/30/Spring 源码学习(六)扩展功能 上篇 /" itemprop="url">Spring Spring 源码学习(七)扩展功能 下篇</a></h1>
+                <a class="post-title-link" href="/2019/07/17/spring/2019-07-17-spring-analysis-note-8/" itemprop="url">Spring 源码学习(八) AOP 使用和实现原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-17T19:12:00+08:00">
+                2019-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg" alt=""></p>
+<p>我们在业务开发中，使用得最多的是<strong>面向对象编程（OOP）</strong>，因为它的代码逻辑直观，从上往下就能查看完整的执行链路。</p>
+<p>在这个基础上延伸，出现了<strong>面向切面编程（AOP）</strong>，将可以重复性的横切逻辑抽取到统一的模块中。</p>
+<p>例如日志打印、安全监测，如果按照 <code>OOP</code> 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 <code>AOP</code> 编程， <code>AOP</code> 所关注的方向是<strong>横向</strong>的，不同于 <code>OOP</code> 的<strong>纵向</strong>。 </p>
+<p>所以接下来一起来<strong>学习 <code>AOP</code> 是如何使用以及 <code>Spring</code> 容器里面的处理逻辑~</strong></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/07/17/spring/2019-07-17-spring-analysis-note-8/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/spring/2019-06-30-spring-analysis-note-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/30/spring/2019-06-30-spring-analysis-note-7/" itemprop="url">Spring Spring 源码学习(七)扩展功能 下篇</a></h1>
         
 
         <div class="post-meta">
@@ -365,7 +515,7 @@
 </ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/30/Spring 源码学习(六)扩展功能 上篇 /#more" rel="contents">
+            <a class="btn" href="/2019/06/30/spring/2019-06-30-spring-analysis-note-7/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -416,7 +566,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/Spring 源码学习(四) bean 的加载/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -435,154 +585,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/22/Spring 源码学习(四) bean 的加载/" itemprop="url">Spring 源码学习(五)循环依赖</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T00:06:00+08:00">
-                2019-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg" alt=""></p>
-<center>填坑，分析循环依赖</center>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/06/22/Spring 源码学习(四) bean 的加载/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/Spring 源码学习(七)扩展功能 下篇/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JingQ">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/22/Spring 源码学习(七)扩展功能 下篇/" itemprop="url">Spring Spring 源码学习(六)扩展功能 上篇</a></h1>
+                <a class="post-title-link" href="/2019/06/22/spring/2019-06-22-spring-analysis-note-6/" itemprop="url">Spring Spring 源码学习(六)扩展功能 上篇</a></h1>
         
 
         <div class="post-meta">
@@ -659,7 +662,7 @@
 <center>Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/22/Spring 源码学习(七)扩展功能 下篇/#more" rel="contents">
+            <a class="btn" href="/2019/06/22/spring/2019-06-22-spring-analysis-note-6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -710,7 +713,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/19/Spring 源码学习(五)循环依赖/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -729,7 +732,154 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/19/Spring 源码学习(五)循环依赖/" itemprop="url">Spring 源码学习(四)bean 的加载</a></h1>
+                <a class="post-title-link" href="/2019/06/22/spring/2019-06-22-spring-analysis-note-5/" itemprop="url">Spring 源码学习(五)循环依赖</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T00:06:00+08:00">
+                2019-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg" alt=""></p>
+<center>填坑，分析循环依赖</center>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/06/22/spring/2019-06-22-spring-analysis-note-5/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/19/spring/2019-06-19-spring-analysis-note-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/19/spring/2019-06-19-spring-analysis-note-4/" itemprop="url">Spring 源码学习(四)bean 的加载</a></h1>
         
 
         <div class="post-meta">
@@ -806,7 +956,7 @@
 <center>解析完配置后，来看下 bean 是如何加载的</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/19/Spring 源码学习(五)循环依赖/#more" rel="contents">
+            <a class="btn" href="/2019/06/19/spring/2019-06-19-spring-analysis-note-4/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -857,7 +1007,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/Spring 源码学习(三)自定义标签解析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/spring/2019-06-16-spring-analysis-note-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -876,7 +1026,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/16/Spring 源码学习(三)自定义标签解析/" itemprop="url">Spring 源码学习(三)自定义标签</a></h1>
+                <a class="post-title-link" href="/2019/06/16/spring/2019-06-16-spring-analysis-note-3/" itemprop="url">Spring 源码学习(三)自定义标签</a></h1>
         
 
         <div class="post-meta">
@@ -953,7 +1103,7 @@
 <center>看了这篇，自定义 Spring 标签不是梦~</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/16/Spring 源码学习(三)自定义标签解析/#more" rel="contents">
+            <a class="btn" href="/2019/06/16/spring/2019-06-16-spring-analysis-note-3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1004,7 +1154,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/14/Spring 源码学习(二)默认标签解析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/14/spring/2019-06-14-spring-analysis-note-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -1023,7 +1173,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/14/Spring 源码学习(二)默认标签解析/" itemprop="url">Spring 源码学习(二)默认标签解析</a></h1>
+                <a class="post-title-link" href="/2019/06/14/spring/2019-06-14-spring-analysis-note-2/" itemprop="url">Spring 源码学习(二)默认标签解析</a></h1>
         
 
         <div class="post-meta">
@@ -1100,7 +1250,7 @@
 <center><code>Spring</code> 解析默认标签~</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/14/Spring 源码学习(二)默认标签解析/#more" rel="contents">
+            <a class="btn" href="/2019/06/14/spring/2019-06-14-spring-analysis-note-2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1151,7 +1301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/08/Spring 源码学习(一)容器的基础结构-/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/08/spring/2019-06-08-spring-analysis-note-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -1170,7 +1320,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/08/Spring 源码学习(一)容器的基础结构-/" itemprop="url">Spring 源码学习(一)-容器的基础结构</a></h1>
+                <a class="post-title-link" href="/2019/06/08/spring/2019-06-08-spring-analysis-note-1/" itemprop="url">Spring 源码学习(一)-容器的基础结构</a></h1>
         
 
         <div class="post-meta">
@@ -1247,7 +1397,7 @@
 <center><code>Spring</code> 是这样加载 <code>xml</code> 配置的</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/08/Spring 源码学习(一)容器的基础结构-/#more" rel="contents">
+            <a class="btn" href="/2019/06/08/spring/2019-06-08-spring-analysis-note-1/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1298,7 +1448,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/08/Spring 源码学习-环境准备/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/08/spring/2019-06-08-spring-analysis-note-env_prepare/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -1317,7 +1467,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/08/Spring 源码学习-环境准备/" itemprop="url">Spring 源码学习-环境准备</a></h1>
+                <a class="post-title-link" href="/2019/06/08/spring/2019-06-08-spring-analysis-note-env_prepare/" itemprop="url">Spring 源码学习-环境准备</a></h1>
         
 
         <div class="post-meta">
@@ -1394,7 +1544,7 @@
 <center>一起来准备阅读 <code>Spring</code> 源码</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/08/Spring 源码学习-环境准备/#more" rel="contents">
+            <a class="btn" href="/2019/06/08/spring/2019-06-08-spring-analysis-note-env_prepare/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1445,7 +1595,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/24/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/24/java/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -1464,7 +1614,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/24/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/" itemprop="url">Jar 包依赖冲突排查思路和解决方法（logback + slf4j-log4j12）</a></h1>
+                <a class="post-title-link" href="/2019/05/24/java/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/" itemprop="url">Jar 包依赖冲突排查思路和解决方法（logback + slf4j-log4j12）</a></h1>
         
 
         <div class="post-meta">
@@ -1541,165 +1691,7 @@
 <center>Jar 包依赖冲突排查思路和解决方法</center>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/24/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/19/LeetCode-题解记录-二分查找/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JingQ">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/19/LeetCode-题解记录-二分查找/" itemprop="url">LeetCode 题解记录 - 二分查找</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-19T17:50:06+08:00">
-                2019-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><img src="http://img.sevenyuan.cn/AmericanCulturalCapital_ZH-CN8717487767_1920x1080.jpg" alt=""></p>
-<center>刷题 - 二分查找</center>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/05/19/LeetCode-题解记录-二分查找/#more" rel="contents">
+            <a class="btn" href="/2019/05/24/java/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1787,7 +1779,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-count">70</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

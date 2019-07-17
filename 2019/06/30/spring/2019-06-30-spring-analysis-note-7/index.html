@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="在上一篇文章中，深入分析和学习了 BeanFactoryPostProcessor ，主体是 BeanFactory 的后处理器，这次来学习主体是 Bean 的后处理器：BeanPostProcessor。 定义：它也是 Spring 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 bean 实例化阶段前后 本篇思路：  BeanPostProcessor 定义 如何使用 代码实现分析">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Spring 源码学习(七)扩展功能 下篇">
+<meta property="og:url" content="http://yoursite.com/2019/06/30/spring/2019-06-30-spring-analysis-note-7/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="在上一篇文章中，深入分析和学习了 BeanFactoryPostProcessor ，主体是 BeanFactory 的后处理器，这次来学习主体是 Bean 的后处理器：BeanPostProcessor。 定义：它也是 Spring 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 bean 实例化阶段前后 本篇思路：  BeanPostProcessor 定义 如何使用 代码实现分析">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/context_extend_method_list.png">
+<meta property="og:updated_time" content="2019-07-17T10:42:52.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Spring 源码学习(七)扩展功能 下篇">
+<meta name="twitter:description" content="在上一篇文章中，深入分析和学习了 BeanFactoryPostProcessor ，主体是 BeanFactory 的后处理器，这次来学习主体是 Bean 的后处理器：BeanPostProcessor。 定义：它也是 Spring 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 bean 实例化阶段前后 本篇思路：  BeanPostProcessor 定义 如何使用 代码实现分析">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/30/spring/2019-06-30-spring-analysis-note-7/"/>
+
+
+
+
+
+  <title>Spring Spring 源码学习(七)扩展功能 下篇 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/spring/2019-06-30-spring-analysis-note-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Spring 源码学习(七)扩展功能 下篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-30T14:06:00+08:00">
+                2019-06-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg" alt=""></p>
+<p>在上一篇文章中，深入分析和学习了 <code>BeanFactoryPostProcessor</code> ，主体是 <code>BeanFactory</code> 的后处理器，这次来学习主体是 <code>Bean</code> 的后处理器：<code>BeanPostProcessor</code>。</p>
+<p><strong>定义：它也是 <code>Spring</code> 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 <code>bean</code> 实例化阶段前后</strong></p>
+<p>本篇思路：</p>
+<ol>
+<li><code>BeanPostProcessor</code> 定义</li>
+<li>如何使用</li>
+<li>代码实现分析</li>
+<li>介绍剩余的扩展功能</li>
+</ol>
+<a id="more"></a>
+<hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>与 <code>BeanFactoryPostProcessor</code> 不同的是，<code>BeanFactoryPostProcessor</code> 的注册和执行都在同一个方法内，而 <code>BeanPostProcessor</code> 分开两个方法，分为<strong>注册</strong>和<strong>调用</strong>两个步骤。</p>
+<p><strong>常规的 <code>BeanFactory</code> 中是没有实现后处理器的自动注册，所以在调用的时候没有进行手动注册是无法使用的，但在 <code>ApplicationContext</code> 中添加了自动注册功能（在这个 <code>registerBeanPostProcessors</code> 方法中），最后在 <code>bean</code> 实例化时执行 <code>BeanPostProcessor</code> 对应的方法。</strong></p>
+<p>本次主要介绍 <code>BeanPostProcessor</code>，同时也会将剩下的 <code>context</code> 扩展功能一起学习~</p>
+<hr>
+<h1 id="BeanPostProcessor"><a href="#BeanPostProcessor" class="headerlink" title="BeanPostProcessor"></a>BeanPostProcessor</h1><p>经过上一篇文章的学习，应该对 <code>bean</code> 的后处理理解起来更顺利，下面直奔主题，来看下它是如何使用和结合源码分析</p>
+<hr>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="新建一个-bean-后处理器"><a href="#新建一个-bean-后处理器" class="headerlink" title="新建一个 bean 后处理器"></a>新建一个 bean 后处理器</h3><p>这个后处理器需要引用 <code>InstantiationAwareBeanPostProcessor</code> 接口（实际继承自 <code>BeanPostProcessor</code>），然后重载以下两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarBeanPostProcessor</span> <span class="keyword">implements</span> <span class="title">InstantiationAwareBeanPostProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">postProcessBeforeInitialization</span><span class="params">(Object bean, String beanName)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">		<span class="comment">// 这里没有区分 bean 类型，只是用来测试打印的顺序和时间</span></div><div class="line">		System.out.println(<span class="string">"Bean name : "</span> + beanName + <span class="string">", before Initialization, time : "</span> + System.currentTimeMillis());</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(Object bean, String beanName)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">		System.out.println(<span class="string">"Bean name : "</span> + beanName + <span class="string">", after Initialization, time : "</span> + System.currentTimeMillis());</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="在配置文件中注册-bean-post-processor-xml"><a href="#在配置文件中注册-bean-post-processor-xml" class="headerlink" title="在配置文件中注册 bean-post-processor.xml"></a>在配置文件中注册 bean-post-processor.xml</h3><p>在配置文件配置我们写的自定义后处理器和两个普通 <code>bean</code>，用来测试打印时间和顺序</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- beanPostProcessor --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"carPostProcessor"</span> <span class="attr">class</span>=<span class="string">"context.bean.CarBeanPostProcessor"</span>/&gt;</span></div><div class="line"></div><div class="line">	<span class="comment">&lt;!--用以下两个 bean 进行测试打印时间和顺序--&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"car"</span> <span class="attr">class</span>=<span class="string">"base.factory.bean.Car"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"price"</span> <span class="attr">value</span>=<span class="string">"10000"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"brand"</span> <span class="attr">value</span>=<span class="string">"奔驰"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"book"</span> <span class="attr">class</span>=<span class="string">"domain.ComplexBook"</span>/&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h3 id="启动代码和打印结果"><a href="#启动代码和打印结果" class="headerlink" title="启动代码和打印结果"></a>启动代码和打印结果</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarBeanPostProcessorBootstrap</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"factory.bean/bean-post-processor.xml"</span>);</div><div class="line">		Car car = (Car) context.getBean(<span class="string">"car"</span>);</div><div class="line">		ComplexBook book = (ComplexBook) context.getBean(<span class="string">"book"</span>);</div><div class="line">		System.out.println(car);</div><div class="line">		System.out.println(book);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Bean name : car, before Initialization, time : 1560772863996</div><div class="line">Bean name : car, after Initialization, time : 1560772863996</div><div class="line">Bean name : book, before Initialization, time : 1560772863999</div><div class="line">Bean name : book, after Initialization, time : 1560772863999</div><div class="line">Car&#123;maxSpeed=0, brand=&apos;奔驰&apos;, price=10000.0&#125;</div><div class="line">domain.ComplexBook@77be656f</div></pre></td></tr></table></figure>
+<p>从输出接口看出，打印顺序是先框架内部，再到应用层，框架内部中，在顺序实例化每个 <code>bean</code> 时，前面也提到<strong>执行时机：先执行 <code>postProcessBeforeInitialization</code> 方法，然后实例化 <code>bean</code> 后，执行 <code>postProcessAfterInitialization</code>。</strong></p>
+<p>所以我们重载的两个接口按照前后顺序打印出来了~</p>
+<hr>
+<h2 id="注册-BeanPostProcessor"><a href="#注册-BeanPostProcessor" class="headerlink" title="注册 BeanPostProcessor"></a>注册 BeanPostProcessor</h2><p>上面介绍了使用例子，应该不难理解，接着来看下源码注册的方法：</p>
+<blockquote>
+<p>org.springframework.context.support.AbstractApplicationContext#registerBeanPostProcessors</p>
+</blockquote>
+<p>实际委托给了 <code>PostProcessorRegistrationDelegate.registerBeanPostProcessors(beanFactory, this);</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerBeanPostProcessors</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext)</span> </span>&#123;</div><div class="line">		<span class="comment">// 注释 7.2 从注册表中取出 class 类型为 BeanPostProcessor 的 bean 名称列表</span></div><div class="line">		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</div><div class="line"></div><div class="line">		<span class="keyword">int</span> beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + <span class="number">1</span> + postProcessorNames.length;</div><div class="line">		beanFactory.addBeanPostProcessor(<span class="keyword">new</span> BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));</div><div class="line">		<span class="comment">// 将带有 权限顺序、顺序和其余的 beanPostProcessor 分开</span></div><div class="line">		List&lt;BeanPostProcessor&gt; priorityOrderedPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		<span class="comment">// 类型是 MergedBeanDefinitionPostProcessor</span></div><div class="line">		List&lt;BeanPostProcessor&gt; internalPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		List&lt;String&gt; orderedPostProcessorNames = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		List&lt;String&gt; nonOrderedPostProcessorNames = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		<span class="keyword">for</span> (String ppName : postProcessorNames) &#123;</div><div class="line">            <span class="comment">// 分类，添加到对应数组中</span></div><div class="line">			...</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 首先，注册实现了 PriorityOrdered 接口的 bean 后处理器</span></div><div class="line">		sortPostProcessors(priorityOrderedPostProcessors, beanFactory);</div><div class="line">		registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);</div><div class="line">		<span class="comment">// 下一步，注册实现了 Ordered 接口的 bean 后处理器</span></div><div class="line">		List&lt;BeanPostProcessor&gt; orderedPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;(orderedPostProcessorNames.size());</div><div class="line">		<span class="keyword">for</span> (String ppName : orderedPostProcessorNames) &#123;</div><div class="line">			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);</div><div class="line">			orderedPostProcessors.add(pp);</div><div class="line">			<span class="keyword">if</span> (pp <span class="keyword">instanceof</span> MergedBeanDefinitionPostProcessor) &#123;</div><div class="line">				internalPostProcessors.add(pp);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		sortPostProcessors(orderedPostProcessors, beanFactory);</div><div class="line">		registerBeanPostProcessors(beanFactory, orderedPostProcessors);</div><div class="line">		<span class="comment">// 现在，注册常规 bean 后处理器，其实就是不带顺序</span></div><div class="line">		List&lt;BeanPostProcessor&gt; nonOrderedPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;(nonOrderedPostProcessorNames.size());</div><div class="line">		<span class="keyword">for</span> (String ppName : nonOrderedPostProcessorNames) &#123;</div><div class="line">			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);</div><div class="line">			nonOrderedPostProcessors.add(pp);</div><div class="line">			<span class="keyword">if</span> (pp <span class="keyword">instanceof</span> MergedBeanDefinitionPostProcessor) &#123;</div><div class="line">				internalPostProcessors.add(pp);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);</div><div class="line">		<span class="comment">// 最后，重新注册 MergedBeanDefinitionPostProcessor 类型的后处理器</span></div><div class="line">		<span class="comment">// 看起来是重复注册了，但是每次注册调用的底层方法都会先移除已存在的 beanPostProcessor，然后再加进去，最后还是保存唯一</span></div><div class="line">		sortPostProcessors(internalPostProcessors, beanFactory);</div><div class="line">		registerBeanPostProcessors(beanFactory, internalPostProcessors);</div><div class="line">		<span class="comment">// 添加 ApplicationContext 探测器</span></div><div class="line">		beanFactory.addBeanPostProcessor(<span class="keyword">new</span> ApplicationListenerDetector(applicationContext));</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>跟之前的 <code>BeanFactoryPostProcessor</code> 处理是不是很相似，也是进行分类，将带有权重顺序、顺序和普通 <code>BeanPostProcessor</code> 添加到对应的列表后，然后排序，统一注册到 <code>beanPostProcessors</code> 列表末尾。</p>
+<p>将 <code>BeanPostProcessor</code> 与之前的 <code>BeanFactoryPostProcessor</code> 进行对比后发现，少了硬编码注册的代码，只处理了配置文件方式的注册 <code>bean</code>。通过书中阐释，对少了硬编码的处理有些理解：</p>
+<blockquote>
+<p>对于 BeanFactoryPostProcessor 的处理，在一个方法内实现了注册和实现，所以需要载入配置中的定义，并进行激活；而对于 BeanPostProcessor 并不需要马上调用，<strong>硬编码的方式实现的功能是将后处理器提取并调用，对于 BeanPostProcessor，注册阶段不需要调用，所以没有考虑处理硬编码</strong>，在这里只需要将配置文件的 BeanPostProcessor 提取出来并注册进入 beanFactory 就可以了。</p>
+</blockquote>
+<p>而且我在测试过程，想在应用代码中进行硬编码注册，<strong>发现由于 <code>ClassPathXmlApplicationContext</code> 最后一个方法是实例化非延迟加载的 <code>bean</code>，在上下文创建好时，<code>BeanPostProcessor</code> 就已经执行完成了，于是硬编码注册的后处理器无法执行</strong>，只能通过设定延迟加载或者在配置文件配置中进行注册，或者其它 BeanFactory 能支持硬编码。</p>
+<p>剩下顺序 <code>Order</code> 类型的后处理器注册 <code>BeanFactoryPostProcessor</code> 类似就不重复多讲解了，这段代码的逻辑挺清晰的~</p>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>结束两个扩展功能，<code>BeanFactoryPostProcessor</code> 和 <code>BeanPostProcessor</code> 的学习使用后，还有其它的扩展功能没学习到，<strong>在一开始基础机构篇就提到剩下的方法：</strong></p>
+<p><img src="http://img.sevenyuan.cn/context_extend_method_list.png" alt=""></p>
+<p>这这些扩展功能中，个人感觉<strong>事件传播器、监听器和发送广播事件</strong>这三个会用得比较多，所以下面的内容会花比较大篇幅讲这三个扩展。</p>
+<hr>
+<h1 id="初始化消息资源"><a href="#初始化消息资源" class="headerlink" title="初始化消息资源"></a>初始化消息资源</h1><p>根据书中的内容介绍，这个消息资源 <code>messageSource</code> 是跟 <code>Spring</code> 国际化相关。</p>
+<p>例如中美之间的中英文差别，在不同地区显示不同的资源。对于有国际化需求的系统，要为每种提供一套相应的<strong>资源文件</strong>，并以规范化命名的形式保存在特定的目录中，由系统自动根据客户端的语言或者配置选择合适的资源文件。</p>
+<p>举个🌰：<br>定义了两个资源文件，简单配置如下</p>
+<ul>
+<li>中文地区： test=测试</li>
+<li>英文地区： test=test</li>
+</ul>
+<p><strong>所以可以通过 <code>Applicationcontext.getMessage()</code> 方法访问国际化信息，在不同的环境中获取对应的数据。</strong></p>
+<p>由于个人感觉这种配置相关的，可以通过 <code>profile</code> 切换来实现，所以没有去细看和使用，具体实现和使用请感兴趣的同学们深入了解吧。</p>
+<hr>
+<h1 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h1><p>事件传播器的使用很像我们设计模式中的<strong>观察者模式</strong>，被观察者变动后通知观察者进行相应的逻辑处理。</p>
+<p>在了解 <code>Spring</code> 如何初始化事件传播器之前，来看下 <code>Spring</code> 监听的简单用法。</p>
+<h2 id="定义监听事件-Event"><a href="#定义监听事件-Event" class="headerlink" title="定义监听事件 Event"></a>定义监听事件 Event</h2><p>新建一个类，继承于 <code>ApplicationEvent</code>，并且需要在构造方法中调用父类的构造函数 <code>supre(source)</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationEvent</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line"><span class="comment">	 * 自定义一个消息</span></div><div class="line"><span class="comment">	 */</span></div><div class="line">	<span class="keyword">private</span> String msg;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CarEvent</span><span class="params">(Object source)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(source);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CarEvent</span><span class="params">(Object source, String msg)</span> </span>&#123;</div><div class="line">		<span class="keyword">super</span>(source);</div><div class="line">		<span class="keyword">this</span>.msg = msg;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="定义监听器-Listener"><a href="#定义监听器-Listener" class="headerlink" title="定义监听器 Listener"></a>定义监听器 Listener</h2><p>新建一个类，引用 <code>ApplicationListener</code> 接口，然后重载 <code>onApplicationEvent</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarEventListener</span> <span class="keyword">implements</span> <span class="title">ApplicationListener</span> </span>&#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(ApplicationEvent event)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (event <span class="keyword">instanceof</span> CarEvent) &#123;</div><div class="line">			CarEvent carEvent = (CarEvent) event;</div><div class="line">			System.out.println(<span class="string">"source : "</span> + event.getSource() + <span class="string">",  custom message : "</span> + carEvent.getMsg());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于 <code>Spring</code> 的消息监听器不像 <code>kafka</code> 等主流 <code>MQ</code> 可以指定发送队列或者监听主题，只要发送消息后，所有注册的监听器都会收到消息进行处理，所以这边加了一个判断，如果是我业务上需要的消息，才会进行处理。</p>
+<hr>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"testListener"</span> <span class="attr">class</span>=<span class="string">"context.event.CarEventListener"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>将刚才写的监听器注册到 <code>Spring</code> 容器中</p>
+<hr>
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EventBootstrap</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"factory.bean/bean-post-processor.xml"</span>);</div><div class="line">		<span class="comment">// 第一个参数是来源，第二个参数是自定义</span></div><div class="line">		CarEvent carEvent = <span class="keyword">new</span> CarEvent(<span class="string">"hello"</span>,  <span class="string">"world"</span>);</div><div class="line">		context.publishEvent(carEvent);</div><div class="line">		<span class="comment">// 消息发送之后，打印以下内容</span></div><div class="line">		<span class="comment">// source : hello,  custom message : world</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于在配置文件中注册了监听器，然后在启动代码汇总初始化了监听事件，最终通过 <code>context</code> 发送消息，发现输出结果与预想的一致。</p>
+<p>这种观察者模式实现很经典，使用起来也很简单，下面来结合源码分析一下 <code>Spring</code> 是如何实现消息监听的功能。</p>
+<hr>
+<h2 id="消息监听代码分析"><a href="#消息监听代码分析" class="headerlink" title="消息监听代码分析"></a>消息监听代码分析</h2><p><strong>从源码中分析，发现主要是下面三个步骤：</strong></p>
+<h3 id="初始化-ApplicationEvenMulticaster"><a href="#初始化-ApplicationEvenMulticaster" class="headerlink" title="初始化 ApplicationEvenMulticaster"></a>初始化 ApplicationEvenMulticaster</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initApplicationEventMulticaster</span><span class="params">()</span> </span>&#123;</div><div class="line">	ConfigurableListableBeanFactory beanFactory = getBeanFactory();</div><div class="line">	<span class="comment">// 如有有自己注册class Name 是 applicationEventMulticaster，使用自定义广播器</span></div><div class="line">	<span class="keyword">if</span> (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) &#123;</div><div class="line">		<span class="keyword">this</span>.applicationEventMulticaster =</div><div class="line">				beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="comment">// 没有自定义，使用默认的事件广播器</span></div><div class="line">		<span class="keyword">this</span>.applicationEventMulticaster = <span class="keyword">new</span> SimpleApplicationEventMulticaster(beanFactory);</div><div class="line">		beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, <span class="keyword">this</span>.applicationEventMulticaster);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>广播器的作用是用来广播消息</strong>，在默认的广播器 <code>SimpleApplicationEventMulticaster</code> 类中发现了这个方法 <code>multicastEvent</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">multicastEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event, @Nullable ResolvableType eventType)</span> </span>&#123;</div><div class="line">	ResolvableType type = (eventType != <span class="keyword">null</span> ? eventType : resolveDefaultEventType(event));</div><div class="line">	Executor executor = getTaskExecutor();</div><div class="line">	<span class="comment">// 遍历注册的消息监听器</span></div><div class="line">	<span class="keyword">for</span> (ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123;</div><div class="line">		<span class="keyword">if</span> (executor != <span class="keyword">null</span>) &#123;</div><div class="line">			executor.execute(() -&gt; invokeListener(listener, event));</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			invokeListener(listener, event);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>可以看到，在广播事件时，会遍历所有注册的监听器进行调用 <code>invokeListener</code> 方法，底层调用的是监听器重载的 <code>listener.onApplicationEvent(event)</code>，所以再次强调一次，如果使用 <code>Spring</code> 自带的事件监听，请在业务处理方判断事件来源，避免处理错误。</strong></p>
+<hr>
+<h3 id="注册监听器"><a href="#注册监听器" class="headerlink" title="注册监听器"></a>注册监听器</h3><p>在上一步中，已经初始化好了广播器，所以下一步来看下，监听器的注册流程，入口方法如下：</p>
+<blockquote>
+<p>org.springframework.context.support.AbstractApplicationContext#registerListeners</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">registerListeners</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="comment">// 这里是硬编码注册的监听器</span></div><div class="line">	<span class="keyword">for</span> (ApplicationListener&lt;?&gt; listener : getApplicationListeners()) &#123;</div><div class="line">		getApplicationEventMulticaster().addApplicationListener(listener);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 不要在这里初始化 factoryBean : 我们需要保留所有常规 bean 未初始化，以便让后处理程序应用于它们!</span></div><div class="line">	<span class="comment">// 这一步是配置文件中注册的监听器</span></div><div class="line">	String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</div><div class="line">	<span class="keyword">for</span> (String listenerBeanName : listenerBeanNames) &#123;</div><div class="line">		getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 发布早期的应用程序事件，现在我们终于有了一个多播器=-=</span></div><div class="line">	Set&lt;ApplicationEvent&gt; earlyEventsToProcess = <span class="keyword">this</span>.earlyApplicationEvents;</div><div class="line">	<span class="keyword">this</span>.earlyApplicationEvents = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span> (earlyEventsToProcess != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="keyword">for</span> (ApplicationEvent earlyEvent : earlyEventsToProcess) &#123;</div><div class="line">			getApplicationEventMulticaster().multicastEvent(earlyEvent);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这一个方法代码不多，也没啥嵌套功能，按照注释顺序将流程梳理了一遍，将我们注册的监听器加入到 <code>applicationEventMulticaster</code> 列表中，等待之后调用。</p>
+<hr>
+<h3 id="publishEvent"><a href="#publishEvent" class="headerlink" title="publishEvent"></a>publishEvent</h3><p>广播器和监听器都准备好了，剩下的就是发送事件，通知监听器做相应的处理：</p>
+<blockquote>
+<p>org.springframework.context.support.AbstractApplicationContext#publishEvent(java.lang.Object, org.springframework.core.ResolvableType)</p>
+</blockquote>
+<p>核心是这行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">getApplicationEventMulticaster().multicastEvent(applicationEvent, eventType);</div></pre></td></tr></table></figure>
+<p>通过获取事件广播器，调用 <code>multicastEvent</code> 方法，进行广播事件，这一步前面也介绍过了，不再细说。</p>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次学习，省略了书中的一些内容，有关属性编辑器、<code>SPEL</code> 语言和初始化非延迟加载等内容，请感兴趣的同学继续深入了解~</p>
+<p>我们也能从 <code>Spring</code> 提供的这些扩展功能中学习到，通过预留后处理器，可以在 <code>bean</code> 实例化之前修改配置信息，或者做其他的自定义操作；通过广播事件，定义事件和监听器，在监听器中实现业务逻辑，由于不是直接调用监听器，而是通过事件广播器进行中转，达到了代码解耦的效果。</p>
+<p><strong>所以在之后的代码设计和编写中，在整体设计上，有必要的话，考虑在更高的抽象层要预留扩展功能，然后让子类重载或者实现，实现扩展的功能。</strong></p>
+<hr>
+<p><strong>由于个人技术有限，如果有理解不到位或者错误的地方，请留下评论，我会根据朋友们的建议进行修正</strong></p>
+<p><strong>代码和注释都在里面，小伙伴们可以下载我上传的代码，亲测可运行~</strong></p>
+<p><a href="https://gitee.com/vip-augus/spring-analysis-note.git" target="_blank" rel="noopener">Gitee 地址：https://gitee.com/vip-augus/spring-analysis-note.git</a></p>
+<p><a href="https://github.com/Vip-Augus/spring-analysis-note" target="_blank" rel="noopener">Github 地址：https://github.com/Vip-Augus/spring-analysis-note</a></p>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li>Spring 源码深度解析 / 郝佳编著. – 北京 : 人民邮电出版社</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/22/spring/2019-06-22-spring-analysis-note-6/" rel="next" title="Spring Spring 源码学习(六)扩展功能 上篇">
+                <i class="fa fa-chevron-left"></i> Spring Spring 源码学习(六)扩展功能 上篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/17/spring/2019-07-17-spring-analysis-note-8/" rel="prev" title="Spring 源码学习(八) AOP 使用和实现原理">
+                Spring 源码学习(八) AOP 使用和实现原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/v2-5fcd19d675e24a73cd5975bda3d8895e_hd.jpg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BeanPostProcessor"><span class="nav-number">2.</span> <span class="nav-text">BeanPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">2.1.</span> <span class="nav-text">如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建一个-bean-后处理器"><span class="nav-number">2.1.1.</span> <span class="nav-text">新建一个 bean 后处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在配置文件中注册-bean-post-processor-xml"><span class="nav-number">2.1.2.</span> <span class="nav-text">在配置文件中注册 bean-post-processor.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动代码和打印结果"><span class="nav-number">2.1.3.</span> <span class="nav-text">启动代码和打印结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册-BeanPostProcessor"><span class="nav-number">2.2.</span> <span class="nav-text">注册 BeanPostProcessor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">2.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化消息资源"><span class="nav-number">3.</span> <span class="nav-text">初始化消息资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件监听"><span class="nav-number">4.</span> <span class="nav-text">事件监听</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义监听事件-Event"><span class="nav-number">4.1.</span> <span class="nav-text">定义监听事件 Event</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义监听器-Listener"><span class="nav-number">4.2.</span> <span class="nav-text">定义监听器 Listener</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">4.3.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试代码"><span class="nav-number">4.4.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息监听代码分析"><span class="nav-number">4.5.</span> <span class="nav-text">消息监听代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化-ApplicationEvenMulticaster"><span class="nav-number">4.5.1.</span> <span class="nav-text">初始化 ApplicationEvenMulticaster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册监听器"><span class="nav-number">4.5.2.</span> <span class="nav-text">注册监听器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#publishEvent"><span class="nav-number">4.5.3.</span> <span class="nav-text">publishEvent</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
