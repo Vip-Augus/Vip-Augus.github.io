@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://img.sevenyuan.cn/gradle_selected.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/gradle_building.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/OlyaB/DarkPurpleTheme/master/screenshots/darkpurple-main-window.png">
-<meta property="og:updated_time" content="2019-07-17T10:42:14.035Z">
+<meta property="og:updated_time" content="2019-07-21T03:25:31.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习-环境准备">
 <meta name="twitter:description" content="一起来准备阅读 Spring 源码">
@@ -420,6 +420,31 @@
 <p>2、<a href="https://blog.csdn.net/leftfist/article/details/88617463" target="_blank" rel="noopener">gradle版本引起编译报错问题：Cause: org.jetbrains.plugins.gradle.tooling.util.ModuleComponentIdentifierImpl.getM</a></p>
 <p>3、<a href="https://www.jianshu.com/p/f9951d5506fc" target="_blank" rel="noopener">Gradle 5 IntelJ java.lang.AbstractMethodError
 </a></p>
+<h1 id="传送门："><a href="#传送门：" class="headerlink" title="传送门："></a>传送门：</h1><ul>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-env-prepared" target="_blank" rel="noopener">Spring 源码学习-环境准备</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-1" target="_blank" rel="noopener">Spring 源码学习(一)容器的基础结构</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/14/spring/2019-06-14-spring-analysis-note-2" target="_blank" rel="noopener">Spring 源码学习(二)默认标签解析</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/16/spring/2019-06-16-spring-analysis-note-3" target="_blank" rel="noopener">Spring 源码学习(三)自定义标签</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/19/spring/2019-06-19-spring-analysis-note-4" target="_blank" rel="noopener">Spring 源码学习(四) bean 的加载</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-5" target="_blank" rel="noopener">Spring 源码学习(五)循环依赖</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-6" target="_blank" rel="noopener">Spring 源码学习(六)扩展功能 上篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/30/spring/2019-06-30-spring-analysis-note-7" target="_blank" rel="noopener">Spring 源码学习(七)扩展功能 下篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/17/spring/2019-07-17-spring-analysis-note-8" target="_blank" rel="noopener">Spring 源码学习(八) AOP 使用和实现原理</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/18/spring/2019-07-18-spring-analysis-note-9" target="_blank" rel="noopener">Spring 源码学习(九) Transaction 事务</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/21/spring/2019-07-21-spring-analysis-note-10" target="_blank" rel="noopener">Spring 源码学习(十) Spring mvc</a></p>
+</li>
+</ul>
+<hr>
 
       
     </div>
@@ -541,7 +566,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -644,7 +669,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码环境准备"><span class="nav-number">1.</span> <span class="nav-text">代码环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置-Gradle-路径"><span class="nav-number">2.</span> <span class="nav-text">设置 Gradle 路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载依赖和编译"><span class="nav-number">3.</span> <span class="nav-text">下载依赖和编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-源码分析大致流程"><span class="nav-number">4.</span> <span class="nav-text">Spring 源码分析大致流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的坑"><span class="nav-number">5.</span> <span class="nav-text">遇到的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无法识别-Gradle-项目"><span class="nav-number">5.1.</span> <span class="nav-text">无法识别 Gradle 项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradle-版本和-Idea-版本不匹配"><span class="nav-number">5.2.</span> <span class="nav-text">gradle 版本和 Idea 版本不匹配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码环境准备"><span class="nav-number">1.</span> <span class="nav-text">代码环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置-Gradle-路径"><span class="nav-number">2.</span> <span class="nav-text">设置 Gradle 路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载依赖和编译"><span class="nav-number">3.</span> <span class="nav-text">下载依赖和编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-源码分析大致流程"><span class="nav-number">4.</span> <span class="nav-text">Spring 源码分析大致流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的坑"><span class="nav-number">5.</span> <span class="nav-text">遇到的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无法识别-Gradle-项目"><span class="nav-number">5.1.</span> <span class="nav-text">无法识别 Gradle 项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradle-版本和-Idea-版本不匹配"><span class="nav-number">5.2.</span> <span class="nav-text">gradle 版本和 Idea 版本不匹配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传送门："><span class="nav-number"></span> <span class="nav-text">传送门：</span></a></div>
             
 
           </div>
