@@ -40,6 +40,8 @@
 
 - [Spring 源码学习(十) Spring mvc](https://vip-augus.github.io/2019/07/21/spring/2019-07-21-spring-analysis-note-10)
 
+- [Spring 源码学习总结篇](https://vip-augus.github.io/2019/08/02/spring/2019-08-02-spring-analysis-artsdome/)
+
 ---
 
 ## Java
@@ -74,6 +76,8 @@
 
 -  [Java设计模式学习 - 模版方法模式&策略模式](https://vip-augus.github.io/2018/09/08/java/Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%20-%20%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F&%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/)
 
+- [SpringBoot 速记](https://vip-augus.github.io/2019/08/28/spring/2019-08-28-springboot-shorthand/)
+
 
 
 ---
@@ -90,7 +94,7 @@
 
 -  [记一次服务器执行MySQL耗时问题](https://vip-augus.github.io/2018/08/25/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%89%A7%E8%A1%8CMySQL%E8%80%97%E6%97%B6%E9%97%AE%E9%A2%98/)
 
-
+- [记一次使用 Arthas 热更新线上代码（误）](https://vip-augus.github.io/2019/10/03/java/2019-09-14-arthas_hot_update/)
 
 ---
 
