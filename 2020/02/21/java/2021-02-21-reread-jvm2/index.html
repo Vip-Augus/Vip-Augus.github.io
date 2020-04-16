@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cmsold_flow.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cms_gc_log.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/consweep_parnew.png">
-<meta property="og:updated_time" content="2020-02-21T06:29:21.442Z">
+<meta property="og:updated_time" content="2020-03-11T15:00:00.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重读 JVM - ParNew &amp; CMS GC">
 <meta name="twitter:description" content="这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议">
@@ -367,12 +367,12 @@
 <a id="more"></a>
 <h2 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h2><p>GC 全称是 <code>Garbage Collect</code>，译为 「垃圾回收」，在代码编写过程中，我们new 一个对象后，在使用和结束阶段，都可以不需要关注内存分配和内存回收，因为 jvm 会自动识别到哪些对象不再被使用，然后进行清理，同时在内存中释放掉这些空间。</p>
 <h3 id="判断对象不可用的方法"><a href="#判断对象不可用的方法" class="headerlink" title="判断对象不可用的方法"></a>判断对象不可用的方法</h3><ul>
-<li>引用计数 Reference Count</li>
+<li><strong>引用计数 Reference Count</strong></li>
 </ul>
 <p>简单理解就是，每个对象都有一个计数器，如果该对象被其它对象引用后，计数器加一，如果计数器不为 0，表示它还在使用，不能被清理。</p>
 <p>这样会有个弊端，例如 <code>A &lt;-&gt; B</code>，如果存在互相引用，但没有被第三方继续引用，那么这两个对象其实没有其他使用，但由于计数器不为 0，无法得到清理。</p>
 <ul>
-<li>可达性分析 Reachability Analysis</li>
+<li><strong>可达性分析 Reachability Analysis</strong></li>
 </ul>
 <p>以 <code>GC Roots</code> 为起点，根据引用关系往下搜索，搜索过程中走过的路称为”引用连“（Reference Chain)，如果与 GC Roots 对象可连接，说明对象还在使用，反之表示不可达，说明这些对象不使用，可以被回收掉。</p>
 <p><img src="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png" alt=""></p>
@@ -391,22 +391,25 @@
 <p>为何要选择 ParNew 作为新生代的回收器，答案是目前好像除了 Serial 收集器外，只有它能够与老年代的 CMS 回收器搭配使用，在 jvm 启动参数中可以通过 <code>+XX:+/-UseParNewGC</code> 来开启或者关闭使用该收集器。</p>
 <p><img src="http://img.sevenyuan.cn/reread/jvm/parnew_flow.png" alt=""></p>
 <p>顺便来介绍一下其它几个 jvm 参数：</p>
-<ol>
+<ul>
 <li><strong>-XX:SurvivorRatio</strong></li>
-</ol>
+</ul>
 <p>在新生代 <code>Young Generation</code> 中，分为了一个 Eden 区和两个 Survivor（From &amp; TO），这是一种更优的半区复制分代策略，每次分配使用 Eden 区 + 其中一个 Survivor 区，发生垃圾回收时，将 Eden 和 Survivor 中还存活的对象拷贝到另一个 Survivor 区（ From —&gt; TO），然后清理掉刚才的 Eden 和一块刚才使用过的 Survivor 区中数据。</p>
 <p>该参数的默认数值是 8，表示的是 Eden ：Survivor 比值，因为有两个 Survivor 区域，所以一块 Survivor 占新生代 1/10，Eden 占有 8/10。</p>
-<ol>
+<ul>
 <li><strong>–XX:NewRatio</strong></li>
-</ol>
+</ul>
 <p>该参数表示的是新生代与老年代的比值</p>
 <p>例如如果设置 <code>-XX:NewRatio=2</code>，新生代（Eden + 2 * Survivor）：老年代 = 1 ：2，所以新生代占堆的 1/3，老年代占堆的 2/3。</p>
-<ol>
+<ul>
 <li><strong>-XX:MetaspaceSize -XX:MaxMetaspaceSize</strong></li>
-</ol>
+</ul>
 <p>在 jdk8 之前，存在一个区域叫「永久代」（Permgen），与 jdk8 之后出现的「元空间」（Metaspace）作用一样，主要功能是存储类实例的具体信息（即类对象），这部分也叫做「类的元数据」，只对编译器或者 JVM 的运行时有用。</p>
 <p>不同于元空间，永久代里还存储了一些与类数据无关的杂项对象（miscellaneous object），这些对象在 jdk8 的时候，被挪回了普通的堆空间。除此之外，jdk8 开始从根本上改变了保存在这个特殊区域的元数据的类型。</p>
-<p>作为开发，可能不需要太关注里面存储了什么信息，不过得知道为啥「元空间」取代了「永久代」，翻看资料，发现了之前默认情况下，永久代大多分配的大小最多只有 82MB，如果遇到特别复杂的应用，加载的类特别多，所以存储的类信息也会很多。在开发中的应用服务器（或者任何需要频繁重新载入类的环境）上经常会碰到由于永久代空间空间耗尽触发的 Full GC。</p>
+<p>作为开发，可能不需要太关注里面存储了什么信息，不过得知道为啥「元空间」取代了「永久代」。</p>
+<p>翻看资料，发现了之前默认情况下，永久代大多分配的大小最多只有 82MB，如果遇到特别复杂的应用，加载的类特别多，所以存储的类信息也会很多。</p>
+<p><strong>在 jdk8 之前应用服务器（或者任何需要频繁重新载入类的环境）上经常会碰到由于永久代空间空间耗尽触发的 Full GC。</strong></p>
+<p><strong>而在 jdk8 之后，元空间并不在虚拟机中，而是使用本地内存，所以它的大小仅受到本地内存，也就是系统实际可用空间控制。</strong></p>
 <p>默认情况下，元空间是没有大小限制的，不过还是建议分配一个初始和最大值，例如 <code>-XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m</code>，虽然还是有可能触发 Full GC，这个时候就要排查定位出什么类导致元空间这么庞大，然后进行解决。</p>
 <h3 id="新生代-GC"><a href="#新生代-GC" class="headerlink" title="新生代 GC"></a>新生代 GC</h3><p>可以看下新生代 GC 前后的内存分布情况：(蓝色表示使用情况)</p>
 <p><img src="http://img.sevenyuan.cn/reread/jvm/parnew_gc_memory.png" alt=""></p>
@@ -434,7 +437,7 @@
 <ul>
 <li><strong>2211645K-&gt;1099617K(4054528K), 0.0118211 secs</strong></li>
 </ul>
-<p>第二次出现的数字串，<strong>前三个数字分别表示老年代当前使用的容量，回收后的容量，以及老年代分配的总大小</strong></p>
+<p>第二次出现的数字串，<strong>前三个数字分别表示堆 heap 当前使用的容量，回收后的容量，以及整个堆 heap 空间分配的总大小</strong></p>
 <ul>
 <li><strong>[Times: user=0.00 sys=0.00, real=0.01 secs]</strong></li>
 </ul>
@@ -506,19 +509,13 @@
 <p>目前来说，默认参数配置已经够用了，例如下面这个：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">MEM_OPTS="</div><div class="line">-server                   # 以服务端形式运行</div><div class="line">-Xms4096m                 # 起始堆大小</div><div class="line">-Xmx4096m                 # 最大堆大小</div><div class="line">-XX:MetaspaceSize=256m    # 元空间大小 </div><div class="line">-XX:MaxMetaspaceSize=256m # 最大元空间大小</div><div class="line">-XX:NewRatio=2            # 新生代 : 老年代 = 1 : 2，该数值要注意，2 是老年代占的比例</div><div class="line">-XX:SurvivorRatio=8       # Eden : Survivor = 8 : 1，表示一个 Survivor 占新生代的 1/10</div><div class="line">"      </div><div class="line"></div><div class="line"></div><div class="line">GC_OPTS="</div><div class="line">-XX:+UseConcMarkSweepGC                 # 使用 CMS</div><div class="line">-XX:+UseCMSCompactAtFullCollection      # 在 Full GC 时进行压缩整理</div><div class="line">-XX:CMSInitiatingOccupancyFraction=70   # 老年代触发 GC 的百分比</div><div class="line">-XX:MaxTenuringThreshold=15             # 最大老年代回收线程数量，回收线程不是越多越好，要结合服务器性能一起评估，具体算法请查相关文章</div><div class="line">-XX:+DisableExplicitGC                  # 禁止在代码中显式调用 System.gc()</div><div class="line">-XX:+CMSParallelRemarkEnabled           # 开启并发重标记</div><div class="line">-verbose:gc                             # 设置 gc 输出的日志参数...</div><div class="line">-XX:+PrintGCDateStamps </div><div class="line">-XX:+PrintGCDetails </div><div class="line">-Xloggc:$&#123;LOGS_DIR&#125;/gc.log -XX:+UseGCLogFileRotation </div><div class="line">-XX:NumberOfGCLogFiles=5 </div><div class="line">-XX:GCLogFileSize=20M"</div></pre></td></tr></table></figure>
 <p>下面是几个调优建议</p>
-<ol>
-<li><strong>升级配置</strong></li>
-</ol>
+<p>1 <strong>升级配置</strong></p>
 <p>如果你的应用之前运行在 2C4G 的服务器上，发现相应速度越来越慢，那这个时候可以升级到 4C8G，配置越高，服务器的性能当然也会更好，这时你就可以可以调整 <code>MEM_OPTS</code>，将内存参数放大</p>
 <p>先别喷这个建议，有时候业务量上来了，原有的机器性能的确扛不住，这样的话升级硬件配置也是理所当然的</p>
-<ol>
-<li><strong>调整 CMSInitiatingOccupancyFraction 参数</strong></li>
-</ol>
+<p>2 <strong>调整 CMSInitiatingOccupancyFraction 参数</strong></p>
 <p><code>CMSInitiatingOccupancyFraction</code> 默认情况下是 70，老年代占用达到 70%后将会触发 CMS GC，但这个时候有可能出现新生代在不断分配对象，然后有对象能够晋升到老年代，将会出现老年代空间不足而触发的 Full GC。</p>
 <p>所以可以适当减小这个值，让并发后台线程尽早运行，去回收老年代不再使用的对象。</p>
-<ol>
-<li><strong>优化代码逻辑</strong></li>
-</ol>
+<p>3 <strong>优化代码逻辑</strong></p>
 <p>除去服务器配置问题，业务代码上如果出现大量耗时操作，例如频繁的数据库交互，大数据计算，这样 GC 将会更加频繁，并且时间可能越来越长，导致用户线程被占用，系统中断时间增加，会造成用户不好的使用体验。</p>
 <p>所以根本上，需要从应用代码着手，例如做以下几个方面的优化</p>
 <ul>
@@ -572,6 +569,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/04/redis/2020-04-04-annotation-redis-lock/" rel="prev" title="使用注解形式实现 Redis 分布式锁">
+                使用注解形式实现 Redis 分布式锁 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -650,7 +651,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">85</span>
+                <span class="site-state-item-count">87</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -661,7 +662,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -672,7 +673,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
