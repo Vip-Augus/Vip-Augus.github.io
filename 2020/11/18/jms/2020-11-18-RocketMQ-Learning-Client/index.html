@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RocketMQ," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="学习一下火箭消息 - 消费者的原理和使用🚀">
+<meta name="keywords" content="RocketMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RocketMQ Consumer 深入学习">
+<meta property="og:url" content="http://yoursite.com/2020/11/18/jms/2020-11-18-RocketMQ-Learning-Client/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="学习一下火箭消息 - 消费者的原理和使用🚀">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/TorontoSky_ZH-CN6932705886_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Consumer_Consume_Type.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-Part-Order-Message.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/RocketMQ_Idemponent_Consume_Design.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocektMQ_Consumer_Acquire_Message.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/RocketMQ_Consumer_MessageQueue_Allocate.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/RocketMQ_Subscribe_Not_Equal.png">
+<meta property="og:updated_time" content="2020-11-23T00:26:27.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RocketMQ Consumer 深入学习">
+<meta name="twitter:description" content="学习一下火箭消息 - 消费者的原理和使用🚀">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/TorontoSky_ZH-CN6932705886_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/18/jms/2020-11-18-RocketMQ-Learning-Client/"/>
+
+
+
+
+
+  <title>RocketMQ Consumer 深入学习 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/18/jms/2020-11-18-RocketMQ-Learning-Client/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RocketMQ Consumer 深入学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-18T21:00:00+08:00">
+                2020-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RocketMQ/" itemprop="url" rel="index">
+                    <span itemprop="name">RocketMQ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/TorontoSky_ZH-CN6932705886_1920x1080.jpg" alt=""></p>
+<center><strong>学习一下火箭消息 - 消费者的原理和使用🚀</strong></center>
+
+<a id="more"></a>
+<hr>
+<h1 id="消费模式"><a href="#消费模式" class="headerlink" title="消费模式"></a>消费模式</h1><p>消息消费有两种模式：</p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Consumer_Consume_Type.png" alt=""></p>
+<h2 id="1、并发消费"><a href="#1、并发消费" class="headerlink" title="1、并发消费"></a>1、并发消费</h2><p>并发消费是默认的处理方法，一个消费者使用线程池技术，可以并发消费多条消息，提升机器的资源利用率。默认配置是 20 个线程，所以一台机器默认情况下，同一瞬间可以消费 20 个消息。</p>
+<p>其中 <code>ConsumeMessageConcurrentlyService</code> 的构造函数如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ConsumeMessageConcurrentlyService</span><span class="params">(DefaultMQPushConsumerImpl defaultMQPushConsumerImpl,</span></span></div><div class="line"><span class="function"><span class="params">        MessageListenerConcurrently messageListener)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.defaultMQPushConsumerImpl = defaultMQPushConsumerImpl;</div><div class="line">        <span class="keyword">this</span>.messageListener = messageListener;</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.defaultMQPushConsumer = <span class="keyword">this</span>.defaultMQPushConsumerImpl.getDefaultMQPushConsumer();</div><div class="line">        <span class="keyword">this</span>.consumerGroup = <span class="keyword">this</span>.defaultMQPushConsumer.getConsumerGroup();</div><div class="line">        <span class="keyword">this</span>.consumeRequestQueue = <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;();</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.consumeExecutor = <span class="keyword">new</span> ThreadPoolExecutor(</div><div class="line">            <span class="keyword">this</span>.defaultMQPushConsumer.getConsumeThreadMin(),</div><div class="line">            <span class="keyword">this</span>.defaultMQPushConsumer.getConsumeThreadMax(),</div><div class="line">            <span class="number">1000</span> * <span class="number">60</span>,</div><div class="line">            TimeUnit.MILLISECONDS,</div><div class="line">            <span class="keyword">this</span>.consumeRequestQueue,</div><div class="line">            <span class="keyword">new</span> ThreadFactoryImpl(<span class="string">"ConsumeMessageThread_"</span>));</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(<span class="keyword">new</span> ThreadFactoryImpl(<span class="string">"ConsumeMessageScheduledThread_"</span>));</div><div class="line">        <span class="keyword">this</span>.cleanExpireMsgExecutors = Executors.newSingleThreadScheduledExecutor(<span class="keyword">new</span> ThreadFactoryImpl(<span class="string">"CleanExpireMsgScheduledThread_"</span>));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h2 id="2、顺序消费"><a href="#2、顺序消费" class="headerlink" title="2、顺序消费"></a>2、顺序消费</h2><p>有些业务场景，消息的消费需要顺序性，例如购物时，下订单、库存校验、支付、发送物流，虽然都属于「购物」这个场景的子任务，但他们之间是有顺序性的。如果它们业务处理通过消息解耦，那消息消费也得要有顺序性。</p>
+<p><code>RocketMQ</code> 的做法就是分区有序性，首先需要发送者，将有顺序的消息发往 <code>Topic</code> 下同一个 <code>MessageQueue</code>，然后消费者，顺序地一个一个进行消费，消费失败将会一直重试，前面消息消费完成才能进行下一个，所以需要在业务上确保消息失败机制，避免消息阻塞。</p>
+<p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-Part-Order-Message.png" alt=""></p>
+<hr>
+<h1 id="幂等消费"><a href="#幂等消费" class="headerlink" title="幂等消费"></a>幂等消费</h1><p>在 <code>RocketMQ</code> 的设计中，是不保证消息的幂等性，这时候需要业务方自行保证，重复消费消费不会对数据造成影响，从数学意义上来说，<code>f(x) = f(f(x))</code>，多次计算的结果都是一致的。</p>
+<p><code>RocketMQ</code> 保证存储在 <code>Broker</code> 的消息最少投递一次，该特性保证消息一定会被消费，但由于网络抖动或者其它场景，导致一条消息可能被消费多次。</p>
+<p>在相同业务类型的消息中，这里需要考虑两个场景</p>
+<ul>
+<li>并发消费</li>
+<li>消息消费超时后重复投递</li>
+</ul>
+<p>第一个场景很好理解，一条相同类型的消息被不同的消费者同时拉取，可能是不同发送者同时发送的，例如喜闻乐见的 <code>A B</code> 转账问题。</p>
+<p>第二个场景比较难遇到，默认情况，消息处理超过 15 分钟后，将会重新投递消费，如果原来服务器 <code>A</code> 还在处理中，重新投递的消息被服务器 <code>B</code> 拉取了；另一种就是手动重发消息，通过控制台可以重新发送一模一样的消息，<code>MessageID</code> 和消息体跟之前一样，这两种情况下也会造成消息重复消费。</p>
+<p>于是设计上，考虑了使用 <code>Redis</code> 做分布式锁，通过竞争锁来避免同时消息，以及用 <code>Redis</code> 暂存消费状态，设计如下：</p>
+<p><img src="http://img.sevenyuan.cn/rocket/RocketMQ_Idemponent_Consume_Design.png" alt=""></p>
+<p><strong>注意点：</strong></p>
+<p>1、锁资源 key 的组装规则（【消费组】+【:】+【主题 topic】+【:】+【messageId 或者 messageKey】</p>
+<p>2、锁对应的状态流转（Processing or Successed)</p>
+<p>3、避免处理耗时超过锁 expire 时间，导致其它服务器订阅消息并成功消费。加入一个定时线程池，抢到锁资源后，组装定时任务，进行【续时】</p>
+<p>4、任务成功后，修改状态为【Successed】，失效时间订为 1h；失败情况，清理掉所有锁资源和定时任务，返回失败重试策略</p>
+<p>5、根据 Redis 中保存的状态，过滤重复的消息</p>
+<p>在消息 <code>SDK</code> 代码实现上，通过装饰器模式，将 <code>MessageConsumer</code> 包装起来，在业务逻辑不需改动太大情况下，动态增加了幂等消费的功能。</p>
+<hr>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p><img src="http://img.sevenyuan.cn/rocket/broker/RocektMQ_Consumer_Acquire_Message.png" alt=""></p>
+<p>上图展示了，在一个 <code>pullRequestQueue</code>，可能获取到多个消息 <code>MessageExt</code>，然后每个消息将会进入消费线程池中消费。</p>
+<p>Consumer 端使用 <code>RebalanceImpl</code> 来实现负载均衡，所以想要理解拉取消息的流程，需要重点查看它实现。</p>
+<p>Consumer 实例启动时，在工厂 <code>MQClientInstance</code> 中能够看到 <code>new RebalanceService(this);</code>，启动了一个后台线程，每隔 20s 进行重平衡操作 <code>mqClientFactory.doRebalance()</code></p>
+<p>同样按照消费者的消费模式，重平衡逻辑处理分成两个 switch 分支，接下来讨论的是『并发消费』逻辑</p>
+<h2 id="一、获取-MessageQueue-列表"><a href="#一、获取-MessageQueue-列表" class="headerlink" title="一、获取 MessageQueue 列表"></a>一、获取 MessageQueue 列表</h2><p>在 <code>RebalanceImpl</code> 维护了一份 <code>map</code> 结构的本地缓存 <code>topicSubscribeInfoTable</code>，以 <code>topic</code> 维度保存了对应的 <code>MesssageQueue</code> 列表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Set&lt;MessageQueue&gt; mqSet = <span class="keyword">this</span>.topicSubscribeInfoTable.get(topic);</div></pre></td></tr></table></figure>
+<h2 id="二、获取在线的消费者终端列表"><a href="#二、获取在线的消费者终端列表" class="headerlink" title="二、获取在线的消费者终端列表"></a>二、获取在线的消费者终端列表</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; cidAll = <span class="keyword">this</span>.mQClientFactory.findConsumerIdList(topic, consumerGroup);</div></pre></td></tr></table></figure>
+<p>findConsumerIdList 方法接受两个参数：Topic 主题和 ConsumerGroup 消费组</p>
+<p>底层通过发送 <code>RequestCode.GET_CONSUMER_LIST_BY_GROUP</code> 请求码的 <code>RemotingCommand</code> 到 <code>Broker</code> 查询在线消费者列表，拿到结果后反序列化</p>
+<h2 id="三、分配-MessageQueue"><a href="#三、分配-MessageQueue" class="headerlink" title="三、分配 MessageQueue"></a>三、分配 MessageQueue</h2><p>根据分配策略，确定当前消费者实例要从哪些 MessageQueue 获取消息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">List&lt;MessageQueue&gt; allocateResult = </div><div class="line">    strategy.allocate(<span class="keyword">this</span>.consumerGroup,</div><div class="line">                      <span class="keyword">this</span>.mQClientFactory.getClientId(),</div><div class="line">                      mqAll,</div><div class="line">                      cidAll);</div></pre></td></tr></table></figure>
+<p><img src="http://img.sevenyuan.cn/rocket/RocketMQ_Consumer_MessageQueue_Allocate.png" alt=""></p>
+<p>默认分配策略是平均分配，取当前下标 <code>index</code>，队列数取余机器数 <code>mod</code>，然后按照区间给当前应用分配。</p>
+<p>例如有 8 个队列，2 台在线服务器，那平均消费 4 个队列，4 4 分配；3 台服务器的，按照 3 3 2 分配。</p>
+<p><strong>注意：</strong></p>
+<p>目前遇到很多业务团队，在开发过程中，使用了相同的分组名，但是订阅信息不一致，例如之前已经部署了两台应用，本期开发时，新增了 Topic 后，反馈有些消息无法消费，查看 Topic 消费情况表现如下：</p>
+<p><img src="http://img.sevenyuan.cn/rocket/RocketMQ_Subscribe_Not_Equal.png" alt=""></p>
+<p>根本原因就是前面说的 <code>MessageQueue</code> 平均分配后，之前的应用没有订阅新 <code>Topic</code>，于是这些消息状态一直处于 <code>Not Consumed Yet</code>， <strong>解决方法就是统一订阅信息或者更换 <code>ConsumerGroup</code> 进行测试。</strong></p>
+<h2 id="四、刷新本地缓存-amp-构建请求列表"><a href="#四、刷新本地缓存-amp-构建请求列表" class="headerlink" title="四、刷新本地缓存 &amp; 构建请求列表"></a>四、刷新本地缓存 &amp; 构建请求列表</h2><p>接下来，会根据前面分配的消息队列，来构建获取消息的请求 <code>pullRequest</code> 队列</p>
+<blockquote>
+<p>org.apache.rocketmq.client.impl.consumer.RebalanceImpl#updateProcessQueueTableInRebalance</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">updateProcessQueueTableInRebalance</span><span class="params">(<span class="keyword">final</span> String topic, <span class="keyword">final</span> Set&lt;MessageQueue&gt; mqSet, <span class="keyword">final</span> <span class="keyword">boolean</span> isOrder)</span> </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> changed = <span class="keyword">false</span>;</div><div class="line">        Iterator&lt;Entry&lt;MessageQueue, ProcessQueue&gt;&gt; it = <span class="keyword">this</span>.processQueueTable.entrySet().iterator();</div><div class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</div><div class="line">            Entry&lt;MessageQueue, ProcessQueue&gt; next = it.next();</div><div class="line">            MessageQueue mq = next.getKey();</div><div class="line">            ProcessQueue pq = next.getValue();</div><div class="line">            ....</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        List&lt;PullRequest&gt; pullRequestList = <span class="keyword">new</span> ArrayList&lt;PullRequest&gt;();</div><div class="line">        <span class="keyword">for</span> (MessageQueue mq : mqSet) &#123;</div><div class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.processQueueTable.containsKey(mq)) &#123;</div><div class="line">                <span class="keyword">this</span>.removeDirtyOffset(mq);</div><div class="line">                ProcessQueue pq = <span class="keyword">new</span> ProcessQueue();</div><div class="line">                <span class="keyword">long</span> nextOffset = <span class="keyword">this</span>.computePullFromWhere(mq);</div><div class="line">                <span class="keyword">if</span> (nextOffset &gt;= <span class="number">0</span>) &#123;</div><div class="line">                    ProcessQueue pre = <span class="keyword">this</span>.processQueueTable.putIfAbsent(mq, pq);</div><div class="line">                    PullRequest pullRequest = <span class="keyword">new</span> PullRequest();</div><div class="line">                    pullRequest.setConsumerGroup(consumerGroup);</div><div class="line">                    pullRequest.setNextOffset(nextOffset);</div><div class="line">                    pullRequest.setMessageQueue(mq);</div><div class="line">                    pullRequest.setProcessQueue(pq);</div><div class="line">                    pullRequestList.add(pullRequest);</div><div class="line">                    changed = <span class="keyword">true</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125; </div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">this</span>.dispatchPullRequest(pullRequestList);</div><div class="line">    <span class="keyword">return</span> changed;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dispatchPullRequest</span><span class="params">(List&lt;PullRequest&gt; pullRequestList)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (PullRequest pullRequest : pullRequestList) &#123;</div><div class="line">        <span class="keyword">this</span>.defaultMQPushConsumerImpl.executePullRequestImmediately(pullRequest);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executePullRequestImmediately</span><span class="params">(<span class="keyword">final</span> PullRequest pullRequest)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.pullRequestQueue.put(pullRequest);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>updateProcessQueueTableInRebalance</code> 的作用：更新订阅关系</p>
+<p>①、消费节点上下线<br>②、<code>Topic</code> 的队列分区参数调整</p>
+<p>以上两种行为，将会影响到消息订阅的分配，所以需要客户端在消费消息前，先确定自己被分配到哪几个 <code>MessageQueue</code>，在构建 <code>PullRequest</code> 时，参数中带上监听的 <code>queueId</code>。</p>
+<p>最后，为过滤后的消息队列集合（mqSet）中的每个 <code>MessageQueue</code> 创建一个 <code>ProcessQueue</code> 对象，并存入 <code>RebalanceImpl</code> 的 <code>processQueueTable</code> 队列中。</p>
+<p>接着构建 <code>PullRequest</code>，并调用 <code>dispatchPullRequest</code> 方法，将拉取消息的请求放入到 <code>pullRequestQueue</code> 队列中，等待后面的 <code>PullMessageService</code> 取出来调用。</p>
+<h2 id="五、后台线程不停从-Broker-拉取消息"><a href="#五、后台线程不停从-Broker-拉取消息" class="headerlink" title="五、后台线程不停从 Broker 拉取消息"></a>五、后台线程不停从 <code>Broker</code> 拉取消息</h2><p>后台线程是：<strong>PullMessageService</strong></p>
+<blockquote>
+<p>org.apache.rocketmq.client.impl.consumer.PullMessageService#run</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">while</span> (!<span class="keyword">this</span>.isStopped()) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            PullRequest pullRequest = <span class="keyword">this</span>.pullRequestQueue.take();</div><div class="line">            <span class="keyword">this</span>.pullMessage(pullRequest);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException ignored) &#123;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            log.error(<span class="string">"Pull Message Service Run Method exception"</span>, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>pullRequestQueue</code> 请求队列，就是前面重平衡服务，构建好放入该队列中的，然后在 <code>PullMessageService</code> 中的 <code>run</code> 方法，使用 <code>while</code> 死循环，不停的去 <code>Broker</code> 请求新消息</p>
+<h2 id="六、消息消费"><a href="#六、消息消费" class="headerlink" title="六、消息消费"></a>六、消息消费</h2><p>在获取消息时，会注册一个回调接口，具体入口在 <code>MQConsumerInner</code>，然后在 <code>PullCallback</code> 里调用 <code>messageListener</code> 进行消费，也就是我们写的业务处理逻辑。</p>
+<p>在正常消费完成后，将 <code>pullRequest</code> 重新放回拉取消息的任务队列中，等待 <code>PullMessageService</code> 的下一次获取，拉取新消息。</p>
+<p>正常消费，业务处理没有异常的话，将会返回 <code>ConsumeReturnType.SUCCESS</code> 表示成功确认，消费位点也能继续前进。</p>
+<p><strong>消费失败将会触发补偿机制</strong></p>
+<ul>
+<li><code>ConsumeMessageConcurrentlyService</code> </li>
+</ul>
+<p>并发模式下，它会将消息投递到 <code>%retry</code> 队列，更新当前位点，让后面的消息继续消费，如果该消息一直失败，默认最多重试 16 次就会丢到死信队列中。</p>
+<ul>
+<li><code>ConsumeMessageOrderlyService</code> </li>
+</ul>
+<p>顺序模式需要注意下，出现失败它不会投递到重试队列，而是将一直在本地重试，直到消费成功为止，所以有可能出现某个 <code>MessageQueue</code> 消费卡住，并且后面消息都不能消费的场景，注意捕获业务处理异常。</p>
+<blockquote>
+<p>org.apache.rocketmq.client.impl.consumer.DefaultMQPushConsumerImpl#pullMessage</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pullMessage</span><span class="params">(<span class="keyword">final</span> PullRequest pullRequest)</span> </span>&#123;</div><div class="line">    <span class="keyword">final</span> ProcessQueue processQueue = pullRequest.getProcessQueue();</div><div class="line">    ...</div><div class="line">    <span class="keyword">final</span> SubscriptionData subscriptionData = <span class="keyword">this</span>.rebalanceImpl.getSubscriptionInner().get(pullRequest.getMessageQueue().getTopic());</div><div class="line">    <span class="comment">// 构建回调接口</span></div><div class="line">    PullCallback pullCallback = <span class="keyword">new</span> PullCallback() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(PullResult pullResult)</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (pullResult != <span class="keyword">null</span>) &#123;</div><div class="line">                pullResult = DefaultMQPushConsumerImpl.<span class="keyword">this</span>.pullAPIWrapper.processPullResult(pullRequest.getMessageQueue(), pullResult, subscriptionData);</div><div class="line">                <span class="keyword">switch</span> (pullResult.getPullStatus()) &#123;</div><div class="line">                    <span class="keyword">case</span> FOUND:</div><div class="line">                        ...</div><div class="line">                        <span class="comment">// 这一步消息消费，进入设定的消费逻辑 messageListener</span></div><div class="line">                        <span class="keyword">if</span> (pullResult.getMsgFoundList() == <span class="keyword">null</span> || pullResult.getMsgFoundList().isEmpty()) &#123;</div><div class="line">                            DefaultMQPushConsumerImpl.<span class="keyword">this</span>.executePullRequestImmediately(pullRequest);</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            firstMsgOffset = pullResult.getMsgFoundList().get(<span class="number">0</span>).getQueueOffset();</div><div class="line">                            DefaultMQPushConsumerImpl.<span class="keyword">this</span>.getConsumerStatsManager().incPullTPS(pullRequest.getConsumerGroup(),</div><div class="line">                                pullRequest.getMessageQueue().getTopic(), pullResult.getMsgFoundList().size());</div><div class="line">                            <span class="keyword">boolean</span> dispatchToConsume = processQueue.putMessage(pullResult.getMsgFoundList());</div><div class="line">                            DefaultMQPushConsumerImpl.<span class="keyword">this</span>.consumeMessageService.submitConsumeRequest(pullResult.getMsgFoundList(), processQueue, pullRequest.getMessageQueue(), dispatchToConsume);</div><div class="line">                            <span class="comment">// 是否稍后才消费，重新扔回到请求队列中</span></div><div class="line">                            <span class="keyword">if</span> (DefaultMQPushConsumerImpl.<span class="keyword">this</span>.defaultMQPushConsumer.getPullInterval() &gt; <span class="number">0</span>) &#123;</div><div class="line">                                DefaultMQPushConsumerImpl.<span class="keyword">this</span>.executePullRequestLater(pullRequest, DefaultMQPushConsumerImpl.<span class="keyword">this</span>.defaultMQPushConsumer.getPullInterval());</div><div class="line">                            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                                DefaultMQPushConsumerImpl.<span class="keyword">this</span>.executePullRequestImmediately(pullRequest);</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">            ...</div><div class="line">                    <span class="keyword">default</span>:</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>&#123;</div><div class="line">            DefaultMQPushConsumerImpl.<span class="keyword">this</span>.executePullRequestLater(pullRequest, pullTimeDelayMillsWhenException);</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    ...</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 从 Broker 端获取消息</span></div><div class="line">        <span class="keyword">this</span>.pullAPIWrapper.pullKernelImpl(</div><div class="line">            pullRequest.getMessageQueue(),</div><div class="line">            subExpression,</div><div class="line">            subscriptionData.getExpressionType(),</div><div class="line">            subscriptionData.getSubVersion(),</div><div class="line">            pullRequest.getNextOffset(),</div><div class="line">            <span class="keyword">this</span>.defaultMQPushConsumer.getPullBatchSize(),</div><div class="line">            sysFlag,</div><div class="line">            commitOffsetValue,</div><div class="line">            BROKER_SUSPEND_MAX_TIME_MILLIS,</div><div class="line">            CONSUMER_TIMEOUT_MILLIS_WHEN_SUSPEND,</div><div class="line">            CommunicationMode.ASYNC,</div><div class="line">            pullCallback</div><div class="line">        );</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        <span class="keyword">this</span>.executePullRequestLater(pullRequest, pullTimeDelayMillsWhenException);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>获取消息的这个方法中，有两个核心部分</p>
+<p>①、构建消费回调函数<br>②、从 <code>Broker</code> 端获取新消息</p>
+<p>回调接口中，设定了对新消息的处理逻辑，包括顺序消息的特殊处理，还有是否需要等待一段时间才消费，真正执行业务方设定的消费逻辑在 <code>DefaultMQPushConsumerImpl.this.executePullRequestImmediately(pullRequest)</code> 或 <code>DefaultMQPushConsumerImpl.this.consumeMessageService.submitConsumeRequest</code> 中。</p>
+<p>然后将回调函数作为参数，放入 <code>this.pullAPIWrapper.pullKernelImpl</code> 方法中，接收消息后，执行回调函数来处理消息。</p>
+<p>到这一步为止，从消息获取到消息消费，执行本地业务逻辑的基本流程就基本了解清楚，后面的状态确认以及位点 <code>offset</code> 更新，感兴趣的可以再去跟踪一下。</p>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>消费者的深入学习分成以下几部分</p>
+<ul>
+<li>消费模式</li>
+<li>幂等消费概念</li>
+<li>负载均衡</li>
+</ul>
+<p>记录了并发模式和广播模式的区别，使用上需要注意的细节。</p>
+<p>跟大家分享了一下在原生 RMQ 不支持幂等消费，同时不需要业务方做过多改造的情况下，通过封装 SDK，在里面实现幂等消费的方案。</p>
+<p>最后梳理了一下消费者如何重平衡、构建拉取消息的请求最后消费消息的代码过程。</p>
+<p>其中还有很多细节点还需要去了解，例如重平衡 <code>doReblance</code> 阶段，出现服务器上下线，还处于消费的 <code>MessageQueue</code> 如何处理（看了一下有加锁 lock 操作，避免两台服务器同时操作同一个队列）的代码如何实现等等</p>
+<p>最后，MQ 的学习之旅，从点到面，还需要继续学习，之后再见👋~</p>
+<p>PS：分类总结排版可以去看语雀笔记 <a href="https://www.yuque.com/books/share/2167ed0a-b9c9-4e1f-b648-1031b36cd144?# 《RocketMQ》" target="_blank" rel="noopener">https://www.yuque.com/books/share/2167ed0a-b9c9-4e1f-b648-1031b36cd144?# 《RocketMQ》</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RocketMQ/" rel="tag"># RocketMQ</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/31/jms/2020-11-01-RocketMQ-Learning-Broker/" rel="next" title="RocketMQ Broker 深入学习">
+                <i class="fa fa-chevron-left"></i> RocketMQ Broker 深入学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#消费模式"><span class="nav-number">1.</span> <span class="nav-text">消费模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、并发消费"><span class="nav-number">1.1.</span> <span class="nav-text">1、并发消费</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、顺序消费"><span class="nav-number">1.2.</span> <span class="nav-text">2、顺序消费</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#幂等消费"><span class="nav-number">2.</span> <span class="nav-text">幂等消费</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡"><span class="nav-number">3.</span> <span class="nav-text">负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、获取-MessageQueue-列表"><span class="nav-number">3.1.</span> <span class="nav-text">一、获取 MessageQueue 列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、获取在线的消费者终端列表"><span class="nav-number">3.2.</span> <span class="nav-text">二、获取在线的消费者终端列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、分配-MessageQueue"><span class="nav-number">3.3.</span> <span class="nav-text">三、分配 MessageQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、刷新本地缓存-amp-构建请求列表"><span class="nav-number">3.4.</span> <span class="nav-text">四、刷新本地缓存 &amp; 构建请求列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、后台线程不停从-Broker-拉取消息"><span class="nav-number">3.5.</span> <span class="nav-text">五、后台线程不停从 Broker 拉取消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、消息消费"><span class="nav-number">3.6.</span> <span class="nav-text">六、消息消费</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.7.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="最近忙着毕设，要做前端，所以看更多的是React的知识，小后端🐶还是要继续学习总结，不然就要没（tou）时（lan）间继续写了。 Semaphore中文含义是信号量，它是synchronized的升级版。 synchronized 关键字，代表这个方法加锁,相当于不管哪一个线程（例如线程A），运行到这个方法时,都要检查有没有其它线程B（或者C、 D等）正在用这个方法(或者该类的其他同步方法)，有">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java多线程Semaphore和CountDownLatch">
+<meta property="og:url" content="http://yoursite.com/2018/03/17/java/Java多线程Semaphore和CountDownLatch/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="最近忙着毕设，要做前端，所以看更多的是React的知识，小后端🐶还是要继续学习总结，不然就要没（tou）时（lan）间继续写了。 Semaphore中文含义是信号量，它是synchronized的升级版。 synchronized 关键字，代表这个方法加锁,相当于不管哪一个线程（例如线程A），运行到这个方法时,都要检查有没有其它线程B（或者C、 D等）正在用这个方法(或者该类的其他同步方法)，有">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/Semaphore.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/CountDownLatch">
+<meta property="og:updated_time" content="2018-11-11T14:26:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java多线程Semaphore和CountDownLatch">
+<meta name="twitter:description" content="最近忙着毕设，要做前端，所以看更多的是React的知识，小后端🐶还是要继续学习总结，不然就要没（tou）时（lan）间继续写了。 Semaphore中文含义是信号量，它是synchronized的升级版。 synchronized 关键字，代表这个方法加锁,相当于不管哪一个线程（例如线程A），运行到这个方法时,都要检查有没有其它线程B（或者C、 D等）正在用这个方法(或者该类的其他同步方法)，有">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/Semaphore.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/17/java/Java多线程Semaphore和CountDownLatch/"/>
+
+
+
+
+
+  <title>Java多线程Semaphore和CountDownLatch | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/java/Java多线程Semaphore和CountDownLatch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java多线程Semaphore和CountDownLatch</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T20:11:58+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近忙着毕设，要做前端，所以看更多的是React的知识，小后端🐶还是要继续学习总结，不然就要<strong>没（tou）时（lan）间</strong>继续写了。</p>
+<h2 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h2><p>中文含义是信号量，它是synchronized的升级版。</p>
+<p><strong>synchronized 关键字</strong>，代表这个方法加锁,相当于不管哪一个线程（例如线程A），运行到这个方法时,都要检查有没有其它线程B（或者C、 D等）正在用这个方法(或者该类的其他同步方法)，有的话要等正在使用synchronized方法的线程B（或者C 、D）运行完这个方法后再运行此线程A，没有的话，锁定调用者，然后直接运行。它包括两种用法：synchronized 方法和 synchronized 块。（度娘解释）</p>
+<p>Semaphore主要的作用是控制线程的并发数，如果单纯的使用synchronized是不能实现的。</p>
+<h3 id="简单看"><a href="#简单看" class="headerlink" title="简单看"></a>简单看</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Semaphore.java</div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * A counting semaphore.  Conceptually, a semaphore maintains a set of</span></div><div class="line"><span class="comment"> * permits.  Each &#123;<span class="doctag">@link</span> #acquire&#125; blocks if necessary until a permit is</span></div><div class="line"><span class="comment"> * available, and then takes it.  Each &#123;<span class="doctag">@link</span> #release&#125; adds a permit,</span></div><div class="line"><span class="comment"> * potentially releasing a blocking acquirer.</span></div><div class="line"><span class="comment"> * However, no actual permit objects are used; the &#123;<span class="doctag">@code</span> Semaphore&#125; just</span></div><div class="line"><span class="comment"> * keeps a count of the number available and acts accordingly.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> </span></div><div class="line"><span class="comment"> 简单的来讲，信号量维持了一组许可证(permits)，每次调用的时候，需要获取permit才能进行进行操作。</span></div><div class="line"><span class="comment"> 每个线程调用semaphore.acquire()获取一个许可证后，就会减少许可证数量。</span></div><div class="line"><span class="comment"> 当没有许可证的时候，线程会阻塞，直到之前获得许可证的线程操作完释放才能进行。</span></div></pre></td></tr></table></figure>
+<h3 id="Semaphore结构"><a href="#Semaphore结构" class="headerlink" title="Semaphore结构"></a>Semaphore结构</h3><p><img src="http://img.sevenyuan.cn/Semaphore.jpg" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">     * Creates a &#123;<span class="doctag">@code</span> Semaphore&#125; with the given number of</span></div><div class="line"><span class="comment">     * permits and nonfair fairness setting.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> permits the initial number of permits available.</span></div><div class="line"><span class="comment">     *        This value may be negative, in which case releases</span></div><div class="line"><span class="comment">     *        must occur before any acquires will be granted.</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Semaphore</span><span class="params">(<span class="keyword">int</span> permits)</span> </span>&#123;</div><div class="line">        sync = <span class="keyword">new</span> NonfairSync(permits);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Creates a &#123;<span class="doctag">@code</span> Semaphore&#125; with the given number of</span></div><div class="line"><span class="comment">     * permits and the given fairness setting.</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> permits the initial number of permits available.</span></div><div class="line"><span class="comment">     *        This value may be negative, in which case releases</span></div><div class="line"><span class="comment">     *        must occur before any acquires will be granted.</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> fair &#123;<span class="doctag">@code</span> true&#125; if this semaphore will guarantee</span></div><div class="line"><span class="comment">     *        first-in first-out granting of permits under contention,</span></div><div class="line"><span class="comment">     *        else &#123;<span class="doctag">@code</span> false&#125;</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Semaphore</span><span class="params">(<span class="keyword">int</span> permits, <span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">        sync = fair ? <span class="keyword">new</span> FairSync(permits) : <span class="keyword">new</span> NonfairSync(permits);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>两个构造方法：<br><strong>参数permit</strong>是许可的意思，代表在同一时间内，最多允许多少个线程同时执行acquire()和release()之间的代码，Semaphore发放许可的操作是减法操作。</p>
+<p><strong>参数fair</strong>，表示内部使用的是FairSync（公平锁）或者NonfairSync（非公平锁），表示每次线程获取锁的机会是否是公平的，具体的可以看底层实现，继承自<strong>AbstractQueuedSynchronizer</strong>，通过state判断是否是加锁状态，state 为0，表示锁未被获取，不为0，表示已被获取。</p>
+<h3 id="如何用"><a href="#如何用" class="headerlink" title="如何用"></a>如何用</h3><h4 id="第一种，同步的执行一个任务（与Synchronized相似）"><a href="#第一种，同步的执行一个任务（与Synchronized相似）" class="headerlink" title="第一种，同步的执行一个任务（与Synchronized相似）"></a>第一种，同步的执行一个任务（与Synchronized相似）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//多个线程里，保持一份信号量</span></div><div class="line"><span class="keyword">private</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="comment">//线程中调用</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">//获取锁</span></div><div class="line">            semaphore.acquire();</div><div class="line">            System.out.println(Thread.currentThread().getName() +</div><div class="line">                    <span class="string">"begin Time"</span> + System.currentTimeMillis());</div><div class="line">            Thread.sleep(<span class="number">5000</span>);</div><div class="line">            System.out.println(Thread.currentThread().getName() +</div><div class="line">                    <span class="string">"end Time"</span> + System.currentTimeMillis());</div><div class="line"></div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            ex.printStackTrace();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="comment">//释放锁</span></div><div class="line">            semaphore.release();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这种比较简单，就不深入展示了，要看的是在多个线程下如何控制并发数量。</p>
+<h4 id="第二种，控制线程并发数量"><a href="#第二种，控制线程并发数量" class="headerlink" title="第二种，控制线程并发数量"></a>第二种，控制线程并发数量</h4><p>首先是执行类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestService</span> </span>&#123;</div><div class="line">    <span class="comment">//许可证数量为2</span></div><div class="line">    <span class="keyword">private</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(<span class="number">2</span>);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            semaphore.acquire();</div><div class="line">            System.out.println(Thread.currentThread().getName() +</div><div class="line">                    <span class="string">"begin Time"</span> + System.currentTimeMillis());</div><div class="line">            <span class="comment">//停顿5秒</span></div><div class="line">            Thread.sleep(<span class="number">5000</span>);</div><div class="line">            System.out.println(Thread.currentThread().getName() +</div><div class="line">                    <span class="string">"end Time"</span> + System.currentTimeMillis());</div><div class="line"></div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            ex.printStackTrace();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            semaphore.release();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>创建一个线程池，分配任务：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">//创建线程池，自己新建一个ThreadFactory，定义线程名字</span></div><div class="line">        ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool(<span class="keyword">new</span> ThreadFactory() &#123;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(@NotNull Runnable r)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Thread(r, <span class="string">"当前线程哈希值是："</span> + r.hashCode());</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        TestService testService = <span class="keyword">new</span> TestService();</div><div class="line">        <span class="comment">//分派任务</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)&#123;</div><div class="line">            Thread thread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                    testService.testMethod();</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">            poolExecutor.submit(thread);</div><div class="line">        &#125;</div><div class="line">         <span class="comment">//关闭线程池，等待池中的线程任务执行完毕</span></div><div class="line">        poolExecutor.shutdown();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>执行结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">Connected to the target VM, address: <span class="string">'127.0.0.1:60937'</span>, transport: <span class="string">'socket'</span></div><div class="line">当前线程哈希值是：<span class="number">55909012</span>begin Time1521281771135</div><div class="line">当前线程哈希值是：<span class="number">922151033</span>begin Time1521281771135</div><div class="line">当前线程哈希值是：<span class="number">55909012</span>end Time1521281776136</div><div class="line">当前线程哈希值是：<span class="number">922151033</span>end Time1521281776136</div><div class="line">当前线程哈希值是：<span class="number">1915058446</span>begin Time1521281776136</div><div class="line">当前线程哈希值是：<span class="number">1387228415</span>begin Time1521281776136</div><div class="line">当前线程哈希值是：<span class="number">1915058446</span>end Time1521281781140</div><div class="line">当前线程哈希值是：<span class="number">1387228415</span>end Time1521281781140</div><div class="line">当前线程哈希值是：<span class="number">748658608</span>begin Time1521281781140</div><div class="line">当前线程哈希值是：<span class="number">167185492</span>begin Time1521281781140</div><div class="line">当前线程哈希值是：<span class="number">167185492</span>end Time1521281786145</div><div class="line">当前线程哈希值是：<span class="number">748658608</span>end Time1521281786145</div><div class="line">当前线程哈希值是：<span class="number">1937348256</span>begin Time1521281786145</div><div class="line">当前线程哈希值是：<span class="number">1358444045</span>begin Time1521281786145</div><div class="line">当前线程哈希值是：<span class="number">1937348256</span>end Time1521281791148</div><div class="line">当前线程哈希值是：<span class="number">1358444045</span>end Time1521281791148</div><div class="line">当前线程哈希值是：<span class="number">331844619</span>begin Time1521281791148</div><div class="line">当前线程哈希值是：<span class="number">64830413</span>begin Time1521281791148</div><div class="line">Disconnected from the target VM, address: <span class="string">'127.0.0.1:60937'</span>, transport: <span class="string">'socket'</span></div><div class="line">当前线程哈希值是：<span class="number">331844619</span>end Time1521281796152</div><div class="line">当前线程哈希值是：<span class="number">64830413</span>end Time1521281796152</div><div class="line"></div><div class="line">Process finished with exit code <span class="number">0</span></div></pre></td></tr></table></figure></p>
+<p>可以看到，在设定的线程睡眠5秒内，只有两个线程<strong>同时执行acquire()和release()之间的逻辑</strong>，通过Semaphore控制了线程的并发数量。</p>
+<h3 id="其它方法"><a href="#其它方法" class="headerlink" title="其它方法"></a>其它方法</h3><ul>
+<li>acquire(int) : 一次获取多个许可</li>
+<li>acquireUninterruptibly() : 使等待进入acquire()方法，不允许被终止</li>
+<li>tryAcquire() : 尝试地获得一个许可，如果获取不到就返回false，通常与if判断使用，具有无阻塞的特点</li>
+<li>tryAcquire(long timeout, TimeUnit unit) : 多少时间内获取不到许可就放弃</li>
+</ul>
+<p>还有很多方法，诸如availablePermits()/drainPermits()/hasQueuedThreads()/getQueueLength()等，感兴趣的话请怒开IDE查看具体实现吧。</p>
+<h2 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h2><p>CountDownLatch也是一个工具类，可以使线程同步的处理上更加灵活，CountDownLatch也是<strong>减法操作</strong>。</p>
+<h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* A synchronization aid that allows one or more threads to wait until</span></div><div class="line"><span class="comment"> * a set of operations being performed in other threads completes.</span></div><div class="line"><span class="comment"> </span></div><div class="line"><span class="comment"> 一个同步辅助类，允许一个或多个线程等待，直到在其他线程中执行的一组操作完成。</span></div><div class="line"><span class="comment"> </span></div><div class="line"><span class="comment"> 使用效果是，给定一个计数，当使用这个CountDownLatch类的线程判断计数不为0的时候，线程处于wait状态，如果为0，就继续进行。</span></div></pre></td></tr></table></figure>
+<p>举个🌰：<br>来了一辆小汽车，要等满5个人才开车，来了1个，不开；再来1个，还是不开，最后5个人到齐了，开车开车。</p>
+<h3 id="类结构-amp-构造方法"><a href="#类结构-amp-构造方法" class="headerlink" title="类结构&amp;构造方法"></a>类结构&amp;构造方法</h3><p><img src="http://img.sevenyuan.cn/CountDownLatch" alt=""><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这货也是继承AbstractQueuedSynchronizer</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Sync sync;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * Constructs a &#123;<span class="doctag">@code</span> CountDownLatch&#125; initialized with the given count.</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> * <span class="doctag">@param</span> count the number of times &#123;<span class="doctag">@link</span> #countDown&#125; must be invoked</span></div><div class="line"><span class="comment"> *        before threads can pass through &#123;<span class="doctag">@link</span> #await&#125;</span></div><div class="line"><span class="comment"> * <span class="doctag">@throws</span> IllegalArgumentException if &#123;<span class="doctag">@code</span> count&#125; is negative</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">CountDownLatch</span><span class="params">(<span class="keyword">int</span> count)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (count &lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"count &lt; 0"</span>);</div><div class="line">    <span class="keyword">this</span>.sync = <span class="keyword">new</span> Sync(count);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>参数count</strong>表示要等待的数量</p>
+<h3 id="方法示范"><a href="#方法示范" class="headerlink" title="方法示范"></a>方法示范</h3><p>执行类，等待5秒后执行countDown<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> CountDownLatch countDownLatch;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestService</span><span class="params">(CountDownLatch countDownLatch)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.countDownLatch = countDownLatch;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            semaphore.acquire();</div><div class="line">            System.out.println(<span class="string">"当前线程是: "</span> + Thread.currentThread().getName() +</div><div class="line">                    <span class="string">" 时间是： "</span> + System.currentTimeMillis());</div><div class="line">            <span class="comment">//等待5秒</span></div><div class="line">            Thread.sleep(<span class="number">1000</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">            ex.printStackTrace();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            countDownLatch.countDown();</div><div class="line">            semaphore.release();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</div><div class="line"></div><div class="line">        ThreadPoolExecutor poolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool(<span class="keyword">new</span> ThreadFactory() &#123;</div><div class="line"></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(@NotNull Runnable r)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Thread(r, <span class="string">"当前线程哈希值是："</span> + r.hashCode());</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        <span class="comment">//设定十个限制</span></div><div class="line">        CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">10</span>);</div><div class="line">        TestService testService = <span class="keyword">new</span> TestService(countDownLatch);</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)&#123;</div><div class="line">            Thread thread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                    testService.testMethod();</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">            thread.setName(<span class="string">""</span> + i);</div><div class="line">            poolExecutor.submit(thread);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//关闭线程池，等待池中的线程任务执行完毕</span></div><div class="line">        poolExecutor.shutdown();</div><div class="line">        System.out.println(<span class="string">"poolExecutor分发任务结束: "</span> + System.currentTimeMillis());</div><div class="line">        countDownLatch.await();</div><div class="line">        System.out.println(<span class="string">"CountDown方法结束: "</span> + System.currentTimeMillis());</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>执行日志：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">当前线程是: 当前线程哈希值是：<span class="number">922151033</span> 时间是： <span class="number">1521287832750</span></div><div class="line">poolExecutor分发任务结束: <span class="number">1521287832752</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">55909012</span> 时间是： <span class="number">1521287833755</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">1387228415</span> 时间是： <span class="number">1521287834759</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">748658608</span> 时间是： <span class="number">1521287835763</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">167185492</span> 时间是： <span class="number">1521287836765</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">1937348256</span> 时间是： <span class="number">1521287837769</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">1358444045</span> 时间是： <span class="number">1521287838770</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">331844619</span> 时间是： <span class="number">1521287839774</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">64830413</span> 时间是： <span class="number">1521287840776</span></div><div class="line">当前线程是: 当前线程哈希值是：<span class="number">653687670</span> 时间是： <span class="number">1521287841779</span></div><div class="line">CountDown方法结束: <span class="number">1521287842784</span></div></pre></td></tr></table></figure></p>
+<p>可以看到，在线程池控制1个并发线程，poolExecutor提交任务之后打印日志，但是countDownLatch.await()方法之后的代码，因为count没有减到0，不能执行。</p>
+<p>在TestService方法中，每隔一秒执行countDownLatch.countDown()方法，最后十个线程跑完，count减到0，countDownLatch.await()方法之后的代码才可以执行。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ul>
+<li>await() : 等待</li>
+<li>countDown() : 计数减一</li>
+<li>await(long timeout, TimeUnit unit) : 在限定时间内进行等待，超过时间返回false</li>
+<li>getCount() : 获取计数count</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>Semaphore作为信号量，用来控制线程的并发数量，CountDownLatch用来控制线程执行任务的时机也挺不错的。它们两个的理解和使用都比较简单，好了，又填了一个坑，下次继续挖坑和填坑hhh</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/04/java/Java多线程ThreadPoolExecutor初探/" rel="next" title="Java多线程ThreadPoolExecutor初探">
+                <i class="fa fa-chevron-left"></i> Java多线程ThreadPoolExecutor初探
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/25/redis/Redis复制/" rel="prev" title="Redis复制">
+                Redis复制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Semaphore"><span class="nav-number">1.</span> <span class="nav-text">Semaphore</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单看"><span class="nav-number">1.1.</span> <span class="nav-text">简单看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Semaphore结构"><span class="nav-number">1.2.</span> <span class="nav-text">Semaphore结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何用"><span class="nav-number">1.3.</span> <span class="nav-text">如何用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一种，同步的执行一个任务（与Synchronized相似）"><span class="nav-number">1.3.1.</span> <span class="nav-text">第一种，同步的执行一个任务（与Synchronized相似）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二种，控制线程并发数量"><span class="nav-number">1.3.2.</span> <span class="nav-text">第二种，控制线程并发数量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它方法"><span class="nav-number">1.4.</span> <span class="nav-text">其它方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CountDownLatch"><span class="nav-number">2.</span> <span class="nav-text">CountDownLatch</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单介绍"><span class="nav-number">2.1.</span> <span class="nav-text">简单介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类结构-amp-构造方法"><span class="nav-number">2.2.</span> <span class="nav-text">类结构&amp;构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法示范"><span class="nav-number">2.3.</span> <span class="nav-text">方法示范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">2.4.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
