@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Java8新特性学习-Stream😝">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8新特性学习-Stream">
+<meta property="og:url" content="http://yoursite.com/2019/01/31/java/Java8新特性学习-Stream/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Java8新特性学习-Stream😝">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/7097c713gy1fzpsyobg40j21hc0u0n66.jpg">
+<meta property="og:updated_time" content="2019-05-25T08:00:01.523Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java8新特性学习-Stream">
+<meta name="twitter:description" content="Java8新特性学习-Stream😝">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713gy1fzpsyobg40j21hc0u0n66.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/31/java/Java8新特性学习-Stream/"/>
+
+
+
+
+
+  <title>Java8新特性学习-Stream | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/java/Java8新特性学习-Stream/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java8新特性学习-Stream</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T21:43:10+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p><img src="http://img.sevenyuan.cn/7097c713gy1fzpsyobg40j21hc0u0n66.jpg" alt=""></p>
+<center>Java8新特性学习-Stream😝</center>
+
+<a id="more"></a>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Java 8 新增了一个新的抽象称为流Stream，个人感觉这个超级好用，尤其是业务开发，经常需要对数据列表进行处理的时候，用更少的代码、更优雅地实现功能。</p>
+<p>这个流式操作，更像是Linux中的管道命令’|’，上一个操作的结果传送到下一个流程中继续处理，例如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+--------------------+       +------+   +------+   +---+   +-------+</div><div class="line">| stream of elements +-----&gt; |filter+-&gt; |sorted+-&gt; |map+-&gt; |collect|</div><div class="line">+--------------------+       +------+   +------+   +---+   +-------+</div></pre></td></tr></table></figure>
+<p>在java代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">String content = <span class="string">"hello,world,debug,the,world"</span>;</div><div class="line">        List&lt;String&gt; list = Arrays.asList(content.split(<span class="string">","</span>));</div><div class="line"></div><div class="line">                List&lt;String&gt; filter = list.stream()</div><div class="line">                .filter(temp -&gt; temp.startsWith(<span class="string">"w"</span>))</div><div class="line">                .map(temp -&gt; temp.substring(<span class="number">0</span>, <span class="number">3</span>))</div><div class="line">                .collect(Collectors.toList());</div><div class="line"></div><div class="line">        filter.forEach(System.out::print);</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="什么是Stream"><a href="#什么是Stream" class="headerlink" title="什么是Stream"></a>什么是Stream</h2><p>Stream（流）是一个来自数据源的元素队列并支持聚合操作</p>
+<ul>
+<li>元素是特定类型的对象，形成一个队列。Java中的Stream并不会存储元素，而是按需计算。</li>
+<li>数据源 流的来源可以是集合、数组、I/O Channel等</li>
+<li>聚合操作 类似SQL语句，比如filter、map、reduce、find、match、sorted等</li>
+</ul>
+<p>和以前的Collection操作不同，Stream还有两个基础特征：</p>
+<ul>
+<li><strong>Pipelining</strong>：中间操作都会返回流对象本身。这样多个操作可以串联成一个管道。</li>
+<li><strong>内部迭代</strong>：以前对集合遍历都是通过Iterator或者For-Each的方式，显示的在集合外部进行迭代。Stream提供了内部迭代的方式，通过访问者模式（Visitor）实现。</li>
+</ul>
+<hr>
+<h2 id="生成流"><a href="#生成流" class="headerlink" title="生成流"></a>生成流</h2><p>在Java8中，集合接口有两个方法生成流：</p>
+<ul>
+<li>stream() ： 为集合创建串行流。</li>
+<li>parallelStream() - 为集合创建并行流。</li>
+</ul>
+<p>这里要讲一下这两者的区别：</p>
+<p>通俗点来说，一个是单线程、另一个是多线程。parallelStream是一个并行执行的流，通过默认的ForkJoinPool，可以提高多线程任务的速度。处理的过程会分而质之，将一个大任务切分成多个小任务，然后将结果合起来。（当然这也是一把双刃剑，在多线程的情况下，数据的并发访问需要关注，这也可以好好学一下，等之后再看吧~）</p>
+<hr>
+<h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h2><p>以前都是显示的使用循环，例如对一个集合进行打印：<br>JDK7以前<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++) &#123;</div><div class="line">    String temp = list.get(i);</div><div class="line">    System.out.print(temp);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 或者语法糖形式</span></div><div class="line"><span class="keyword">for</span> (String temp : list) &#123;</div><div class="line">    System.out.print(temp);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>JDK8之后<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">list.forEach(System.out::println);</div></pre></td></tr></table></figure></p>
+<p>对比一下，发现只需要一行代码就能实现~<br>如果想在forEach中进行自定义的操作，可以创建一个类，实现Consumer函数接口，传递进去使用~</p>
+<hr>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>map方法用于映射每个元素到对应的结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Car car1 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车1"</span>);</div><div class="line">        Car car2 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车2"</span>);</div><div class="line">        List&lt;Car&gt; carList = Lists.newArrayList(car1, car2);</div><div class="line"></div><div class="line">        List&lt;String&gt; nameList = carList.stream().map(Car::getName).collect(Collectors.toList());</div><div class="line">        <span class="comment">// 还可以加入filter功能，先进行过滤，然后取出想要的字段组成新的列表</span></div></pre></td></tr></table></figure>
+<p><strong>Car类：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> Integer id;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Car <span class="title">create</span><span class="params">(<span class="keyword">final</span> Supplier&lt;Car&gt; supplier, String name)</span> </span>&#123;</div><div class="line">        Car car = supplier.get();</div><div class="line">        car.setName(name);</div><div class="line">        <span class="keyword">return</span> car;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">collide</span><span class="params">(<span class="keyword">final</span> Car car)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Collided "</span> + car.toString());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">follow</span><span class="params">(<span class="keyword">final</span> Car another)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Following the "</span> + another.toString());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">repair</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Repaired "</span> + <span class="keyword">this</span>.toString());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Car&#123;&#125;"</span> + Thread.currentThread().getId() + getName();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>如其名，filter就是用来过滤的，根据特定的条件来过滤元素：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line"></div><div class="line">        <span class="keyword">long</span> count = ints.stream().filter(number -&gt; number &gt; <span class="number">10</span>).count();</div><div class="line">        System.out.println(count);</div></pre></td></tr></table></figure>
+<p>上面的例子是用来过滤出整数列表中，值大于10的数量。</p>
+<hr>
+<h2 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h2><p>用来获取指定数量的流（类似于MySQL中的limit）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">limitTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line">        ints.stream().limit(<span class="number">5</span>).forEach(System.out::println);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="sorted"><a href="#sorted" class="headerlink" title="sorted"></a>sorted</h2><p>用来对流进行排序，类似于Collections.sort(list, Comparator);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line">        ints.sort(Comparator.naturalOrder());</div><div class="line"></div><div class="line">        Car car1 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车1"</span>);</div><div class="line">        Car car2 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车2"</span>);</div><div class="line">        List&lt;Car&gt; carList = Lists.newArrayList(car1, car2);</div><div class="line">        <span class="comment">// 可以自定义排序的字段，如果需要更复杂的排序规则，可以在lambda中的statement进行编写</span></div><div class="line">        carList.sort(Comparator.comparing(Car::getName));</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="Collectors"><a href="#Collectors" class="headerlink" title="Collectors"></a>Collectors</h2><p>Collectors类实现了很多规约操作，例如将流转换成集合和聚合元素。(一般用Collectors.toList()就够了）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//例如在一组对象中或者主键ID的列表可以这样写</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">collectorsTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Car&gt; carList = Lists.newArrayList();</div><div class="line">        <span class="comment">// 省略构建参数，获取列表中的主键ID列表</span></div><div class="line">        List&lt;Integer&gt; ids = carList.stream().map(Car::getId).collect(Collectors.toList());</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="统计statistics"><a href="#统计statistics" class="headerlink" title="统计statistics"></a>统计statistics</h2><p>这个功能比较少用，还是学习记录一下吧。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">statisticsTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line">        IntSummaryStatistics statistics = ints.parallelStream().mapToInt(x -&gt; (<span class="keyword">int</span>) x).summaryStatistics();</div><div class="line">        System.out.println(<span class="string">"最大值 : "</span> + statistics.getMax());</div><div class="line">        System.out.println(<span class="string">"最小值 ："</span> + statistics.getMin());</div><div class="line">        System.out.println(<span class="string">"平均值 ："</span> + statistics.getAverage());</div><div class="line">        System.out.println(<span class="string">"总和 ： "</span> + statistics.getSum());</div><div class="line">        System.out.println(<span class="string">"数量 ："</span> + statistics.getCount());</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="完整的测试代码"><a href="#完整的测试代码" class="headerlink" title="完整的测试代码"></a>完整的测试代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.demo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.example.demo.test.Car;</div><div class="line"><span class="keyword">import</span> com.google.common.collect.Lists;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">import</span> java.util.Comparator;</div><div class="line"><span class="keyword">import</span> java.util.IntSummaryStatistics;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.stream.Collectors;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> JingQ at 2019/1/31</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8StreamTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">buildStreamTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        String content = <span class="string">"hello,world,debug,the,world"</span>;</div><div class="line">        List&lt;String&gt; list = Arrays.asList(content.split(<span class="string">","</span>));</div><div class="line"></div><div class="line">        List&lt;String&gt; filter = list.stream()</div><div class="line">                .filter(temp -&gt; temp.startsWith(<span class="string">"w"</span>))</div><div class="line">                .map(temp -&gt; temp.substring(<span class="number">0</span>, <span class="number">3</span>))</div><div class="line">                .collect(Collectors.toList());</div><div class="line">        filter.forEach(System.out::print);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">forEachTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        String content = <span class="string">"hello,world,debug,the,world"</span>;</div><div class="line">        List&lt;String&gt; list = Arrays.asList(content.split(<span class="string">","</span>));</div><div class="line"></div><div class="line">        list.forEach(System.out::println);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mapTest</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        Car car1 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车1"</span>);</div><div class="line">        Car car2 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车2"</span>);</div><div class="line">        List&lt;Car&gt; carList = Lists.newArrayList(car1, car2);</div><div class="line"></div><div class="line">        List&lt;String&gt; nameList = carList.stream().map(Car::getName).collect(Collectors.toList());</div><div class="line">        <span class="comment">// 还可以加入filter功能，先进行过滤，然后取出想要的字段组成新的列表</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * filter过滤</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">filterTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line"></div><div class="line">        <span class="keyword">long</span> count = ints.stream().filter(number -&gt; number &gt; <span class="number">10</span>).count();</div><div class="line">        System.out.println(count);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * limit 限制数量</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">limitTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line">        ints.stream().limit(<span class="number">5</span>).forEach(System.out::println);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sortedTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line">        ints.sort(Comparator.naturalOrder());</div><div class="line"></div><div class="line">        Car car1 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车1"</span>);</div><div class="line">        Car car2 = Car.create(Car::<span class="keyword">new</span>, <span class="string">"小汽车2"</span>);</div><div class="line">        List&lt;Car&gt; carList = Lists.newArrayList(car1, car2);</div><div class="line">        <span class="comment">// 可以自定义排序的字段，如果需要更复杂的排序规则，可以在lambda中的statement进行编写</span></div><div class="line">        carList.sort(Comparator.comparing(Car::getName));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">collectorsTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Car&gt; carList = Lists.newArrayList();</div><div class="line">        <span class="comment">// 省略构建参数，获取列表中的主键ID列表</span></div><div class="line">        List&lt;Integer&gt; ids = carList.stream().map(Car::getId).collect(Collectors.toList());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">statisticsTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        List&lt;Integer&gt; ints = Lists.newArrayList(<span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">31</span>, <span class="number">8</span>, <span class="number">9</span>);</div><div class="line">        IntSummaryStatistics statistics = ints.parallelStream().mapToInt(x -&gt; (<span class="keyword">int</span>) x).summaryStatistics();</div><div class="line">        System.out.println(<span class="string">"最大值 : "</span> + statistics.getMax());</div><div class="line">        System.out.println(<span class="string">"最小值 ："</span> + statistics.getMin());</div><div class="line">        System.out.println(<span class="string">"平均值 ："</span> + statistics.getAverage());</div><div class="line">        System.out.println(<span class="string">"总和 ： "</span> + statistics.getSum());</div><div class="line">        System.out.println(<span class="string">"数量 ："</span> + statistics.getCount());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>JDK的流式处理真的是太方便了（虽然以前的代码可以显示的调用，但感觉使用更少的代码来实现更加优雅😁）</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="http://www.runoob.com/java/java8-streams.html" target="_blank" rel="noopener">Java 8 Stream</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/30/java/Java8新特性学习-函数式接口/" rel="next" title="Java8新特性学习-函数式接口">
+                <i class="fa fa-chevron-left"></i> Java8新特性学习-函数式接口
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/24/linux/Linux学习——Shell语法/" rel="prev" title="Linux学习——Shell语法">
+                Linux学习——Shell语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Stream"><span class="nav-number">2.</span> <span class="nav-text">什么是Stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成流"><span class="nav-number">3.</span> <span class="nav-text">生成流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forEach"><span class="nav-number">4.</span> <span class="nav-text">forEach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map"><span class="nav-number">5.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter"><span class="nav-number">6.</span> <span class="nav-text">filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#limit"><span class="nav-number">7.</span> <span class="nav-text">limit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sorted"><span class="nav-number">8.</span> <span class="nav-text">sorted</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Collectors"><span class="nav-number">9.</span> <span class="nav-text">Collectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计statistics"><span class="nav-number">10.</span> <span class="nav-text">统计statistics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整的测试代码"><span class="nav-number">11.</span> <span class="nav-text">完整的测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">12.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">13.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

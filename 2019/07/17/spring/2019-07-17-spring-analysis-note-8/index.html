@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="我们在业务开发中，使用得最多的是面向对象编程（OOP），因为它的代码逻辑直观，从上往下就能查看完整的执行链路。 在这个基础上延伸，出现了面向切面编程（AOP），将可以重复性的横切逻辑抽取到统一的模块中。 例如日志打印、安全监测，如果按照 OOP 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 AOP 编程， AOP 所关注的方向是横向的，">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 源码学习(八) AOP 使用和实现原理">
+<meta property="og:url" content="http://yoursite.com/2019/07/17/spring/2019-07-17-spring-analysis-note-8/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="我们在业务开发中，使用得最多的是面向对象编程（OOP），因为它的代码逻辑直观，从上往下就能查看完整的执行链路。 在这个基础上延伸，出现了面向切面编程（AOP），将可以重复性的横切逻辑抽取到统一的模块中。 例如日志打印、安全监测，如果按照 OOP 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 AOP 编程， AOP 所关注的方向是横向的，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/idea_find_file_source.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/annotation_aware_aspectJ_auto_proxy_creator_diagram.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/proxy_factory_create_aop_proxy.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/after_post_bean_processor.png">
+<meta property="og:updated_time" content="2019-07-21T03:22:48.642Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring 源码学习(八) AOP 使用和实现原理">
+<meta name="twitter:description" content="我们在业务开发中，使用得最多的是面向对象编程（OOP），因为它的代码逻辑直观，从上往下就能查看完整的执行链路。 在这个基础上延伸，出现了面向切面编程（AOP），将可以重复性的横切逻辑抽取到统一的模块中。 例如日志打印、安全监测，如果按照 OOP 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 AOP 编程， AOP 所关注的方向是横向的，">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/17/spring/2019-07-17-spring-analysis-note-8/"/>
+
+
+
+
+
+  <title>Spring 源码学习(八) AOP 使用和实现原理 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/17/spring/2019-07-17-spring-analysis-note-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring 源码学习(八) AOP 使用和实现原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-17T19:12:00+08:00">
+                2019-07-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg" alt=""></p>
+<p>我们在业务开发中，使用得最多的是<strong>面向对象编程（OOP）</strong>，因为它的代码逻辑直观，从上往下就能查看完整的执行链路。</p>
+<p>在这个基础上延伸，出现了<strong>面向切面编程（AOP）</strong>，将可以重复性的横切逻辑抽取到统一的模块中。</p>
+<p>例如日志打印、安全监测，如果按照 <code>OOP</code> 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 <code>AOP</code> 编程， <code>AOP</code> 所关注的方向是<strong>横向</strong>的，不同于 <code>OOP</code> 的<strong>纵向</strong>。 </p>
+<p>所以接下来一起来<strong>学习 <code>AOP</code> 是如何使用以及 <code>Spring</code> 容器里面的处理逻辑~</strong></p>
+<a id="more"></a>
+<hr>
+<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><p>之前由于业务开发中需要用到 <code>AOP</code>，所以也整理一篇 <a href="https://vip-augus.github.io/2019/03/19/Spring%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0AOP/" target="_blank" rel="noopener">Spring自定义注解实现AOP</a>，感兴趣的同学可以去看看~</p>
+<p>接下来是书中的例子：</p>
+<h2 id="创建用于拦截的-bean"><a href="#创建用于拦截的-bean" class="headerlink" title="创建用于拦截的 bean"></a>创建用于拦截的 bean</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAopBean</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> String testStr = <span class="string">"testStr"</span>;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAop</span><span class="params">()</span> </span>&#123;</div><div class="line">	    <span class="comment">// 被拦截的方法，简单打印</span></div><div class="line">		System.out.println(<span class="string">"I am the true aop bean"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="创建-Advisor"><a href="#创建-Advisor" class="headerlink" title="创建 Advisor"></a>创建 Advisor</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AspectJTest</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Pointcut</span>(<span class="string">"execution(* *.testAop(..))"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Before</span>(<span class="string">"test()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeTest</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"before Test"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="meta">@After</span>(<span class="string">"test()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterTest</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"after Test"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Around</span>(<span class="string">"test()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">aroundTest</span><span class="params">(ProceedingJoinPoint joinPoint)</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"around Before"</span>);</div><div class="line">		Object o = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="comment">// 调用切面的方法</span></div><div class="line">			o = joinPoint.proceed();</div><div class="line">		&#125; <span class="keyword">catch</span> (Throwable e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		System.out.println(<span class="string">"around After"</span>);</div><div class="line">		<span class="keyword">return</span> o;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先类打上了 <code>@Aspect</code> 注解，让 <code>Spring</code> 认识到这个是一个切面 <code>bean</code>，在方法打上 <code>@Pointcut(&quot;execution(* *.testAop(..))&quot;)</code>，表示这是一个切点方法，<code>execution()</code> 内部的表达式指明被拦截的方法，<code>Before</code> 、<code>After</code>、<code>Around</code> 分别表示在被拦截方法的前、后已经环绕执行。</p>
+<hr>
+<h2 id="创建配置文件-aop-xml"><a href="#创建配置文件-aop-xml" class="headerlink" title="创建配置文件 aop.xml"></a>创建配置文件 aop.xml</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line"><span class="tag">	   <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line"><span class="tag">	   <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></div><div class="line"><span class="tag">	   <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></div><div class="line"><span class="tag"><span class="string">	   http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></div><div class="line"><span class="tag"><span class="string">	   http://www.springframework.org/schema/aop</span></span></div><div class="line"><span class="tag"><span class="string">	   https://www.springframework.org/schema/aop/spring-aop.xsd"</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!--开启 AOP 功能--&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span> /&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"aopTestBean"</span> <span class="attr">class</span>=<span class="string">"aop.TestAopBean"</span>/&gt;</span></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"aop.AspectJTest"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="测试-Demo"><a href="#测试-Demo" class="headerlink" title="测试 Demo"></a>测试 Demo</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AopTestBootstrap</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"aop/aop.xml"</span>);</div><div class="line">		TestAopBean bean = (TestAopBean) context.getBean(<span class="string">"aopTestBean"</span>);</div><div class="line">		bean.testAop();</div><div class="line">		<span class="comment">// 输出内容 看输出顺序，了解到增强方法的执行顺序 :</span></div><div class="line">		<span class="comment">// Around proceed 之前 -&gt; Before -&gt; Around proceed 之后 -&gt; After</span></div><div class="line">		<span class="comment">//around Before</span></div><div class="line">		<span class="comment">//before Test</span></div><div class="line">		<span class="comment">//I am the true aop bean</span></div><div class="line">		<span class="comment">//around After</span></div><div class="line">		<span class="comment">//after Test</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>根据上面的启动例子，发现在自己写的核心业务方法 <code>testAop()</code> 上，明明只是简单打印了 <code>I am the true aop bean</code>，但执行结果输出了其它内容，<strong>说明这个类被增强了，在不修改核心业务方法上，我们对它进行了扩展。证明了  AOP 可以使辅助功能独立于核心业务之外，方便了程序的扩展和解耦。</strong></p>
+<p>使用起来很方便，接下来一起来看看 <code>Spring</code> 是如何实现 <code>AOP</code> 功能的吧~</p>
+<hr>
+<h1 id="动态-AOP-自定义标签"><a href="#动态-AOP-自定义标签" class="headerlink" title="动态 AOP 自定义标签"></a>动态 AOP 自定义标签</h1><p>之前在介绍自定义标签时，提到了 <code>AOP</code> 的实现也借助了自定义注解，根据自定义标签的思想：<strong>每个自定义的标签，都有对应的解析器</strong>，然后借助强大的开发工具 <code>IDEA</code> 定位功能，找到解析器注册的地方：</p>
+<p><img src="http://img.sevenyuan.cn/idea_find_file_source.png" alt="idea_find_file_source"></p>
+<ol>
+<li><strong>按住 <code>ctrl</code>，定位标签对应的 <code>xsd</code> 文件</strong></li>
+<li><strong>根据命名文件，在 <code>META-INF</code> 目录下找到了 <code>spring.handlers</code> 文件</strong></li>
+<li><strong>在处理器文件中发现了处理器 <code>AopNamespaceHandler</code></strong></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AopNamespaceHandler</span> <span class="keyword">extends</span> <span class="title">NamespaceHandlerSupport</span> </span>&#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// In 2.0 XSD as well as in 2.1 XSD.</span></div><div class="line">		registerBeanDefinitionParser(<span class="string">"config"</span>, <span class="keyword">new</span> ConfigBeanDefinitionParser());</div><div class="line">		<span class="comment">// 注释 8.1 自定义注解，注册解析器，元素名是 aspectj-autoproxy</span></div><div class="line">		registerBeanDefinitionParser(<span class="string">"aspectj-autoproxy"</span>, <span class="keyword">new</span> AspectJAutoProxyBeanDefinitionParser());</div><div class="line">		registerBeanDefinitionDecorator(<span class="string">"scoped-proxy"</span>, <span class="keyword">new</span> ScopedProxyBeanDefinitionDecorator());</div><div class="line">		<span class="comment">// Only in 2.0 XSD: moved to context namespace as of 2.1</span></div><div class="line">		registerBeanDefinitionParser(<span class="string">"spring-configured"</span>, <span class="keyword">new</span> SpringConfiguredBeanDefinitionParser());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>处理器继承自 <code>NamespaceHandlerSupport</code>，在加载过程中，将会执行 <code>init</code> 初始化方法，在这里，会注册 <code>aspectj-autoproxy</code> 类型的解析器 <code>AspectJAutoProxyBeanDefinitionParser</code></strong></p>
+<p>如何注册自定义解析器之前也了解过了，所以接下来直接来看看，遇到 <code>aspectj-autoproxy</code> 类型的 <code>bean</code>，程序是如何解析的。</p>
+<hr>
+<h2 id="注册-AnnotationAwareAspectJAutoProxyCreator"><a href="#注册-AnnotationAwareAspectJAutoProxyCreator" class="headerlink" title="注册 AnnotationAwareAspectJAutoProxyCreator"></a>注册 AnnotationAwareAspectJAutoProxyCreator</h2><p>来看下解析时，它的入口方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> BeanDefinition <span class="title">parse</span><span class="params">(Element element, ParserContext parserContext)</span> </span>&#123;</div><div class="line">	<span class="comment">// aop 注解的解析入口，注册 AnnotationAwareAspectJAutoProxyCreator</span></div><div class="line">	AopNamespaceUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(parserContext, element);</div><div class="line">	<span class="comment">// 对注解中子类的处理</span></div><div class="line">	extendBeanDefinition(element, parserContext);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>入口方法一如既往的简洁，交代了要做的事情，然后具体复杂逻辑再交给工具类或者子类继续实现，所以接下来要看的是如何注册 <code>AnnotationAwareAspectJAutoProxyCreator</code>。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerAspectJAnnotationAutoProxyCreatorIfNecessary</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">		ParserContext parserContext, Element sourceElement)</span> </span>&#123;</div><div class="line">	<span class="comment">// 通过工具类，注册或升级 AspectJAnnotationAutoProxyCreator</span></div><div class="line">	BeanDefinition beanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(</div><div class="line">			parserContext.getRegistry(), parserContext.extractSource(sourceElement));</div><div class="line">	<span class="comment">// 处理 proxy-target-class 以及 expose-proxy 属性</span></div><div class="line">	useClassProxyingIfNecessary(parserContext.getRegistry(), sourceElement);</div><div class="line">	<span class="comment">// 注册组件并通知，让监听器进行处理</span></div><div class="line">	registerComponentIfNecessary(beanDefinition, parserContext);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到这个方法内部有三个处理逻辑，所以我们来一个一个去分析了解：</p>
+<hr>
+<h3 id="注册或者升级-AnnotationAwareAspectJAutoProxyCreator"><a href="#注册或者升级-AnnotationAwareAspectJAutoProxyCreator" class="headerlink" title="注册或者升级 AnnotationAwareAspectJAutoProxyCreator"></a>注册或者升级 AnnotationAwareAspectJAutoProxyCreator</h3><p>对于 <code>AOP</code> 的实现，基本上都是靠 <code>AnnotationAwareAspectJAutoProxyCreator</code> 去完成，它可以根据 <code>@Point</code> 注解定义的切点来自动代理相匹配的 <code>bean</code>。</p>
+<p><strong>由于 <code>Spring</code> 替我们做了很多工作，所以开发 <code>AOP</code> 业务时才可以这么简单，连配置也简化了许多，所以来看下 <code>Spring</code> 是如何使用自定义配置来帮助我们自动注册 <code>AnnotationAwareAspectJAutoProxyCreator</code>。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> BeanDefinition <span class="title">registerAspectJAnnotationAutoProxyCreatorIfNecessary</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">		BeanDefinitionRegistry registry, @Nullable Object source)</span> </span>&#123;</div><div class="line">	<span class="comment">// 实际注册的 bean 类型是 AnnotationAwareAspectJAutoProxyCreator</span></div><div class="line">	<span class="keyword">return</span> registerOrEscalateApcAsRequired(AnnotationAwareAspectJAutoProxyCreator.class, registry, source);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> BeanDefinition <span class="title">registerOrEscalateApcAsRequired</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">		Class&lt;?&gt; cls, BeanDefinitionRegistry registry, @Nullable Object source)</span> </span>&#123;</div><div class="line">	Assert.notNull(registry, <span class="string">"BeanDefinitionRegistry must not be null"</span>);</div><div class="line">	<span class="keyword">if</span> (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) &#123;</div><div class="line">		<span class="comment">// 如果在 registry 已经存在自动代理创建器，并且传入的代理器类型与注册的不一致，根据优先级判断是否需要修改</span></div><div class="line">		BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);</div><div class="line">		<span class="keyword">if</span> (!cls.getName().equals(apcDefinition.getBeanClassName())) &#123;</div><div class="line">			<span class="comment">// 根据优先级选择使用哪一个</span></div><div class="line">			<span class="keyword">int</span> currentPriority = findPriorityForClass(apcDefinition.getBeanClassName());</div><div class="line">			<span class="keyword">int</span> requiredPriority = findPriorityForClass(cls);</div><div class="line">			<span class="keyword">if</span> (currentPriority &lt; requiredPriority) &#123;</div><div class="line">				<span class="comment">// 传进来的参数优先级更大，修改注册的 beanName，使用传进来的代理创建器</span></div><div class="line">				apcDefinition.setBeanClassName(cls.getName());</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 因为已经存在代理器，不需要之后的默认设置，直接返回</span></div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	RootBeanDefinition beanDefinition = <span class="keyword">new</span> RootBeanDefinition(cls);</div><div class="line">	beanDefinition.setSource(source);</div><div class="line">	<span class="comment">// 默认的是最小优先级</span></div><div class="line">	beanDefinition.getPropertyValues().add(<span class="string">"order"</span>, Ordered.HIGHEST_PRECEDENCE);</div><div class="line">	beanDefinition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);</div><div class="line">	<span class="comment">// 自动代理创建器的注册名字永远是 org.springframework.aop.config.internalAutoProxyCreator</span></div><div class="line">	registry.registerBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME, beanDefinition);</div><div class="line">	<span class="keyword">return</span> beanDefinition;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个步骤中，实现了自动注册 <code>AnnotationAwareAspectJAutoProxyCreator</code> 类，同时能看到涉及到优先级的概念和注册名一直都是 <code>AUTO_PROXY_CREATOR_BEAN_NAME</code>。</p>
+<hr>
+<h3 id="处理-proxy-target-class-以及-expose-proxy-属性"><a href="#处理-proxy-target-class-以及-expose-proxy-属性" class="headerlink" title="处理 proxy-target-class 以及 expose-proxy 属性"></a>处理 proxy-target-class 以及 expose-proxy 属性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">useClassProxyingIfNecessary</span><span class="params">(BeanDefinitionRegistry registry, @Nullable Element sourceElement)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (sourceElement != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">// 这方法作用挺简单的，就是解析下面两个属性，如果是 true，将它们加入代理注册器的属性列表中</span></div><div class="line">		<span class="comment">// definition.getPropertyValues().add("proxyTargetClass", Boolean.TRUE)</span></div><div class="line">		<span class="keyword">boolean</span> proxyTargetClass = Boolean.parseBoolean(sourceElement.getAttribute(PROXY_TARGET_CLASS_ATTRIBUTE));</div><div class="line">		<span class="keyword">if</span> (proxyTargetClass) &#123;</div><div class="line">			<span class="comment">// 处理  proxy-target-class 属性</span></div><div class="line">			<span class="comment">// 与代码生成方式有关，在之后步骤中决定使用 jdk 动态代理 或 cglib</span></div><div class="line">			AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">boolean</span> exposeProxy = Boolean.parseBoolean(sourceElement.getAttribute(EXPOSE_PROXY_ATTRIBUTE));</div><div class="line">		<span class="keyword">if</span> (exposeProxy) &#123;</div><div class="line">			<span class="comment">// 处理 expose-proxy 属性</span></div><div class="line">			<span class="comment">// 扩展增强，有时候目标对象内部的自我调用无法实施切面中的增强，通过这个属性可以同时对两个方法进行增强</span></div><div class="line">			AopConfigUtils.forceAutoProxyCreatorToExposeProxy(registry);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于 <code>AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);</code> 方法，它是一个属性设置的过程，如果解析到的属性为 <code>true</code>，将它们加入代理注册器的属性列表中，这里不细说下去。</p>
+<p>将这两个属性分开熟悉：</p>
+<hr>
+<h4 id="proxy-target-class"><a href="#proxy-target-class" class="headerlink" title="proxy-target-class"></a>proxy-target-class</h4><p><strong><code>Spring AOP</code> 部分使用 <code>JDK</code> 动态代理 （Proxy + InvocationHandler），或者 <code>CGLIB</code> （Code Generation LIB）来为目标对象创建代理。书中提到，推荐使用的是 <code>JDK</code> 动态代理。</strong></p>
+<p>如果被代理的目标对象<strong>实现了至少一个接口，则会使用 <code>JDK</code> 动态代理</strong>。所有该目标类型实现的接口都将被代理。</p>
+<p>若该目标对象<strong>没有实现任何接口，则创建一个 <code>CGLIB</code> 代理。</strong>如果希望代理目标对象的所有方法，而不只是实现自接口的方法，可以通过该属性 <code>proxy-target-class</code> 开启强制使用 <code>CGLIB</code> 代理。</p>
+<p>但是强制开启 <code>CGLIB</code> 会有以下两个问题：</p>
+<ul>
+<li><strong>无法同时（advise）Final 方法，因为他们不能被覆写</strong></li>
+<li><strong>需要将 CGLB 二进制发行包放在 classpath 下面</strong></li>
+</ul>
+<p>如果考虑好上面两个方面，那就可以通过以下两个地方来强制开启 <code>CGLIB</code> 代理：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- one --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">aop:config</span> <span class="attr">proxy-target-class</span>=<span class="string">"true"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- two --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span> <span class="attr">proxy-target-class</span>=<span class="string">"true"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>其中有关 <code>CGLIB</code> 代理，这位老哥讲得很透彻，建议大家可以去了解一下~ <a href="https://www.cnblogs.com/xrq730/p/6661692.html" target="_blank" rel="noopener">Cglib及其基本使用</a></strong></p>
+<hr>
+<h4 id="expose-proxy"><a href="#expose-proxy" class="headerlink" title="expose-proxy"></a>expose-proxy</h4><p>有时候目标对象内部的自我调用将无法实施切面中的增强。</p>
+<p>例如两个方法都加上了事务注解 <code>@Transactional</code> 但是事务类型不一样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TestService</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">b</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImpl</span> <span class="keyword">implements</span> <span class="title">TestService</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.b();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"Hello world"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此处的 <code>this</code> 指向了目标对象， <strong><code>this.b()</code> 方法将不会执行 <code>b</code> 事务的切面，即不会执行事务增强。</strong></p>
+<p>为了解决这个问题，使 <code>a()</code> 和 <code>b()</code> 方法同时增强，可以通过 <code>expose-proxy</code> 来实现：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- one --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">aop:config</span> <span class="attr">expose-proxy</span>=<span class="string">"true"</span>&gt;</span>...<span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- two --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span> <span class="attr">expose-proxy</span>=<span class="string">"true"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h3 id="注册组件并通知"><a href="#注册组件并通知" class="headerlink" title="注册组件并通知"></a>注册组件并通知</h3><p>emmmm，这个方法内部逻辑如名字一样清晰，所以不细说啦。</p>
+<hr>
+<h1 id="创建-AOP-代理"><a href="#创建-AOP-代理" class="headerlink" title="创建 AOP 代理"></a>创建 AOP 代理</h1><p>前面主要围绕着自动代理器 <code>AnnotationAwareAspectJAutoProxyCreator</code> 的注册流程来讲解，接下来看自动代理器做了什么来完成 <code>AOP</code> 的操作。</p>
+<p>下面是 <code>AnnotationAwareAspectJAutoProxyCreator</code> 的继承体系：</p>
+<p><img src="http://img.sevenyuan.cn/annotation_aware_aspectJ_auto_proxy_creator_diagram.png" alt="annotation_aware_aspectJ_auto_proxy_creator_diagram"></p>
+<p>在图片右上角，发现它实现了 <code>BeanPostProcessor</code> 接口，之前文章提到过，它是一个后处理器，可以在 <code>bean</code> 实例化前后进行扩展。查看了实现了该接口的两个方法，<code>postProcessBeforeInitialization</code> 没有做处理，直接返回该对象。</p>
+<p><strong>实际进行处理的是 <code>postProcessAfterInitialization</code> 方法，在 <code>bean</code> 实例化之后的处理，在这一步中进行里代理增强，所以来看下这个方法：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(@Nullable Object bean, String beanName)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">// 组装 key</span></div><div class="line">		Object cacheKey = getCacheKey(bean.getClass(), beanName);</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.earlyProxyReferences.remove(cacheKey) != bean) &#123;</div><div class="line">			<span class="comment">// 如果适合被代理，则需要封装指定的 bean</span></div><div class="line">			<span class="keyword">return</span> wrapIfNecessary(bean, beanName, cacheKey);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> bean;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">wrapIfNecessary</span><span class="params">(Object bean, String beanName, Object cacheKey)</span> </span>&#123;</div><div class="line">	<span class="comment">// 如果已经处理过</span></div><div class="line">	<span class="keyword">if</span> (StringUtils.hasLength(beanName) &amp;&amp; <span class="keyword">this</span>.targetSourcedBeans.contains(beanName)) &#123;</div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 不需增强</span></div><div class="line">	<span class="keyword">if</span> (Boolean.FALSE.equals(<span class="keyword">this</span>.advisedBeans.get(cacheKey))) &#123;</div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 给定的 bean 类是否代表一个基础设施类，基础设置类不应代理 || 配置了指定 bean 不需要代理</span></div><div class="line">	<span class="keyword">if</span> (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) &#123;</div><div class="line">		<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 如果存在增强方法则创建代理</span></div><div class="line">	Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, <span class="keyword">null</span>);</div><div class="line">	<span class="keyword">if</span> (specificInterceptors != DO_NOT_PROXY) &#123;</div><div class="line">		<span class="comment">// 增强方法不为空</span></div><div class="line">		<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.TRUE);</div><div class="line">		<span class="comment">// 创建代理</span></div><div class="line">		Object proxy = createProxy(bean.getClass(), beanName, specificInterceptors, <span class="keyword">new</span> SingletonTargetSource(bean));</div><div class="line">		<span class="keyword">this</span>.proxyTypes.put(cacheKey, proxy.getClass());</div><div class="line">		<span class="keyword">return</span> proxy;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</div><div class="line">	<span class="keyword">return</span> bean;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>来提取一下核心流程：</strong></p>
+<ol>
+<li><strong>获取增强方法或者增强器</strong><br>我们刚才写的 <code>@Before</code> 、<code>@After</code> 之类的，就是增强方法，<code>AOP</code> 处理时，要先找出这些增强方法。</li>
+<li><strong>根据获取的增强进行代理</strong><br>找到增强方法后，需要对这些增强方法进行增强代理，实际上这个 <code>bean</code> 已经不完全是原来的类型了，会变成代理后的类型。</li>
+</ol>
+<hr>
+<h2 id="获取增强方法或者增强器"><a href="#获取增强方法或者增强器" class="headerlink" title="获取增强方法或者增强器"></a>获取增强方法或者增强器</h2><p>入口方法在这里：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> Object[] getAdvicesAndAdvisorsForBean(</div><div class="line">		Class&lt;?&gt; beanClass, String beanName, <span class="meta">@Nullable</span> TargetSource targetSource) &#123;</div><div class="line">	<span class="comment">// 寻找符合的切面</span></div><div class="line">	List&lt;Advisor&gt; advisors = findEligibleAdvisors(beanClass, beanName);</div><div class="line">	<span class="keyword">if</span> (advisors.isEmpty()) &#123;</div><div class="line">		<span class="keyword">return</span> DO_NOT_PROXY;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> advisors.toArray();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> List&lt;Advisor&gt; <span class="title">findEligibleAdvisors</span><span class="params">(Class&lt;?&gt; beanClass, String beanName)</span> </span>&#123;</div><div class="line">	<span class="comment">// 从 beanFactory 中获取声明为 AspectJ 注解的类，对并这些类进行增强器的提取</span></div><div class="line">	<span class="comment">// 委派给子类实现 org.springframework.aop.aspectj.autoproxy.AspectJAwareAdvisorAutoProxyCreator.extendAdvisors</span></div><div class="line">	List&lt;Advisor&gt; candidateAdvisors = findCandidateAdvisors();</div><div class="line">	<span class="comment">// 寻找匹配的增强器</span></div><div class="line">	List&lt;Advisor&gt; eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);</div><div class="line">	extendAdvisors(eligibleAdvisors);</div><div class="line">	<span class="keyword">if</span> (!eligibleAdvisors.isEmpty()) &#123;</div><div class="line">		eligibleAdvisors = sortAdvisors(eligibleAdvisors);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> eligibleAdvisors;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对于指定 <code>bean</code> 的增强方法的获取包含这两个步骤，获取所有的增强以及寻找所有增强中适用于 <code>bean</code> 的增强并应用。对应于 <code>findCandidateAdvisors</code> 和 <code>findAdvisorsThatCanApply</code> 这两个方法。如果没找到对应的增强器，那就返回 <code>DO_NOT_PROXY</code> ，表示不需要进行增强。</p>
+<p>由于逻辑太多，所以接下来贴的代码不会太多，主要来了解它的大致流程，有需要的可以跟着源码工程的注释跟踪完整的流程~：</p>
+<hr>
+<h3 id="寻找对应的增强器-findCandidateAdvisors"><a href="#寻找对应的增强器-findCandidateAdvisors" class="headerlink" title="寻找对应的增强器 findCandidateAdvisors"></a>寻找对应的增强器 findCandidateAdvisors</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> List&lt;Advisor&gt; <span class="title">findCandidateAdvisors</span><span class="params">()</span> </span>&#123;</div><div class="line">	List&lt;Advisor&gt; advisors = <span class="keyword">super</span>.findCandidateAdvisors();</div><div class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.aspectJAdvisorsBuilder != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">// 注释 8.3 实际调用的是 org.springframework.aop.aspectj.annotation.BeanFactoryAspectJAdvisorsBuilder.buildAspectJAdvisors</span></div><div class="line">		advisors.addAll(<span class="keyword">this</span>.aspectJAdvisorsBuilder.buildAspectJAdvisors());</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> advisors;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实际来看，关键是这个方法 <code>this.aspectJAdvisorsBuilder.buildAspectJAdvisors()</code> 这个方法看起来简单，但是实际处理的逻辑很多，代码深度也很多，所以为了避免太多代码，我<strong>罗列了主要流程，和关键的处理方法做了什么</strong></p>
+<p>主要流程如下：</p>
+<ol>
+<li><strong>获取所有 beanName，会将之前在 beanFactory 中注册的 bean 都提取出来。</strong></li>
+<li><strong>遍历前一步骤提取出来的 bean 列表，找出打上 @AspectJ 注解的类，进行进一步处理</strong></li>
+<li><strong>继续对前一步提取的 @AspectJ 注解的类进行增强器的提取</strong></li>
+<li><strong>将提取结果加入缓存中</strong></li>
+</ol>
+<p>可以查询代码中的注释，<strong>从 [注释 8.3] 到 [注释 8.8 根据切点信息生成增强器] 都是这个方法的处理逻辑</strong></p>
+<p>※※<strong>在这个流程的最后一步中，会将识别到的切点信息（PointCut）和增强方法(Advice)进行封装，具体是由 <code>Advisor</code> 的实现类 <code>InstantiationModelAwarePointcutAdvisorImpl</code> 进行统一封装。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">InstantiationModelAwarePointcutAdvisorImpl</span><span class="params">(AspectJExpressionPointcut declaredPointcut, Method aspectJAdviceMethod, AspectJAdvisorFactory aspectJAdvisorFactory, MetadataAwareAspectInstanceFactory aspectInstanceFactory, <span class="keyword">int</span> declarationOrder, String aspectName)</span> </span>&#123;</div><div class="line">	<span class="comment">// 简单赋值</span></div><div class="line">	<span class="keyword">this</span>.declaredPointcut = declaredPointcut;</div><div class="line">    ...</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (aspectInstanceFactory.getAspectMetadata().isLazilyInstantiated()) &#123;</div><div class="line">		Pointcut preInstantiationPointcut = Pointcuts.union(aspectInstanceFactory.getAspectMetadata().getPerClausePointcut(), <span class="keyword">this</span>.declaredPointcut);</div><div class="line">		<span class="keyword">this</span>.pointcut = <span class="keyword">new</span> PerTargetInstantiationModelPointcut(</div><div class="line">		<span class="keyword">this</span>.declaredPointcut, preInstantiationPointcut, aspectInstanceFactory);</div><div class="line">		<span class="keyword">this</span>.lazy = <span class="keyword">true</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="comment">// A singleton aspect.</span></div><div class="line">		<span class="keyword">this</span>.pointcut = <span class="keyword">this</span>.declaredPointcut;</div><div class="line">		<span class="keyword">this</span>.lazy = <span class="keyword">false</span>;</div><div class="line">		<span class="comment">// 初始化增强器</span></div><div class="line">		<span class="keyword">this</span>.instantiatedAdvice = instantiateAdvice(<span class="keyword">this</span>.declaredPointcut);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>封装体前半部分逻辑只是简单赋值。关键是这个方法 <code>instantiateAdvice(this.declaredPointcut)</code>，在这一步中，对不同的增强（Before/After/Around）实现的逻辑是不一样的。在 <code>ReflectiveAspectJAdvisorFactory#getAdvice</code> 方法中区别实现了根据不同的注解类型封装不同的增强器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Advice <span class="title">getAdvice</span><span class="params">(Method candidateAdviceMethod, AspectJExpressionPointcut expressionPointcut,</span></span></div><div class="line"><span class="function"><span class="params">			MetadataAwareAspectInstanceFactory aspectInstanceFactory, <span class="keyword">int</span> declarationOrder, String aspectName)</span> </span>&#123;</div><div class="line">		...</div><div class="line">    <span class="comment">// 注释 8.7 根据不同的注解类型封装不同的增强器</span></div><div class="line">	<span class="keyword">switch</span> (aspectJAnnotation.getAnnotationType()) &#123;</div><div class="line">		<span class="keyword">case</span> AtPointcut:</div><div class="line">			</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">case</span> AtAround:</div><div class="line">		springAdvice = <span class="keyword">new</span> AspectJAroundAdvice(</div><div class="line">				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	<span class="keyword">case</span> AtBefore:</div><div class="line">		springAdvice = <span class="keyword">new</span> AspectJMethodBeforeAdvice(</div><div class="line">				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	<span class="keyword">case</span> AtAfter:</div><div class="line">		springAdvice = <span class="keyword">new</span> AspectJAfterAdvice(</div><div class="line">				candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	<span class="keyword">case</span> AtAfterReturning:</div><div class="line">		springAdvice = <span class="keyword">new</span> AspectJAfterReturningAdvice(</div><div class="line">		    candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</div><div class="line">		AfterReturning afterReturningAnnotation = (AfterReturning) aspectJAnnotation.getAnnotation();</div><div class="line">		<span class="keyword">if</span> (StringUtils.hasText(afterReturningAnnotation.returning())) &#123;</div><div class="line">			springAdvice.setReturningName(afterReturningAnnotation.returning());</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	<span class="keyword">case</span> AtAfterThrowing:</div><div class="line">		springAdvice = <span class="keyword">new</span> AspectJAfterThrowingAdvice(</div><div class="line">		    candidateAdviceMethod, expressionPointcut, aspectInstanceFactory);</div><div class="line">		AfterThrowing afterThrowingAnnotation = (AfterThrowing) aspectJAnnotation.getAnnotation();</div><div class="line">	    <span class="keyword">if</span> (StringUtils.hasText(afterThrowingAnnotation.throwing())) &#123;</div><div class="line">		    springAdvice.setThrowingName(afterThrowingAnnotation.throwing());</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	<span class="keyword">default</span>:</div><div class="line">	&#125;		</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后切点方法通过解析和封装成 <code>Advisor</code>，提取到的结果加入到缓存中。细心的你可能会发现<strong>除了普通的增强器外，还有另外两种增强器：同步实例化增强器和引介增强器。</strong>由于用的比较少，所以我看到源码中这两个分支处理没有深入去学习，感兴趣的同学请继续深入学习这两种增强器~</p>
+<hr>
+<h3 id="获取匹配的增强器-findAdvisorsThatCanApply"><a href="#获取匹配的增强器-findAdvisorsThatCanApply" class="headerlink" title="获取匹配的增强器 findAdvisorsThatCanApply"></a>获取匹配的增强器 findAdvisorsThatCanApply</h3><p>在前面流程中，已经完成了所有增强器的解析，但是对于前面解析到的增强器，并不一定都适用于当前处理的 <code>bean</code>，所以还需要通过一个方法来挑选出合适的增强器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> List&lt;Advisor&gt; <span class="title">findAdvisorsThatCanApply</span><span class="params">(List&lt;Advisor&gt; candidateAdvisors, Class&lt;?&gt; beanClass, String beanName)</span> </span>&#123;</div><div class="line">	ProxyCreationContext.setCurrentProxiedBeanName(beanName);</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		<span class="comment">// 在这一步中进行过滤增强器</span></div><div class="line">		<span class="keyword">return</span> AopUtils.findAdvisorsThatCanApply(candidateAdvisors, beanClass);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">finally</span> &#123;</div><div class="line">		ProxyCreationContext.setCurrentProxiedBeanName(<span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，具体实现过滤操作的是工具类方法 <code>AopUtils.findAdvisorsThatCanApply</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Advisor&gt; <span class="title">findAdvisorsThatCanApply</span><span class="params">(List&lt;Advisor&gt; candidateAdvisors, Class&lt;?&gt; clazz)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (candidateAdvisors.isEmpty()) &#123;</div><div class="line">		<span class="keyword">return</span> candidateAdvisors;</div><div class="line">	&#125;</div><div class="line">	List&lt;Advisor&gt; eligibleAdvisors = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">	<span class="comment">// 遍历所有增强器</span></div><div class="line">	<span class="keyword">for</span> (Advisor candidate : candidateAdvisors) &#123;</div><div class="line">		<span class="comment">// 首先处理引介增强</span></div><div class="line">		<span class="keyword">if</span> (candidate <span class="keyword">instanceof</span> IntroductionAdvisor &amp;&amp; canApply(candidate, clazz)) &#123;</div><div class="line">			eligibleAdvisors.add(candidate);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">boolean</span> hasIntroductions = !eligibleAdvisors.isEmpty();</div><div class="line">	<span class="keyword">for</span> (Advisor candidate : candidateAdvisors) &#123;</div><div class="line">		<span class="comment">// 前面处理过了，跳过</span></div><div class="line">		<span class="keyword">if</span> (candidate <span class="keyword">instanceof</span> IntroductionAdvisor) &#123;</div><div class="line">			<span class="comment">// already processed</span></div><div class="line">			<span class="keyword">continue</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 处理普通增强器类型</span></div><div class="line">		<span class="keyword">if</span> (canApply(candidate, clazz, hasIntroductions)) &#123;</div><div class="line">			eligibleAdvisors.add(candidate);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> eligibleAdvisors;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体判断逻辑在 <code>canApply()</code> 方法中，如果判断符合条件的，加入到 <code>eligibleAdvisors</code> 中，最后返回对于这个 <code>bean</code> 适合的增强器列表。</p>
+<hr>
+<h2 id="创建代理"><a href="#创建代理" class="headerlink" title="创建代理"></a>创建代理</h2><p>通过前面的流程，获取到了所有对应 <code>bean</code> 的增强器后，可以开始代理的创建。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">createProxy</span><span class="params">(Class&lt;?&gt; beanClass, @Nullable String beanName,</span></span></div><div class="line"><span class="function"><span class="params">			@Nullable Object[] specificInterceptors, TargetSource targetSource)</span> </span>&#123;</div><div class="line">	ProxyFactory proxyFactory = <span class="keyword">new</span> ProxyFactory();</div><div class="line">	<span class="comment">// 拷贝，获取当前类中的相关属性</span></div><div class="line">	proxyFactory.copyFrom(<span class="keyword">this</span>);</div><div class="line">	<span class="comment">// 决定对于给定 bean 是否应该使用 targetClass 而不是他的接口代理</span></div><div class="line">	<span class="keyword">if</span> (!proxyFactory.isProxyTargetClass()) &#123;</div><div class="line">		<span class="comment">// 检查 proxyTargetClass 设置以及 preserveTargetClass 属性</span></div><div class="line">		<span class="keyword">if</span> (shouldProxyTargetClass(beanClass, beanName)) &#123;</div><div class="line">			proxyFactory.setProxyTargetClass(<span class="keyword">true</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 添加代理接口</span></div><div class="line">			evaluateProxyInterfaces(beanClass, proxyFactory);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 这一步中，主要将拦截器封装为增强器</span></div><div class="line">	Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);</div><div class="line">	proxyFactory.addAdvisors(advisors);</div><div class="line">	proxyFactory.setTargetSource(targetSource);</div><div class="line">	<span class="comment">// 定制代理</span></div><div class="line">	customizeProxyFactory(proxyFactory);</div><div class="line">	<span class="comment">// 用来控制代理工厂被配置之后，是否含允许修改通知</span></div><div class="line">	<span class="comment">// 缺省值为 false，不允许修改代理的配置</span></div><div class="line">	proxyFactory.setFrozen(<span class="keyword">this</span>.freezeProxy);</div><div class="line">	<span class="keyword">if</span> (advisorsPreFiltered()) &#123;</div><div class="line">		proxyFactory.setPreFiltered(<span class="keyword">true</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 生成代理，委托给了 ProxyFactory 去处理。</span></div><div class="line">	<span class="keyword">return</span> proxyFactory.getProxy(getProxyClassLoader());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>对于代理类的创建和处理， <code>Spring</code> 委托给了 <code>ProxyFactory</code> 去处理，在上面贴出的函数主要是对 <code>ProxyFactory</code> 的初始化操作，进而对真正的创建代理做准备，主要流程如下：</strong></p>
+<ol>
+<li><strong>获取当前类的属性</strong></li>
+<li><strong>添加代理接口</strong></li>
+<li><strong>封装 Advisor 并加入到 ProxyFactory</strong></li>
+<li><strong>设置要代理的类</strong></li>
+<li><strong>为子类提供定制的函数 customizeProxyFactory，子类通过该方法对 ProxyFactory 进行进一步的封装</strong></li>
+<li><strong>进行获取代理操作</strong></li>
+</ol>
+<p>比较关键的是第三个步骤和第六个步骤，其中在第三个步骤中，进行的是拦截器包装，<strong>详细代码流程请查 [注释 8.9 为给定的bean创建AOP代理] 和 [注释 8.10 包装拦截器，封装成 Advisor]</strong>。</p>
+<p>接着，完成了所有增强器的封装过程，到了解析的最后一步，<strong>进行代理的创建和获取</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getProxy</span><span class="params">(@Nullable ClassLoader classLoader)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> createAopProxy().getProxy(classLoader);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="创建代理-createAopProxy"><a href="#创建代理-createAopProxy" class="headerlink" title="创建代理 createAopProxy()"></a>创建代理 createAopProxy()</h3><p>定位到创建代理的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> AopProxy <span class="title">createAopProxy</span><span class="params">(AdvisedSupport config)</span> <span class="keyword">throws</span> AopConfigException </span>&#123;</div><div class="line">	<span class="keyword">if</span> (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) &#123;</div><div class="line">		Class&lt;?&gt; targetClass = config.getTargetClass();</div><div class="line">		<span class="keyword">if</span> (targetClass == <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> AopConfigException(<span class="string">"TargetSource cannot determine target class: "</span> +</div><div class="line">					<span class="string">"Either an interface or a target is required for proxy creation."</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) &#123;</div><div class="line">			<span class="keyword">return</span> <span class="keyword">new</span> JdkDynamicAopProxy(config);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ObjenesisCglibAopProxy(config);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> JdkDynamicAopProxy(config);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面代码中能看出，根据了<strong>几个关键属性，判断创建的是哪种类型的 <code>AopProxy</code>，一种是 JDK 动态代理，另一种是 CGLIB 动态代理。</strong></p>
+<p>前面提到过的 <code>proxy-target-class</code> 属性和 <code>targetClass</code> 属性，在这里判断了应该创建哪一个代理。</p>
+<hr>
+<h3 id="获取代理-getProxy"><a href="#获取代理-getProxy" class="headerlink" title="获取代理 getProxy()"></a>获取代理 getProxy()</h3><p><img src="http://img.sevenyuan.cn/proxy_factory_create_aop_proxy.png" alt=""></p>
+<p>观察图片以及前面分析，可以知道有两种代理方式：<strong>[JDK 动态代理] 和 [CGLIB 动态代理]</strong></p>
+<p>同时先说下<strong>动态代理的含义：抽象类在编译期间是未确定具体实现子类，在运行时才生成最终对象。</strong></p>
+<hr>
+<h4 id="JDK-动态代理"><a href="#JDK-动态代理" class="headerlink" title="JDK 动态代理"></a>JDK 动态代理</h4><p><strong><code>JDK</code> 代理是默认推荐的代理方式，使用的是 <code>Proxy</code> + <code>InvocationHandler</code>。</strong></p>
+<p>可以通过以下方式实现：定义一个接口、实现类，和一个处理器继承于 <code>InvocationHandler</code>，然后重载处理器中的 <code>invoke</code> 方法，对代理对象进行增强。</p>
+<blockquote>
+<p>JdkDynamicAopProxy.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getProxy</span><span class="params">(@Nullable ClassLoader classLoader)</span> </span>&#123;</div><div class="line">	<span class="comment">// 注释 8.11 JDK 动态代理</span></div><div class="line">	<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</div><div class="line">		logger.trace(<span class="string">"Creating JDK dynamic proxy: "</span> + <span class="keyword">this</span>.advised.getTargetSource());</div><div class="line">	&#125;</div><div class="line">	Class&lt;?&gt;[] proxiedInterfaces = AopProxyUtils.completeProxiedInterfaces(<span class="keyword">this</span>.advised, <span class="keyword">true</span>);</div><div class="line">	findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);</div><div class="line">	<span class="keyword">return</span> Proxy.newProxyInstance(classLoader, proxiedInterfaces, <span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>获取代理的核心步骤在 <code>Proxy.newProxyInstance(classLoader, proxiedInterfaces, this)</code>，第三个参数是 <code>JdkDynamicAopProxy</code> 本身，而且它实现了 <code>InvocationHandler</code> 接口，重载了 <code>invoke</code> 方法。</p>
+<blockquote>
+<p>org.springframework.aop.framework.JdkDynamicAopProxy#invoke</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">	<span class="comment">// 注释 8.12 jdk 动态代理重载的 invoke 方法</span></div><div class="line">	MethodInvocation invocation;</div><div class="line">	Object oldProxy = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">boolean</span> setProxyContext = <span class="keyword">false</span>;</div><div class="line">	TargetSource targetSource = <span class="keyword">this</span>.advised.targetSource;</div><div class="line">	Object target = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		Object retVal;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.advised.exposeProxy) &#123;</div><div class="line">			<span class="comment">// Make invocation available if necessary.</span></div><div class="line">			oldProxy = AopContext.setCurrentProxy(proxy);</div><div class="line">			setProxyContext = <span class="keyword">true</span>;</div><div class="line">		&#125;</div><div class="line">		target = targetSource.getTarget();</div><div class="line">		Class&lt;?&gt; targetClass = (target != <span class="keyword">null</span> ? target.getClass() : <span class="keyword">null</span>);</div><div class="line">		<span class="comment">// Get the interception chain for this method.</span></div><div class="line">		<span class="comment">// 获取此方法的拦截链</span></div><div class="line">		List&lt;Object&gt; chain = <span class="keyword">this</span>.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);</div><div class="line"></div><div class="line">		<span class="comment">// 检查我们是否有任何切面逻辑。如果我们不这样做，我们可以回退直接反射调用目标，并避免创建 MethodInvocation。</span></div><div class="line">		<span class="keyword">if</span> (chain.isEmpty()) &#123;</div><div class="line">			Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);</div><div class="line">			retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 将拦截器封装在 ReflectiveMethodInvocation，便于使用 proceed 执行拦截器</span></div><div class="line">			invocation = <span class="keyword">new</span> ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);</div><div class="line"></div><div class="line">			<span class="comment">// 执行拦截器链</span></div><div class="line">			retVal = invocation.proceed();</div><div class="line">		&#125;</div><div class="line">		...</div><div class="line">		<span class="keyword">return</span> retVal;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">finally</span> &#123;</div><div class="line">		<span class="keyword">if</span> (target != <span class="keyword">null</span> &amp;&amp; !targetSource.isStatic()) &#123;</div><div class="line">			targetSource.releaseTarget(target);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (setProxyContext) &#123;</div><div class="line">			AopContext.setCurrentProxy(oldProxy);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>创建 <code>JDK</code> 代理过程中，主要的工作时创建了一个拦截器链，并使用 <code>ReflectiveMethodInvocation</code> 类进行封装，封装之后，逐一调用它的 <code>proceed</code> 方法， 用来实现在目标方法的前置增强和后置增强。</strong></p>
+<blockquote>
+<p>org.springframework.aop.framework.ReflectiveMethodInvocation#proceed</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">proceed</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">	<span class="comment">// 执行完所有增强器后执行切点方法</span></div><div class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.currentInterceptorIndex == <span class="keyword">this</span>.interceptorsAndDynamicMethodMatchers.size() - <span class="number">1</span>) &#123;</div><div class="line">		<span class="keyword">return</span> invokeJoinpoint();</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 获取下一个要执行的拦截器</span></div><div class="line">	Object interceptorOrInterceptionAdvice =</div><div class="line">			<span class="keyword">this</span>.interceptorsAndDynamicMethodMatchers.get(++<span class="keyword">this</span>.currentInterceptorIndex);</div><div class="line">	<span class="keyword">if</span> (interceptorOrInterceptionAdvice <span class="keyword">instanceof</span> InterceptorAndDynamicMethodMatcher) &#123;</div><div class="line">		<span class="comment">// 动态匹配</span></div><div class="line">		InterceptorAndDynamicMethodMatcher dm =</div><div class="line">				(InterceptorAndDynamicMethodMatcher) interceptorOrInterceptionAdvice;</div><div class="line">		Class&lt;?&gt; targetClass = (<span class="keyword">this</span>.targetClass != <span class="keyword">null</span> ? <span class="keyword">this</span>.targetClass : <span class="keyword">this</span>.method.getDeclaringClass());</div><div class="line">		<span class="keyword">if</span> (dm.methodMatcher.matches(<span class="keyword">this</span>.method, targetClass, <span class="keyword">this</span>.arguments)) &#123;</div><div class="line">			<span class="keyword">return</span> dm.interceptor.invoke(<span class="keyword">this</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// 匹配失败，跳过拦截器，直接返回</span></div><div class="line">			<span class="keyword">return</span> proceed();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="keyword">return</span> ((MethodInterceptor) interceptorOrInterceptionAdvice).invoke(<span class="keyword">this</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>具体代码和注释请定位到该方法查看。关于 <code>JDK</code> 动态代理，深入学习的话也可以单独拎出来，所以推荐看这篇资料 <a href="https://juejin.im/post/5a546ad051882573443c8eec" target="_blank" rel="noopener">小豹子带你看源码：JDK 动态代理</a>，进行了和学习</p>
+<hr>
+<h4 id="CGLIB-动态代理"><a href="#CGLIB-动态代理" class="headerlink" title="CGLIB 动态代理"></a>CGLIB 动态代理</h4><p><code>CGLIB[Code Generation LIB]</code> 是一个强大的高性能的代码生成包。它广泛应用于许多 <code>AOP</code> 框架。</p>
+<p><strong>再次推荐参考资料一，这位老哥将 <code>CGLIB</code> 代理， 详细介绍了 <code>CGLIB</code> 在什么场景使用，以及被它增强后代码处理顺序，<a href="https://www.cnblogs.com/xrq730/p/6661692.html" target="_blank" rel="noopener">Cglib及其基本使用</a>。</strong></p>
+<p>希望看完这篇文章，能过了解到 <code>CGLIB</code> 代码生成包具体是如何对类进行增强。</p>
+<hr>
+<h3 id="代理增强结果"><a href="#代理增强结果" class="headerlink" title="代理增强结果"></a>代理增强结果</h3><p>通过前面一系列步骤，解析标签、属性、增强方法，到最后获取 <code>CGLIB</code> 代理，通过代理创建 <code>bean</code></p>
+<p>来看下最后被代理的 <code>bean</code> 内部：</p>
+<p><img src="http://img.sevenyuan.cn/after_post_bean_processor.png" alt="after_post_bean_processor"></p>
+<p><strong>从图中可以看到，最终创建的是被修饰后的 <code>bean</code>，内部很明显是 <code>CGGLIB</code> 代理生成的代码，我们在不修改业务代码的情况下，实现了方法增强。</strong></p>
+<hr>
+<h1 id="静态-AOP"><a href="#静态-AOP" class="headerlink" title="静态 AOP"></a>静态 AOP</h1><p>既然有动态代理，那么也会有静态代理。</p>
+<p>使用静态 <code>AOP</code> 的时候，需要用到 <code>LTW</code> （Load-Time Weaving 加载时织入），指的是在虚拟机载入字节码文件时动态织入 <code>AspectJ</code> 切面。</p>
+<p><strong><code>AOP</code> 的静态代理主要是在虚拟机启动时通过改变目标对象字节码的方式来完成对目标对象的增强，它与动态代理相比具有更高的效率，因为在动态代理调用的过程中，还需要一个动态创建代理类并代理目标对象的步骤，而静态代理则是在启动时便完成了字节码增减，当系统再次调用目标类时，与调动正常的类并无区别，所以在效率上会相对高些。</strong></p>
+<p>关于静态 <code>AOP</code> 的使用和学习，可以参考这篇文章：<a href="https://juejin.im/post/5b90e648f265da0aea695672" target="_blank" rel="noopener">从代理机制到Spring AOP</a></p>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>动态 <code>AOP</code> 使用起来很简单，对于如何实现，总结起来就两点：</p>
+<ol>
+<li><strong>动态解析 <code>AOP</code> 标签</strong></li>
+<li><strong>创建 <code>AOP</code> 代理</strong></li>
+</ol>
+<p><strong>但在 <code>Spring</code> 底层实现逻辑却是复杂到不行，从 <code>Spring</code> 框架中可以看到这是良好的代码设计思路，顶层入口尽量简单，使用者很容易就能掌握该功能，复杂实现逻辑都被隐藏了。</strong></p>
+<p>写这一篇 <code>AOP</code> 学习总结，花了将近一周，先看了一遍书籍， 下班后花了一晚，将大致流程理了一遍，第二天晚上走读代码，发现有些地方还存在疑惑，例如 <code>JDK</code> 和 <code>cglib</code> 动态代理是怎么回事，翻阅查询资料，弄懂后又过了一天。</p>
+<p>将代码注释加上，分析<strong>动态代理</strong>每一个步骤做的事情，结合之前学的后处理器 <code>BeanPostProcessor</code> 知识和自定义标签解析知识一起又梳理一遍。零零散散，终于整理完成。</p>
+<p><strong>在静态 <code>AOP</code> 知识点，按照我的理解，越往系统底层深入，它的执行效率越高，所以减少了动态创建代理类和代理目标对象的步骤，静态代理的速度会得到提升。同时由于接近底层后，代码编写的复杂度同样会增加，所以我在权衡高频率使用场景（动态代理），本次学习没有详细去了解，留下这个坑，以后有机会再填吧~</strong></p>
+<hr>
+<p><strong>由于个人技术有限，如果有理解不到位或者错误的地方，请留下评论，我会根据朋友们的建议进行修正</strong></p>
+<p><a href="https://gitee.com/vip-augus/spring-analysis-note.git" target="_blank" rel="noopener">Gitee 地址 https://gitee.com/vip-augus/spring-analysis-note.git</a></p>
+<p><a href="https://github.com/Vip-Augus/spring-analysis-note" target="_blank" rel="noopener">Github 地址 https://github.com/Vip-Augus/spring-analysis-note</a></p>
+<hr>
+<h1 id="传送门："><a href="#传送门：" class="headerlink" title="传送门："></a>传送门：</h1><ul>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-env-prepared" target="_blank" rel="noopener">Spring 源码学习-环境准备</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-1" target="_blank" rel="noopener">Spring 源码学习(一)容器的基础结构</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/14/spring/2019-06-14-spring-analysis-note-2" target="_blank" rel="noopener">Spring 源码学习(二)默认标签解析</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/16/spring/2019-06-16-spring-analysis-note-3" target="_blank" rel="noopener">Spring 源码学习(三)自定义标签</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/19/spring/2019-06-19-spring-analysis-note-4" target="_blank" rel="noopener">Spring 源码学习(四) bean 的加载</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-5" target="_blank" rel="noopener">Spring 源码学习(五)循环依赖</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-6" target="_blank" rel="noopener">Spring 源码学习(六)扩展功能 上篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/30/spring/2019-06-30-spring-analysis-note-7" target="_blank" rel="noopener">Spring 源码学习(七)扩展功能 下篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/17/spring/2019-07-17-spring-analysis-note-8" target="_blank" rel="noopener">Spring 源码学习(八) AOP 使用和实现原理</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/18/spring/2019-07-18-spring-analysis-note-9" target="_blank" rel="noopener">Spring 源码学习(九) Transaction 事务</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/21/spring/2019-07-21-spring-analysis-note-10" target="_blank" rel="noopener">Spring 源码学习(十) Spring mvc</a></p>
+</li>
+</ul>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><p><a href="https://www.cnblogs.com/xrq730/p/6661692.html" target="_blank" rel="noopener">Cglib及其基本使用</a></p>
+</li>
+<li><p><a href="http://blog.jobbole.com/105423/" target="_blank" rel="noopener">说说 cglib 动态代理</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/yangshangwei/article/details/77448420" target="_blank" rel="noopener">Spring-AOP 自动创建代理</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5a546ad051882573443c8eec" target="_blank" rel="noopener">小豹子带你看源码：JDK 动态代理</a></p>
+</li>
+<li><p><a href="https://juejin.im/post/5b90e648f265da0aea695672" target="_blank" rel="noopener">从代理机制到Spring AOP</a></p>
+</li>
+<li><p>Spring 源码深度解析 / 郝佳编著. – 北京 : 人民邮电出版社</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/30/spring/2019-06-30-spring-analysis-note-7/" rel="next" title="Spring Spring 源码学习(七)扩展功能 下篇">
+                <i class="fa fa-chevron-left"></i> Spring Spring 源码学习(七)扩展功能 下篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/18/spring/2019-07-18-spring-analysis-note-9/" rel="prev" title="Spring 源码学习(九) Transaction 事务">
+                Spring 源码学习(九) Transaction 事务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用"><span class="nav-number">1.</span> <span class="nav-text">如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建用于拦截的-bean"><span class="nav-number">1.1.</span> <span class="nav-text">创建用于拦截的 bean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Advisor"><span class="nav-number">1.2.</span> <span class="nav-text">创建 Advisor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建配置文件-aop-xml"><span class="nav-number">1.3.</span> <span class="nav-text">创建配置文件 aop.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试-Demo"><span class="nav-number">1.4.</span> <span class="nav-text">测试 Demo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态-AOP-自定义标签"><span class="nav-number">2.</span> <span class="nav-text">动态 AOP 自定义标签</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册-AnnotationAwareAspectJAutoProxyCreator"><span class="nav-number">2.1.</span> <span class="nav-text">注册 AnnotationAwareAspectJAutoProxyCreator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册或者升级-AnnotationAwareAspectJAutoProxyCreator"><span class="nav-number">2.1.1.</span> <span class="nav-text">注册或者升级 AnnotationAwareAspectJAutoProxyCreator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理-proxy-target-class-以及-expose-proxy-属性"><span class="nav-number">2.1.2.</span> <span class="nav-text">处理 proxy-target-class 以及 expose-proxy 属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#proxy-target-class"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">proxy-target-class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expose-proxy"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">expose-proxy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注册组件并通知"><span class="nav-number">2.1.3.</span> <span class="nav-text">注册组件并通知</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建-AOP-代理"><span class="nav-number">3.</span> <span class="nav-text">创建 AOP 代理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取增强方法或者增强器"><span class="nav-number">3.1.</span> <span class="nav-text">获取增强方法或者增强器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找对应的增强器-findCandidateAdvisors"><span class="nav-number">3.1.1.</span> <span class="nav-text">寻找对应的增强器 findCandidateAdvisors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取匹配的增强器-findAdvisorsThatCanApply"><span class="nav-number">3.1.2.</span> <span class="nav-text">获取匹配的增强器 findAdvisorsThatCanApply</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建代理"><span class="nav-number">3.2.</span> <span class="nav-text">创建代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建代理-createAopProxy"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建代理 createAopProxy()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取代理-getProxy"><span class="nav-number">3.2.2.</span> <span class="nav-text">获取代理 getProxy()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-动态代理"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">JDK 动态代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CGLIB-动态代理"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">CGLIB 动态代理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理增强结果"><span class="nav-number">3.2.3.</span> <span class="nav-text">代理增强结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态-AOP"><span class="nav-number">4.</span> <span class="nav-text">静态 AOP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传送门："><span class="nav-number">6.</span> <span class="nav-text">传送门：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

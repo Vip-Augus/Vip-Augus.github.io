@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="笔记项目地址首先给出这段时间以来的总结：https://github.com/Vip-Augus/spring-analysis-note">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 源码学习总结篇">
+<meta property="og:url" content="http://yoursite.com/2019/08/02/spring/2019-08-02-spring-analysis-artsdome/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="笔记项目地址首先给出这段时间以来的总结：https://github.com/Vip-Augus/spring-analysis-note">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/docs_spring_io.png">
+<meta property="og:image" content="https://images.zsxq.com/Fr8gpy1TG_qfmOp5pxpfN2NbHLX4?e=1906272000&token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zD:68oDBH8smN7buHXPjWZzAimFNQY=">
+<meta property="og:updated_time" content="2019-09-14T15:46:07.927Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring 源码学习总结篇">
+<meta name="twitter:description" content="笔记项目地址首先给出这段时间以来的总结：https://github.com/Vip-Augus/spring-analysis-note">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/docs_spring_io.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/02/spring/2019-08-02-spring-analysis-artsdome/"/>
+
+
+
+
+
+  <title>Spring 源码学习总结篇 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/02/spring/2019-08-02-spring-analysis-artsdome/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring 源码学习总结篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-02T11:12:00+08:00">
+                2019-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="笔记项目地址"><a href="#笔记项目地址" class="headerlink" title="笔记项目地址"></a>笔记项目地址</h2><p>首先给出这段时间以来的总结：<br><a href="https://github.com/Vip-Augus/spring-analysis-note" target="_blank" rel="noopener">https://github.com/Vip-Augus/spring-analysis-note</a></p>
+<a id="more"></a>
+<h2 id="为什么读源码"><a href="#为什么读源码" class="headerlink" title="为什么读源码"></a>为什么读源码</h2><p>在日常工作中，产品不断写业务需求，他们加班一天，我们开发就得工作一周来完成。</p>
+<p>业务领域达到一定地步后，发现日常编写业务代码已经很难让我有突破性的进步，日复一日，担心自己变成一个业务代码生产机器，而无法面对新技术和环境变化。</p>
+<p>同时也有危机感，长江后浪推前浪，自己不继续学习的话，很快就会有人超过。</p>
+<p>而且我算是比较热心的好同学，喜欢帮别人解决问题和记录解决方案，所以不希望在别人问我工作中有什么常用的框架，遇到这个问题该怎么办，我却回答不上的感觉</p>
+<p><strong>同样，希望大家懂得提问的艺术，通过度娘和谷歌都没找到解决方案后，再去与别人探讨问题，不然会被鄙视的，别问我为啥懂得/(ㄒoㄒ)/</strong></p>
+<p>所以就沉下心来，从工作中一直在用的 <strong>Spring</strong> 框架源码学起，看看大牛们的代码设计。</p>
+<hr>
+<h2 id="怎么读源码"><a href="#怎么读源码" class="headerlink" title="怎么读源码"></a>怎么读源码</h2><p>虽然我拿 <strong>Spring</strong> 作为例子，但模板可以套用到你想阅读的任何源码上~</p>
+<hr>
+<h3 id="查官方文档"><a href="#查官方文档" class="headerlink" title="查官方文档"></a>查官方文档</h3><p><a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/" target="_blank" rel="noopener">官方文档地址</a></p>
+<p><img src="http://img.sevenyuan.cn/docs_spring_io.png" alt=""></p>
+<p>可以说，开源框架的官方文档是最完整，最全面的使用和说明介绍，详细到每行代码的用途和异常都有说明（大雾），反正只有想不到，没有官方文档没写的。</p>
+<p>如果在运行当中，跟官方文档不符合的场景，应该算 <strong>BUG</strong>，那么读者发现了，可以给他们提 <strong>ISSUE</strong>，为开源生态圈做出自己的一份贡献~</p>
+<hr>
+<h3 id="查技术社区"><a href="#查技术社区" class="headerlink" title="查技术社区"></a>查技术社区</h3><p>很多开源框架的文档是英文写的，这是个不争的事实，所以直接看英文的话，会很吃力。</p>
+<p>但国内也有大牛和大神，我们会从中学习，然后不断改良和吸收优点，然后再创建更符合国内需求的框架。极客们会将翻译或者改良建议公布到网络，与我们大家进行分享。</p>
+<p>例如去 <code>CSDN</code>、 <code>掘金</code> 和思否等技术社区，都已经有人翻译或者写了自己的见解，我们先从中文文档学习，遇到疑惑或者官方文档更新了，与官方文档比对后，得出自己最后的结论和使用方法。</p>
+<hr>
+<h3 id="总结与分享"><a href="#总结与分享" class="headerlink" title="总结与分享"></a>总结与分享</h3><p><strong>我喜欢学习，但讨厌无意义的学习</strong></p>
+<p>之前看到微笑大神在 <strong>知识星球「Java极客技术」</strong> 里写的主题「如何高效的学习」：</p>
+<p>文章中提到了“学习金字塔”模型，有以下七个层次：</p>
+<p>1 听讲<br>2 阅读<br>3 视听<br>4 演示<br>5 讨论<br>6 实践<br>7 教给他人</p>
+<p>然后学习内容的保留率从上往下依次递增：</p>
+<p><img src="https://images.zsxq.com/Fr8gpy1TG_qfmOp5pxpfN2NbHLX4?e=1906272000&amp;token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zD:68oDBH8smN7buHXPjWZzAimFNQY=" alt="9b6abed3e6b0831bab89d6067a17280d.png"></p>
+<p>下面是两者对比后得出的结论：</p>
+<hr>
+<h4 id="减少被动学习"><a href="#减少被动学习" class="headerlink" title="减少被动学习"></a>减少被动学习</h4><p>我们上学时经历过太多的被动学习，高中时还好，老师上课时，台下的学生认真听讲，下课后还记得老师在课堂上讲的大部分内容。</p>
+<p>但到了大学后，台下的学生更多，老师无法兼顾这么多学生，学生也有很多课堂外的活动，还记得有张动图，两个学生在上高数课，老师在黑板上写了几行公式，然后学生瞌睡，眯眼了一会，睁开眼睛，发现黑板上写满了高等数学定理…</p>
+<p><strong>所以只是看书看视频却不动手实践，这样被动学习的效率低，如果到最后忘得一干二净，这样的学习会显得无意义。</strong></p>
+<hr>
+<h4 id="学会主动学习"><a href="#学会主动学习" class="headerlink" title="学会主动学习"></a>学会主动学习</h4><p>我也认为学习不是一步登天，也不可能将自己只看过一次的内容完全记牢，跟微笑哥一样，<strong>我一年前看过 jvm 的知识，后来工作中用得比较少，在需要用到的时候，我又回去看了一遍书本，后来我将这些常用的命令总结了一下，在后来使用时，一边翻阅笔记，同时命令行敲得更快了一点！</strong></p>
+<p>网上也有很多学习视频，看视频的同时，要自己敲下代码，能够正常运行起来，成功运行时会有一种成就感，同时也会加深自己的理解，可以在下次遇到相似场景时进行借鉴，去解决实际问题。</p>
+<p><strong>所以不能再局限于被动学习的阶段，这样很容易学了就忘，要踏出一步，主动学习，动手实践，然后进行总结和分享，不断进行输出，让学习更有意义~</strong></p>
+<hr>
+<h2 id="从中收获了什么"><a href="#从中收获了什么" class="headerlink" title="从中收获了什么"></a>从中收获了什么</h2><p>这里的收获也有两种类型：</p>
+<h3 id="目标收获"><a href="#目标收获" class="headerlink" title="目标收获"></a>目标收获</h3><p>1、 <strong>加深了 <code>Spring</code> 框架的基础结构</strong><br>对 <code>IoC</code> 、 <code>Aop</code> 和 <code>MVC</code> 等基础概念有了更深的了解</p>
+<p>2、<strong>良好的代码风格</strong></p>
+<ul>
+<li>举个例子，个人感觉，在代码设计上，源码做到了高内聚，低耦合，通用和规范性的抽象到顶层类，例如看到很多 <code>abstract</code> 抽象父类，里面做了很多复杂操作，但会提供一些模板方法，通过继承，让子类去扩展实现，在子类调用父类的方法，做到了 <strong>「关闭修改，开放扩展」</strong>。</li>
+<li>还有入口方法进行容易理解，罗列了关键步骤，然后复杂实现交给了子类，同时变量和方法名也很直观，看其名，知其义，注释也很多，能够减低阅读难度。</li>
+</ul>
+<p>3、<strong>多种设计模式</strong><br>简单工厂、工厂方法、单例模式、模板方法等等，都在源码中有所体现，在了解整体结构时，可以弥补之前看设计模式书籍的不足，加深对它们的理解<br>（<strong>PS：「Java极客技术」知识星球里面每周都会有设计模式的分享，可以加入进去，在里面一起加深设计模式的学习</strong>）</p>
+<p>通过上面的学习，在之后自己编码时，会注意到这些细节，然后不断提高自己的编码能力</p>
+<hr>
+<h3 id="额外收获"><a href="#额外收获" class="headerlink" title="额外收获"></a>额外收获</h3><p>1、<strong>提升写作能力</strong></p>
+<ul>
+<li><p>学会一个 <code>demo</code> 很容易，成功运行虽有点难度，但根据教程和资料，弄成功是没有问题的，难就难在写出来教会别人。</p>
+</li>
+<li><p><strong>之前写的更多偏向于速记型，是为了自己查看的，根据关键信息速查，自己回顾也得花上一段时间，所以别人不一定能看懂。这次想要让自己回顾起来更快速，于是在语言组织以及格式编排上画了一点时间，尽可能的完善笔记，提升了写作的能力。</strong></p>
+</li>
+</ul>
+<p>2、<strong>转换心情</strong></p>
+<ul>
+<li><p>不厚道的说一句，如今太多贩卖焦虑的推文，我也清楚明白人无忧虑和追求，是不会有所进步的。</p>
+</li>
+<li><p>但我也认识到，如果看到焦虑却想着不劳而获，那是更可怕的事情，一不小心就会掉落营销者他们所设的陷阱，停止了前进。</p>
+</li>
+<li><p><strong>何不换种思路，心中保持担忧，但心态放轻松，不要想着不劳而获，而是克服苦难，继续增强自己的技能。所以这次的沉淀学习也是想让自己冷静下来，沉浸在书籍中，获取解决一个又一个疑问的喜悦</strong></p>
+</li>
+<li><p><strong>客观的说，我的担忧还是没有消除，但我的心态转变了一些，想要通过增长的技术体现自己的价值，在实际工作中解决实际问题，得到别人的肯定。</strong></p>
+</li>
+</ul>
+<hr>
+<p>一千个读者有一千个哈姆雷特，同样的书籍大家的感悟应该也会不一样，以上只是个人的分享，期待听到朋友们的留言</p>
+<p><strong>我是惊奇，一个追求自律和技术，希望带给你惊喜和奇妙的阳光宅男~ 期待下期再会</strong></p>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>1、 <a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way" target="_blank" rel="noopener">https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/21/spring/2019-07-21-spring-analysis-note-10/" rel="next" title="Spring 源码学习(十) Spring mvc">
+                <i class="fa fa-chevron-left"></i> Spring 源码学习(十) Spring mvc
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/28/spring/2019-08-28-springboot-shorthand/" rel="prev" title="SpringBoot 速记">
+                SpringBoot 速记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#笔记项目地址"><span class="nav-number">1.</span> <span class="nav-text">笔记项目地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么读源码"><span class="nav-number">2.</span> <span class="nav-text">为什么读源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么读源码"><span class="nav-number">3.</span> <span class="nav-text">怎么读源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查官方文档"><span class="nav-number">3.1.</span> <span class="nav-text">查官方文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查技术社区"><span class="nav-number">3.2.</span> <span class="nav-text">查技术社区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结与分享"><span class="nav-number">3.3.</span> <span class="nav-text">总结与分享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#减少被动学习"><span class="nav-number">3.3.1.</span> <span class="nav-text">减少被动学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#学会主动学习"><span class="nav-number">3.3.2.</span> <span class="nav-text">学会主动学习</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从中收获了什么"><span class="nav-number">4.</span> <span class="nav-text">从中收获了什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目标收获"><span class="nav-number">4.1.</span> <span class="nav-text">目标收获</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#额外收获"><span class="nav-number">4.2.</span> <span class="nav-text">额外收获</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number"></span> <span class="nav-text">参考资料</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="CI," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="骚年，来一个自动集成的Hexo博客吧😉">
+<meta name="keywords" content="CI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Jenkins持续集成Hexo博客">
+<meta property="og:url" content="http://yoursite.com/2019/03/18/使用Jenkins持续集成Hexo博客/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="骚年，来一个自动集成的Hexo博客吧😉">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/LeopardNamibia_ZH-CN9585068449_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/Jenkins%E9%85%8D%E7%BD%AEgit%E7%A7%81%E9%92%A5.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E5%BC%80%E6%94%BE%E8%BF%99%E4%B8%A4%E9%A1%B9%E6%9D%83%E9%99%90.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEwebhook.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%B7%BB%E5%8A%A0github%E6%9C%8D%E5%8A%A1%E5%99%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEaccess_token.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E8%87%AA%E7%94%B1%E9%A3%8E%E6%A0%BC%E7%9A%84Job.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/Git%E9%A1%B9%E7%9B%AE.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/git%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%9E%84%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%88%90%E5%8A%9F%E6%8E%A8%E9%80%81%E6%9E%84%E5%BB%BA.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/Webhook%E7%9A%84%E7%BC%BA%E7%82%B9.png">
+<meta property="og:updated_time" content="2019-03-18T00:56:33.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Jenkins持续集成Hexo博客">
+<meta name="twitter:description" content="骚年，来一个自动集成的Hexo博客吧😉">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/LeopardNamibia_ZH-CN9585068449_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/18/使用Jenkins持续集成Hexo博客/"/>
+
+
+
+
+
+  <title>使用Jenkins持续集成Hexo博客 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/使用Jenkins持续集成Hexo博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Jenkins持续集成Hexo博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T00:40:22+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CI/" itemprop="url" rel="index">
+                    <span itemprop="name">CI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/LeopardNamibia_ZH-CN9585068449_1920x1080.jpg" alt=""></p>
+<center><strong>骚年，来一个自动集成的Hexo博客吧😉</strong></center>
+
+<a id="more"></a>
+<hr>
+<p>为什么要用自动集成，当然是为了减少重复操作啦（懒是第一生产力！）</p>
+<p>例如在工作中，写完业务开发，将代码提交到Git之后，还要自己打包、部署，一两次还行，如果多次提交代码，然后重复的打包、部署，那不得浪费很多时间，所以我们需要自动集成CI，帮助我们解决代码提交后的事情~~</p>
+<p>所以这次学习了用的比较多的Jenkins工具啦</p>
+<hr>
+<h2 id="大致思路"><a href="#大致思路" class="headerlink" title="大致思路"></a>大致思路</h2><ol>
+<li>写文章</li>
+<li>推送到github的</li>
+<li>Jenkins收到钩子请求，进行构建</li>
+<li>执行Shell脚本，在服务器中生成hexo静态文件</li>
+<li>启动服务</li>
+</ol>
+<hr>
+<h2 id="Jenkins简介"><a href="#Jenkins简介" class="headerlink" title="Jenkins简介"></a>Jenkins简介</h2><p><a href="https://jenkins-ci.org/" target="_blank" rel="noopener">Jenkins官网</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Build great things at any scale</div><div class="line"></div><div class="line">The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.</div></pre></td></tr></table></figure></p>
+<p>正如它所说的：作为领先的开源自动化服务器，Jenkins提供数百个插件来支持构建，部署和自动化任何项目。例如Git插件、自动部署的Deploy插件、代码质量Sonar等等好用的插件，给Jenkins增添了丰富的功能。</p>
+<p>这次搭建的Demo是使用Jenkins给Hexo进行持续集成（当然如果小伙伴不想专门弄一个服务器搭建Hexo，可以直接使用GitHub爸爸现成的GitHub page~~）</p>
+<hr>
+<h2 id="前置工作"><a href="#前置工作" class="headerlink" title="前置工作"></a>前置工作</h2><ul>
+<li><p>安装Jenkins（Linux的yum就很好用啦：yum install -y jenkins）<br>安装Jenkins后，要记得在插件界面安装git plugin~~<br>然后可以通过systemctl start jenkins，在linux机器上作为服务来启动</p>
+</li>
+<li><p><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">安装Hexo</a>（详细查看官网，还能选择很多好看的样式~）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> npm install hexo-cli -g</div><div class="line"><span class="meta">$</span> hexo init blog </div><div class="line"><span class="meta">$</span> cd blog</div><div class="line"><span class="meta">$</span> npm install</div><div class="line"><span class="meta">$</span> hexo server</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这时可以查看服务器对应的ip加上默认的端口号4000，查看搭建出来的Hexo默认界面~</p>
+<ul>
+<li><p>在服务器安装Git服务，生成公钥（~/.ssh/id_rsa.pub)和私钥(~/.ssh/id_rsa)。</p>
+</li>
+<li><p>在GitHub的用户Setting中添加公钥（这个大家应该都知道，就不贴图了）</p>
+</li>
+<li><p>Jenkins凭据中，配置秘钥（注意，是秘钥，路径~/.ssh/id_rsa）<br><img src="http://img.sevenyuan.cn/Jenkins%E9%85%8D%E7%BD%AEgit%E7%A7%81%E9%92%A5.png" alt=""></p>
+</li>
+</ul>
+<hr>
+<h2 id="在GitHub中生成token"><a href="#在GitHub中生成token" class="headerlink" title="在GitHub中生成token"></a>在GitHub中生成token</h2><ul>
+<li>在个人setting中，添加用户访问的token（personal access token），路径setting-&gt;Developer setting-&gt;Person access token</li>
+</ul>
+<p><img src="http://img.sevenyuan.cn/%E5%BC%80%E6%94%BE%E8%BF%99%E4%B8%A4%E9%A1%B9%E6%9D%83%E9%99%90.png" alt=""></p>
+<p>记得将待会生成的密码保存下来，因为下一次你就看不见了=-=</p>
+<ul>
+<li>在项目中添加webhooks，路径：repo-&gt;settings-&gt;webhooks<br><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEwebhook.png" alt=""><br>这个钩子待会在Jenkins中会使用到</li>
+</ul>
+<hr>
+<h2 id="Jenkins新建Job以及GitHub新建仓库"><a href="#Jenkins新建Job以及GitHub新建仓库" class="headerlink" title="Jenkins新建Job以及GitHub新建仓库"></a>Jenkins新建Job以及GitHub新建仓库</h2><ul>
+<li><p>在GitHub中新建两个一个仓库（我的叫test_blog）</p>
+</li>
+<li><p>在Jenkins中的【系统配置】-&gt;【全局配置】添加GitHub服务器<br><img src="http://img.sevenyuan.cn/%E6%B7%BB%E5%8A%A0github%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt=""></p>
+</li>
+<li><p>新增的凭据选择<br><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEaccess_token.png" alt=""></p>
+</li>
+<li><p>在Jenkins中，新建一个自由风格的任务（高度可配置化hhh）<br><img src="http://img.sevenyuan.cn/%E8%87%AA%E7%94%B1%E9%A3%8E%E6%A0%BC%E7%9A%84Job.png" alt=""></p>
+</li>
+<li><p>配置Git项目地址<br><img src="http://img.sevenyuan.cn/Git%E9%A1%B9%E7%9B%AE.png" alt=""></p>
+</li>
+<li><p>在原代码配置项中，选择git，将项目地址填上，还有选择上一步填写的凭据~<br><img src="http://img.sevenyuan.cn/git%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE.png" alt=""></p>
+</li>
+<li><p>填写构建触发器<br><img src="http://img.sevenyuan.cn/%E6%9E%84%E5%BB%BA%E8%A7%A6%E5%8F%91%E5%99%A8.png" alt=""></p>
+</li>
+<li><p>编写Execute执行脚本<br><img src="http://img.sevenyuan.cn/%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC.png" alt=""></p>
+</li>
+</ul>
+<p>写完脚本后点击保存，之后基本就是一劳永逸，不需要再去关注写完文章的后续操作~~</p>
+<hr>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p>在本地编写文章后，推送到github，点击查看Jenkins的github hook输出记录，可以发现已经在构建了，只要你的shell脚本写的对，那就能直接观察到服务器上的博客内容成功更新~~</p>
+<p><img src="http://img.sevenyuan.cn/%E6%88%90%E5%8A%9F%E6%8E%A8%E9%80%81%E6%9E%84%E5%BB%BA.png" alt=""></p>
+<hr>
+<h2 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><p>在webhooks上弄了很久，一开始在github的项目里配置好钩子，然后想直接按照第二条参考资料中设置，直接覆盖所有钩子，后来提示403访问错误</p>
+<p><img src="http://img.sevenyuan.cn/Webhook%E7%9A%84%E7%BC%BA%E7%82%B9.png" alt=""></p>
+<p>于是就参考了第一条和第三条参考资料，配置了person access token，在构建中选择了secret text才算成功配置好钩子~~</p>
+<p><strong>PS: 这样会将自己的md文件暴露在公共github中，其实是不妥的，比较建议是本地打包，然后将生成好的界面拷贝到自己的服务器，具体可以看下第一条参考资料。（其实就是看你shell脚本怎么写啦✧(≖ ◡ ≖✿)嘿嘿）</strong></p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="http://blog.tcs-y.com/2018/12/25/hexo-jenkins-auto-deploy/" target="_blank" rel="noopener">hexo jenkins自动部署博客</a></li>
+<li><a href="http://www.51testing.com/html/90/n-3725690.html" target="_blank" rel="noopener">用Jenkins自动部署hexo搭建的GitHub静态博客</a></li>
+<li><a href="https://twiceyuan.com/2018/08/01/jenkins-trigger-remotely/" target="_blank" rel="noopener">开启用户鉴权时 Jenkins 触发远程构建时的 403 问题</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CI/" rel="tag"># CI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/24/linux/Linux学习——Shell语法/" rel="next" title="Linux学习——Shell语法">
+                <i class="fa fa-chevron-left"></i> Linux学习——Shell语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/19/java/Spring自定义注解实现AOP/" rel="prev" title="Spring自定义注解实现AOP">
+                Spring自定义注解实现AOP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#大致思路"><span class="nav-number">1.</span> <span class="nav-text">大致思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins简介"><span class="nav-number">2.</span> <span class="nav-text">Jenkins简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前置工作"><span class="nav-number">3.</span> <span class="nav-text">前置工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在GitHub中生成token"><span class="nav-number">4.</span> <span class="nav-text">在GitHub中生成token</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins新建Job以及GitHub新建仓库"><span class="nav-number">5.</span> <span class="nav-text">Jenkins新建Job以及GitHub新建仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试结果"><span class="nav-number">6.</span> <span class="nav-text">测试结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#踩坑记录"><span class="nav-number">7.</span> <span class="nav-text">踩坑记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

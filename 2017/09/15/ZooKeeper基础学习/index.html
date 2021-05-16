@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ZooKeeper," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="简介：ZooKeeper：为分布式应用提供了高效且可靠的分布式协调服务，提供了诸如统一命名服务、配置管理和分布式锁等分布式的基础服务。 Zookeeper介绍：是一个开放源代码的分布式协调服务，设计目标是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并以一系列简单易用的接口提供给用户使用。 ZooKeeper是什么：是一个典型的分布式数据一致性的解决方案，分布式应用程序">
+<meta name="keywords" content="ZooKeeper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZooKeeper基础学习">
+<meta property="og:url" content="http://yoursite.com/2017/09/15/ZooKeeper基础学习/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="简介：ZooKeeper：为分布式应用提供了高效且可靠的分布式协调服务，提供了诸如统一命名服务、配置管理和分布式锁等分布式的基础服务。 Zookeeper介绍：是一个开放源代码的分布式协调服务，设计目标是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并以一系列简单易用的接口提供给用户使用。 ZooKeeper是什么：是一个典型的分布式数据一致性的解决方案，分布式应用程序">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-25T05:57:00.990Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZooKeeper基础学习">
+<meta name="twitter:description" content="简介：ZooKeeper：为分布式应用提供了高效且可靠的分布式协调服务，提供了诸如统一命名服务、配置管理和分布式锁等分布式的基础服务。 Zookeeper介绍：是一个开放源代码的分布式协调服务，设计目标是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并以一系列简单易用的接口提供给用户使用。 ZooKeeper是什么：是一个典型的分布式数据一致性的解决方案，分布式应用程序">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/15/ZooKeeper基础学习/"/>
+
+
+
+
+
+  <title>ZooKeeper基础学习 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/15/ZooKeeper基础学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ZooKeeper基础学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-15T14:12:00+08:00">
+                2017-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GEEK/" itemprop="url" rel="index">
+                    <span itemprop="name">GEEK</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GEEK/Web学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Web学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h2><p><em>ZooKeeper</em>：为分布式应用提供了高效且可靠的分布式协调服务，提供了诸如统一命名服务、配置管理和分布式锁等分布式的基础服务。</p>
+<h3 id="Zookeeper介绍："><a href="#Zookeeper介绍：" class="headerlink" title="Zookeeper介绍："></a>Zookeeper介绍：</h3><p>是一个开放源代码的分布式协调服务，设计目标是将那些复杂且容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并以一系列简单易用的接口提供给用户使用。</p>
+<h3 id="ZooKeeper是什么："><a href="#ZooKeeper是什么：" class="headerlink" title="ZooKeeper是什么："></a>ZooKeeper是什么：</h3><p>是一个典型的分布式数据一致性的解决方案，分布式应用程序可以基于它实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master选举、分布式锁和分布式队列等功能。ZooKeeper可以保证如下分布式一致性特性：</p>
+<ul>
+<li>顺序一致性</li>
+<li>原子性</li>
+<li>单一视图（Single System Image）</li>
+<li>可靠性</li>
+<li>实时性</li>
+</ul>
+<h3 id="ZooKeeper的设计目标："><a href="#ZooKeeper的设计目标：" class="headerlink" title="ZooKeeper的设计目标："></a>ZooKeeper的设计目标：</h3><p>致力于提供一个<em>高性能、高可用，且具有严格的顺序访问控制能力（主要是写操作的严格顺序性）的分布式协调服务</em>。高性能使得ZooKeeper能够应用于那些对系统吞吐有明确要求的大型分布式系统中，高可用使得分布式的单点问题得到了很好的解决，而严格的顺序访问控制使得客户端能够基于ZooKeeper实现一些复杂的同步原语。</p>
+<blockquote>
+<p><em>四个设计目标：</em><br>1、 简单的数据模型：通过一个共享的、树型结构的名字空间来进行相互协调。名字空间由一系列ZNode的数据节点组成，数据模型类似于一个文件系统，而ZNode之间的层级关系，就像文件系统的目录结构一样。<br>2、 可以构建集群：ZooKeeper的客户端程序会选择和集群中任意一台机器共同来创建一个TCP连接，而一旦客户端和某台ZooKeeper服务器之间的连接断开后，客户端会自动连接到集群中的其它机器。<br>3、 顺序访问：对于来自客户端的每个更新请求，ZooKeeper都会分配一个全局唯一的递增编号，这个编号反应了所有事务操作的先后顺序。<br>4、 高性能：ZooKeeper将全亮数据存储在内存中，一次来实现提高服务器吞吐、减少延迟的目的。</p>
+</blockquote>
+<hr>
+<h2 id="ZooKeeper的基本概念"><a href="#ZooKeeper的基本概念" class="headerlink" title="ZooKeeper的基本概念"></a>ZooKeeper的基本概念</h2><h3 id="集群角色："><a href="#集群角色：" class="headerlink" title="集群角色："></a>集群角色：</h3><p>最典型的集群模式就是Maste/Slave（主备模式）。在这种模式中，能够处理所有写操作的机器就是Master机器，把所有通过异步复制方式获取最新数据，并提供读服务的机器成为Slave机器。</p>
+<p>但是ZooKeeper没有沿用传统的Master/Slave概念，而是引用了Leader、Follower和Observer三种角色。</p>
+<blockquote>
+<ul>
+<li>Leeder服务器提供读和写服务。</li>
+<li>Follower和Observer都能提供读服务，唯一的区别在于，Observer机器不参与Leader选举过程，也不参与写操作的“过半写成功”策略，因此Observer可以不影响写性能的情况下提升集群的度性能。</li>
+</ul>
+</blockquote>
+<h3 id="会话（Session）："><a href="#会话（Session）：" class="headerlink" title="会话（Session）："></a>会话（Session）：</h3><p>指的是客户端会话，在ZooKeeper中，一个客户端连接是指客户端和服务器之间的一个TCP长连接。对外的默认端口是2181，客户端启动的时候，首先会与服务器建立一个TCP连接，通过这个连接，客户端能够通过心跳检测与服务器保持有效的会话，也能够向ZooKeeper服务器发送请求并接收响应，同时还能通过该连接接收来自服务器的Watch事件通知。</p>
+<h3 id="数据节点（ZNode）"><a href="#数据节点（ZNode）" class="headerlink" title="数据节点（ZNode）"></a>数据节点（ZNode）</h3><p>有两种类型，第一种是指构成集群的机器，称之为机器节点；第二种是指数据模型中的数据单元。</p>
+<p>ZNode分为持久节点和临时节点两类。持久节点是指一旦这个ZNode被创建了，除非主动进行ZNode的移除操作，否则这个Znode将一直保存在ZooKeeper上。而临时节点它的生命周期和客户端的会话绑定，一旦客户端会话失效，那么这个客户端创建的所有临时节点都会移除。</p>
+<p>另外，ZooKeeper还允许用户为每个节点添加一个特殊的属性：SEQUENTIAL。一旦节点呗标记上这个属性，那么在这个节点被创建的时候，ZooKeeper会自动在其节点后面追加一个整型数字，这个整型数据就是一个由父节点维护的自增数字。</p>
+<h3 id="版本（Version）"><a href="#版本（Version）" class="headerlink" title="版本（Version）"></a>版本（Version）</h3><p>ZooKeeper的每个ZNode上都会存储数据，对应于每个ZNode，ZooKeeper都会为其维护一个叫做Stat的数据结构，Stat中记录了这个ZNode的三个数据版本，分别是version（当前ZNode的版本），cversion（当前ZNode的子节点的版本）和aversion（当前ZNode的ACL版本）。</p>
+<h3 id="Watcher（事件监听器）"><a href="#Watcher（事件监听器）" class="headerlink" title="Watcher（事件监听器）"></a>Watcher（事件监听器）</h3><p>zooKeeper允许用户在制定节点上注册一些Watcher，并且在一些特定时间触发的时候，ZooKeeper服务端会将事件通知到感兴趣的客户端上去。</p>
+<h3 id="ACL（Access-Control-Lists）有以下五种权限"><a href="#ACL（Access-Control-Lists）有以下五种权限" class="headerlink" title="ACL（Access Control Lists）有以下五种权限"></a>ACL（Access Control Lists）有以下五种权限</h3><blockquote>
+<ul>
+<li>CREATE：创建子节点的权限</li>
+<li>READ：获取节点数据和子节点列表的权限</li>
+<li>WRITE：更新节点数据的权限</li>
+<li>DELETE：删除子节点的权限</li>
+<li>ADMIN：设置节点的ACL的权限</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="ZAB协议"><a href="#ZAB协议" class="headerlink" title="ZAB协议"></a>ZAB协议</h2><p>ZooKeeper采用了<em>ZooKeeper Atomic Broadcast（ZAB，ZooKeeper源自消息广播协议）</em>作为其数据一致性的核心算法</p>
+<p>支持崩溃回复的原子广播协议。依赖ZAB协议来支持集群中个副本之间数据的一致性。</p>
+<p>具体的，ZooKeeper使用一个丹仪的主进程来接收并处理客户端的所有事务请求，并采用ZAB的原子广播协议，将服务器数据的状态变更以事务Proposal的形式广播到所有的副本进程上去。</p>
+<p>ZAB协议的这个主备模式架构保证了同一时刻集群中只能够有一个主进程来广播服务器的状态变更，因此能够很好地处理客户端大量的并发请求。</p>
+<h3 id="ZAB两种基本的模式"><a href="#ZAB两种基本的模式" class="headerlink" title="ZAB两种基本的模式"></a>ZAB两种基本的模式</h3><h4 id="1、崩溃恢复"><a href="#1、崩溃恢复" class="headerlink" title="1、崩溃恢复"></a>1、崩溃恢复</h4><p>当整个服务框架在启动过程中，或是当Leader服务器出现网络终端、崩溃退出与重启等异常情况时，ZAB协议就会进入恢复模式并选举产生新的Leader服务器。当选举产生了新的Leader服务器，同时集群中已经有过半的机器与该Leader服务器完成了状态同步之后，ZAB协议就会退出恢复模式。（状态同步指的是数据同步）</p>
+<p>当集群中已经有过半的Follower服务器完成了和Leader服务器的状态同步，那么整个服务框架就可以进入消息广播模式。</p>
+<h4 id="2、消息广播"><a href="#2、消息广播" class="headerlink" title="2、消息广播"></a>2、消息广播</h4><p>消息广播过程使用的是一个源自广播协议，类似于一个二阶段提交过程。</p>
+<p>针对客户端的事务请求，Leader服务器会为其生成对应的事务Proposal，并将其发送给集群中其余所有的机器，然后再分别收集各自的选票，最后进行事务提交</p>
+<p>整个消息广播协议是基于具有FIFO特性的TCP协议来进行网络通信的，因此能够很容易地保证消息广播过程中消息接收和发送的顺序性。</p>
+<h4 id="总结：ZAB协议规定了如果一个事务Proposal在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。ZAB协议需要确保那些已经在Leader服务器上提交的事务最终被所有服务器都提交。"><a href="#总结：ZAB协议规定了如果一个事务Proposal在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。ZAB协议需要确保那些已经在Leader服务器上提交的事务最终被所有服务器都提交。" class="headerlink" title="总结：ZAB协议规定了如果一个事务Proposal在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。ZAB协议需要确保那些已经在Leader服务器上提交的事务最终被所有服务器都提交。"></a>总结：ZAB协议规定了如果一个事务Proposal在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。ZAB协议需要确保那些已经在Leader服务器上提交的事务最终被所有服务器都提交。</h4><hr>
+<h3 id="深入ZAB协议"><a href="#深入ZAB协议" class="headerlink" title="深入ZAB协议"></a>深入ZAB协议</h3><h4 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h4><p>如果一个进程正常工作，那么我们称该进程处于UP状态；如果一个进程崩溃了，那么我们称其处于DOWN状态。</p>
+<p>事实上，当集群中存在过半的处于UP状态的进程组成一个进程子集之后，就可以进行正常的消息广播了。这样的子集称为Quorum。</p>
+<p>P1和P2分别代表进程组中的两个不同进程，使用C12来表示进程P1和P2之间的网络通信通道，其满足如下两个基本特性：</p>
+<blockquote>
+<p>1、完整性（Integrity）<br>2、前置性（Prefix）</p>
+</blockquote>
+<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>规定了任何时候都需要保证只有一个主进程负责进行消息广播，而如果主进程崩溃了，就需要选举一个新的主进程。主进程的选举机制和消息广播机制是紧密相关的。</p>
+<h4 id="主进程周期"><a href="#主进程周期" class="headerlink" title="主进程周期"></a>主进程周期</h4><p>为了保证主进程每次广播出来的事务消息都是一致的，必须确保ZAB协议只有在充分完成崩溃恢复阶段之后，新的主进程才可以开始新的事务消息广播。假设各个进程都实现类似于ready(e)这样的一个函数调用，在运行过程中，ZAB协议能够非常明确地告知上层系统是否可以开始进行事务消息的广播。</p>
+<h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><p>假设存在类似于transaction(v,z)这样的函数调用，来实现主进程对状态变更的广播。</p>
+<p>主进程每次对transaction(v,z)函数的调用都包含了两个字段：事务内容v和事务标致z，而每一个事务标致z=<e,c>也包含了两个组成部分，前者是主进程周期e，后者是当前主进程周期内的事务计数c。</e,c></p>
+<p>针对每一个新的事务，主进程都会首先将事务计数递增。</p>
+<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><blockquote>
+<p>细分为三个阶段：<br>1、发现（discovery）：<br>2、同步（Synchronization）<br>3、广播（Broadcast）</p>
+</blockquote>
+<h4 id="运行分析"><a href="#运行分析" class="headerlink" title="运行分析"></a>运行分析</h4><blockquote>
+<p>每一个进程都有可能处于以下三种状态之一：<br>1、LOOKING：Leader选举阶段<br>2、FOLLOWING：Follower服务器和Leader保持同步状态<br>3、LEADING：Leader服务器作为主进程领导状态</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ZooKeeper/" rel="tag"># ZooKeeper</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/15/redis/SSM框架中使用Redis单机版/" rel="next" title="SSM框架中使用Redis单机版">
+                <i class="fa fa-chevron-left"></i> SSM框架中使用Redis单机版
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/16/dubbo-ZooKeeper框架基础配置/" rel="prev" title="dubbo+ZooKeeper框架基础配置">
+                dubbo+ZooKeeper框架基础配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介："><span class="nav-number">1.</span> <span class="nav-text">简介：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper介绍："><span class="nav-number">1.1.</span> <span class="nav-text">Zookeeper介绍：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper是什么："><span class="nav-number">1.2.</span> <span class="nav-text">ZooKeeper是什么：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper的设计目标："><span class="nav-number">1.3.</span> <span class="nav-text">ZooKeeper的设计目标：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ZooKeeper的基本概念"><span class="nav-number">2.</span> <span class="nav-text">ZooKeeper的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群角色："><span class="nav-number">2.1.</span> <span class="nav-text">集群角色：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话（Session）："><span class="nav-number">2.2.</span> <span class="nav-text">会话（Session）：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据节点（ZNode）"><span class="nav-number">2.3.</span> <span class="nav-text">数据节点（ZNode）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本（Version）"><span class="nav-number">2.4.</span> <span class="nav-text">版本（Version）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Watcher（事件监听器）"><span class="nav-number">2.5.</span> <span class="nav-text">Watcher（事件监听器）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ACL（Access-Control-Lists）有以下五种权限"><span class="nav-number">2.6.</span> <span class="nav-text">ACL（Access Control Lists）有以下五种权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ZAB协议"><span class="nav-number">3.</span> <span class="nav-text">ZAB协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZAB两种基本的模式"><span class="nav-number">3.1.</span> <span class="nav-text">ZAB两种基本的模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、崩溃恢复"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、崩溃恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、消息广播"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、消息广播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结：ZAB协议规定了如果一个事务Proposal在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。ZAB协议需要确保那些已经在Leader服务器上提交的事务最终被所有服务器都提交。"><span class="nav-number">3.1.3.</span> <span class="nav-text">总结：ZAB协议规定了如果一个事务Proposal在一台机器上被处理成功，那么应该在所有的机器上都被处理成功，哪怕机器出现故障崩溃。ZAB协议需要确保那些已经在Leader服务器上提交的事务最终被所有服务器都提交。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深入ZAB协议"><span class="nav-number">3.2.</span> <span class="nav-text">深入ZAB协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统模型"><span class="nav-number">3.2.1.</span> <span class="nav-text">系统模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-number">3.2.2.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主进程周期"><span class="nav-number">3.2.3.</span> <span class="nav-text">主进程周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务"><span class="nav-number">3.2.4.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法描述"><span class="nav-number">3.2.5.</span> <span class="nav-text">算法描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行分析"><span class="nav-number">3.2.6.</span> <span class="nav-text">运行分析</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

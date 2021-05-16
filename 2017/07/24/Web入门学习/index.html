@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Web," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="首先十分感谢祥哥的建议: 一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。 但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。 不过从职场的角度，可能开始走广度会更有利于以后发展。 深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。  项目中常使用到的技术（基于SSM）   分布式技术">
+<meta name="keywords" content="Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web入门学习">
+<meta property="og:url" content="http://yoursite.com/2017/07/24/Web入门学习/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="首先十分感谢祥哥的建议: 一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。 但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。 不过从职场的角度，可能开始走广度会更有利于以后发展。 深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。  项目中常使用到的技术（基于SSM）   分布式技术">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/dubbo-architecture.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/dubbo-relation.png">
+<meta property="og:updated_time" content="2018-11-11T14:28:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web入门学习">
+<meta name="twitter:description" content="首先十分感谢祥哥的建议: 一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。 但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。 不过从职场的角度，可能开始走广度会更有利于以后发展。 深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。  项目中常使用到的技术（基于SSM）   分布式技术">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/dubbo-architecture.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/24/Web入门学习/"/>
+
+
+
+
+
+  <title>Web入门学习 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/24/Web入门学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web入门学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T22:37:24+08:00">
+                2017-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GEEK/" itemprop="url" rel="index">
+                    <span itemprop="name">GEEK</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p><strong>首先十分感谢祥哥的建议:</strong></p>
+<pre><code>一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。
+但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。
+不过从职场的角度，可能开始走广度会更有利于以后发展。
+深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。
+</code></pre><blockquote>
+<p><strong>项目中常使用到的技术（基于SSM）</strong></p>
+</blockquote>
+<ul>
+<li>分布式技术：Dubbo，Zookeeper</li>
+<li>数据库存储：MySQL，Redis，MongoDB（少用到）</li>
+<li>消息服务：ActiveMq</li>
+<li>文件存储FTP，OSS</li>
+</ul>
+<p>下面简单对它们进行了解，了解它们是什么，能有什么作用</p>
+<blockquote>
+<p><strong>Dubbo和Zookeeper</strong></p>
+</blockquote>
+<p><strong>Dubbo</strong>是Alibaba的开源框架，最大的特点是按照分层的方式来架构，使用这种技术可以使各个层之间解耦。<br>Dubbo采用的是一种简单的模型，要么是提供者提供服务，要么是消费者消费服务，可以抽象出服务提供者（Provider）和服务消费者（Consumer）。</p>
+<p>下图是Dubbo框架模型：一共有十层<br><img src="http://img.sevenyuan.cn/dubbo-architecture.png" alt="Dubbo框架模型"></p>
+<p>Dubbo作为一个分布式服务框架，主要具有如下几个核心的要点：</p>
+<ul>
+<li>服务定义：<br>服务是围绕服务提供方和服务消费方的，服务提供方实现服务，而服务消费方调用服务。</li>
+<li>服务注册<br>对于服务提供方，它需要发布服务，而且由于应用系统的复杂性，服务的数量、类型也不断膨胀；对于服务消费方，它最关心如何获取到它所需要的服务，而面对复杂的应用系统，需要管理大量的服务调用。而且，对于服务提供方和服务消费方来说，他们还有可能兼具这两种角色，即既需要提供服务，有需要消费服务。<br>通过将服务统一管理起来，可以有效地优化内部应用对服务发布/使用的流程和管理。服务注册中心可以通过特定协议来完成服务对外的统一。<br>Dubbo推荐使用Zookeeper注册中心</li>
+<li>服务监控<br>无论是服务提供方，还是服务消费方，他们都需要对服务调用的实际状态进行有效的监控，从而改进服务质量。</li>
+<li>服务调用</li>
+</ul>
+<p>最后简单介绍一下Dubbo基于RPC层，服务提供方和服务消费方之间的关系</p>
+<p><img src="http://img.sevenyuan.cn/dubbo-relation.png" alt="Dubbo调用关系"><br>上图中蓝色的表示与业务有交互，绿色的表示只对Dubbo内部交互。上述图所描述的调用流程如下：<br>​    1. 服务提供方发布服务到服务注册中心；<br>​    2. 服务消费方从服务注册中心订阅服务；<br>​    3. 服务消费方调用已经注册的可用服务。</p>
+<p>更多调用流程请看这篇文章：<strong><a href="http://shiyanjun.cn/archives/325.html" target="_blank" rel="noopener">Dubbo文章参考</a></strong></p>
+<p><strong>Zookeeper</strong><br>用来注册服务和进行负载均衡，哪一个服务由哪一个机器来提供必须让调用者知道。<br>zookeeper通过心跳机制可以检测挂掉的机器并将挂掉机器的ip和服务对应关系从列表中删除。<br>通过添加新的机器向zookeeper注册服务，服务的提供者增加，能够服务的客户就能增加。</p>
+<p><strong>Zookeeper与Dubbo的关系</strong><br>   Dubbo的将注册中心进行抽象，是得它可以外接不同的存储媒介给注册中心提供服务，有ZooKeeper，Memcached，Redis等。<br>​      引入了ZooKeeper作为存储媒介，也就把ZooKeeper的特性引进来。首先是负载均衡，单注册中心的承载能力是有限的，在流量达到一定程度的时候就需要分流，负载均衡就是为了分流而存在的，一个ZooKeeper群配合相应的Web应用就可以很容易达到负载均衡；资源同步，单单有负载均衡还不够，节点之间的数据和资源需要同步，ZooKeeper集群就天然具备有这样的功能；命名服务，将树状结构用于维护全局的服务地址列表，服务提供者在启动的时候，向ZK上的指定节点/dubbo/${serviceName}/providers目录下写入自己的URL地址，这个操作就完成了服务的发布。其他特性还有Mast选举，分布式锁等。</p>
+<p>Zookeeper基础概念了解请看这篇文章： <strong><a href="http://blog.csdn.net/daiqinge/article/details/51282874" target="_blank" rel="noopener">zookeeper基础了解</a></strong></p>
+<blockquote>
+<p><strong>Redis</strong></p>
+</blockquote>
+<p><strong>Redis简介</strong>（<strong><a href="http://www.redis.cn/" target="_blank" rel="noopener">中文网站</a></strong>）：<br>Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过 Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。</p>
+<p><strong>Redis 优势:</strong></p>
+<ul>
+<li>速度快，因为数据存在内存中，类似于HashMap，HashMap的优势就是查找和操作的时间复杂度都是O(1)</li>
+<li>支持丰富数据类型，支持string，list，set，sorted set，hash</li>
+<li>支持事务，操作都是原子性，所谓的原子性就是对数据的更改要么全部执行，要么全部不执行。</li>
+<li>丰富的特性：可用于缓存，消息，按key设置过期时间，过期后将会自动删除</li>
+</ul>
+<p>在Java中使用的是Jedis，可以在Redis官网查看如何使用，常用的套路是使用MySQL存储需要长久存放的数据，使用Redis进行缓存，设置一个过期时间，不能让Redis存储太多，不然内存占用会升高。</p>
+<blockquote>
+<p><strong>ActiveMq</strong></p>
+</blockquote>
+<p>首先介绍一下MQ：<br><strong>MQ</strong>全称为Message Queue, 消息队列（MQ）是一种应用程序对应用程序的通信方法。应用程序通过写和检索出入列队的针对应用程序的数据（消息）来通信，而无需专用连接来链接它们。消息传递指的是程序之间通过在消息中发送数据进行通信，而不是通过直接调用彼此来通信，直接调用通常是用于诸如远程过程调用的技术。排队指的是应用程序通过队列来通信。队列的使用除去了接收和发送应用程序同时执行的要求。</p>
+<p><strong>MQ特点：</strong><br>MQ的消费-生产者模型的一个典型的代表，一端往消息队列中不断的写入消息，而另一端则可以读取或者订阅队列中的消息。MQ和JMS类似，但不同的是JMS是SUN Java消息中间件服务的一个标准和API定义，而MQ则是遵循了AMQP协议的具体实现和产品。</p>
+<p>接着介绍JMS（Java Message Service）：<br><strong>JMS</strong>是Java平台上有关面向消息中间件(MOM)的技术规范，它便于消息系统中的Java应用程序进行消息交换,并且通过提供标准的产生、发送、接收消息的接口简化企业应用的开发，翻译为Java消息服务。</p>
+<p><strong>ActiveMq优点：</strong><br>是一个快速的开源消息组件(框架)，支持集群，同等网络，自动检测，TCP，SSL，广播，持久化，XA，和J2EE1.4容器无缝结合，并且支持轻量级容器和大多数跨语言客户端上的Java虚拟机。消息异步接受，减少软件多系统集成的耦合度。消息可靠接收，确保消息在中间件可靠保存，多个消息也可以组成原子事务。</p>
+<p>个人理解是通过发送消息到队列中，不直接调用服务处理，而是配置处理器进行事件的处理，异步处理消息用来进行应用间的解耦，节省了服务器的请求响应时间，从而提高了系统的吞吐量，最后确保最终一致性。</p>
+<p>关于ActiveMq的了解可以看这篇文章：<a href="http://blog.csdn.net/u012325073/article/details/53385322" target="_blank" rel="noopener">ActiveMq基础了解</a></p>
+<blockquote>
+<p><strong>文件存储FTP和OSS</strong></p>
+</blockquote>
+<p>网络操作中，有很多场景下涉及到文件的操作，这时就需要使用到ftp和oss。</p>
+<p><strong>FTP：</strong>全称（File Transfer Protocol）<br>用于在网络上的控制文件的双向传输。我们经常使用到的是上传（upload）和下载（download）。<br>在后端中使用，需要写好配置文件，在代码中也需要通过连接ftp服务器，将文件转成输入流上传到ftp服务器，拿到ftp服务器的文件地址，就能将文件下载下来。</p>
+<p><strong>OSS：</strong>全称（Object Storage Service）<br>常用的是阿里的oss，使用它有以下好处：</p>
+<ul>
+<li>OSS服务可用性不低于99.9%,规模自动扩展，数据持久性不低于99.99999999%，数据自动多重冗余备份。</li>
+<li>OSS提供企业级多层次安全防护和防DDoS攻击，自动黑洞清洗。OSS实行多用户资源隔离机制,支持异地容灾机制。</li>
+<li>OSS还提供多种鉴权和授权机制及白名单、防盗链、主子账号功能。</li>
+<li>OSS性价比高，多线BGP骨干网络，无带宽限制，上行流量免费，无需运维人员与托管费用，0成本运维。</li>
+<li>OSS还提供图片处理、音视频转码、内容加速分发、鉴黄服务、归档服务等多种数据增值服务，并在不断丰富着。</li>
+</ul>
+<p>基于以上优点，学习使用OSS也是很有必要的，<strong><a href="https://help.aliyun.com/document_detail/31827.html" target="_blank" rel="noopener">官方文档</a></strong> 的介绍很详细了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web/" rel="tag"># Web</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/06/redis/Redis基础使用/" rel="next" title="Redis基础使用">
+                <i class="fa fa-chevron-left"></i> Redis基础使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/29/redis/Redis数据结构/" rel="prev" title="Redis数据结构">
+                Redis数据结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

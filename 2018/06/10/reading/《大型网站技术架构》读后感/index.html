@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="读后感," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~ 这段时间又剁手买了很多书=-=">
+<meta name="keywords" content="读后感">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《大型网站技术架构》读后感">
+<meta property="og:url" content="http://yoursite.com/2018/06/10/reading/《大型网站技术架构》读后感/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~ 这段时间又剁手买了很多书=-=">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/Sparrowhawk.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E9%9B%86%E7%BE%A4.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91.png">
+<meta property="og:updated_time" content="2018-11-11T14:24:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《大型网站技术架构》读后感">
+<meta name="twitter:description" content="结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~ 这段时间又剁手买了很多书=-=">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/Sparrowhawk.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/10/reading/《大型网站技术架构》读后感/"/>
+
+
+
+
+
+  <title>《大型网站技术架构》读后感 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/10/reading/《大型网站技术架构》读后感/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《大型网站技术架构》读后感</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-10T17:38:12+08:00">
+                2018-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/Sparrowhawk.jpg" alt=""></p>
+<p></p><p align="center">结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~</p><p></p>
+<p></p><p align="center">这段时间又剁手买了很多书=-=</p><br><a id="more"></a><p></p>
+<hr>
+<p>这本书说的并不是深入讲解某个技术，而是让大家<strong>了解到一个大型的网站，应该是如何设计和各种架构问题对应的解决方案</strong>，是一本很好的入门书了</p>
+<p>下面记录的是学习这本书的架构设计知识点，对于大型网站有了基础了解。</p>
+<hr>
+<h2 id="服务分离"><a href="#服务分离" class="headerlink" title="服务分离"></a>服务分离</h2><p>应用服务更多关注的是业务处理能力，需要更强大的CPU；数据库服务需要快速磁盘检索和数据缓存，因此需要更快的硬盘和更大的内存；文件服务器需要存储大量用户上传的文件，因此需要更大的硬盘。</p>
+<p>应用和数据分离之后，不同特性的服务器承担不同的服务角色，可以很好的改善网站的并发能力和数据存储空间。</p>
+<hr>
+<h2 id="集群和负载均衡"><a href="#集群和负载均衡" class="headerlink" title="集群和负载均衡"></a>集群和负载均衡</h2><p>前期功能不复杂的话，可能跟在学校做作业一样，使用单机就能解决。随着访问量和处理数据越来越多，单机的性能便会达到瓶颈，这是就需要增加机器，搭成集群，减少单机的压力，处理更多请求。</p>
+<p><img src="http://img.sevenyuan.cn/%E9%9B%86%E7%BE%A4.png" alt=""></p>
+<p>如图所示，当前端接收到请求后，根据负载均衡算法，路由到某个应用服务器上，将处理好的结果返回给前端，进行之后的业务操作。通过负载均衡技术将用户请求分发到不同的服务器上，以应对大量用户同时访问时产生的高并发负载压力。</p>
+<hr>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><h3 id="HTTP重定向负载均衡"><a href="#HTTP重定向负载均衡" class="headerlink" title="HTTP重定向负载均衡"></a>HTTP重定向负载均衡</h3><p>HTTP重定向服务器是一台普通的俄、应用服务器，其唯一的功能就是根据用户的HTTP请求计算一台真实的WEB服务器地址，并将该Web服务器地址写入HTTP重定向响应中返回给用户游览器。</p>
+<h3 id="DNS域名解析负载均衡"><a href="#DNS域名解析负载均衡" class="headerlink" title="DNS域名解析负载均衡"></a>DNS域名解析负载均衡</h3><p>在DNS服务器配置多个A记录，例如：www.mysite.com IN A 127.0.0.1/ www.mysite.com IN A 127.0.0.2 / www.mysite.com IN A 127.0.0.3。</p>
+<p>每次域名解析请求都会根据负载均衡算法计算一个不同的IP地址返回，这样<strong>A记录中配置的多个服务器就构成一个集群</strong>，并可以实现负载均衡。</p>
+<p>该做法的优点是将负载均衡的工作交给了DNS，同时需要DNS还支持基于地理位置的域名解析，将域名解析成距离用户地理最近的一个服务器地址，加快用户访问速度，改善性能。但是同样也有缺点，目前的DNS是多级解析，每一级DNS都可能缓存A记录，当下线某台服务器之后（修改DNS的A记录），使其生效需要一段时间，在这段时间DNS仍然会解析到已下线的服务器，导致用户访问失败。</p>
+<h3 id="反向代理负载均衡"><a href="#反向代理负载均衡" class="headerlink" title="反向代理负载均衡"></a>反向代理负载均衡</h3><p>我们常用的Nginx就是通过反向代理，进行访问的负载均衡。反向代理服务器处于Web服务器前面，<strong>将请求根据分在均衡算法转发到不同Web服务器上</strong>。Web服务器处理完成的响应也需要通过反向代理服务器返回给用户。</p>
+<p><img src="http://img.sevenyuan.cn/%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91.png" alt=""></p>
+<p>如图所示，游览器发起请求，反向代理服务器根据负载均衡算法计算到真实无理服务器的地址，将请求转发给节点三。</p>
+<hr>
+<h2 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h2><p>大型网站一般都在使用分布式，进行性能平衡和伸缩扩展。无论是持久化数据、缓存还是应用程序，都可以通过增加机器，搭建集群，以增加计算处理能力和减缓原有的机器压力。</p>
+<p>在业务中，将不同的功能进行模块化，经过分层和分割后，将软件分割成若干个低耦合的独立组件模块，然后这些模块进行单独部署，模块之间可以通过RPC或者消息进行交互。</p>
+<p><strong>阿里的DUBBO服务</strong>基本满足分布式应用的要求，而且可以做到服务升降级，当某些服务出问题或者占用太多计算机资源，可以选择将这些服务降级，降低访问量。例如淘宝双十一的时候会将评论等不重要的功能停用，确保订单服务的高可用。</p>
+<p>在分布式中，消息服务也很重要，借助事件消息的通讯完成模块间的合作，常见的是生产者和消费者模式。例如ActiveMQ中，生成者可以发布两种类型的消息，<strong>队列消息和主题消息</strong>。队列消息生产一个，消费一个，一对一的关系，主题消息是生产一个，消费多个，一对多的关系。由于消息发送者不需要等待消息接收者处理数据就可以返回，系统具有更好的响应延迟。</p>
+<p>伸缩性构架设计可以说简单，因为有很多开源的可以进行借鉴和使用；同时也是复杂的，因为没有一套通用的方案，需要根据自己的业务、物理机性能等众多因素结合在一起考虑，所以伸缩性架构设计要求架构师对于这个产品和技术路线要有个清晰的了解。</p>
+<hr>
+<h2 id="其它说说"><a href="#其它说说" class="headerlink" title="其它说说"></a>其它说说</h2><p>除了功能业务之外，还需要关注日志服务、安全服务等基础服务的支持。</p>
+<p>通过日志服务发现业务异常或者系统异常，当某些错误超过设定的阙值时，设定邮箱或者短信报警，让开发人员尽早了解，及早修复漏洞。</p>
+<p>像在2011年，新浪微博遭XSS攻击，还有CSDN被脱库造成的用户密码等重要信息泄露，这些事件都在提醒，网站的安全需要重视，看了本书，了解到很多安全防范，例如参数清洗、布隆过滤器、Web防火墙等等。</p>
+<hr>
+<p>这本书的内容确都是干货，讲了很多技术构架，一开始工作中没清晰的概念，通过本书都了解到了，而且配图很多，讲的内容也通俗易懂，墙裂安利~</p>
+<p>自己还没到这些大牛的境界，这些知识点权当了解了解~</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/读后感/" rel="tag"># 读后感</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/20/java/Guava工具包のLists-tranform记录/" rel="next" title="Guava工具包のLists.tranform记录">
+                <i class="fa fa-chevron-left"></i> Guava工具包のLists.tranform记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/24/MyBatis源码学习(一)/" rel="prev" title="MyBatis源码学习(一)">
+                MyBatis源码学习(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务分离"><span class="nav-number">1.</span> <span class="nav-text">服务分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群和负载均衡"><span class="nav-number">2.</span> <span class="nav-text">集群和负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载均衡"><span class="nav-number">3.</span> <span class="nav-text">负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP重定向负载均衡"><span class="nav-number">3.1.</span> <span class="nav-text">HTTP重定向负载均衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS域名解析负载均衡"><span class="nav-number">3.2.</span> <span class="nav-text">DNS域名解析负载均衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向代理负载均衡"><span class="nav-number">3.3.</span> <span class="nav-text">反向代理负载均衡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式"><span class="nav-number">4.</span> <span class="nav-text">分布式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它说说"><span class="nav-number">5.</span> <span class="nav-text">其它说说</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

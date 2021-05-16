@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="MySQL对我说“Too young, too naive!”">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次服务器执行MySQL耗时问题">
+<meta property="og:url" content="http://yoursite.com/2018/08/25/记一次服务器执行MySQL耗时问题/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="MySQL对我说“Too young, too naive!”">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/JapanCrane_ZH-CN7122024216_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E8%80%97%E6%97%B6SQL.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/Druid%E7%9B%91%E6%B5%8B.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEJMX%E5%8F%82%E6%95%B0.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/JMC%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/21535079499_.pic_hd.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/InnoDB%E8%A1%8C%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png">
+<meta property="og:updated_time" content="2019-05-25T09:11:24.694Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次服务器执行MySQL耗时问题">
+<meta name="twitter:description" content="MySQL对我说“Too young, too naive!”">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/JapanCrane_ZH-CN7122024216_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/25/记一次服务器执行MySQL耗时问题/"/>
+
+
+
+
+
+  <title>记一次服务器执行MySQL耗时问题 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/记一次服务器执行MySQL耗时问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记一次服务器执行MySQL耗时问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T15:30:26+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/JapanCrane_ZH-CN7122024216_1920x1080.jpg" alt=""></p>
+<center><strong>MySQL对我说“Too young, too naive!”</strong></center>
+
+<a id="more"></a>
+<hr>
+<h2 id="大概过程"><a href="#大概过程" class="headerlink" title="大概过程"></a>大概过程</h2><p>在测试环境Docker容器中，在跨进程调用服务的时候，A应用通过Dubbo调用B应用的RPC接口，发现B应用接口超时错误，接着通过debug和日志，发现具体耗时的地方在于一句简单SQL执行，但是耗时超过1000ms。</p>
+<p>通过查看数据库的进程列表，发现是有<strong>死锁锁表</strong>了，<strong>很多进程状态status处于’sending data’</strong>，最后为锁住的表添加索引，并且kill掉阻塞的请求，解除死锁，服务速度恢复正常。</p>
+<hr>
+<p><strong>下面记录的是跟祥哥一起的大致排查过程：</strong></p>
+<p>通过观察业务代码，确认没有内存溢出或者其它事务问题，于是只能考虑Docker环境的数据库和jvm底层详情了。</p>
+<h2 id="使用Druid监控SQL执行状态"><a href="#使用Druid监控SQL执行状态" class="headerlink" title="使用Druid监控SQL执行状态"></a>使用Druid监控SQL执行状态</h2><p>通过日志，发现有一句SQL严重超时，一句简单SQL，原本是批量插入多条记录，为了定位问题，测试时<strong>Mybatis只插入一条记录</strong>，但即便如此，还是耗时10秒</p>
+<p><img src="http://img.sevenyuan.cn/%E8%80%97%E6%97%B6SQL.png" alt=""></p>
+<p>于是打算使用阿里巴巴的数据库连接池Druid进行监控，这篇文章有教如何<a href="https://my.oschina.net/wangmengjun/blog/788386" target="_blank" rel="noopener">使用Druid监控SQL执行状态</a>，监控SQL效果如下：</p>
+<p><img src="http://img.sevenyuan.cn/Druid%E7%9B%91%E6%B5%8B.png" alt=""></p>
+<p>在SQL监控Tab中，可以看到执行SQL的具体情况，包括某条SQL语句执行的时间（平均、最慢）、SQL执行次数、SQL执行出错的次数等</p>
+<p>上面显示的是正常情况下，时间单位是ms，正常的SQL一般在10ms之内，数据量大的控制在30ms之内，这样用户的使用体验感才会良好。所以说之前的1000ms，是不可接受的结果。</p>
+<hr>
+<h2 id="通过JMC远程监控Tomcat"><a href="#通过JMC远程监控Tomcat" class="headerlink" title="通过JMC远程监控Tomcat"></a>通过JMC远程监控Tomcat</h2><p><strong>JMC(java mission control)是jdk自带的一个监控工具</strong>，在jdk的bin目录下（java大法好，该目录下有很多实用的工具）。</p>
+<p>具体要<a href="https://blog.csdn.net/kong2030/article/details/80312417" target="_blank" rel="noopener">怎么配置和加的参数请参考此文</a></p>
+<p>为了简单，我加了一个tomcat无验证模式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>在tomcat的conf目录下的catalina.sh增加如下java启动参数： </div><div class="line">-Dcom.sun.management.jmxremote=true</div><div class="line">-Dcom.sun.management.jmxremote.port=8888</div><div class="line">-Dcom.sun.management.jmxremote.ssl=false</div><div class="line">-Dcom.sun.management.jmxremote.authenticate=false</div><div class="line">-XX:+UnlockCommercialFeatures -XX:+FlightRecorder</div></pre></td></tr></table></figure></p>
+<p>下面是自己本地调试的截图</p>
+<p><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEJMX%E5%8F%82%E6%95%B0.png" alt=""></p>
+<p>然后打开jmc，创建一个JMX连接，输入对应的ip和JMX端口。接着可以设定一段时间内的飞行监控，监测这一分钟内jvm具体参数</p>
+<p>当时调试的时候，发现内存使用、CPU占用率、线程状态也挺正常的，没有发现明显的异常错误，效果如下图：</p>
+<p><img src="http://img.sevenyuan.cn/JMC%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F.png" alt=""></p>
+<p>唯一比较耗时的是在代码tab页中，<strong>当时发现了大量的I/O，比上图的比例还高，当时大概占了80%，查看调用树，很多循环tcp socket连接</strong>，考虑到应用中本来就有很多需要io以及netty也需要tcp连接，所以大概排除了jvm虚拟机的问题，然后就去排查MySQL的问题。</p>
+<hr>
+<h2 id="排查MySQL"><a href="#排查MySQL" class="headerlink" title="排查MySQL"></a>排查MySQL</h2><p>在了解MySQL锁概念的时候，可以参考这篇文章<a href="http://www.cnblogs.com/sessionbest/articles/8689082.html" target="_blank" rel="noopener">mysql什么情况下会触发表锁</a>，由于现在使用的比较多的是InnoDB，所以可以着重看看InnoDB锁问题。</p>
+<h3 id="直接执行SQL语句"><a href="#直接执行SQL语句" class="headerlink" title="直接执行SQL语句"></a>直接执行SQL语句</h3><p>通过DEBUG代码，从mybatis中取出映射后的SQL语句，在MySQL客户款直接执行SQL和Explain查看执行计划，速度都很快，排除了SQL语句的问题。</p>
+<h3 id="查看MySQL线程列表"><a href="#查看MySQL线程列表" class="headerlink" title="查看MySQL线程列表"></a>查看MySQL线程列表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">show</span> <span class="keyword">processlist</span>;</div></pre></td></tr></table></figure>
+<p><img src="http://img.sevenyuan.cn/21535079499_.pic_hd.jpg" alt=""></p>
+<p>从图中可以看出，有些线程的状态处于sending data，查阅资料：<strong>所谓的“Sending data”并不是单纯的发送数据，而是包括“收集 + 发送 数据”</strong>。</p>
+<p>然后后面一列info显示的是具体信息，是查询用来生成主键ID的函数，之前速度都很快，为啥突然就这么慢呢，于是回过头去查看该函数：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> next_value <span class="keyword">into</span> ret_val <span class="keyword">from</span> <span class="string">`xxx`</span> <span class="keyword">where</span> table_name=tableName <span class="keyword">for</span> <span class="keyword">update</span>;</div><div class="line"></div><div class="line"><span class="keyword">update</span> <span class="string">`xxx`</span> <span class="keyword">set</span></div><div class="line">		current_value=current_value+step,</div><div class="line">		next_value=next_value+step</div><div class="line">	<span class="keyword">where</span> table_name=tableName;</div></pre></td></tr></table></figure>
+<p>select for update，给这个表加了排它锁，阻止其它事务取得相同数据集的共享读锁和排他写锁，同时，这个序列表表中，用来检索的字段没有加索引，在InnoDB行锁机制中：</p>
+<p><img src="http://img.sevenyuan.cn/InnoDB%E8%A1%8C%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png" alt=""></p>
+<p>由于MySQL的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用<strong>相同的索引键</strong>（在我们的场景中，就是查询时用到的table_name)，是会出现锁冲突的</p>
+<p>所以祥哥了解到其它团队因为查询这个表产生事务问题，造成死锁，这个序列表被锁住了。</p>
+<p>由于这个自增序列表每个团队都在使用，所以当时测试环境中，经常有dao层超时错误，最终祥哥将这些阻塞的线程kill掉，为序列表加了索引，解决了问题。</p>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>下次遇到MySQL执行耗时的情况，排除了代码问题之后，要去看数据库是否有死锁的情况存在，观察有没有被阻塞的线程，排查被阻塞的线程具体info，定位到具体问题。</p>
+<hr>
+<h2 id="欢迎吐槽"><a href="#欢迎吐槽" class="headerlink" title="欢迎吐槽"></a>欢迎吐槽</h2><p>具体排查过程是这样，其中还有些细节问题，不清除自己写的思路或者方法有没有错误，如有请轻喷。</p>
+<p>对于MySQL锁的机制和底层设计，还是太年轻了，听祥哥意见，去查看官方文档，还有多敲一些命令熟悉一下吧。</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><p><a href="https://www.jb51.net/article/16648.htm" target="_blank" rel="noopener">mysql 卡死 大部分线程长时间处于sending data的状态</a></p>
+</li>
+<li><p><a href="https://my.oschina.net/wangmengjun/blog/788386" target="_blank" rel="noopener">使用Druid监控SQL执行状态</a></p>
+</li>
+<li><p><a href="https://blog.csdn.net/kong2030/article/details/80312417" target="_blank" rel="noopener">Java JMC监控远程tomcat配置</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/sessionbest/articles/8689082.html" target="_blank" rel="noopener">mysql什么情况下会触发表锁</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/16/java/配置ELK的环境和整合Spring-Logstash/" rel="next" title="配置ELK的环境和整合Spring+Logstash">
+                <i class="fa fa-chevron-left"></i> 配置ELK的环境和整合Spring+Logstash
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/25/记一次线上OOM和性能优化/" rel="prev" title="记一次线上OOM和性能优化">
+                记一次线上OOM和性能优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#大概过程"><span class="nav-number">1.</span> <span class="nav-text">大概过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Druid监控SQL执行状态"><span class="nav-number">2.</span> <span class="nav-text">使用Druid监控SQL执行状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过JMC远程监控Tomcat"><span class="nav-number">3.</span> <span class="nav-text">通过JMC远程监控Tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排查MySQL"><span class="nav-number">4.</span> <span class="nav-text">排查MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直接执行SQL语句"><span class="nav-number">4.1.</span> <span class="nav-text">直接执行SQL语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看MySQL线程列表"><span class="nav-number">4.2.</span> <span class="nav-text">查看MySQL线程列表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欢迎吐槽"><span class="nav-number">6.</span> <span class="nav-text">欢迎吐槽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

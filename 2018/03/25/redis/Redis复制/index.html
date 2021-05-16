@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Redis的单机模式不难，配置文件参数了解具体含义，设定业务上符合自己的就好了。 之前记录了关于Redis的数据结构和对象的知识（可以点Redis标签看看），下面开始填坑。  复制在Redis中，用户可以通过执行 SLAVEOF 命令或者设置 slaveof 选项，让一个服务去复制（replicate）另一个服务器。被复制的服务器为主服务器（master），另一个对主服务器进行复制的服务器则被称为">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis复制">
+<meta property="og:url" content="http://yoursite.com/2018/03/25/redis/Redis复制/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Redis的单机模式不难，配置文件参数了解具体含义，设定业务上符合自己的就好了。 之前记录了关于Redis的数据结构和对象的知识（可以点Redis标签看看），下面开始填坑。  复制在Redis中，用户可以通过执行 SLAVEOF 命令或者设置 slaveof 选项，让一个服务去复制（replicate）另一个服务器。被复制的服务器为主服务器（master），另一个对主服务器进行复制的服务器则被称为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/PSYNC%E6%B5%81%E7%A8%8B.png">
+<meta property="og:updated_time" content="2019-05-25T07:03:33.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis复制">
+<meta name="twitter:description" content="Redis的单机模式不难，配置文件参数了解具体含义，设定业务上符合自己的就好了。 之前记录了关于Redis的数据结构和对象的知识（可以点Redis标签看看），下面开始填坑。  复制在Redis中，用户可以通过执行 SLAVEOF 命令或者设置 slaveof 选项，让一个服务去复制（replicate）另一个服务器。被复制的服务器为主服务器（master），另一个对主服务器进行复制的服务器则被称为">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/PSYNC%E6%B5%81%E7%A8%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/25/redis/Redis复制/"/>
+
+
+
+
+
+  <title>Redis复制 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/25/redis/Redis复制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis复制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T00:43:53+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/" itemprop="url" rel="index">
+                    <span itemprop="name">NoSQL</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Redis的单机模式不难，配置文件参数了解具体含义，设定业务上符合自己的就好了。</p>
+<p>之前记录了关于Redis的数据结构和对象的知识（可以点Redis标签看看），下面开始填坑。</p>
+<hr>
+<h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><p>在Redis中，用户可以通过执行 SLAVEOF 命令或者设置 slaveof 选项，让一个服务去复制（replicate）另一个服务器。<strong>被复制</strong>的服务器为<strong>主服务器（master）</strong>，另一<strong>个对主服务器进行复制</strong>的服务器则被称为<strong>从服务器（slave）</strong></p>
+<p>举个🌰：(Redis版本是4.0.8）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">在6379端口启动一个redis-server：</div><div class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6379</span></div><div class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6379</span></div><div class="line">127.0.0.1:6379&gt; </div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">在6380端口号启动一个redis-server，接着通过slaveof命令进行复制</div><div class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6380</span></div><div class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6380</span></div><div class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</div><div class="line">OK</div></pre></td></tr></table></figure></p>
+<p>在这里，6379 是主服务器，6380 是从服务器。</p>
+<p>接着能在 6380 的 redis-server 界面中看到日志：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">19092:S 23 Mar 01:00:26.944 * Before turning into a slave, using my master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.</div><div class="line">19092:S 23 Mar 01:00:26.945 * SLAVE OF 127.0.0.1:6379 enabled (user request from 'id=2 addr=127.0.0.1:60778 fd=8 name= age=50 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=slaveof')</div><div class="line">19092:S 23 Mar 01:00:27.234 * Connecting to MASTER 127.0.0.1:6379</div><div class="line">19092:S 23 Mar 01:00:27.234 * MASTER &lt;-&gt; SLAVE sync started</div><div class="line">19092:S 23 Mar 01:00:27.234 * Non blocking connect for SYNC fired the event.</div><div class="line">19092:S 23 Mar 01:00:27.246 * Master replied to PING, replication can continue...</div><div class="line">19092:S 23 Mar 01:00:27.246 * Trying a partial resynchronization (request 2e56cf1343f6b2e864c968bd59b4a16ed78b8f1d:1).</div><div class="line">19092:S 23 Mar 01:00:27.266 * Full resync from master: bf36b20c3942e91ac4f262a2afdc90970b2d7c54:0</div><div class="line">19092:S 23 Mar 01:00:27.266 * Discarding previously cached master state.</div><div class="line">19092:S 23 Mar 01:00:27.441 * MASTER &lt;-&gt; SLAVE sync: receiving 187 bytes from master</div><div class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</div><div class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</div><div class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div></pre></td></tr></table></figure></p>
+<p>具体流程如下：</p>
+<ul>
+<li>从服务器发送 <strong>SYNC 命令</strong>到主服务器</li>
+<li>主服务器通过 BGSAVE（子线程中运行）生成 RDB 文件，发送给从服务器</li>
+<li>主服务器在 BGSAVE 过程中的写操作，保存在缓冲区中，发送给从服务器</li>
+</ul>
+<p>进行复制中的主从服务器双方的数据库将保存相同的数据，概念上将这种现象称为<strong>“数据库状态一致”，或者简称“一致”</strong>。</p>
+<hr>
+<h3 id="旧版复制功能的缺陷（旧版指的是2-8之前）"><a href="#旧版复制功能的缺陷（旧版指的是2-8之前）" class="headerlink" title="旧版复制功能的缺陷（旧版指的是2.8之前）"></a>旧版复制功能的缺陷（旧版指的是2.8之前）</h3><p>在Redis中，从服务器对主服务器的复制可以分成两种情况：</p>
+<ul>
+<li><strong>初次复制</strong>：从服务器从前没有复制过任何主服务器，或者从服务器当前要复制的主服务器和上一次复制的主服务器不同。</li>
+<li><strong>断线后重新复制</strong>：处于命令传播阶段的主从服务器因为网络原因而中断了复制，但从服务器通过自动重连接重新连上了主服务器，继续复制主服务器。</li>
+</ul>
+<p>对于初次复制来说来说，旧版复制完全没有问题，但是断线重连之后，如果当时从服务器已经复制了一些，重连之后，从服务器需要重新复制，造成一些浪费。</p>
+<p><strong>旧版使用的是SYNC命令进行复制</strong>，是一个非常浪费资源的操作。</p>
+<hr>
+<h3 id="新版复制的优势"><a href="#新版复制的优势" class="headerlink" title="新版复制的优势"></a>新版复制的优势</h3><p>使用 PSYNC 命令替代 SYNC 命令来执行复制时的同步操作。</p>
+<p>具有<strong>完整重同步（full resynchronization）</strong>和<strong>部分重同步（partial resynchronization）</strong>两种模式：</p>
+<ul>
+<li>完整重同步：与初次复制相同，都是先让主服务器发送 RDB 文件，以及向从服务器发送保存在缓冲区里面的命令来进行同步。</li>
+<li>部分重分步：当从服务器断线的时候，下次可以发起 PSYNC 命令，从中断处开始，执行部分重同步，只需要将从服务器缺少的写命令发送给从服务器执行就可以了，这时使用的资源比起执行 SYNC 命令所需的资源要少的多。</li>
+</ul>
+<hr>
+<h3 id="新版复制实现"><a href="#新版复制实现" class="headerlink" title="新版复制实现"></a>新版复制实现</h3><p>部分重同步功能由以下三个部分构成：</p>
+<ul>
+<li><p>主服务器的<strong>复制偏移量（replication offset）</strong>和从服务器的复制偏移量</p>
+<p>主从服务器都各自持有一份复制偏移量。如果偏移量一致，表示处于一致状态；否则，两者处于不一致状态。</p>
+</li>
+<li><p>主服务器的<strong>复制积压缓冲区（（replication backlog）</strong></p>
+<p>复制积压缓冲区是由主服务器维护的一个<strong>固定长度（fixed-size）先进先出（FIFO）队列</strong>，默认是1MB。</p>
+<p>主服务器的复制积压缓冲区里面会保存着一部分最近传播的写命令，并且复制积压缓冲区会为队列中的每个字节记录相应的复制偏移量。</p>
+<p>当从服务器重新连上主服务器时，从服务器会通过PSYNC命令将自己的offset发送给主服务器，主服务器会根据这个复制偏移量来决定对从服务器执行何种同步操作。</p>
+</li>
+<li><p>服务器的<strong>运行ID（run ID）</strong></p>
+<p>每个服务器都有自己的运行 ID，在服务器启动时自动生成，由 40 个堆积的十六进制字符组成。</p>
+<p>当从服务器对主服务器进行初次复制时，主服务器会将自己的运行ID传送给从服务器，而从服务器则会将这个运行ID保存起来。</p>
+<ul>
+<li>断线重连后，如果从服务器保存的运行 ID 与当前链接的主服务器的运行 ID 相同，主服务器会尝试执行<strong>部分重同步操作</strong></li>
+<li>相反的，如果不一致，主服务器将对从服务器执行<strong>完整重同步操作</strong>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="PSYNC命令实现"><a href="#PSYNC命令实现" class="headerlink" title="PSYNC命令实现"></a>PSYNC命令实现</h3><p>具体调用看流程图即可：<br><img src="http://img.sevenyuan.cn/PSYNC%E6%B5%81%E7%A8%8B.png" alt=""></p>
+<hr>
+<h3 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h3><p>在命令传播阶段，从服务器默认会以每秒一次的频率，向主服务器发送命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> REPLCONF ACK &lt;replication_offset&gt;</span></div></pre></td></tr></table></figure></p>
+<p>其中replication_offset是从服务器当前的复制偏移量。<br>发送REPLCONF ACK有三个作用：</p>
+<ul>
+<li>检测主从服务器的网络连接情况</li>
+<li>辅助实现min-slaves选项</li>
+<li>检测命令丢失</li>
+</ul>
+<hr>
+<h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><ul>
+<li>部分重同步通过<strong>复制偏移量、复制积压缓冲区、服务器运行 ID</strong> 三个部分来实现。</li>
+<li>在复制操作刚开始的时候，从服务器会成为主服务器的客户端，并通过向主服务器发送命令请求来执行复制步骤，而在复制操作的后期，主从服务器互相成为对方的客户端。</li>
+<li>主服务器通过向从服务器传播命令来更新从服务器的状态，保持主从服务器一致，而从服务器则通过向主服务器发送命令来进行心跳检测，以及命令丢失检测。</li>
+</ul>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/17/java/Java多线程Semaphore和CountDownLatch/" rel="next" title="Java多线程Semaphore和CountDownLatch">
+                <i class="fa fa-chevron-left"></i> Java多线程Semaphore和CountDownLatch
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/25/redis/Redis哨兵/" rel="prev" title="Redis哨兵">
+                Redis哨兵 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#复制"><span class="nav-number">1.</span> <span class="nav-text">复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#旧版复制功能的缺陷（旧版指的是2-8之前）"><span class="nav-number">1.1.</span> <span class="nav-text">旧版复制功能的缺陷（旧版指的是2.8之前）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新版复制的优势"><span class="nav-number">1.2.</span> <span class="nav-text">新版复制的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新版复制实现"><span class="nav-number">1.3.</span> <span class="nav-text">新版复制实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PSYNC命令实现"><span class="nav-number">1.4.</span> <span class="nav-text">PSYNC命令实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#心跳检测"><span class="nav-number">1.5.</span> <span class="nav-text">心跳检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结："><span class="nav-number">1.6.</span> <span class="nav-text">小结：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

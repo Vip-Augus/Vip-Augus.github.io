@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重读 JVM - javac &amp; javap">
+<meta property="og:url" content="http://yoursite.com/2020/02/16/java/2020-02-16-reread-jvm1/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/compiler_java.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/class_format.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/version_unsupport.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/man_javap.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/javap_explaination.png">
+<meta property="og:updated_time" content="2020-02-21T06:48:52.366Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重读 JVM - javac &amp; javap">
+<meta name="twitter:description" content="最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/reread/jvm/compiler_java.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/16/java/2020-02-16-reread-jvm1/"/>
+
+
+
+
+
+  <title>重读 JVM - javac & javap | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/java/2020-02-16-reread-jvm1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">重读 JVM - javac & javap</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-16T20:02:44+08:00">
+                2020-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。</p>
+<a id="more"></a>
+<h2 id="class"><a href="#class" class="headerlink" title="class"></a>class</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>class 文件出现的目的是为了平台兼容性，Java 的口号是「一次编写，到处运行」 “Write once，run anywhere”，所以用 Java 这门高级语言的编写 .java 文件后，通过编译器编译输出 .class 这种平台无关的字节码文件，不需要关注是哪个厂商生产的 jvm。</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/compiler_java.png" alt="compiler_java"></p>
+<p>在上图中，实现平台无关性的核心在于虚拟机和字节码存储格式的 .class 文件，了解到，通过其它语言编写的程序也能在 jvm 上运行，例如 ruby、groovy 语言等，是通过 jruby、groovyc 编译器，输出字节码格式的 .class 文件，最终能够在 jvm 上运行。</p>
+<h3 id="java-gt-class-javac"><a href="#java-gt-class-javac" class="headerlink" title=".java -&gt; .class, javac"></a>.java -&gt; .class, javac</h3><p>从编写的 .java 文件到 .class 文件，可以通过 javac 命令进行编译</p>
+<p>例如编写一个 TestClass.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.sevenyuan;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">inc</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> number + <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译语句：(加了 -verbose 是可以在输出设备上显示虚拟机运行信息)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> javac -verbose TestClass.java</span></div></pre></td></tr></table></figure>
+<p>其中，package 包名随意，文件名记得要与类名一致，不然编译时将会报错，例如文件名为 TestClass.java，但是类名是 class Test，编译错误如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> javac -verbose TestClass.java</span></div><div class="line">TestClass.java:3: 错误: 类Test是公共的, 应在名为 Test.java 的文件中声明</div><div class="line">public class Test &#123;</div><div class="line">       ^</div><div class="line">1 个错误</div></pre></td></tr></table></figure>
+<h3 id="class-文件格式"><a href="#class-文件格式" class="headerlink" title="class 文件格式"></a>class 文件格式</h3><p>类加载器读取的是 .class 文件，在日常代码编写的时候，的确不需要关注它，但为了深入学习和了解它的结构，可能之后会使用到，所以这里做个记录。</p>
+<p>class 文件是一组以 8 个字节为基础单位的二进制流，每个数据项严格按照顺序紧凑地排列在文件中，中间没有间隔符。</p>
+<p>下图使用的是 <code>UltraEdit</code> 这个软件，打开 .class 字节码文件的内容（这里来复习一下计算机的字节码格式，一个字节有 8 位，每一位是 0 或 1，是机器能够识别的二进制语言）</p>
+<p>打开文件能看到里面是 16 进制的文本信息</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/class_format.png" alt=""></p>
+<ul>
+<li><strong>magic number</strong></li>
+</ul>
+<p>前四个字节「cafebabe」：是一个魔数，它的唯一作用就是表示该文件能否被 jvm 识别，关于它的小故事可以另外搜索一下~</p>
+<ul>
+<li><strong>minor version &amp; major version</strong></li>
+</ul>
+<p>魔数后面的四个字节：第五和第六的「00 00」表示次版本号（minor version）,第七和第八字节「00 34」表示的是主版本号（Major version），第一代 jvm 1.1 的版本号是 45，十六进制的 0x34 转换成十进制为 3 <em> $16^1$ + 4 </em> $16^0$ = 52，所以与第一代相隔 7 个版本， 表示我使用的是 jdk8，第八代 jvm。</p>
+<p>设置版本号的原因是，jvm 不能执行比自己版本高的 class 文件，也就是说，如果使用 jdk9 编译的代码，是不能再 jvm8 上运行的，但可以向下兼容，使用 jdk7 编译的代码，能在 jvm8 上运行。</p>
+<p>如果用低版本 jdk 运行高版本的 class 字节码，将会报以下错误：</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/version_unsupport.png" alt=""></p>
+<ul>
+<li><strong>常量池 constant pool</strong></li>
+</ul>
+<p>在次主版本号后面，是常量池入口，常量池可以用来比喻为 class文件里的资源仓库。由于常量池中常量的数量不是固定的，所以在入口处需要告知常量池中有多少个常量。</p>
+<p>而且下标起点与常规的 java 习惯不太一样，它的下标是从 1 开始的，入口位置在 class 文件的偏移地址：0x00000008</p>
+<p>详细数据项对照表请参考书中的 6-3 配图</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th>标志</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CONSTANT_Utf8_info</td>
+<td>1</td>
+<td>UTF-8编码的字符串</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Integer_info</td>
+<td>3</td>
+<td>整型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Float_info</td>
+<td>4</td>
+<td>浮点型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Long_info</td>
+<td>5</td>
+<td>长整型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Double_info</td>
+<td>6</td>
+<td>双精度浮点型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Class_info</td>
+<td>7</td>
+<td>类或接口的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_String_info</td>
+<td>8</td>
+<td>字符串类型字面量</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Fieldref_info</td>
+<td>9</td>
+<td>字段的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Methodref_info</td>
+<td>11</td>
+<td>类中方法的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_InterfaceMethodref_info</td>
+<td>11</td>
+<td>接口中方法的符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_NumberAndType_info</td>
+<td>12</td>
+<td>字段或方法的部分符号引用</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_MethodHandle_info</td>
+<td>15</td>
+<td>表示方法句柄</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_MethodType_info</td>
+<td>16</td>
+<td>表示方法类型</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Dynamic_info</td>
+<td>17</td>
+<td>表示一个动态计算常量</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_InvokeDynamic_info</td>
+<td>18</td>
+<td>表示一个动态方法调用点</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Module_info</td>
+<td>19</td>
+<td>表示一个模块</td>
+</tr>
+<tr>
+<td style="text-align:left">CONSTANT_Package_info</td>
+<td>20</td>
+<td>表示一个模块中开放或者导出的包</td>
+</tr>
+</tbody>
+</table>
+<p>常量池中每一项常量都是一个表，每种不同类型都能从常量表中找出对应项。表中的 tag 和 value，tag 表示它的类型，value 就是它的值。</p>
+<p>我是这样理解常量池中的数据项，tag info，类比于 String name 这种编程习惯，前面是类型修饰符，后面是它的值。</p>
+<p>数据项之间有着完全不同的结构，如果要手工参考这么多张表找出实际含义，有点费眼，所以推荐下面这个字节码反编译工具：javap</p>
+<h2 id="分析工具-javap"><a href="#分析工具-javap" class="headerlink" title="分析工具 javap"></a>分析工具 javap</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>javap 全称是 <code>Java class file disassembler</code>，/jdk/bin 目录下的字节码反编译工具，使用该工具，可以反编译出当前类对应的类名、版本号、常量池和代码区（code）等信息，反编译出来的信息更加清晰和直观。</p>
+<p>通过 <code>man javap</code> 命令就能在终端下初步了解 <code>javap</code> 的用法</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/man_javap.png" alt=""></p>
+<p>使用方式：<code>javap [ options ] class</code></p>
+<p>其中, 可能的选项 <code>[ options ]</code> 包括:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标志</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">-help  –help  -?</td>
+<td>输出此用法消息</td>
+</tr>
+<tr>
+<td style="text-align:left">-version</td>
+<td>版本信息</td>
+</tr>
+<tr>
+<td style="text-align:left">-v  -verbose</td>
+<td>输出附加信息</td>
+</tr>
+<tr>
+<td style="text-align:left">-l</td>
+<td>输出行号和本地变量表</td>
+</tr>
+<tr>
+<td style="text-align:left">-public</td>
+<td>仅显示公共类和成员</td>
+</tr>
+<tr>
+<td style="text-align:left">-protected</td>
+<td>显示受保护的/公共类和成员</td>
+</tr>
+<tr>
+<td style="text-align:left">-package</td>
+<td>显示程序包/受保护的/公共类和成员 (默认)</td>
+</tr>
+<tr>
+<td style="text-align:left">-p  -private</td>
+<td>显示所有类和成员</td>
+</tr>
+<tr>
+<td style="text-align:left">-c</td>
+<td>对代码进行反汇编</td>
+</tr>
+<tr>
+<td style="text-align:left">-s</td>
+<td>输出内部类型签名</td>
+</tr>
+<tr>
+<td style="text-align:left">-sysinfo</td>
+<td>显示正在处理的类的 系统信息 (路径, 大小, 日期, MD5 散列)</td>
+</tr>
+<tr>
+<td style="text-align:left">-constants</td>
+<td>显示最终常量</td>
+</tr>
+<tr>
+<td style="text-align:left">-classpath <path></path></td>
+<td>指定查找用户类文件的位置</td>
+</tr>
+<tr>
+<td style="text-align:left">-cp <path></path></td>
+<td>指定查找用户类文件的位置</td>
+</tr>
+<tr>
+<td style="text-align:left">-bootclasspath <path></path></td>
+<td>覆盖引导类文件的位置</td>
+</tr>
+</tbody>
+</table>
+<p>最后一个参数 <code>class</code>，是前面编译后的文件，输入时不需要带上 .class 后缀</p>
+<h3 id="查看反编译后的结果"><a href="#查看反编译后的结果" class="headerlink" title="查看反编译后的结果"></a>查看反编译后的结果</h3><p>拿开头编译出来的 <code>TestClass.class</code> 试验</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> javap -verbose TestClass</span></div><div class="line">Classfile /Users/jingqi/Deploy/Project/VSCode/TestClass.class</div><div class="line">  Last modified 2020-2-16; size 293 bytes</div><div class="line">  MD5 checksum 1b9eeadb7d1396ca4fa706e0b0bc7ac8</div><div class="line">  Compiled from "TestClass.java"</div><div class="line">public class cn.sevenyuan.TestClass</div><div class="line">  minor version: 0</div><div class="line">  major version: 52</div><div class="line">  flags: ACC_PUBLIC, ACC_SUPER</div><div class="line">Constant pool:</div><div class="line"><span class="meta">   #</span><span class="bash">1 = Methodref          <span class="comment">#4.#15         // java/lang/Object."&lt;init&gt;":()V</span></span></div><div class="line"><span class="meta">   #</span><span class="bash">2 = Fieldref           <span class="comment">#3.#16         // cn/sevenyuan/TestClass.number:I</span></span></div><div class="line"><span class="meta">   #</span><span class="bash">3 = Class              <span class="comment">#17            // cn/sevenyuan/TestClass</span></span></div><div class="line"><span class="meta">   #</span><span class="bash">4 = Class              <span class="comment">#18            // java/lang/Object</span></span></div><div class="line"><span class="meta">   #</span><span class="bash">5 = Utf8               number</span></div><div class="line"><span class="meta">   #</span><span class="bash">6 = Utf8               I</span></div><div class="line"><span class="meta">   #</span><span class="bash">7 = Utf8               &lt;init&gt;</span></div><div class="line"><span class="meta">   #</span><span class="bash">8 = Utf8               ()V</span></div><div class="line"><span class="meta">   #</span><span class="bash">9 = Utf8               Code</span></div><div class="line"><span class="meta">  #</span><span class="bash">10 = Utf8               LineNumberTable</span></div><div class="line"><span class="meta">  #</span><span class="bash">11 = Utf8               inc</span></div><div class="line"><span class="meta">  #</span><span class="bash">12 = Utf8               ()I</span></div><div class="line"><span class="meta">  #</span><span class="bash">13 = Utf8               SourceFile</span></div><div class="line"><span class="meta">  #</span><span class="bash">14 = Utf8               TestClass.java</span></div><div class="line"><span class="meta">  #</span><span class="bash">15 = NameAndType        <span class="comment">#7:#8          // "&lt;init&gt;":()V</span></span></div><div class="line"><span class="meta">  #</span><span class="bash">16 = NameAndType        <span class="comment">#5:#6          // number:I</span></span></div><div class="line"><span class="meta">  #</span><span class="bash">17 = Utf8               cn/sevenyuan/TestClass</span></div><div class="line"><span class="meta">  #</span><span class="bash">18 = Utf8               java/lang/Object</span></div><div class="line">&#123;</div><div class="line">  public cn.sevenyuan.TestClass();</div><div class="line">    descriptor: ()V</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=1, locals=1, args_size=1</div><div class="line">         0: aload_0</div><div class="line">         1: invokespecial #1                  // Method java/lang/Object."&lt;init&gt;":()V</div><div class="line">         4: return</div><div class="line">      LineNumberTable:</div><div class="line">        line 3: 0</div><div class="line"></div><div class="line">  public int inc();</div><div class="line">    descriptor: ()I</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=2, locals=1, args_size=1</div><div class="line">         0: aload_0                     // 0处的局部变量中的objectref被压入操作数堆栈，这里的是 this 对象</div><div class="line">         1: getfield      #2             // Field number:I，从操作数堆栈中弹出的引用类型为objectref，这里获取的是 number 对象引用</div><div class="line">         4: iconst_1                    // 将int常量 1 压入操作数堆栈</div><div class="line">         5: iadd                        // 弹出栈中的 number 值和 int 常量 1，进行加操作，并将结果压入栈</div><div class="line">         6: ireturn                     // 从方法返回int</div><div class="line">      LineNumberTable:</div><div class="line">        line 7: 0</div><div class="line">&#125;</div><div class="line">SourceFile: "TestClass.java"</div></pre></td></tr></table></figure>
+<p>在输出信息头部，能看到  <code>minor version</code>、 <code>major version</code> 和 <code>Constant pool</code> 等前面提到的信息，比根据字节码去查找一一对应看得更舒适。</p>
+<p>刚开始看代码去里的 aload_0 、iadd 和 iconst_1 等可能有些疑惑，反编译出来 <code>JVM</code> 指令集可以参考 <code>oracle</code> 官方文档：<a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html" target="_blank" rel="noopener">The Java Virtual Machine Instruction Set</a></p>
+<p>例如 aload_0 指令可以这样搜索查看：</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/javap_explaination.png" alt=""></p>
+<p>参考文档后，可以大致理解我们 <code>inc()</code> 方法在操作系统下底层的逻辑：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public int inc();</div><div class="line">    descriptor: ()I</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=2, locals=1, args_size=1</div><div class="line">         0: aload_0                          // 0处的局部变量中的objectref被压入操作数堆栈，这里的是 this 对象</div><div class="line">         1: getfield      #2                  // Field number:I，从操作数堆栈中弹出的引用类型为objectref，这里获取的是 number 对象引用</div><div class="line">         4: iconst_1                        // 将int常量 1 压入操作数堆栈</div><div class="line">         5: iadd                            // 弹出栈中的 number 值和 int 常量 1，进行加操作，并将结果压入栈</div><div class="line">         6: ireturn                         // 从方法返回int</div><div class="line">      LineNumberTable:</div><div class="line">        line 7: 0</div></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>常规开发中，使用的是 java 高级语言，可能没有多少关注到 jvm 底层执行逻辑，这次了解学习 class 字节码，直接查看十六位进制文件有点吃力，所以通过 <code>javap</code> 命令来查看反编译后的信息，学习 jvm 指令集。</p>
+<p>通过简单对比后，了解到简单的 inc() 方法，里面一行的 <code>return number + 1</code> 代码，经过反汇编之后，原来经历了</p>
+<ul>
+<li><strong>this 对象入栈</strong></li>
+<li><strong>number 对象引用入栈</strong></li>
+<li><strong>整型常量 1 入栈</strong></li>
+<li><strong>对象出栈，两者相加后，将结果压入栈</strong></li>
+<li><strong>最后弹出栈信息</strong></li>
+</ul>
+<p>机器只认识操作码，简单的数值加一经过反编译后，可以看到里面的局部变量表、常量池和操作数栈，机器后续一系列复杂操作都从中可以窥探，所以了解学习字节码格式，之后学习操作系统会有一定的帮助（或者说两者可以互补，操作系统知识对学习 jvm 也有帮助~）</p>
+<h2 id="资料参考"><a href="#资料参考" class="headerlink" title="资料参考"></a>资料参考</h2><ol>
+<li><a href="https://blog.csdn.net/zhangjg_blog/article/details/21486985" target="_blank" rel="noopener">深入理解Java Class文件格式（一）</a></li>
+<li><a href="https://www.jianshu.com/p/6a8997560b05" target="_blank" rel="noopener">通过javap命令分析java汇编指令</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/11/tool/2020-01-11-iterm2_useful_suggestion/" rel="next" title="收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个!">
+                <i class="fa fa-chevron-left"></i> 收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个!
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/21/java/2020-02-21-reread-jvm2/" rel="prev" title="重读 JVM - ParNew & CMS GC">
+                重读 JVM - ParNew & CMS GC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#class"><span class="nav-number">1.</span> <span class="nav-text">class</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入"><span class="nav-number">1.1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java-gt-class-javac"><span class="nav-number">1.2.</span> <span class="nav-text">.java -&gt; .class, javac</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#class-文件格式"><span class="nav-number">1.3.</span> <span class="nav-text">class 文件格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析工具-javap"><span class="nav-number">2.</span> <span class="nav-text">分析工具 javap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看反编译后的结果"><span class="nav-number">2.2.</span> <span class="nav-text">查看反编译后的结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资料参考"><span class="nav-number">4.</span> <span class="nav-text">资料参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

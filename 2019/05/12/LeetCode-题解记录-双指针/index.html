@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法 Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="刷题 - 双指针">
+<meta name="keywords" content="算法 Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode 题解记录 - 双指针">
+<meta property="og:url" content="http://yoursite.com/2019/05/12/LeetCode-题解记录-双指针/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="刷题 - 双指针">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/HopeValley_ZH-CN2208363231_1920x1080.jpg">
+<meta property="og:updated_time" content="2019-05-12T16:27:41.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LeetCode 题解记录 - 双指针">
+<meta name="twitter:description" content="刷题 - 双指针">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/HopeValley_ZH-CN2208363231_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/12/LeetCode-题解记录-双指针/"/>
+
+
+
+
+
+  <title>LeetCode 题解记录 - 双指针 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/12/LeetCode-题解记录-双指针/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">LeetCode 题解记录 - 双指针</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T17:47:02+08:00">
+                2019-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/HopeValley_ZH-CN2208363231_1920x1080.jpg" alt=""></p>
+<center>刷题 - 双指针</center>
+
+<a id="more"></a>
+<hr>
+<p>[TOC]</p>
+<hr>
+<h2 id="合并两个有序数组"><a href="#合并两个有序数组" class="headerlink" title="合并两个有序数组"></a>合并两个有序数组</h2><p><a href="https://leetcode-cn.com/problems/merge-sorted-array/" target="_blank" rel="noopener">88. 合并两个有序数组 简单</a></p>
+<p>题目描述:</p>
+<p>给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">输入:</div><div class="line">nums1 = [1,2,3,0,0,0], m = 3</div><div class="line">nums2 = [2,5,6],       n = 3</div><div class="line"></div><div class="line">输出: [1,2,2,3,5,6]</div></pre></td></tr></table></figure>
+<p>解题思路：</p>
+<p>跟堆排序中的合并两个有序数组的方法类似。</p>
+<p>从尾部进行遍历，比较两个数组的最大值，放入到第一个数组中的末尾。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] nums1, <span class="keyword">int</span> m, <span class="keyword">int</span>[] nums2, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (nums1 == <span class="keyword">null</span> || nums2 == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> p1 = m - <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> p2 = n - <span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span> (p1 &gt;= <span class="number">0</span> &amp;&amp; p2 &gt;= <span class="number">0</span>) &#123;</div><div class="line">        nums1[p1 + p2 + <span class="number">1</span>] = nums1[p1] &gt; nums2[p2] ? nums1[p1--] : nums2[p2--];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">while</span> (p2 &gt;= <span class="number">0</span>) &#123;</div><div class="line">        nums1[p2] = nums2[p2];</div><div class="line">        p2--;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="移除元素"><a href="#移除元素" class="headerlink" title="移除元素"></a>移除元素</h2><p><a href="https://leetcode-cn.com/problems/remove-element/" target="_blank" rel="noopener">27. 移除元素 简单</a></p>
+<p>题目描述:<br>给定一个数组 nums 和一个值 val，你需要原地移除所有数值等于 val 的元素，返回移除后数组的新长度。</p>
+<p>不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。</p>
+<p>元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">给定 nums = [3,2,2,3], val = 3,</div><div class="line"></div><div class="line">函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。</div><div class="line"></div><div class="line">你不需要考虑数组中超出新长度后面的元素。</div></pre></td></tr></table></figure>
+<p>解题思路:<br>使用双指针, i 是慢指针, j 是快指针, 原地置换元素, 最后返回新数组的长度.(由于 nums 数组是传参引用, 所以在方法内部修改后, 外部调用时是修改后的数组内容)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeElement</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> val)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; nums.length; j ++) &#123;</div><div class="line">        <span class="keyword">if</span> (nums[j] != val) &#123;</div><div class="line">            nums[i++] = nums[j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> i;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="无重复字符的最长子串"><a href="#无重复字符的最长子串" class="headerlink" title="无重复字符的最长子串"></a>无重复字符的最长子串</h2><p><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/" target="_blank" rel="noopener">3. 无重复字符的最长子串 中等</a></p>
+<p>题目描述：给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">输入: &quot;abcabcbb&quot;</div><div class="line">输出: 3 </div><div class="line">解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。</div></pre></td></tr></table></figure>
+<p>解答思路：<br>使用滑动窗口，双指针进行左闭右开[i, j)，每次遍历刷新下标，保证set中不重复，取最长的ans，</p>
+<p>代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> n = s.length();</div><div class="line">    Set&lt;Character&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</div><div class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>, i = <span class="number">0</span>, j = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (i &lt; n &amp;&amp; j &lt; n) &#123;</div><div class="line">        <span class="keyword">if</span> (!set.contains(s.charAt(j)))&#123;</div><div class="line">            set.add(s.charAt(j++));</div><div class="line">            ans = Math.max(ans, j - i);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// 有重复的情况下，去掉最左边</span></div><div class="line">            set.remove(s.charAt(i++));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>进阶版</strong></p>
+<p>解答思路：<br>遇到重复的字符，将滑动窗口的左边直接滑到第一个重复的字符下标。如果 s[j] 在 [i, j) 范围内有与 j’ 相同的字符, 可以直接跳过 [i, j’]范围内的所有元素, 将 i 下标置为 j’ + 1. 使用 HashMap 来存储字符对应的下标.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</div><div class="line">    Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">    <span class="keyword">int</span> length = s.length(), ans = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; j &lt; length; j++) &#123;</div><div class="line">        <span class="keyword">char</span> temp = s.charAt(j);</div><div class="line">        <span class="keyword">if</span> (map.containsKey(temp)) &#123;</div><div class="line">            i = Math.max(map.get(temp), i);</div><div class="line">        &#125;</div><div class="line">        ans = Math.max(ans, j - i + <span class="number">1</span>);</div><div class="line">        map.put(temp, j + <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="串联所有单词的子串"><a href="#串联所有单词的子串" class="headerlink" title="串联所有单词的子串"></a>串联所有单词的子串</h2><p><a href="https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/" target="_blank" rel="noopener">30. 串联所有单词的子串 困难</a></p>
+<p>题目描述:<br>给定一个字符串 s 和一些长度相同的单词 words。找出 s 中恰好可以由 words 中所有单词串联形成的子串的起始位置。</p>
+<p>注意子串要与 words 中的单词完全匹配，中间不能有其他字符，但不需要考虑 words 中单词串联的顺序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">输入：</div><div class="line">  s = &quot;barfoothefoobarman&quot;,</div><div class="line">  words = [&quot;foo&quot;,&quot;bar&quot;]</div><div class="line">输出：[0,9]</div><div class="line">解释：</div><div class="line">从索引 0 和 9 开始的子串分别是 &quot;barfoor&quot; 和 &quot;foobar&quot; 。</div><div class="line">输出的顺序不重要, [9,0] 也是有效答案。</div></pre></td></tr></table></figure>
+<p>解题思路:</p>
+<p>使用两个 HashMap 保存出现的字符和次数</p>
+<p>遍历给定字符(直到总长度 totalLen减去单个待查找字符的长度wordLen), 在内部循环中, 以 wordLen 作为长度切分给定的字符。如果连续子字符中包含查询字符，继续找；如果不包含查询字符，调成内层循环，从下一个字符开始查询。最后内层循环结束后，判断查找次数是否一致，如果是，保存起始下标到结果集中。</p>
+<p>代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">findSubstring</span><span class="params">(String s, String[] words)</span> </span>&#123;</div><div class="line">    List&lt;Integer&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="keyword">int</span> wordSize = words.length;</div><div class="line">    <span class="keyword">if</span> (wordSize == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// words 数组中每个字符的长度都一致, 取第一个</span></div><div class="line">    <span class="keyword">int</span> wordLength = words[<span class="number">0</span>].length();</div><div class="line">    <span class="comment">// 字符数组有可能有重复的, 使用 allWordMap 存放每个 word 出现的次数</span></div><div class="line">    HashMap&lt;String, Integer&gt; allWordMap = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">    <span class="keyword">for</span> (String word : words) &#123;</div><div class="line">        allWordMap.put(word, allWordMap.getOrDefault(word, <span class="number">0</span>) + <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length() - wordSize * wordLength + <span class="number">1</span>; i++) &#123;</div><div class="line">        HashMap&lt;String, Integer&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        <span class="comment">// 单趟循环中, 成功匹配的次数</span></div><div class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span> (num &lt; wordSize) &#123;</div><div class="line">            <span class="comment">// 根据查找字符的长度进行截断</span></div><div class="line">            String word = s.substring(i + num * wordLength, i + (num + <span class="number">1</span>) * wordLength);</div><div class="line">            <span class="keyword">if</span> (allWordMap.containsKey(word)) &#123;</div><div class="line">                hashMap.put(word, hashMap.getOrDefault(word, <span class="number">0</span>) + <span class="number">1</span>);</div><div class="line">                <span class="comment">// 还有可能超过 words 中原来的数量</span></div><div class="line">                <span class="keyword">if</span> (hashMap.get(word) &gt; allWordMap.get(word)) &#123;</div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 如果没有查询到, 跳过这次循环, 查找下一个字符</span></div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            num++;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (num == wordSize) &#123;</div><div class="line">            result.add(i);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="旋转链表"><a href="#旋转链表" class="headerlink" title="旋转链表"></a>旋转链表</h2><p><a href="https://leetcode-cn.com/problems/rotate-list/" target="_blank" rel="noopener">61. 旋转链表 中等</a></p>
+<p>题目描述：</p>
+<p>给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, k = 2</div><div class="line">输出: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</div><div class="line">解释:</div><div class="line">向右旋转 1 步: 5-&gt;1-&gt;2-&gt;3-&gt;4-&gt;NULL</div><div class="line">向右旋转 2 步: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</div></pre></td></tr></table></figure>
+<p>解题思路</p>
+<p>①：遍历链表，获得链表长度和最后一个节点的地址。</p>
+<p>②：计算得到需要移动的次数（k % length）</p>
+<p>③：移动，以示例作为例子，k = 2，表示右移两次，可以认为是做了以下三步操作：</p>
+<ul>
+<li>末尾节点指向了头部节点：5 -&gt; 1</li>
+<li>第三个节点变成了头部节点：head = 3</li>
+<li>第二个节点变成了末尾节点：2.next -&gt; null</li>
+</ul>
+<p>代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">rotateRight</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (head == <span class="keyword">null</span> || k == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> head;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> length = <span class="number">1</span>;</div><div class="line">    ListNode tempNode = head;</div><div class="line">    ListNode endNode = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">while</span> (tempNode.next != <span class="keyword">null</span>) &#123;</div><div class="line">        length++;</div><div class="line">        tempNode = tempNode.next;</div><div class="line">    &#125;</div><div class="line">    endNode = tempNode;</div><div class="line">    <span class="comment">// 得到需要移动的次数</span></div><div class="line">    <span class="keyword">int</span> moveNum = k % length;</div><div class="line">    <span class="keyword">if</span> (moveNum == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> head;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 找到待替换的下标</span></div><div class="line">    <span class="keyword">int</span> findIndex = <span class="number">1</span>, index = length - moveNum + <span class="number">1</span>;</div><div class="line">    tempNode = head;</div><div class="line">    <span class="keyword">while</span> (tempNode.next != <span class="keyword">null</span>) &#123;</div><div class="line">        findIndex++;</div><div class="line">        <span class="keyword">if</span> (findIndex == index) &#123;</div><div class="line">            endNode.next = head;</div><div class="line">            head = tempNode.next;</div><div class="line">            tempNode.next = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        tempNode = tempNode.next;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> head;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="最小覆盖子串"><a href="#最小覆盖子串" class="headerlink" title="最小覆盖子串"></a>最小覆盖子串</h2><p><a href="https://leetcode-cn.com/problems/minimum-window-substring/" target="_blank" rel="noopener">76. 最小覆盖子串 困难</a></p>
+<p>题目描述：(原题描述不完整，还有很多隐含条件，在评论区找出来的）</p>
+<p>给定一个字符串 S 和一个字符串 T，请在 S 中找出包含 T 所有字母的最小子串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">示例：</div><div class="line"></div><div class="line">输入: S = &quot;ADOBECODEBANC&quot;, T = &quot;ABC&quot;</div><div class="line">输出: &quot;BANC&quot;</div><div class="line">说明：</div><div class="line"></div><div class="line">如果 S 中不存这样的子串，则返回空字符串 &quot;&quot;。</div><div class="line">如果 S 中存在这样的子串，我们保证它是唯一的答案。</div></pre></td></tr></table></figure>
+<p><strong>隐含条件:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">①</div><div class="line">输入:</div><div class="line">s=&apos;a&apos;</div><div class="line">t=&apos;aa&apos;</div><div class="line">输出：</div><div class="line">&apos;&apos;</div><div class="line">②</div><div class="line">参数的全集是大写字母和小写字母</div></pre></td></tr></table></figure></p>
+<p>解题思路，参考<a href="https://blog.csdn.net/qq_37206105/article/details/88653767" target="_blank" rel="noopener">这篇文章</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">1. 注意到题目的关键：&quot;所有字母的最小子串&quot;，也就是说两个串都只能是字母。</div><div class="line">2. 于是，可以开辟一个大小为64的数组，来存放数组中字母的频率(Frequency)。准确的说，</div><div class="line">   通过字母的ASCII码作为数组的索引，开辟空间的大小为26+6+26=58：26个大写字母，26个小写字母，</div><div class="line">   还有中间的6个非字母  A~Z[65~90]  非字母[91~96]  a~z[97~122]</div><div class="line">3. 滑动窗口的使用：分三种情况来移动窗口：（这里令当前窗口的左右边界分别为l，r，窗口的大小为winSize=r-l+1）</div><div class="line">   1) 当winSize &lt; t.size()  r++;  也就是窗口右边界向右移动</div><div class="line">   2) 当winSize == t.size() :</div><div class="line">	   2.1) 当窗口中的字符已经符合要求了，直接返回return，已经找到了</div><div class="line">	   2.2) 否则r++，窗口右边界向右移动</div><div class="line">   3) 当winSize &gt; t.size()</div><div class="line">	   2.1) 当窗口中的字符已经符合要求了，l++，窗口左边界向右移动</div><div class="line">	   2.2) 否则r++，窗口右边界向右移动</div><div class="line"></div><div class="line">4. 上面是滑动窗口的使用思路，具体实现上有一定的不同，下面是需要考虑到的要点：</div><div class="line">   1) 啥叫作窗口中的字符已经符合要求了？</div><div class="line">   1) 窗口滑动时的操作是关键</div><div class="line">   2) 要考虑到数组越界的问题</div></pre></td></tr></table></figure>
+<p>代码实现(解答答案中耗时最少的回答）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">minWindow</span><span class="params">(String s, String t)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> lenS = s.length(), lenT = t.length();</div><div class="line">    <span class="keyword">if</span>(lenS &lt; lenT)&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span>[] tCount = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">256</span>];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;lenT;i++)&#123;</div><div class="line">        tCount[t.charAt(i)] ++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span>[] sCount = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">256</span>];</div><div class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = <span class="number">0</span>;</div><div class="line">    <span class="comment">//保存窗口中等于字符串t的字符的数量，当count等于lenT时，说明找到一个子串</span></div><div class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> minLen = lenS + <span class="number">1</span>, start = -<span class="number">1</span>;</div><div class="line">    <span class="keyword">while</span>(left &lt; lenS)&#123;</div><div class="line">        <span class="keyword">if</span>(right &lt; lenS &amp;&amp; count &lt; lenT)&#123;</div><div class="line">            <span class="comment">//right右滑一格</span></div><div class="line">            <span class="keyword">char</span> charRight = s.charAt(right);</div><div class="line">            sCount[charRight] ++;</div><div class="line">            <span class="keyword">if</span>(sCount[charRight] &lt;= tCount[charRight])&#123;</div><div class="line">                count ++;</div><div class="line">            &#125;</div><div class="line">            right ++;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">char</span> charLeft = s.charAt(left);</div><div class="line">            <span class="comment">//更新最小字串的长度和起始索引</span></div><div class="line">            <span class="keyword">if</span>(count == lenT &amp;&amp; right - left &lt; minLen)&#123;</div><div class="line">                minLen = right - left;</div><div class="line">                start = left;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//left右滑一格</span></div><div class="line">            sCount[charLeft] --;</div><div class="line">            <span class="comment">// 这里只会在 sCount 中，被去掉要查询的字符，才会减少窗口中的总数；</span></div><div class="line">            <span class="comment">// 如果被去掉是其它无关字符，只需要 left 移动，总量 count 不需要改变</span></div><div class="line">            <span class="keyword">if</span>(sCount[charLeft] &lt; tCount[charLeft])&#123;</div><div class="line">                count --;</div><div class="line">            &#125;</div><div class="line">            left ++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span>(start != -<span class="number">1</span>)&#123;</div><div class="line">        <span class="keyword">return</span> s.substring(start, start + minLen);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="string">""</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="数组中的-k-diff-数对"><a href="#数组中的-k-diff-数对" class="headerlink" title="数组中的 k-diff 数对"></a>数组中的 k-diff 数对</h2><p><a href="https://leetcode-cn.com/problems/k-diff-pairs-in-an-array/" target="_blank" rel="noopener">532. 数组中的K-diff数对 简单</a></p>
+<p>题目描述：<br>给定一个整数数组和一个整数 k, 你需要在数组里找到不同的 k-diff 数对。这里将 k-diff 数对定义为一个整数对 (i, j), 其中 i 和 j 都是数组中的数字，且两数之差的绝对值是 k.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">示例 1:</div><div class="line"></div><div class="line">输入: [3, 1, 4, 1, 5], k = 2</div><div class="line">输出: 2</div><div class="line">解释: 数组中有两个 2-diff 数对, (1, 3) 和 (3, 5)。</div><div class="line">尽管数组中有两个1，但我们只应返回不同的数对的数量。</div></pre></td></tr></table></figure>
+<p>解题思路：</p>
+<p>使用 map 保存给定的数组，每个数字出现的次数。根据 k 值判断两个数字间的差值是否符合条件。</p>
+<p>代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findPairs</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</div><div class="line">    HashMap&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> num : nums) &#123;</div><div class="line">        map.put(num, map.getOrDefault(num, <span class="number">0</span>) + <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (k == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> key : map.keySet()) &#123;</div><div class="line">            <span class="keyword">if</span> (map.get(key) &gt; <span class="number">1</span>) &#123;</div><div class="line">                ans++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (k &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> key : map.keySet()) &#123;</div><div class="line">            <span class="keyword">if</span> (map.containsKey(key + k)) &#123;</div><div class="line">                ans++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> key : map.keySet()) &#123;</div><div class="line">            <span class="keyword">if</span> (key &gt;= <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (map.containsKey(key - k)) &#123;</div><div class="line">                ans++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>进阶版</strong></p>
+<p>将数组排好序之后进行比较：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findPairs</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (k &lt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">    Arrays.sort(nums);</div><div class="line">    <span class="keyword">int</span> length = nums.length;</div><div class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>, i = <span class="number">0</span>, j = <span class="number">1</span>;</div><div class="line">    <span class="keyword">if</span> (k == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">while</span> (j &lt; length) &#123;</div><div class="line">            <span class="keyword">if</span> (nums[j] == nums[i]) &#123;</div><div class="line">                ans++;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">int</span> a = i++;</div><div class="line">            <span class="keyword">while</span> (nums[i] == nums[a]) &#123;</div><div class="line">                i++;</div><div class="line">                <span class="keyword">if</span> (i == length) &#123;</div><div class="line">                    <span class="keyword">return</span> ans;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            j = i + <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">while</span> (j &lt; length) &#123;</div><div class="line">            <span class="keyword">while</span> (nums[j] - nums[i] &lt; k) &#123;</div><div class="line">                j++;</div><div class="line">                <span class="keyword">if</span> (j == length) &#123;</div><div class="line">                    <span class="keyword">return</span> ans;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (nums[j] - nums[i] == k) &#123;</div><div class="line">                ans++;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">int</span> a = i++;</div><div class="line">            <span class="keyword">while</span> (nums[i] == nums[a]) &#123;</div><div class="line">                i++;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="字符串的排列"><a href="#字符串的排列" class="headerlink" title="字符串的排列"></a>字符串的排列</h2><p><a href="https://leetcode-cn.com/problems/permutation-in-string/" target="_blank" rel="noopener">567. 字符串的排列 中等</a></p>
+<p>题目描述：</p>
+<p>给定两个字符串 s1 和 s2，写一个函数来判断 s2 是否包含 s1 的排列。</p>
+<p>换句话说，第一个字符串的排列之一是第二个字符串的子串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">输入: s1 = &quot;ab&quot; s2 = &quot;eidbaooo&quot;</div><div class="line">输出: True</div><div class="line">解释: s2 包含 s1 的排列之一 (&quot;ba&quot;).</div><div class="line"></div><div class="line">注意：</div><div class="line"></div><div class="line">输入的字符串只包含小写字母</div><div class="line">两个字符串的长度都在 [1, 10,000] 之间</div></pre></td></tr></table></figure>
+<p>解题思路：</p>
+<p>由于只包含小写字母，可以使用数组保存待匹配的字符出现的次数。然后通过两个指针的移动，匹配到 s1 长度的 s2 子串。</p>
+<p>代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">checkInclusion</span><span class="params">(String s1, String s2)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span>[] count = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</div><div class="line">    <span class="keyword">char</span>[] pattern = s1.toCharArray();</div><div class="line">    <span class="keyword">char</span>[] str = s2.toCharArray();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pattern.length; i++) &#123;</div><div class="line">        count[pattern[i] - <span class="string">'a'</span>]++;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> left = <span class="number">0</span>, right = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span> (right &lt; str.length)&#123;</div><div class="line">        <span class="keyword">if</span> (count[str[right] - <span class="string">'a'</span>] != <span class="number">0</span>) &#123;</div><div class="line">            count[str[right] - <span class="string">'a'</span>]--;</div><div class="line">            right++;</div><div class="line">            <span class="keyword">if</span> (right - left == pattern.length) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (left == right) &#123;</div><div class="line">            left++;</div><div class="line">            right++;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            count[str[left] - <span class="string">'a'</span>]++;</div><div class="line">            left++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h2><p>1、<a href="https://blog.csdn.net/qq_37206105/article/details/88653767" target="_blank" rel="noopener">数组—滑动窗口/字母哈希表简单实现 实践leetcode438, leetcode76</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法-Java/" rel="tag"># 算法 Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/25/linux/AWK命令和SED命令/" rel="next" title="AWK命令和SED命令">
+                <i class="fa fa-chevron-left"></i> AWK命令和SED命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/19/LeetCode-题解记录-二分查找/" rel="prev" title="LeetCode 题解记录 - 二分查找">
+                LeetCode 题解记录 - 二分查找 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#合并两个有序数组"><span class="nav-number">1.</span> <span class="nav-text">合并两个有序数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除元素"><span class="nav-number">2.</span> <span class="nav-text">移除元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无重复字符的最长子串"><span class="nav-number">3.</span> <span class="nav-text">无重复字符的最长子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#串联所有单词的子串"><span class="nav-number">4.</span> <span class="nav-text">串联所有单词的子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转链表"><span class="nav-number">5.</span> <span class="nav-text">旋转链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最小覆盖子串"><span class="nav-number">6.</span> <span class="nav-text">最小覆盖子串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组中的-k-diff-数对"><span class="nav-number">7.</span> <span class="nav-text">数组中的 k-diff 数对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串的排列"><span class="nav-number">8.</span> <span class="nav-text">字符串的排列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料："><span class="nav-number">9.</span> <span class="nav-text">参考资料：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

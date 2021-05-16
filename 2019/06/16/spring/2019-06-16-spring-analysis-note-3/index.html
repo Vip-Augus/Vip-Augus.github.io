@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="看了这篇，自定义 Spring 标签不是梦~">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 源码学习(三)自定义标签">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/spring/2019-06-16-spring-analysis-note-3/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="看了这篇，自定义 Spring 标签不是梦~">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/NFLDfog_ZH-CN4846953507_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/myname_default_define.png">
+<meta property="og:updated_time" content="2019-07-21T03:24:34.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring 源码学习(三)自定义标签">
+<meta name="twitter:description" content="看了这篇，自定义 Spring 标签不是梦~">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/NFLDfog_ZH-CN4846953507_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/16/spring/2019-06-16-spring-analysis-note-3/"/>
+
+
+
+
+
+  <title>Spring 源码学习(三)自定义标签 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/16/spring/2019-06-16-spring-analysis-note-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring 源码学习(三)自定义标签</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-16T16:58:00+08:00">
+                2019-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/NFLDfog_ZH-CN4846953507_1920x1080.jpg" alt=""></p>
+<center>看了这篇，自定义 Spring 标签不是梦~</center>
+
+<a id="more"></a>
+<hr>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank" rel="noopener">DocToc</a></em></p>
+<ul>
+<li><a href="#%E5%AE%98%E6%96%B9%E4%BE%8B%E5%AD%90">官方例子</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E4%BD%BF%E7%94%A8">自定义标签使用</a><ul>
+<li><a href="#%E5%AE%9A%E4%B9%89%E6%99%AE%E9%80%9A%E7%9A%84-pojo-%E7%BB%84%E4%BB%B6">定义普通的 POJO 组件</a></li>
+<li><a href="#%E5%AE%9A%E4%B9%89-xsd-%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6">定义 <code>XSD</code> 描述文件</a></li>
+<li><a href="#%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E8%A7%A3%E6%9E%90%E5%99%A8">定义组件解析器</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E5%A4%84%E7%90%86%E7%B1%BB%E7%9A%84%E6%B3%A8%E5%86%8C%E5%99%A8">创建处理类的注册器</a></li>
+<li><a href="#%E7%BC%96%E5%86%99-springhanlders-%E5%92%8C-springschemas-%E6%96%87%E4%BB%B6">编写 <code>spring.hanlders</code> 和 <code>spring.schemas</code> 文件</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-demo">使用 Demo</a><ul>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81">测试代码</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B0%8F%E7%BB%93">小结</a></li>
+</ul>
+</li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%87%E7%AD%BE%E8%A7%A3%E6%9E%90">自定义标签解析</a><ul>
+<li><a href="#%E2%91%A0-%E8%8E%B7%E5%8F%96%E6%A0%87%E7%AD%BE%E7%9A%84%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4">① 获取标签的命名空间</a></li>
+<li><a href="#%E2%91%A1-%E6%A0%B9%E6%8D%AE%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E6%89%BE%E5%88%B0%E5%AF%B9%E5%BA%94%E7%9A%84-namespacehandler">② 根据命名空间找到对应的 NamespaceHandler</a></li>
+<li><a href="#%E2%91%A2-%E8%B0%83%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84-namespacehandler-%E8%BF%9B%E8%A1%8C%E8%A7%A3%E6%9E%90">③ 调用自定义的 NamespaceHandler 进行解析</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p>又来填坑啦，上一篇讲完默认标签的解析，这篇笔记记录一下自定义标签的解析吧。</p>
+<p>我们知道，<code>Spring</code> 源码的核心模块是 <code>Spring-core</code> 和 <code>Spring-beans</code>，在此基础上衍生出其他模块，例如 <code>context</code>、 <code>cache</code>、 <code>tx</code> 等模块，都是根据这两个基础模块进行扩展的。</p>
+<p>聪明如你，应该想到我们代码中常用的缓存注解 <code>@Cacheable</code>、事务注解 <code>@Transaction</code>，还有阿里巴巴的 <code>RPC</code> 中间件 <code>Dubbo</code>，在配置文件中通过 <code>&lt;dubbo:service/&gt;</code> 或者 <code>&lt;dubbo:reference/&gt;</code> 进行服务注册和订阅，这些都都属于 <code>Spring</code> 的自定义标签的实现，通过自定义标签可以实现更加强大的功能！</p>
+<p>作为一个有追求的程序员，当然不能满足于框架自带默认的标签，为了扩展性和配置化要求，这时候就需要学习自定义标签和使用自定义标签~</p>
+<hr>
+<h2 id="官方例子"><a href="#官方例子" class="headerlink" title="官方例子"></a>官方例子</h2><p>先来看一张源码图片（红框框圈着是重点哟）</p>
+<p><img src="http://img.sevenyuan.cn/myname_default_define.png" alt="myname_default_define"></p>
+<p>刚才说了缓存和事务，那就拿这两个举例，还有一个标签 <code>&lt;myname:&gt;</code>（这个我也不太清楚，网上查的资料也不多，所以按照我的理解大家跟说下）</p>
+<p>首先我们看到，<code>&lt;tx&gt;</code> <code>&lt;cache&gt;</code> <code>&lt;mvc&gt;</code> 和 <code>&lt;myname&gt;</code> 都是自定义标签，左一是配置文件，进行 <code>bean</code> 的定义，顶部的 <code>xmlns</code> 是命名空间，表示标签所属的定义文件，像事务、缓存、<code>MVC</code> 的命名空间都是固定的。</p>
+<p><strong>而 <code>myname</code> 相当于万金油，既可以定义为事务，又可以定义为缓存，只要我们在命名空间中进行相应的定义就能正确的识别。这个就是我们待会要使用到的自定义标签，通过命名空间定位到我们想要的处理逻辑。</strong></p>
+<p>中间的是缓存定义的 <code>xsd</code> 文件，通过 <code>&lt;xsd:element name=&quot;annotation-driven&quot;&gt;</code> 定义元素，<code>&lt;xsd:complexType&gt;</code> 区间内定义属性列表，<code>&lt;xsd:attribute&gt;</code> 定义单个属性，详细分析可以看下注释~</p>
+<p>右边的是事务定义的 <code>xsd</code> 文件，大体内容的跟中间一样，虽然元素名称 <code>&lt;annotation-driven&gt;</code> 有相同的，但是下面的属性定义是有所区别的。</p>
+<p>所以我们对自定义注解有个大概的了解，<code>xsd</code> 描述文件是个其中一个关键，在配置文件顶部的命名空间是标签进行解析时，进行定位的配置，当然还有处理器，下面使用时进行介绍。</p>
+<p><strong>不知道理解的对不对，如果有误的话请大佬们指出，我会进行修改的！</strong></p>
+<hr>
+<h2 id="自定义标签使用"><a href="#自定义标签使用" class="headerlink" title="自定义标签使用"></a>自定义标签使用</h2><p><code>Spring</code> 提供了可扩展的 <code>Schema</code> 的支持，扩展 <code>Spring</code> 自定义标签配置需要以下几个步骤：</p>
+<ul>
+<li>创建一个需要扩展的组件</li>
+<li>定义一个 <code>XSD</code> 描述文件</li>
+<li>创建一个文件，实现 <code>BeanDefinitionParse</code> 接口，用来解析 <code>XSD</code> 文件中的定义和组件定义。</li>
+<li>创建一个 <code>Handler</code> 文件，扩展自 <code>NamespaceHandlerSupport</code>，将组件注册到 <code>Spring</code> 容器</li>
+<li>编写 <code>Spring.handlers</code> 和 <code>Spring.schemas</code> 文件</li>
+</ul>
+<p>刚开始看到这些流程时，我还是有点慌的，毕竟从一个使用默认标签的萌新小白，突然要我自己定义，感觉到很新鲜，所以请各位跟着下面的流程一起来看吧~</p>
+<hr>
+<h3 id="定义普通的-POJO-组件"><a href="#定义普通的-POJO-组件" class="headerlink" title="定义普通的 POJO 组件"></a>定义普通的 POJO 组件</h3><p>这个没啥好说的，就是一个普通的类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> Integer productId;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> String unit;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> String name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="定义-XSD-描述文件"><a href="#定义-XSD-描述文件" class="headerlink" title="定义 XSD 描述文件"></a>定义 <code>XSD</code> 描述文件</h3><blockquote>
+<p>custom-product.xsd</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">xsd:schema</span> <span class="attr">targetNamespace</span>=<span class="string">"http://vip-augus.github.io/schema/product"</span></span></div><div class="line"><span class="tag">			<span class="attr">xmlns:xsd</span>=<span class="string">"http://www.w3.org/2001/XMLSchema"</span></span></div><div class="line"><span class="tag">			<span class="attr">elementFormDefault</span>=<span class="string">"qualified"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 注释 3.4 自定义元素  --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">xsd:element</span> <span class="attr">name</span>=<span class="string">"product"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">xsd:complexType</span>&gt;</span></div><div class="line">            <span class="comment">&lt;!-- 这个是类注册时的名字，组件中请不要占用该字段~ --&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">xsd:attribute</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">type</span>=<span class="string">"xsd:string"</span>/&gt;</span></div><div class="line">			<span class="comment">&lt;!-- 属性定义列表，名字和类型 --&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">xsd:attribute</span> <span class="attr">name</span>=<span class="string">"productId"</span> <span class="attr">type</span>=<span class="string">"xsd:integer"</span>/&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">xsd:attribute</span> <span class="attr">name</span>=<span class="string">"unit"</span> <span class="attr">type</span>=<span class="string">"xsd:string"</span>/&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">xsd:attribute</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"xsd:string"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">xsd:complexType</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">xsd:element</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">xsd:schema</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>我在上面的描述文件中，定义了一个新的 <code>targetNamespace</code>，同时定义了一个 叫 <code>product</code> 的新元素，并且将组件中的属性都列在 <code>&lt;xsd:attribute&gt;</code> 中。<code>XSD</code> 文件是 <code>XML</code> <code>DTD</code> 的替代者，具体就不多深入，感兴趣的同学可以继续深入了解。</p>
+<hr>
+<h3 id="定义组件解析器"><a href="#定义组件解析器" class="headerlink" title="定义组件解析器"></a>定义组件解析器</h3><blockquote>
+<p>base.label.custom.ProductBeanDefinitionParser</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductBeanDefinitionParser</span> <span class="keyword">extends</span> <span class="title">AbstractSingleBeanDefinitionParser</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> Class <span class="title">getBeanClass</span><span class="params">(Element element)</span> </span>&#123;</div><div class="line">		<span class="comment">// 返回对应的类型</span></div><div class="line">		<span class="keyword">return</span> Product.class;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 从 element 中解析并提取对应的元素</span></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doParse</span><span class="params">(Element element, BeanDefinitionBuilder builder)</span> </span>&#123;</div><div class="line"></div><div class="line">		String productId = element.getAttribute(<span class="string">"productId"</span>);</div><div class="line">		String productName = element.getAttribute(<span class="string">"name"</span>);</div><div class="line">		String productUnit = element.getAttribute(<span class="string">"unit"</span>);</div><div class="line">		<span class="comment">// 将提取到的数据放入 BeanDefinitionBuilder 中，等到完成所有 bean 的解析之后统一注册到 beanFactory 中</span></div><div class="line">		<span class="keyword">if</span> (productId != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="comment">// element.getAttribute("") 方法取出来的都是 string 类型，使用时记得手动转换</span></div><div class="line">			builder.addPropertyValue(<span class="string">"productId"</span>, Integer.valueOf(productId));</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (StringUtils.hasText(productName)) &#123;</div><div class="line">			builder.addPropertyValue(<span class="string">"name"</span>, productName);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (StringUtils.hasText(productUnit)) &#123;</div><div class="line">			builder.addPropertyValue(<span class="string">"unit"</span>, productUnit);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关键点在于，我们的解析器是继承于 <code>AbstractSingleBeanDefinitionParser</code>，重载了两个方法，详细用途请看注释~</p>
+<hr>
+<h3 id="创建处理类的注册器"><a href="#创建处理类的注册器" class="headerlink" title="创建处理类的注册器"></a>创建处理类的注册器</h3><blockquote>
+<p>base.label.custom.ProductBeanHandler</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductBeanHandler</span> <span class="keyword">extends</span> <span class="title">NamespaceHandlerSupport</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="comment">// 将组件解析器进行注册到 `Spring` 容器</span></div><div class="line">		registerBeanDefinitionParser(<span class="string">"product"</span>, <span class="keyword">new</span> ProductBeanDefinitionParser());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个类也比较简单，关键是继承了 <code>NamespaceHandlerSupport</code>，对他进行了扩展，在该类初始化时将组件解析器进行注册到 <code>Spring</code> 容器中。</p>
+<hr>
+<h3 id="编写-spring-hanlders-和-spring-schemas-文件"><a href="#编写-spring-hanlders-和-spring-schemas-文件" class="headerlink" title="编写 spring.hanlders 和 spring.schemas 文件"></a>编写 <code>spring.hanlders</code> 和 <code>spring.schemas</code> 文件</h3><p>我将文件位置放在 <code>resources</code> -&gt; <code>META-INF</code> 目录下：</p>
+<blockquote>
+<p>spring.handlers<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http\://vip-augus.github.io/schema/product=base.label.custom.ProductBeanHandler</div></pre></td></tr></table></figure></p>
+<p>spring.schemas<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http\://vip-augus.github.io/schema/product.xsd=custom/custom-product.xsd</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>到了这一步，自定义的配置就结束了。下面是如何使用</p>
+<hr>
+<h3 id="使用-Demo"><a href="#使用-Demo" class="headerlink" title="使用 Demo"></a>使用 Demo</h3><h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="comment">&lt;!-- 注意 schema 位置，最后两行是我新增的自定义配置  --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line"><span class="tag">	   <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line"><span class="tag">	   <span class="attr">xmlns:myname</span>=<span class="string">"http://vip-augus.github.io/schema/product"</span></span></div><div class="line"><span class="tag">	   <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></div><div class="line"><span class="tag"><span class="string">	   http://vip-augus.github.io/schema/product</span></span></div><div class="line"><span class="tag"><span class="string">	   http://vip-augus.github.io/schema/product.xsd"</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="comment">&lt;!-- 自定义标签使用 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">myname:product</span> <span class="attr">id</span>=<span class="string">"product"</span> <span class="attr">productId</span>=<span class="string">"1"</span> <span class="attr">name</span>=<span class="string">"Apple"</span> <span class="attr">unit</span>=<span class="string">"台"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductBootstrap</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"custom/custom-label.xml"</span>);</div><div class="line">		Product product = (Product) context.getBean(<span class="string">"product"</span>);</div><div class="line">		<span class="comment">// 输出 Product&#123;, productId ='1', unit='台', name='Apple'&#125;</span></div><div class="line">		System.out.println(product.toString());</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>现在来回顾一下，<code>Spring</code> 遇到自定义标签是，加载自定义的大致流程：</p>
+<ul>
+<li><strong>定位 <code>spring.hanlders</code> 和 <code>spring.schemas</code></strong>：在两个文件中找到对应的 <code>handler</code> 和 <code>XSD</code>，默认位置在 <code>resources</code> -&gt; <code>META-INF</code>。</li>
+<li><strong><code>Handler</code> 注册 <code>Parser</code></strong>：扩展了 <code>NamespaceHandlerSupport</code> 的类，在初始化注册解析器</li>
+<li><strong>运行解析器  <code>Parser</code></strong>：扩展了 <code>AbstractSingleBeanDefinitionParser</code>，通过重载方法进行属性解析，完成解析。</li>
+</ul>
+<p>上面已经将自定义注解的使用讲了，接下来讲的是源码中如何对自定义标签进行解析。</p>
+<hr>
+<h2 id="自定义标签解析"><a href="#自定义标签解析" class="headerlink" title="自定义标签解析"></a>自定义标签解析</h2><p>在上一篇笔记中，讲了如何解析默认标签，<code>Spring</code> 判断一个标签不是默认标签的话，就会将这个标签解析交给自定义标签的解析方法</p>
+<p>直接定位到解析自定义标签的方法吧：</p>
+<blockquote>
+<p>org.springframework.beans.factory.xml.BeanDefinitionParserDelegate#parseCustomElement(org.w3c.dom.Element, org.springframework.beans.factory.config.BeanDefinition)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> BeanDefinition <span class="title">parseCustomElement</span><span class="params">(Element ele, @Nullable BeanDefinition containingBd)</span> </span>&#123;</div><div class="line">		<span class="comment">// 注释 3.8 ① 找到命名空间</span></div><div class="line">		String namespaceUri = getNamespaceURI(ele);</div><div class="line">		<span class="comment">// ② 根据命名空间找到对应的 NamespaceHandler</span></div><div class="line">		NamespaceHandler handler = <span class="keyword">this</span>.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);</div><div class="line">		<span class="comment">// ③ 调用自定义的 NamespaceHandler 进行解析</span></div><div class="line">		<span class="keyword">return</span> handler.parse(ele, <span class="keyword">new</span> ParserContext(<span class="keyword">this</span>.readerContext, <span class="keyword">this</span>, containingBd));</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>看着流程是不是觉得很熟悉，我们刚才在自定义标签使用时，定义的文件顺序是一样的，下面来讲下这三个方法，具体代码不会贴太多，主要记录一些关键方法和流程，详细代码和流程请下载我上传的工程~</p>
+<hr>
+<h3 id="①-获取标签的命名空间"><a href="#①-获取标签的命名空间" class="headerlink" title="① 获取标签的命名空间"></a>① 获取标签的命名空间</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getNamespaceURI</span><span class="params">(Node node)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> node.getNamespaceURI();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>这个方法具体做的事情很简单，而且传参的类型 <code>org.w3c.dom.Node</code>，已经提供了现成的方法，所以我们只需要调用即可。</p>
+<hr>
+<h3 id="②-根据命名空间找到对应的-NamespaceHandler"><a href="#②-根据命名空间找到对应的-NamespaceHandler" class="headerlink" title="② 根据命名空间找到对应的 NamespaceHandler"></a>② 根据命名空间找到对应的 NamespaceHandler</h3><p>具体解析方法这这个类中：</p>
+<blockquote>
+<p>org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver#resolve</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> NamespaceHandler <span class="title">resolve</span><span class="params">(String namespaceUri)</span> </span>&#123;</div><div class="line">	<span class="comment">// 注释 3.9 获取所有已经配置的 handler 映射</span></div><div class="line">	Map&lt;String, Object&gt; handlerMappings = getHandlerMappings();</div><div class="line">	<span class="comment">// 从 map 中取出命名空间对应的 NamespaceHandler 的 className</span></div><div class="line">	<span class="comment">// 这个映射 map 值，没有的话，会进行实例化类，然后放入 map，等下次同样命名空间进来就能直接使用了</span></div><div class="line">	Object handlerOrClassName = handlerMappings.get(namespaceUri);</div><div class="line">	<span class="keyword">if</span> (handlerOrClassName == <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (handlerOrClassName <span class="keyword">instanceof</span> NamespaceHandler) &#123;</div><div class="line">		<span class="keyword">return</span> (NamespaceHandler) handlerOrClassName;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		String className = (String) handlerOrClassName;</div><div class="line">		</div><div class="line">		Class&lt;?&gt; handlerClass = ClassUtils.forName(className, <span class="keyword">this</span>.classLoader);</div><div class="line">		<span class="keyword">if</span> (!NamespaceHandler.class.isAssignableFrom(handlerClass)) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> FatalBeanException(<span class="string">"Class ["</span> + className + <span class="string">"] for namespace ["</span> + namespaceUri +</div><div class="line">					<span class="string">"] does not implement the ["</span> + NamespaceHandler.class.getName() + <span class="string">"] interface"</span>);</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 实例化类</span></div><div class="line">		NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);</div><div class="line">		<span class="comment">// 调用 handler 的 init() 方法</span></div><div class="line">		namespaceHandler.init();</div><div class="line">		<span class="comment">// 放入 handler 映射中</span></div><div class="line">		handlerMappings.put(namespaceUri, namespaceHandler);</div><div class="line">		<span class="keyword">return</span> namespaceHandler;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>找对应的 <code>NamespaceHandler</code>，关键方法在于 <code>getHandlerMappings()</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">getHandlerMappings</span><span class="params">()</span> </span>&#123;</div><div class="line">	Map&lt;String, Object&gt; handlerMappings = <span class="keyword">this</span>.handlerMappings;</div><div class="line">	<span class="comment">// 如果没有缓存，进行缓存加载，公共变量，加锁进行操作，细节好评👍</span></div><div class="line">	<span class="keyword">if</span> (handlerMappings == <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</div><div class="line">			handlerMappings = <span class="keyword">this</span>.handlerMappings;</div><div class="line">			<span class="keyword">if</span> (handlerMappings == <span class="keyword">null</span>) &#123;</div><div class="line">				Properties mappings =</div><div class="line">						PropertiesLoaderUtils.loadAllProperties(<span class="keyword">this</span>.handlerMappingsLocation, <span class="keyword">this</span>.classLoader);</div><div class="line">				handlerMappings = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;(mappings.size());</div><div class="line">				CollectionUtils.mergePropertiesIntoMap(mappings, handlerMappings);</div><div class="line">				<span class="keyword">this</span>.handlerMappings = handlerMappings;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> handlerMappings;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以我们能看到，找 <code>Handler</code> 时，使用的策略是延迟加载，在 <code>map</code> 缓存中找到了直接返回，没找到对应的 <code>Handler</code>，将处理器实例化，执行 <code>init()</code> 方法，接着将 <code>Handler</code> 放入 <code>map</code> 缓存中，等待下一个使用。</p>
+<hr>
+<h3 id="③-调用自定义的-NamespaceHandler-进行解析"><a href="#③-调用自定义的-NamespaceHandler-进行解析" class="headerlink" title="③ 调用自定义的 NamespaceHandler 进行解析"></a>③ 调用自定义的 NamespaceHandler 进行解析</h3><p>回忆一下，我们在自定义标签解析的时候，是没有重载 <code>parse()</code> 方法，所以定位进去，看到实际调用方法是这两行：</p>
+<blockquote>
+<p>org.springframework.beans.factory.xml.NamespaceHandlerSupport#parse</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> BeanDefinition <span class="title">parse</span><span class="params">(Element element, ParserContext parserContext)</span> </span>&#123;</div><div class="line">		<span class="comment">// 寻找解析器并进行解析操作</span></div><div class="line">		BeanDefinitionParser parser = findParserForElement(element, parserContext);</div><div class="line">		<span class="comment">// 真正解析调用调用的方法</span></div><div class="line">		<span class="keyword">return</span> (parser != <span class="keyword">null</span> ? parser.parse(element, parserContext) : <span class="keyword">null</span>);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>第一步获取解析器，就是我们之前在 <code>init()</code> 方法中，注册到 <code>Spring</code> 容器的解析器。</p>
+<p>第二步才是解析器进行解析的方法，我们的解析器扩展的是 <code>AbstractSingleBeanDefinitionParser</code>，<strong>所以实际是调用了我们解析器父类的父类</strong> <code>AbstractBeanDefinitionParser</code> 的 <code>parse</code> 方法：</p>
+<blockquote>
+<p>org.springframework.beans.factory.xml.AbstractBeanDefinitionParser#parse</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> BeanDefinition <span class="title">parse</span><span class="params">(Element element, ParserContext parserContext)</span> </span>&#123;</div><div class="line">		<span class="comment">// 注释 3.10 实际自定义标签解析器调用的方法，在 parseInternal 方法中，调用了我们重载的方法</span></div><div class="line">		AbstractBeanDefinition definition = parseInternal(element, parserContext);</div><div class="line">    ...</div><div class="line">    <span class="keyword">return</span> definition;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>解析关键方法</p>
+<blockquote>
+<p>org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser#parseInternal</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> AbstractBeanDefinition <span class="title">parseInternal</span><span class="params">(Element element, ParserContext parserContext)</span> </span>&#123;</div><div class="line">	BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition();</div><div class="line">	String parentName = getParentName(element);</div><div class="line">	<span class="keyword">if</span> (parentName != <span class="keyword">null</span>) &#123;</div><div class="line">		builder.getRawBeanDefinition().setParentName(parentName);</div><div class="line">	&#125;</div><div class="line">	Class&lt;?&gt; beanClass = getBeanClass(element);</div><div class="line">	<span class="keyword">if</span> (beanClass != <span class="keyword">null</span>) &#123;</div><div class="line">		builder.getRawBeanDefinition().setBeanClass(beanClass);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		String beanClassName = getBeanClassName(element);</div><div class="line">		<span class="keyword">if</span> (beanClassName != <span class="keyword">null</span>) &#123;</div><div class="line">			builder.getRawBeanDefinition().setBeanClassName(beanClassName);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	builder.getRawBeanDefinition().setSource(parserContext.extractSource(element));</div><div class="line">	BeanDefinition containingBd = parserContext.getContainingBeanDefinition();</div><div class="line">	<span class="keyword">if</span> (containingBd != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">// Inner bean definition must receive same scope as containing bean.</span></div><div class="line">		builder.setScope(containingBd.getScope());</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (parserContext.isDefaultLazyInit()) &#123;</div><div class="line">		<span class="comment">// Default-lazy-init applies to custom bean definitions as well.</span></div><div class="line">		builder.setLazyInit(<span class="keyword">true</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 注释 3.11 在这里调用了我们写的解析方法</span></div><div class="line">	doParse(element, parserContext, builder);</div><div class="line">	<span class="keyword">return</span> builder.getBeanDefinition();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>这里我要倒着讲，在第二步解析时，不是直接调用了自定义的 <code>doParse</code> 方法，而是进行了一系列的数据准备，包括了 <code>beanClass</code>、 <code>class</code>、 <code>lazyInit</code> 等属性的准备。</strong></p>
+<p><strong>第一步解析，在我省略的代码中，是将第二步解析后的结果进行包装，从 <code>AbstractBeanDefinition</code> 转换成 <code>BeanDefinitionHolder</code> ，然后进行注册。转换和注册流程在第一篇笔记已经介绍过了，不再赘述。</strong></p>
+<p>到这里为止，我们自定义标签的解析就完成了~</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在我们自定义标签时，是不是感觉使用起来很简单，只需定义几个文件，然后在自定义解析器中写上业务处理逻辑，然后就能使用。</p>
+<p><strong>在我们分析完整个解析流程，就能看到，<code>Spring</code> 在背后默默帮我们完成了很多事情，类似默认标签解析过程，根据命名空间找到对应的处理器，然后再找到解析器，在解析器里面调用我们个性化的处理逻辑。</strong></p>
+<p>这两篇文章填了默认标签和自定义标签解析的坑，也完整的介绍了 <code>Spring</code> 将 <code>bean</code> 从配置中加载到内存中的全过程，下一篇开始<strong>分析解析类的加载</strong>~</p>
+<p><strong>由于个人技术有限，如果有理解不到位或者错误的地方，请留下评论，我会根据朋友们的建议进行修正</strong></p>
+<p><a href="https://gitee.com/vip-augus/spring-analysis-note.git" target="_blank" rel="noopener">spring-analysis-note 码云 Gitee 地址</a></p>
+<p><a href="https://github.com/Vip-Augus/spring-analysis-note" target="_blank" rel="noopener">spring-analysis-note Github 地址</a></p>
+<hr>
+<h1 id="传送门："><a href="#传送门：" class="headerlink" title="传送门："></a>传送门：</h1><ul>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-env-prepared" target="_blank" rel="noopener">Spring 源码学习-环境准备</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-1" target="_blank" rel="noopener">Spring 源码学习(一)容器的基础结构</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/14/spring/2019-06-14-spring-analysis-note-2" target="_blank" rel="noopener">Spring 源码学习(二)默认标签解析</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/16/spring/2019-06-16-spring-analysis-note-3" target="_blank" rel="noopener">Spring 源码学习(三)自定义标签</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/19/spring/2019-06-19-spring-analysis-note-4" target="_blank" rel="noopener">Spring 源码学习(四) bean 的加载</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-5" target="_blank" rel="noopener">Spring 源码学习(五)循环依赖</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-6" target="_blank" rel="noopener">Spring 源码学习(六)扩展功能 上篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/30/spring/2019-06-30-spring-analysis-note-7" target="_blank" rel="noopener">Spring 源码学习(七)扩展功能 下篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/17/spring/2019-07-17-spring-analysis-note-8" target="_blank" rel="noopener">Spring 源码学习(八) AOP 使用和实现原理</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/18/spring/2019-07-18-spring-analysis-note-9" target="_blank" rel="noopener">Spring 源码学习(九) Transaction 事务</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/21/spring/2019-07-21-spring-analysis-note-10" target="_blank" rel="noopener">Spring 源码学习(十) Spring mvc</a></p>
+</li>
+</ul>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><p><a href="https://blog.csdn.net/zzg1229059735/article/details/82669955" target="_blank" rel="noopener">Spring自定义标签使用及原理</a></p>
+</li>
+<li><p>Spring 源码深度解析 / 郝佳编著. – 北京 : 人民邮电出版社</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/14/spring/2019-06-14-spring-analysis-note-2/" rel="next" title="Spring 源码学习(二)默认标签解析">
+                <i class="fa fa-chevron-left"></i> Spring 源码学习(二)默认标签解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/19/spring/2019-06-19-spring-analysis-note-4/" rel="prev" title="Spring 源码学习(四)bean 的加载">
+                Spring 源码学习(四)bean 的加载 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#官方例子"><span class="nav-number">1.</span> <span class="nav-text">官方例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义标签使用"><span class="nav-number">2.</span> <span class="nav-text">自定义标签使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义普通的-POJO-组件"><span class="nav-number">2.1.</span> <span class="nav-text">定义普通的 POJO 组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义-XSD-描述文件"><span class="nav-number">2.2.</span> <span class="nav-text">定义 XSD 描述文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义组件解析器"><span class="nav-number">2.3.</span> <span class="nav-text">定义组件解析器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建处理类的注册器"><span class="nav-number">2.4.</span> <span class="nav-text">创建处理类的注册器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写-spring-hanlders-和-spring-schemas-文件"><span class="nav-number">2.5.</span> <span class="nav-text">编写 spring.hanlders 和 spring.schemas 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Demo"><span class="nav-number">2.6.</span> <span class="nav-text">使用 Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">2.6.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试代码"><span class="nav-number">2.6.2.</span> <span class="nav-text">测试代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">2.7.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义标签解析"><span class="nav-number">3.</span> <span class="nav-text">自定义标签解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#①-获取标签的命名空间"><span class="nav-number">3.1.</span> <span class="nav-text">① 获取标签的命名空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#②-根据命名空间找到对应的-NamespaceHandler"><span class="nav-number">3.2.</span> <span class="nav-text">② 根据命名空间找到对应的 NamespaceHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#③-调用自定义的-NamespaceHandler-进行解析"><span class="nav-number">3.3.</span> <span class="nav-text">③ 调用自定义的 NamespaceHandler 进行解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传送门："><span class="nav-number"></span> <span class="nav-text">传送门：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

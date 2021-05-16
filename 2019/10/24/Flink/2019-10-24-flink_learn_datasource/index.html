@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Flink," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="为何要使用 Flink因为本篇文章中，有个 Kafka 数据源的 Demo，在一开始解答小伙伴有可能的困惑： Question：既然监听 Kafka 消息，为何不建立一个简单的消息消费者，使用简单的代码就能进行消息的消费？ Answer：在普通的消费者逻辑中，只能做到对传送过来的一条消息进行单条处理。而在 Flink 这个优秀的流计算框架中，能够使用窗口进行多样化处理。提供了窗口处理函数，可以对一">
+<meta name="keywords" content="Flink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink 基础学习(三)数据源 DataSource">
+<meta property="og:url" content="http://yoursite.com/2019/10/24/Flink/2019-10-24-flink_learn_datasource/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="为何要使用 Flink因为本篇文章中，有个 Kafka 数据源的 Demo，在一开始解答小伙伴有可能的困惑： Question：既然监听 Kafka 消息，为何不建立一个简单的消息消费者，使用简单的代码就能进行消息的消费？ Answer：在普通的消费者逻辑中，只能做到对传送过来的一条消息进行单条处理。而在 Flink 这个优秀的流计算框架中，能够使用窗口进行多样化处理。提供了窗口处理函数，可以对一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_streaming_dataflow.svg">
+<meta property="og:image" content="http://img.sevenyuan.cn/StreamExecutionEnvironment_DataSource.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_rich_source_function.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_datasource_kafka.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_datasource_kafka_result.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_datasource_mind.png">
+<meta property="og:updated_time" content="2019-12-22T07:42:10.683Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flink 基础学习(三)数据源 DataSource">
+<meta name="twitter:description" content="为何要使用 Flink因为本篇文章中，有个 Kafka 数据源的 Demo，在一开始解答小伙伴有可能的困惑： Question：既然监听 Kafka 消息，为何不建立一个简单的消息消费者，使用简单的代码就能进行消息的消费？ Answer：在普通的消费者逻辑中，只能做到对传送过来的一条消息进行单条处理。而在 Flink 这个优秀的流计算框架中，能够使用窗口进行多样化处理。提供了窗口处理函数，可以对一">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/flink_streaming_dataflow.svg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/24/Flink/2019-10-24-flink_learn_datasource/"/>
+
+
+
+
+
+  <title>Flink 基础学习(三)数据源 DataSource | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/24/Flink/2019-10-24-flink_learn_datasource/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flink 基础学习(三)数据源 DataSource</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-24T09:30:05+08:00">
+                2019-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flink/" itemprop="url" rel="index">
+                    <span itemprop="name">Flink</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="为何要使用-Flink"><a href="#为何要使用-Flink" class="headerlink" title="为何要使用 Flink"></a>为何要使用 Flink</h1><p>因为本篇文章中，有个 <code>Kafka</code> 数据源的 <code>Demo</code>，在一开始解答小伙伴有可能的困惑：</p>
+<p><strong>Question：既然监听 <code>Kafka</code> 消息，为何不建立一个简单的消息消费者，使用简单的代码就能进行消息的消费？</strong></p>
+<p><strong>Answer：在普通的消费者逻辑中，只能做到对传送过来的一条消息进行单条处理。而在 <code>Flink</code> 这个优秀的流计算框架中，能够使用窗口进行多样化处理。提供了窗口处理函数，可以对一段时间（例如 5s 内）或者一批（计数大小，例如 5 个一批）的数据进行计数或者 <code>reduce</code> 整合处理</strong></p>
+<p><strong>还有 <code>Flink</code> 拥有状态管理，能够保存 <code>checkpoint</code>，如果程序出现错误，也能够之前的检查点恢复，继续程序的处理，于是拥有这些好处的优秀框架，希望小伙伴也加入进来，一起学习~</strong></p>
+<a id="more"></a>
+<h1 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h1><p>接下来的几篇文章，都会围绕着下面这张图，整体上来说，就是 <code>DataStreamAPI</code> 编程的练习：</p>
+<p><img src="http://img.sevenyuan.cn/flink_streaming_dataflow.svg" alt=""></p>
+<p><strong>分别是 <code>Source</code>、<code>Transformation</code> 和 <code>Sink</code> 进行逐一学习。</strong></p>
+<hr>
+<h1 id="2、DataSource-介绍"><a href="#2、DataSource-介绍" class="headerlink" title="2、DataSource 介绍"></a>2、DataSource 介绍</h1><p>直译：数据来源</p>
+<p>计算引擎，不管是批出来还是流处理，最重要的是数据来源，根据源源不断的数据进行处理，加工成更有价值的数据。</p>
+<p><strong><code>Flink</code> 官方包中提供了如下基于集合、文件、套接字等 <code>API</code>，然后第三方例如 <code>Kafka</code>、<code>RabbitMq</code> 等也提供了方便的集成库。</strong></p>
+<p>由于我们测试时，使用的是 <code>StreamExecutionEnvironment.getExecutionEnvironment()</code> 来获取流执行环境类进行操作，所以我们来看下这个类的返回类型是 <code>DataStreamSource</code> 的方法：</p>
+<p><img src="http://img.sevenyuan.cn/StreamExecutionEnvironment_DataSource.png" alt=""></p>
+<hr>
+<h1 id="3、集合"><a href="#3、集合" class="headerlink" title="3、集合"></a>3、集合</h1><p>集合数据源主要有三种：<code>collection</code>、<code>element</code> 和 <code>generateSequence</code>。</p>
+<ul>
+<li><strong>fromCollection(Collection)</strong>：接受的参数对象必须是同一类型的集合</li>
+<li><strong>fromCollection(Iterator<code>&lt;</code>OUT<code>&gt;</code> data, Class<code>&lt;</code>OUT<code>&gt;</code> type)</strong>：第一个参数是迭代器，第二个参数是指定返回的类型</li>
+<li><strong>fromElements(Class<code>&lt;</code>OUT<code>&gt;</code> type, OUT… data)</strong>：第一个参数是指定返回的类型，后面的是不定数量入参，可以输入多个 <code>OUT</code> 类型的对象</li>
+<li><strong>fromParallelCollection(SplittableIterator<code>&lt;</code>OUT<code>&gt;</code> iterator, TypeInformation<code>&lt;</code>OUT<code>&gt;</code> typeInfo, String operatorName)</strong>：<strong>从一个可分离的迭代器中创建并行数据源</strong>。这个方法是 <code>parallel</code> 并行数据源的底层调用方法，<code>typeInfo</code> 是具体的类型信息，最后一个参数就是操作名字。这个并行数据源并没有测试过，等到之后回来补坑吧。</li>
+<li><strong>generateSequence(long, long)</strong>：创建一个包含数字序列的新数据流。例如传进去是 1l 和 10l，那么数据源就是 [1-10]</li>
+</ul>
+<p>测试代码如下：</p>
+<blockquote>
+<p>DataSourceFromCollection.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> DataStreamSource&lt;Student&gt; <span class="title">collection1</span><span class="params">(StreamExecutionEnvironment env)</span> </span>&#123;</div><div class="line">    List&lt;Student&gt; studentList = Lists.newArrayList(</div><div class="line">            <span class="keyword">new</span> Student(<span class="number">1</span>, <span class="string">"name1"</span>, <span class="number">23</span>, <span class="string">"address1"</span>),</div><div class="line">            <span class="keyword">new</span> Student(<span class="number">2</span>, <span class="string">"name2"</span>, <span class="number">23</span>, <span class="string">"address2"</span>),</div><div class="line">            <span class="keyword">new</span> Student(<span class="number">3</span>, <span class="string">"name3"</span>, <span class="number">23</span>, <span class="string">"address3"</span>)</div><div class="line">    );</div><div class="line">    <span class="keyword">return</span> env.fromCollection(studentList);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> DataStreamSource&lt;Long&gt; <span class="title">collection2</span><span class="params">(StreamExecutionEnvironment env)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> env.generateSequence(<span class="number">1</span>, <span class="number">20</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h1 id="4、文件-File"><a href="#4、文件-File" class="headerlink" title="4、文件 File"></a>4、文件 File</h1><p><strong>从官方例子中，罗列了以下三个读取文件的方法，第一个返回的文本类型的数据源，第二个数据源是只读取一次文件，第三个方法参数比较多，文档中关于 <code>watchType</code> 观察类型介绍比较多，这里翻译自文档 <a href="https://ci.apache.org/projects/flink/flink-docs-release-1.9/dev/datastream_api.html" target="_blank" rel="noopener">Flink DataStream API Programming Guide</a></strong></p>
+<ul>
+<li><strong>readTextFile(filePath)</strong>：从 <code>filePath</code> 读取文本数据源，文本类型是 <code>TextInputFormat</code> 以及字符串类型是 <code>UTF-8</code>，返回的是文本类型的数据源</li>
+<li><strong>readFile(fileInputFormat, path)</strong>： 根据指定的文件输入格式读取文件，只读取一次，不随着文本修改重新读取</li>
+<li><strong>readFile(fileInputFormat, path, watchType, interval, pathFilter, typeInfo)</strong>：这是前两个内部调用的方法。它根据给定的 <code>fileInputFormat</code> 读取路径中的文件。 <strong>根据提供的 <code>watchType</code> 对数据源做不同的操作，<code>FileProcessingMode.PROCESS_CONTINUOUSLY</code> 模式下，会定期（每间隔 ms）监视新数据的路径，<code>FileProcessingMode.PROCESS_ONCE</code> 模式下，会一次处理当前路径中的数据并退出。</strong>使用 <code>pathFilter</code>，用户可以进一步从处理文件中排除文件。</li>
+</ul>
+<hr>
+<h2 id="4-1、实现-IMPLEMENTATION："><a href="#4-1、实现-IMPLEMENTATION：" class="headerlink" title="4.1、实现 IMPLEMENTATION："></a>4.1、实现 IMPLEMENTATION：</h2><p><strong>在后台，Flink将文件读取过程分为两个子任务，即目录监视和数据读取。 这些子任务中的每一个都是由单独的实体实现的。</strong></p>
+<p>监视由单个非并行（并行度= 1）任务实现，而读取由并行运行的多个任务执行。 </p>
+<p>后者的并行性等于作业并行性。 单个监视任务的作用是扫描目录（根据 <code>watchType</code> 定期或仅扫描一次），查找要处理的文件，将它们划分为多个拆分，然后将这些拆分分配给下游读取器 （reader）。 </p>
+<p><code>readers</code> 是实际读取到数据的角色。每一个分片 <code>split</code> 只能由一个 <code>reader</code> 读取，但是一个 <code>reader</code> 可以读取多个分片 <code>split</code>。</p>
+<hr>
+<h2 id="4-2、重要笔记-IMPORTANT-NOTES："><a href="#4-2、重要笔记-IMPORTANT-NOTES：" class="headerlink" title="4.2、重要笔记 IMPORTANT NOTES："></a>4.2、重要笔记 IMPORTANT NOTES：</h2><ol>
+<li><strong>如果 <code>watchType</code> 设置为 <code>FileProcessingMode.PROCESS_CONTINUOUSLY</code>，则在修改文件时，将完全重新处理其内容。</strong> 这可能会破坏“完全一次”的语义，因为在文件末尾附加数据将导致重新处理其所有内容。 </li>
+<li><strong>如果 <code>watchType</code> 设置为 <code>FileProcessingMode.PROCESS_ONCE</code>，则源将扫描路径一次并退出，而无需等待读取器完成文件内容的读取。</strong> 当然，读者将继续阅读，直到读取了所有文件内容。 关闭源将导致在该点之后没有更多检查点。 这可能导致节点故障后恢复速度变慢，因为作业将从上一个检查点恢复读取。</li>
+</ol>
+<p>根据上诉两种情况，个人觉得如果用文件数据作为数据源进行测试，那么使用第二种观察模式 <code>FileProcessingMode.PROCESS_ONCE</code>，只扫描一次，避免修改文件后影响之前的计算结果。</p>
+<blockquote>
+<p>DataSourceFromFile.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">// 简单的文字文件输入流</span></div><div class="line">DataStreamSource&lt;String&gt; textFileSource = env.readTextFile(filePath);</div><div class="line"></div><div class="line"><span class="comment">// 指定格式和监听类型</span></div><div class="line">Path pa = <span class="keyword">new</span> Path(filePath);</div><div class="line">TextInputFormat inputFormat = <span class="keyword">new</span> TextInputFormat(pa);</div><div class="line">DataStreamSource&lt;String&gt; complexFileSource =</div><div class="line">                env.readFile(inputFormat, filePath, </div><div class="line">                FileProcessingMode.PROCESS_CONTINUOUSLY, </div><div class="line">                <span class="number">100L</span>, </div><div class="line">                TypeExtractor.getInputFormatTypes(inputFormat));</div></pre></td></tr></table></figure>
+<hr>
+<h1 id="5、套接字-Socket"><a href="#5、套接字-Socket" class="headerlink" title="5、套接字 Socket"></a>5、套接字 Socket</h1><ul>
+<li><strong>socketTextStream</strong>： 从套接字 <code>socket</code> 读取。 元素可以由自定义分隔符 <code>delimiter</code> 进行分隔。</li>
+</ul>
+<blockquote>
+<p>DataSourceFromSocket.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 监听端口号</span></div><div class="line">DataStreamSource&lt;String&gt; source = env.socketTextStream(<span class="string">"localhost"</span>, <span class="number">9000</span>);</div><div class="line"></div><div class="line"><span class="comment">// 定义分隔符</span></div><div class="line">DataStreamSource&lt;String&gt; source = env.socketTextStream(<span class="string">"localhost"</span>, <span class="number">9000</span>, <span class="string">"\\W+"</span>);</div></pre></td></tr></table></figure>
+<p>更具体例子可以参考上一篇 <code>Hello World</code> 例子</p>
+<hr>
+<h1 id="6、自定义-DataSource"><a href="#6、自定义-DataSource" class="headerlink" title="6、自定义 DataSource"></a>6、自定义 DataSource</h1><p>从前面介绍中看到，<code>Flink</code> 提供了一个 <code>addSource(SourceFunction&lt;OUT&gt;)</code> 的方法，其中 <code>SourceFunction</code> 是实现自定义数据源的关键接口，而我们常用来扩展的是它的抽象子类 <code>RichSourceFunction</code> </p>
+<hr>
+<h2 id="6-1、RichSourceFunction"><a href="#6-1、RichSourceFunction" class="headerlink" title="6.1、RichSourceFunction"></a>6.1、RichSourceFunction</h2><p>进行自定义扩展数据源前，来看下这个类的继承体系：</p>
+<p><img src="http://img.sevenyuan.cn/flink_rich_source_function.png" alt=""></p>
+<p>下面是我测试的一个场景：</p>
+<ol>
+<li>启动 <code>Redis</code>，手动不断设置某个 <code>key</code> 的值，模拟应用不断对它的修改</li>
+<li><code>Flink</code> 读取 <code>Redis</code> 数据源，进行数据加工</li>
+<li>存储加工后的数据（例如放入数据库或者简单打印出来）</li>
+</ol>
+<p>于是乎，创建了一个自定义的 <code>Redis</code> 数据源，重写上面图中提到的方法</p>
+<blockquote>
+<p>MyRedisDataSourceFunction.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRedisDataSourceFunction</span> <span class="keyword">extends</span> <span class="title">RichSourceFunction</span>&lt;<span class="title">String</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">(Configuration parameters)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">super</span>.open(parameters);</div><div class="line">        <span class="comment">// noop</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(SourceContext&lt;String&gt; ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">            String maxNumber = RedisUtils.get(<span class="string">"maxNumber"</span>, String.class);</div><div class="line">            ctx.collect(StringUtils.isBlank(maxNumber) ? <span class="string">"0"</span> : maxNumber);</div><div class="line">            <span class="comment">// 隔 1 s 执行程序</span></div><div class="line">            Thread.sleep(<span class="number">1000</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// noop</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">super</span>.close();</div><div class="line">        RedisUtils.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面代码可以看出，我在 <code>run</code> 方法中，通过 <code>while</code> 循环，不断从 <code>Redis</code> 中获取数据，关于缓存的相关操作，封装到了 <code>RedisUtils</code>，感兴趣的可以下载项目来看看。</p>
+<p>由于偷懒，<code>open</code> 、<code>cancel</code> 是没有做操作，在关闭方法中，也只是简单释放了 <code>jedis</code> 连接。</p>
+<hr>
+<h2 id="6-2、验证自定义数据源结果"><a href="#6-2、验证自定义数据源结果" class="headerlink" title="6.2、验证自定义数据源结果"></a>6.2、验证自定义数据源结果</h2><blockquote>
+<p>DataSourceFromRedis.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSourceFromRedis</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        StreamExecutionEnvironment env =</div><div class="line">            StreamExecutionEnvironment.getExecutionEnvironment();</div><div class="line">        DataStreamSource&lt;String&gt; customSource = </div><div class="line">            env.addSource(<span class="keyword">new</span> MyRedisDataSourceFunction());</div><div class="line">        SingleOutputStreamOperator&lt;String&gt; operator = customSource</div><div class="line">                .map((MapFunction&lt;String, String&gt;) value -&gt; <span class="string">"当前最大值为 : "</span> + value);</div><div class="line">        operator.print();</div><div class="line">        env.execute(<span class="string">"test custom redis datasource function"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面代码，主要核心在于 <code>env.addSource(new MyRedisDataSourceFunction())</code>，从我们自定义的 <code>Redis</code> 数据源中获取数据，编写好代码后，进行打包并通过 <code>flink run</code> 执行。</p>
+<p>为了方便，我直接在本地 <code>IDEA</code> 中，点击了绿色执行按钮，进行本地调试，接着来修改数据源和查看输出结果。</p>
+<p>一、修改 <code>Redis</code> 中的数据<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ redis-cli -h localhost -p 6379</div><div class="line">&gt; <span class="built_in">set</span> maxNumber 100</div><div class="line">&gt; <span class="built_in">set</span> maxNumber 200</div><div class="line">&gt; <span class="built_in">set</span> maxNumber 300</div><div class="line">&gt; <span class="built_in">set</span> maxNumber 400</div></pre></td></tr></table></figure></p>
+<p>二、查看控制台输出结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">3&gt; 当前最大值为 : 100</div><div class="line">4&gt; 当前最大值为 : 100</div><div class="line">6&gt; 当前最大值为 : 200</div><div class="line">7&gt; 当前最大值为 : 200</div><div class="line">1&gt; 当前最大值为 : 200</div><div class="line">2&gt; 当前最大值为 : 300</div><div class="line">....</div></pre></td></tr></table></figure>
+<p><strong>可以看到数据源的修改，我们的程序能够正常接收到并进行处理</strong>。当然这个 <code>Demo</code> 只是用来演示，用来演示我们可以基于变动的数据源进行更多复杂的操作，从而来达到数据处理想要的目的。</p>
+<hr>
+<h1 id="7、更多自定义数据源（如-Kafka）"><a href="#7、更多自定义数据源（如-Kafka）" class="headerlink" title="7、更多自定义数据源（如 Kafka）"></a>7、更多自定义数据源（如 Kafka）</h1><p>例如在收集日志时，<code>Kafka</code> 消息中间件用得比较多，可以通过官方集成的方法 <code>new FlinkKafkaConsumer</code> 进行添加 <code>Kafka</code> 数据源</p>
+<p>测试类位置在：</p>
+<blockquote>
+<p>cn.sevenyuan.datasource.custom.DataSourceFromKafka</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DataStreamSource&lt;String&gt; dataStreamSource = env.addSource(</div><div class="line">    <span class="keyword">new</span> FlinkKafkaConsumer&lt;String&gt;(</div><div class="line">            KafkaUtils.TOPIC_STUDENT,</div><div class="line">            <span class="keyword">new</span> SimpleStringSchema(),</div><div class="line">            props</div><div class="line">    )).setParallelism(<span class="number">1</span>);</div></pre></td></tr></table></figure>
+<h2 id="7-1、测试场景示意"><a href="#7-1、测试场景示意" class="headerlink" title="7.1、测试场景示意"></a>7.1、测试场景示意</h2><p><img src="http://img.sevenyuan.cn/flink_datasource_kafka.png" alt=""></p>
+<p><strong>测试场景如上图，模拟一个 <code>A</code> 应用系统，不断的往 <code>Kafka</code> 发送消息，接着我们的 <code>Flink</code> 监听到 <code>Kafka</code> 的数据变动，搜集在一个时间窗口内（例如 10s）的数据，对窗口内的数据进行转换操作，最后进行存储（简单演示，使用的是 <code>Print</code> 打印）</strong></p>
+<h2 id="7-2、前置环境安装和启动"><a href="#7-2、前置环境安装和启动" class="headerlink" title="7.2、前置环境安装和启动"></a>7.2、前置环境安装和启动</h2><p>如果在本地测试 <code>Kafka</code> 数据源，需要做这三步前置操作：</p>
+<p><strong>1. 安装 <code>ZooKeeper</code></strong>，启动命令：<br><code>zkServer start</code></p>
+<p><strong>2. 安装 <code>Kafka</code></strong>，启动命令：<br><code>kafka-server-start /usr/local/etc/kafka/server.properties</code></p>
+<p><strong>3. 安装 <code>Flink</code></strong>，启动单机集群版的命令<br><code>/usr/local/Cellar/apache-flink/1.9.0/libexec/bin/start-cluster.sh</code></p>
+<h2 id="7-3、模拟应用系统"><a href="#7-3、模拟应用系统" class="headerlink" title="7.3、模拟应用系统"></a>7.3、模拟应用系统</h2><p>在终端中，通过 <code>Kafka</code> 命令创建名字为 <code>student</code> 的 <code>Topic</code>：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$kafka</span>-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic student</div></pre></td></tr></table></figure>
+<p>启动以下代码的 <code>main</code> 方法，通过 <code>while</code> 循环，每隔 3s 往 <code>kafka</code>  发送一条消息：</p>
+<blockquote>
+<p>KafkaUtils.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KafkaUtils</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String BROKER_LIST = <span class="string">"localhost:9092"</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TOPIC_STUDENT = <span class="string">"student"</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String KEY_SERIALIZER = <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String VALUE_SERIALIZER = <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeToKafka</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        Properties props = <span class="keyword">new</span> Properties();</div><div class="line">        props.put(<span class="string">"bootstrap.servers"</span>, BROKER_LIST);</div><div class="line">        props.put(<span class="string">"key.serializer"</span>, KEY_SERIALIZER);</div><div class="line">        props.put(<span class="string">"value.serializer"</span>, VALUE_SERIALIZER);</div><div class="line">        KafkaProducer&lt;String, String&gt; producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(props);</div><div class="line">        <span class="comment">// 制造传递的对象</span></div><div class="line">        <span class="keyword">int</span> randomInt = RandomUtils.nextInt(<span class="number">1</span>, <span class="number">100</span>);</div><div class="line">        Student stu = <span class="keyword">new</span> Student(randomInt, <span class="string">"name"</span> + randomInt, randomInt, <span class="string">"=-="</span>);</div><div class="line">        stu.setCheckInTime(<span class="keyword">new</span> Date());</div><div class="line">        <span class="comment">// 发送数据</span></div><div class="line">        ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> ProducerRecord&lt;&gt;(TOPIC_STUDENT, <span class="keyword">null</span>, <span class="keyword">null</span>, JSON.toJSONString(stu));</div><div class="line">        producer.send(record);</div><div class="line">        System.out.println(<span class="string">"kafka 已发送消息 : "</span> + JSON.toJSONString(stu));</div><div class="line">        producer.flush();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">            Thread.sleep(<span class="number">3000</span>);</div><div class="line">            writeToKafka();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在该工具类中，设定了很多静态变量，例如主题名字、<code>key</code> 序列化类、<code>value</code> 的序列化类，之后可以在其它类中进行复用。</p>
+<p>点击 <code>main</code> 方法后，可以在控制台终端看到每隔三秒（<code>checkInTime</code> 间隔时间），我们的消息成功的发送出去了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">kafka 已发送消息 : &#123;<span class="string">"address"</span>:<span class="string">"=-="</span>,<span class="string">"age"</span>:49,<span class="string">"checkInTime"</span>:1571845900050,<span class="string">"id"</span>:49,<span class="string">"name"</span>:<span class="string">"name49"</span>&#125;</div><div class="line">kafka 已发送消息 : &#123;<span class="string">"address"</span>:<span class="string">"=-="</span>,<span class="string">"age"</span>:92,<span class="string">"checkInTime"</span>:1571845903371,<span class="string">"id"</span>:92,<span class="string">"name"</span>:<span class="string">"name92"</span>&#125;</div><div class="line">kafka 已发送消息 : &#123;<span class="string">"address"</span>:<span class="string">"=-="</span>,<span class="string">"age"</span>:72,<span class="string">"checkInTime"</span>:1571845906391,<span class="string">"id"</span>:72,<span class="string">"name"</span>:<span class="string">"name72"</span>&#125;</div><div class="line">kafka 已发送消息 : &#123;<span class="string">"address"</span>:<span class="string">"=-="</span>,<span class="string">"age"</span>:19,<span class="string">"checkInTime"</span>:1571845909413,<span class="string">"id"</span>:19,<span class="string">"name"</span>:<span class="string">"name19"</span>&#125;</div><div class="line">kafka 已发送消息 : &#123;<span class="string">"address"</span>:<span class="string">"=-="</span>,<span class="string">"age"</span>:34,<span class="string">"checkInTime"</span>:1571845912435,<span class="string">"id"</span>:34,<span class="string">"name"</span>:<span class="string">"name34"</span>&#125;</div></pre></td></tr></table></figure>
+<h2 id="7-4、启动-Flink-程序"><a href="#7-4、启动-Flink-程序" class="headerlink" title="7.4、启动 Flink 程序"></a>7.4、启动 Flink 程序</h2><blockquote>
+<p>DataSourceFromKafka.java</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</div><div class="line">    <span class="comment">// 省略 kafka 的参数配置，具体请看代码</span></div><div class="line">    Properties props = <span class="keyword">new</span> Properties();</div><div class="line">    DataStreamSource&lt;String&gt; dataStreamSource = env.addSource(<span class="keyword">new</span> FlinkKafkaConsumer&lt;String&gt;(</div><div class="line">            KafkaUtils.TOPIC_STUDENT,</div><div class="line">            <span class="keyword">new</span> SimpleStringSchema(),</div><div class="line">            props</div><div class="line">    )).setParallelism(<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 数据转换 &amp; 打印</span></div><div class="line">    <span class="comment">// 从 kafka 读数据，然后进行 map 映射转换</span></div><div class="line">    DataStream&lt;Student&gt; dataStream = dataStreamSource.map(value -&gt; JSONObject.parseObject(value, Student.class));</div><div class="line">    <span class="comment">// 不需要 keyBy 分类，所以使用 windowAll，每 10s 统计接收到的数据，批量插入到数据库中</span></div><div class="line">    dataStream</div><div class="line">            .timeWindowAll(Time.seconds(<span class="number">10</span>))</div><div class="line">            .apply(<span class="keyword">new</span> AllWindowFunction&lt;Student, List&lt;Student&gt;, TimeWindow&gt;() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(TimeWindow window, Iterable&lt;Student&gt; values, Collector&lt;List&lt;Student&gt;&gt; out)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">                    List&lt;Student&gt; students = Lists.newArrayList(values);</div><div class="line">                    <span class="keyword">if</span> (students.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">                        System.out.println(<span class="string">"最近 10 秒汇集到 "</span> + students.size() + <span class="string">" 条数据"</span>);</div><div class="line">                        out.collect(students);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;)</div><div class="line">            .print();</div><div class="line">        env.execute(<span class="string">"test custom kafka datasource"</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><strong>上述代码主要有三个步骤，获取 <code>Kafka</code> 数据源 —&gt; 数据转换（通过 <code>map</code> 映射操作，时间窗口搜集数据） —&gt; 最后的数据存储（简单的 <code>print</code>）。</strong></p>
+<p>点击执行代码后，我们就能在控制台中看到如下输出结果：</p>
+<p><img src="http://img.sevenyuan.cn/flink_datasource_kafka_result.png" alt=""></p>
+<p>可以看到，按照发送消息的速度，我们能够在 10s 内搜集到 3-4 条数据，从输出结果能够验证 <code>Flink</code> 程序的正确性。</p>
+<p>安装操作请参考网上资源，更多详细添加 <code>Kafka</code> 数据源的操作可以看<strong>项目中的测试类 <code>DataSourceFromKafka</code>和 <code>zhisheng</code> 写的 <a href="http://www.54tianzhisheng.cn/2018/10/30/flink-create-source/" target="_blank" rel="noopener">Flink 从 0 到 1 学习 —— 如何自定义 Data Source </a></strong></p>
+<hr>
+<h1 id="8、总结"><a href="#8、总结" class="headerlink" title="8、总结"></a>8、总结</h1><p>本章总结大致可以用下面这张思维导图概括：</p>
+<p><img src="http://img.sevenyuan.cn/flink_datasource_mind.png" alt=""></p>
+<ul>
+<li>集合、文件：读取本地数据，比较适合在本地测试时使用</li>
+<li>套接字：监听主机地址和端口号，获取数据，比较少用</li>
+<li>自定义数据源：一般常用的数据源，例如 <code>Kafka</code>、<code>Hive</code> 和 <code>RabbitMQ</code>，官方都有集成的依赖，通过 <code>POM</code> 进行引用即可使用，还有想要自己扩展的话，通过继承 <code>RichSourceFunction</code>，重写里面的方法，就能够获取自定义的数据</li>
+</ul>
+<p><strong>本文主要写了 <code>Flink</code> 提供的数据源使用，介绍了集合、文件、套接字和自定义数据源的例子。当然请根据自己的用途，选择使用合适的数据源，如有疑惑或不对之处请与我讨论~</strong></p>
+<hr>
+<h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p><a href="https://github.com/Vip-Augus/flink-learning-note" target="_blank" rel="noopener">https://github.com/Vip-Augus/flink-learning-note</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/Vip-Augus/flink-learning-note</div></pre></td></tr></table></figure>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://www.54tianzhisheng.cn/2018/10/28/flink-sources/" target="_blank" rel="noopener">Flink 从 0 到 1 学习 —— Data Source 介绍</a></li>
+<li><a href="https://ci.apache.org/projects/flink/flink-docs-release-1.9/zh/dev/connectors/" target="_blank" rel="noopener">流式连接器</a></li>
+<li><a href="https://ci.apache.org/projects/flink/flink-docs-release-1.9/dev/datastream_api.html" target="_blank" rel="noopener">Flink DataStream API Programming Guide</a></li>
+<li><a href="http://www.54tianzhisheng.cn/2018/10/30/flink-create-source/" target="_blank" rel="noopener">Flink 从 0 到 1 学习 —— 如何自定义 Data Source </a></li>
+<li><a href="https://chloy.com/2017/06/09/Flink%E5%AE%9E%E8%B7%B5-%E8%AF%BB%E5%8F%96kafka/" target="_blank" rel="noopener">Flink实践-读取kafka</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flink/" rel="tag"># Flink</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/13/Flink/2019-10-13-flink_learn_hello_world/" rel="next" title="Flink 基础学习(二)搭建一个 "Hello World" 程序">
+                <i class="fa fa-chevron-left"></i> Flink 基础学习(二)搭建一个 "Hello World" 程序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/12/Flink/2019-11-12-flink_learn_transformation/" rel="prev" title="Flink 基础学习(四)转换 Transformation">
+                Flink 基础学习(四)转换 Transformation <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为何要使用-Flink"><span class="nav-number">1.</span> <span class="nav-text">为何要使用 Flink</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1、前言"><span class="nav-number">2.</span> <span class="nav-text">1、前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、DataSource-介绍"><span class="nav-number">3.</span> <span class="nav-text">2、DataSource 介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、集合"><span class="nav-number">4.</span> <span class="nav-text">3、集合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4、文件-File"><span class="nav-number">5.</span> <span class="nav-text">4、文件 File</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1、实现-IMPLEMENTATION："><span class="nav-number">5.1.</span> <span class="nav-text">4.1、实现 IMPLEMENTATION：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2、重要笔记-IMPORTANT-NOTES："><span class="nav-number">5.2.</span> <span class="nav-text">4.2、重要笔记 IMPORTANT NOTES：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5、套接字-Socket"><span class="nav-number">6.</span> <span class="nav-text">5、套接字 Socket</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6、自定义-DataSource"><span class="nav-number">7.</span> <span class="nav-text">6、自定义 DataSource</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1、RichSourceFunction"><span class="nav-number">7.1.</span> <span class="nav-text">6.1、RichSourceFunction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2、验证自定义数据源结果"><span class="nav-number">7.2.</span> <span class="nav-text">6.2、验证自定义数据源结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7、更多自定义数据源（如-Kafka）"><span class="nav-number">8.</span> <span class="nav-text">7、更多自定义数据源（如 Kafka）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1、测试场景示意"><span class="nav-number">8.1.</span> <span class="nav-text">7.1、测试场景示意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2、前置环境安装和启动"><span class="nav-number">8.2.</span> <span class="nav-text">7.2、前置环境安装和启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3、模拟应用系统"><span class="nav-number">8.3.</span> <span class="nav-text">7.3、模拟应用系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-4、启动-Flink-程序"><span class="nav-number">8.4.</span> <span class="nav-text">7.4、启动 Flink 程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8、总结"><span class="nav-number">9.</span> <span class="nav-text">8、总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#项目地址"><span class="nav-number">10.</span> <span class="nav-text">项目地址</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">11.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

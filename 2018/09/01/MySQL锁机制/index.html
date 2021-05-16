@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="进一步学习MySQL">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL锁机制">
+<meta property="og:url" content="http://yoursite.com/2018/09/01/MySQL锁机制/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="进一步学习MySQL">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/7097c713gy1futxqsqavtj21hc0u047n.jpg">
+<meta property="og:updated_time" content="2019-05-25T07:29:08.056Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL锁机制">
+<meta name="twitter:description" content="进一步学习MySQL">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713gy1futxqsqavtj21hc0u047n.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/01/MySQL锁机制/"/>
+
+
+
+
+
+  <title>MySQL锁机制 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/01/MySQL锁机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL锁机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T16:11:14+08:00">
+                2018-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/7097c713gy1futxqsqavtj21hc0u047n.jpg" alt=""></p>
+<center><strong>进一步学习MySQL</strong></center>
+
+<a id="more"></a>
+<hr>
+<h2 id="为什么要学习锁机制"><a href="#为什么要学习锁机制" class="headerlink" title="为什么要学习锁机制"></a>为什么要学习锁机制</h2><p><strong>锁是计算机协调多个进程或线程并发访问某一资源的机制。</strong></p>
+<p>因为数据也是一种供许多用户共享的资源，如何保证数据并发访问的一致性、有效性是所有数据库必须解决的一个问题，锁冲突也是影响数据库并发访问性能的一个重要因素，所以进一步学习MySQL，就需要去了解它的锁机制。</p>
+<p><strong>本文主要记录学习了 MyISAM 和 InnoDB 这两个存储引擎，而且更加关注的是 InnoDB（因为经常用😁）</strong></p>
+<hr>
+<h2 id="MySQL锁概述："><a href="#MySQL锁概述：" class="headerlink" title="MySQL锁概述："></a>MySQL锁概述：</h2><blockquote>
+<p>相对其他数据库而言，MySQL 的锁机制比较简单，其最显著的特点是不同的存储引擎支持不同的锁机制。比如，MyISAM和MEMORY存储引擎采用的是表级锁（table-level locking）；BDB存储引擎采用的是页面锁（page-level locking），但也支持表级锁；InnoDB存储引擎既支持行级锁（row-level locking），也支持表级锁，但默认情况下是采用行级锁。<br>MySQL这3种锁的特性可大致归纳如下。</p>
+<p>开销、加锁速度、死锁、粒度、并发性能<br> ①：表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高,并发度最低。</p>
+<p> ②：行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低,并发度也最高。</p>
+<p> ③：页面锁：开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般。</p>
+</blockquote>
+<p>从上述特点可见，很难笼统地说哪种锁更好，只能就具体应用的特点来说哪种锁更合适！仅从锁的角度来说：表级锁更适合于以查询为主，只有少量按索引条件更新数据的应用，如Web应用；而行级锁则更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用，如一些在线事务处理（OLTP）系统。由于BDB已经被InnoDB取代，即将成为历史（所以现在基本都在使用InnoDB存储引擎）。</p>
+<hr>
+<h2 id="MyISAN存储引擎"><a href="#MyISAN存储引擎" class="headerlink" title="MyISAN存储引擎"></a>MyISAN存储引擎</h2><p>MyISAM 存储引擎只支持表锁，这也是 MySQL 开始几个版本中唯一支持的锁类型。</p>
+<h2 id="MySQL表级锁"><a href="#MySQL表级锁" class="headerlink" title="MySQL表级锁"></a>MySQL表级锁</h2><h3 id="查询表锁争用情况"><a href="#查询表锁争用情况" class="headerlink" title="查询表锁争用情况"></a>查询表锁争用情况</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show status like &apos;table%&apos;;</div><div class="line">+----------------------------+-------+</div><div class="line">| Variable_name              | Value |</div><div class="line">+----------------------------+-------+</div><div class="line">| Table_locks_immediate      | 4     |</div><div class="line">| Table_locks_waited         | 0     |</div><div class="line">| Table_open_cache_hits      | 4     |</div><div class="line">| Table_open_cache_misses    | 8     |</div><div class="line">| Table_open_cache_overflows | 0     |</div><div class="line">+----------------------------+-------+</div><div class="line">5 rows in set (0.00 sec)</div></pre></td></tr></table></figure>
+<p><strong>如果 Table_locks_waited 的值比较高，则说明存在着较严重的表级锁争用情况。</strong></p>
+<hr>
+<h3 id="MySQL的表级锁的两种模式"><a href="#MySQL的表级锁的两种模式" class="headerlink" title="MySQL的表级锁的两种模式"></a>MySQL的表级锁的两种模式</h3><ul>
+<li>表共享读锁（Table Read Lock）</li>
+<li>表独占写锁（Table Write Lock）</li>
+</ul>
+<p>MySQL中的表锁兼容性：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求锁模式<br>矩阵结果表示是否兼容<br>当前锁模式</th>
+<th style="text-align:left">None</th>
+<th style="text-align:left">读锁</th>
+<th style="text-align:left">写锁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">读锁</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">否</td>
+</tr>
+<tr>
+<td style="text-align:left">写锁</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+</tr>
+</tbody>
+</table>
+<p>也就是说，在MyISAM读模式下，不会阻塞其它用户的同一表读操作，但是会阻塞写操作；而在写模式下，会同时阻塞其它用户同一表的读写操作。</p>
+<hr>
+<h3 id="测试MyISAM的写锁模式"><a href="#测试MyISAM的写锁模式" class="headerlink" title="测试MyISAM的写锁模式"></a>测试MyISAM的写锁模式</h3><p>新建一个user表，引擎是MyISAM：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mysql&gt; desc user;</div><div class="line">+---------+-------------+------+-----+---------+----------------+</div><div class="line">| Field   | Type        | Null | Key | Default | Extra          |</div><div class="line">+---------+-------------+------+-----+---------+----------------+</div><div class="line">| id      | int(11)     | NO   | PRI | NULL    | auto_increment |</div><div class="line">| name    | varchar(20) | YES  |     | NULL    |                |</div><div class="line">| age     | int(3)      | YES  |     | NULL    |                |</div><div class="line">| address | varchar(60) | YES  |     | NULL    |                |</div><div class="line">+---------+-------------+------+-----+---------+----------------+</div><div class="line">4 rows in set (0.01 sec)</div></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">session A</th>
+<th style="text-align:left">session B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">获得user表的锁锁定<br>mysql&gt; lock table user write;<br>Query OK, 0 rows affected (0.00 sec)<br>mysql&gt;select * from user;<br>Empty set (0.00 sec)<br>mysql&gt; insert into user(id, name, age, address) values(1, ‘test’, 18, ‘test address’);<br>Query OK,1 row affected (0.02 sec)</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">mysql&gt; select * from user\G<br>被阻塞了，一直卡住在这，没有返回结果</td>
+</tr>
+<tr>
+<td style="text-align:left">mysql&gt; unlock tables;<br>Query OK, 0 rows affected (0.00 sec)</td>
+<td style="text-align:left">等待</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">mysql&gt; select <em> from user\G<br><strong><strong>*</strong></strong></em><br> name: test<br>age: 18<br>address: test address<br>1 row in set (5 min 29.61 sec)</td>
+</tr>
+</tbody>
+</table>
+<p>可以看出，通过<code>lock table user write</code>将user表锁住后，其它用户进行对该表操作时，都会被阻塞。</p>
+<hr>
+<h3 id="测试MyISAM读锁"><a href="#测试MyISAM读锁" class="headerlink" title="测试MyISAM读锁"></a>测试MyISAM读锁</h3><blockquote>
+<p>在用LOCK TABLES给表显式加表锁时，必须同时取得所有涉及到表的锁，并且MySQL不支持锁升级。也就是说，在执行LOCK TABLES后，只能访问显式加锁的这些表，不能访问未加锁的表；同时，如果加的是读锁，那么只能执行查询操作，而不能执行更新操作。其实，在自动加锁的情况下也基本如此，MyISAM总是一次获得SQL语句所需要的全部锁。这也正是MyISAM表不会出现死锁（Deadlock Free）的原因。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">session A</th>
+<th style="text-align:left">session B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">获得user表的读锁定<br>mysql&gt; lock table user read;<br>Query OK, 0 rows affected (0.00 sec)</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">mysql&gt; select * from user where id = 1 \G<br>中从查询速度中可以看出，sessionB并没有被阻塞<br>1 row in set (0.00 sec)</td>
+</tr>
+<tr>
+<td style="text-align:left">由于没有获取order表的读锁定，所以不能查询order表<br>mysql&gt; select * from <code>order</code>;<br>ERROR 1100 (HY000): Table ‘order’ was not locked with LOCK TABLES</td>
+<td style="text-align:left">但是session B可以访问oder表，不阻塞<br>mysql&gt; select * from <code>order</code>;<br>Empty set (0.00 sec)</td>
+</tr>
+<tr>
+<td style="text-align:left">获得读锁定时，不能进行写操作<br>mysql&gt; update user set name = ‘wahaha’ where id = 1;<br>ERROR 1099 (HY000): Table ‘user’ was locked with a READ lock and can’t be updated</td>
+<td style="text-align:left">其它session进行更新操作时，会被阻塞<br>mysql&gt; update user set name = ‘wahaha’ where id = 1;<br>等待ing</td>
+</tr>
+<tr>
+<td style="text-align:left">释放锁<br>mysql&gt; unlock tables;<br>Query OK, 0 rows affected (0.00 sec)</td>
+<td style="text-align:left">等待</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">mysql&gt; update user set name = ‘wahaha’ where id = 1;<br>Query OK, 1 row affected (1 min 6.43 sec)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="MyISAM支持并发插入"><a href="#MyISAM支持并发插入" class="headerlink" title="MyISAM支持并发插入"></a>MyISAM支持并发插入</h3><p>MyISAM表的读和写是串行的，但这是就总体而言的。在一定条件下，MyISAM表也支持查询和插入操作的并发进行。MyISAM存储引擎有一个<strong>系统变量concurrent_insert，专门用以控制其并发插入的行为，其值分别可以为0、1或2。</strong></p>
+<ul>
+<li>当concurrent_insert设置为0时，不允许并发插入。</li>
+<li>当concurrent_insert设置为1时，如果MyISAM表中没有空洞（即表的中间没有被删除的行），MyISAM允许在一个进程读表的同时，另一个进程从表尾插入记录。这也是MySQL的默认设置。</li>
+<li>当concurrent_insert设置为2时，无论MyISAM表中有没有空洞，都允许在表尾并发插入记录。</li>
+</ul>
+<hr>
+<h3 id="MyISAM的锁调度"><a href="#MyISAM的锁调度" class="headerlink" title="MyISAM的锁调度"></a>MyISAM的锁调度</h3><p><strong>MyISAM存储引擎的读锁和写锁是互斥的，读写操作是串行的</strong>。<br>但它认为<strong>写锁的优先级比读锁高</strong>，所以即使读请求先到锁等待队列，写请求后到，写锁也会插到读锁请求之前！<br>这也正是MyISAM表不太适合于有大量更新操作和查询操作应用的原因，因为，大量的更新操作会造成查询操作很难获得读锁，从而可能永远阻塞。<br>可以通过一些设置来调节MyISAM的调度行为。</p>
+<ul>
+<li>通过指定启动参数low-priority-updates，使MyISAM引擎默认给予读请求以优先的权利。</li>
+<li>通过执行命令SET LOW_PRIORITY_UPDATES=1，使该连接发出的更新请求优先级降低。</li>
+<li>通过指定INSERT、UPDATE、DELETE语句的LOW_PRIORITY属性，降低该语句的优先级。</li>
+</ul>
+<blockquote>
+<p>虽然上面3种方法都是要么更新优先，要么查询优先的方法，但还是可以用其来解决查询相对重要的应用（如用户登录系统）中，读锁等待严重的问题。<br>另外，MySQL也提供了一种折中的办法来调节读写冲突，即给系统参数max_write_lock_count设置一个合适的值，当一个表的读锁达到这个值后，MySQL就暂时将写请求的优先级降低，给读进程一定获得锁的机会。<br>上面已经讨论了写优先调度机制带来的问题和解决办法。这里还要强调一点：一些需要长时间运行的查询操作，也会使写进程“饿死”！因此，应用中应尽量避免出现长时间运行的查询操作，不要总想用一条SELECT语句来解决问题，因为这种看似巧妙的SQL语句，往往比较复杂，执行时间较长，在可能的情况下可以通过使用中间表等措施对SQL语句做一定的“分解”，使每一步查询都能在较短时间完成，从而减少锁冲突。如果复杂查询不可避免，应尽量安排在数据库空闲时段执行，比如一些定期统计可以安排在夜间执行。</p>
+</blockquote>
+<hr>
+<h2 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h2><blockquote>
+<p>InnoDB与MyISAM的最大不同有两点：一是支持事务（TRANSACTION）；二是采用了行级锁。行级锁与表级锁本来就有许多不同之处，另外，事务的引入也带来了一些新问题。</p>
+</blockquote>
+<h3 id="事务概念"><a href="#事务概念" class="headerlink" title="事务概念"></a>事务概念</h3><p>学习Spring的时候，一般通过注解<code>@Transitional</code>就能启动spring的事务管理，在MySQL中也同样支持事务的四个原则<strong>ACID</strong>：</p>
+<ul>
+<li><strong>A(Atomicity)原子性:</strong>事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行。</li>
+<li><strong>C(Consistent)一致性：</strong>在事务开始和完成时，数据都必须保持一致状态。这意味着所有相关的数据规则都必须应用于事务的修改，以保持数据的完整性；事务结束时，所有的内部数据结构（如B树索引或双向链表）也都必须是正确的。</li>
+<li><strong>I(Isolation)隔离性：</strong>数据库系统提供一定的隔离机制，保证事务在不受外部并发操作影响的“独立”环境执行。这意味着事务处理过程中的中间状态对外部是不可见的，反之亦然。</li>
+<li><strong>D(Durable)持久性：</strong>事务完成之后，它对于数据的修改是永久性的，即使出现系统故障也能够保持。</li>
+</ul>
+<hr>
+<h3 id="并发事务处理带来的问题"><a href="#并发事务处理带来的问题" class="headerlink" title="并发事务处理带来的问题"></a>并发事务处理带来的问题</h3><blockquote>
+<p>相对于串行处理来说，并发事务处理能大大增加数据库资源的利用率，提高数据库系统的事务吞吐量，从而可以支持更多的用户。但并发事务处理也会带来一些问题，主要包括以下几种情况。</p>
+</blockquote>
+<ul>
+<li><strong>更新丢失（Last update）</strong>：A和B同时对一行数据进行处理，A修改后进行保存，然后B修改后进行保存，这样A的更新被覆盖了，相当于发生丢失更新的问题。所以可以在A事务未结束前，B不能访问该记录，这样就能避免更新丢失的问题。</li>
+<li><strong>脏读（Dirty Reads）</strong>：A事务在对一条记录做修改，但还未提交，这条记录处于不一致的状态；这时，B事务也来读同一条记录，这时如果没有加控制，B读了未修改前的数据，并根据该数据进行进一步处理，就会产生未提交的数据依赖关系。这种现象叫做“脏读”</li>
+<li><strong>不可重复读（Non-Repeatable Reads）</strong>：B事务在读取某些数据后的某个时间，再次读取以前读过的数据，却发现其读出的数据已经发生了改变（被更新或者删除了，例如A事务修改了）。这种现象叫做“不可重复读”。</li>
+<li><strong>幻读（Phantom Reads)</strong>：A事务按照相同查询条件，重新读取之前检索过得内容，却发现其它事务插入或修改其查询条件的新数据，这种现象就叫”幻读“。</li>
+</ul>
+<hr>
+<h3 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h3><blockquote>
+<p>数据库的事务隔离越严格，并发副作用越小，但付出的代价也就越大，因为事务隔离实质上就是使事务在一定程度上 “串行化”进行，这显然与“并发”是矛盾的。同时，不同的应用对读一致性和事务隔离程度的要求也是不同的，比如许多应用对“不可重复读”和“幻读”并不敏感，可能更关心数据并发访问的能力。</p>
+</blockquote>
+<p>4种隔离级别比较</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">读数据一致性及允许的并发副作用<br>隔离级别</th>
+<th style="text-align:left">读数据一致性</th>
+<th style="text-align:left">脏读</th>
+<th style="text-align:left">不可重复读</th>
+<th style="text-align:left">幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">未提交读（Read uncommitted)</td>
+<td style="text-align:left">最低级别，只能保证不读取<br>物理上损害的数据</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">已提交读（Read committed）</td>
+<td style="text-align:left">语句级</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">是</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">可重复读（Repeatable read）</td>
+<td style="text-align:left">事务级</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">是</td>
+</tr>
+<tr>
+<td style="text-align:left">可序列化（Serializable）</td>
+<td style="text-align:left">最高级别，事务级</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+<td style="text-align:left">否</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="获取InnoDB行锁争用情况"><a href="#获取InnoDB行锁争用情况" class="headerlink" title="获取InnoDB行锁争用情况"></a>获取InnoDB行锁争用情况</h3><p>检查InnoDB_row_lock状态变量来分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show status like &apos;InnoDB_row_lock%&apos;;</div><div class="line">+-------------------------------+-------+</div><div class="line">| Variable_name                 | Value |</div><div class="line">+-------------------------------+-------+</div><div class="line">| Innodb_row_lock_current_waits | 0     |</div><div class="line">| Innodb_row_lock_time          | 0     |</div><div class="line">| Innodb_row_lock_time_avg      | 0     |</div><div class="line">| Innodb_row_lock_time_max      | 0     |</div><div class="line">| Innodb_row_lock_waits         | 0     |</div><div class="line">+-------------------------------+-------+</div><div class="line">5 rows in set (0.00 sec)</div></pre></td></tr></table></figure></p>
+<p><strong>如果InnoDB_row_lock_waits和InnoDB_row_lock_time_avg的值比较高，表示锁争用情况比较严重。</strong></p>
+<hr>
+<h3 id="InnoDB的行锁模式以及加锁方法"><a href="#InnoDB的行锁模式以及加锁方法" class="headerlink" title="InnoDB的行锁模式以及加锁方法"></a>InnoDB的行锁模式以及加锁方法</h3><p>InnoDB实现了一下两种类型的行锁：</p>
+<ul>
+<li>共享锁(S)：允许一个事务去多一行，阻止其它事务获得相同数据集的排他锁。</li>
+<li>排他锁(X): 允许获得排他锁的事务更新数据，阻止其它事务获得相同数据集的共享锁和排他写锁。</li>
+</ul>
+<p>另外，为了允许行锁和表锁共存，实现多粒度锁机制，<strong>InnoDB还有两种内部使用的意向锁（Intention Locks），这两种意向锁都是表锁</strong>。（感觉与MyISAM的表锁机制类似）</p>
+<ul>
+<li>意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先取得该表的IS锁。</li>
+<li>意向排他锁（IX）：事务打算给数据行加行排他锁，事务在给一个数据行加排他锁前必须先取得该表的IX锁。</li>
+</ul>
+<hr>
+<p><strong>InnoDB行锁模式兼容性列表:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求锁模式<br>矩阵结果表示是否兼容<br> 当前锁模式</th>
+<th style="text-align:left">X</th>
+<th style="text-align:left">IX</th>
+<th style="text-align:left">S</th>
+<th style="text-align:left">IS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">X</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">冲突</td>
+</tr>
+<tr>
+<td style="text-align:left">IX</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">兼容</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">兼容</td>
+</tr>
+<tr>
+<td style="text-align:left">S</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">兼容</td>
+<td style="text-align:left">兼容</td>
+</tr>
+<tr>
+<td style="text-align:left">IS</td>
+<td style="text-align:left">冲突</td>
+<td style="text-align:left">兼容</td>
+<td style="text-align:left">兼容</td>
+<td style="text-align:left">兼容</td>
+</tr>
+</tbody>
+</table>
+<p>如果一个事务请求的锁模式与当前的锁兼容，InnoDB就将请求的锁授予该事务；反之，如果两者不兼容，该事务就要等待锁释放。<br>意向锁是InnoDB自动加的；对于UPDATE、DELETE和INSERT语句，InnoDB会自动给设计数据集加排他锁（X）；对于普通的SELECT语句，InnoDB不会加锁。<br>可以通过以下语句显示给记录集加共享锁或排他锁：</p>
+<ul>
+<li>共享锁（S）：SELECT * FROM TABLE_NAME WHERE … LOCK IN SHARE MODE.</li>
+<li>排他锁（X）：SELECT * FROM TABLE_NAME WHERE … FOR UPDATE.</li>
+</ul>
+<blockquote>
+<p>用SELECT … IN SHARE MODE获得共享锁，主要用在需要数据依存关系时来确认某行记录是否存在，并确保没有人对这个记录进行UPDATE或者DELETE操作。但是如果当前事务也需要对该记录进行更新操作，则很有可能造成死锁，对于锁定行记录后需要进行更新操作的应用，应该使用SELECT… FOR UPDATE方式获得排他锁。</p>
+</blockquote>
+<p>所以在使用共享锁模式下，查询完数据后不要进行更新操作，不然又可能会造成死锁；要更新数据，应该使用排他锁模式。</p>
+<hr>
+<h3 id="InnoDB行锁实现方式"><a href="#InnoDB行锁实现方式" class="headerlink" title="InnoDB行锁实现方式"></a>InnoDB行锁实现方式</h3><blockquote>
+<p>InnoDB行锁是通过<strong>给索引上的索引项加锁来实现的</strong>，这一点MySQL与Oracle不同，后者是通过在数据块中对相应数据行加锁来实现的。InnoDB这种行锁实现特点意味着：<strong>只有通过索引条件检索数据，InnoDB才使用行级锁，否则，InnoDB将使用表锁！</strong>(这个问题遇到过，由于没加索引，<a href="https://vip-augus.github.io/2018/08/25/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%89%A7%E8%A1%8CMySQL%E8%80%97%E6%97%B6%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">行锁变表锁</a>）</p>
+</blockquote>
+<ul>
+<li>在不通过索引条件查询的时候，InnoDB确实使用的是表锁，而不是行锁。</li>
+<li>由于MySQL的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用相同的索引键，是会出现锁冲突的。</li>
+<li>当表有多个索引的时候，不同的事务可以使用不同的索引锁定不同的行，另外，不论是使用主键索引、唯一索引或普通索引，InnoDB都会使用行锁来对数据加锁。</li>
+<li>即便在条件中使用了索引字段，但是否使用索引来检索数据是由MySQL通过判断不同<strong>执行计划</strong>的代价来决定的，如果MySQL认为全表扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下InnoDB将使用表锁，而不是行锁。</li>
+</ul>
+<p><strong>可以通过explain执行计划查看是否真正使用了索引。</strong></p>
+<hr>
+<h2 id="间隙锁（Next-key锁）"><a href="#间隙锁（Next-key锁）" class="headerlink" title="间隙锁（Next-key锁）"></a>间隙锁（Next-key锁）</h2><blockquote>
+<p>当我们用范围条件而不是相等条件检索数据，并请求共享或排他锁时，InnoDB会给符合条件的已有数据记录的索引项加锁；对于键值在条件范围内但并不存在的记录，叫做“间隙（GAP)”，InnoDB也会对这个“间隙”加锁，这种锁机制就是所谓的间隙锁（Next-Key锁）。</p>
+</blockquote>
+<p>举个🌰：</p>
+<blockquote>
+<p>假如emp表中只有101条记录，其id的值从1~101，下面的sql：<br>select * from emp where id &gt; 100 for update;<br>是范围条件查询，InnoDB不仅会对符合条件的id值为101的记录加锁，也会对id大于101（并不存在的值）的“间隙”加锁。</p>
+</blockquote>
+<p>结论：</p>
+<blockquote>
+<p>很显然，在使用范围条件检索并锁定记录时，InnoDB这种加锁机制会阻塞符合条件范围内键值的并发插入，这往往会造成严重的锁等待。因此，在实际应用开发中，尤其是并发插入比较多的应用，我们要尽量优化业务逻辑，尽量使用相等条件来访问更新数据，避免使用范围条件。</p>
+</blockquote>
+<hr>
+<h2 id="关于死锁（DeadLock"><a href="#关于死锁（DeadLock" class="headerlink" title="关于死锁（DeadLock)"></a>关于死锁（DeadLock)</h2><p>上面知识点说过，MyISAM表锁是deadlock free的，这是因为MyISAM总是一次获得所需的全部锁，要么全部满足，要么等待，因此不会出现死锁。但在InnoDB中，除单个SQL组成的事务外，锁是逐步或得的，所以InnoDB发生死锁是可能的。</p>
+<p>举个🌰：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">session A</th>
+<th style="text-align:left">session B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">mysql&gt; set autocommit = 0;<br>Query OK, 0 rows affected (0.00 sec)<br>mysql&gt; select * from table_1 where where id=1 for update;<br>…<br>做一些其他处理…</td>
+<td style="text-align:left">mysql&gt; set autocommit = 0;<br>Query OK, 0 rows affected (0.00 sec)<br>mysql&gt; select * from table_2 where id=1 for update;<br>…</td>
+</tr>
+<tr>
+<td style="text-align:left">select * from table_2 where id =1 for update;<br>因session_2已取得排他锁，等待</td>
+<td style="text-align:left">做一些其他处理…</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">mysql&gt; select * from table_1 where where id=1 for update;<br>死锁</td>
+</tr>
+</tbody>
+</table>
+<p>也就是我们死锁产生的条件，互相持有资源不释放，还有环形等待。</p>
+<blockquote>
+<p>发生死锁后，InnoDB一般都能自动检测到，并使一个事务释放锁并回退，另一个事务获得锁，继续完成事务。但在涉及外部锁，或涉及表锁的情况下，InnoDB并不能完全自动检测到死锁，这需要通过<strong>设置锁等待超时参数 innodb_lock_wait_timeout</strong>来解决。需要说明的是，这个参数并不是只用来解决死锁问题，在并发访问比较高的情况下，如果大量事务因无法立即获得所需的锁而挂起，会占用大量计算机资源，造成严重性能问题，甚至拖跨数据库。我们通过设置合适的锁等待超时阈值，可以避免这种情况发生。</p>
+</blockquote>
+<h3 id="避免死锁的方法"><a href="#避免死锁的方法" class="headerlink" title="避免死锁的方法"></a>避免死锁的方法</h3><ol>
+<li>在应用中，如果不同的程序会并发存取多个表，应尽量约定以相同的顺序来访问表，这样可以大大降低产生死锁的机会。在下面的例子中，由于两个session访问两个表的顺序不同，发生死锁的机会就非常高！但如果以相同的顺序来访问，死锁就可以避免。</li>
+<li>在程序以批量方式处理数据的时候，如果事先对数据排序，保证每个线程按固定的顺序来处理记录，也可以大大降低出现死锁的可能。</li>
+<li>在事务中，如果要更新记录，应该直接申请足够级别的锁，即排他锁，而不应先申请共享锁，更新时再申请排他锁，因为当用户申请排他锁时，其他事务可能又已经获得了相同记录的共享锁，从而造成锁冲突，甚至死锁。</li>
+<li>在REPEATABLE-READ隔离级别下，如果两个线程同时对相同条件记录用SELECT…FOR UPDATE加排他锁，在没有符合该条件记录情况下，两个线程都会加锁成功。程序发现记录尚不存在，就试图插入一条新记录，如果两个线程都这么做，就会出现死锁。这种情况下，<strong>将隔离级别改成READ COMMITTED</strong>，就可避免问题。</li>
+<li>当隔离级别为READ COMMITTED时，如果两个线程都先执行SELECT…FOR UPDATE，判断是否存在符合条件的记录，如果没有，就插入记录。此时，只有一个线程能插入成功，另一个线程会出现锁等待，当第1个线程提交后，第2个线程会因主键重出错，但虽然这个线程出错了，却会获得一个排他锁！这时如果有第3个线程又来申请排他锁，也会出现死锁。<ul>
+<li>对于这种情况，可以直接做插入操作，然后再捕获主键重异常，或者在遇到主键重错误时，总是执行ROLLBACK释放获得的排他锁</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>这是一篇学习文章，关于MySQL的锁机制又多了几分了解，以后在写SQL和排查问题时候，尽量避免死锁和更快定位问题所在。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
+<li><a href="http://www.cnblogs.com/sessionbest/articles/8689082.html" target="_blank" rel="noopener">mysql什么情况下会触发表锁</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/记一次线上OOM和性能优化/" rel="next" title="记一次线上OOM和性能优化">
+                <i class="fa fa-chevron-left"></i> 记一次线上OOM和性能优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/08/java/Java设计模式学习-责任链模式/" rel="prev" title="Java设计模式学习 - 责任链模式">
+                Java设计模式学习 - 责任链模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要学习锁机制"><span class="nav-number">1.</span> <span class="nav-text">为什么要学习锁机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL锁概述："><span class="nav-number">2.</span> <span class="nav-text">MySQL锁概述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyISAN存储引擎"><span class="nav-number">3.</span> <span class="nav-text">MyISAN存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL表级锁"><span class="nav-number">4.</span> <span class="nav-text">MySQL表级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询表锁争用情况"><span class="nav-number">4.1.</span> <span class="nav-text">查询表锁争用情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL的表级锁的两种模式"><span class="nav-number">4.2.</span> <span class="nav-text">MySQL的表级锁的两种模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试MyISAM的写锁模式"><span class="nav-number">4.3.</span> <span class="nav-text">测试MyISAM的写锁模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试MyISAM读锁"><span class="nav-number">4.4.</span> <span class="nav-text">测试MyISAM读锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM支持并发插入"><span class="nav-number">4.5.</span> <span class="nav-text">MyISAM支持并发插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM的锁调度"><span class="nav-number">4.6.</span> <span class="nav-text">MyISAM的锁调度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InnoDB"><span class="nav-number">5.</span> <span class="nav-text">InnoDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务概念"><span class="nav-number">5.1.</span> <span class="nav-text">事务概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发事务处理带来的问题"><span class="nav-number">5.2.</span> <span class="nav-text">并发事务处理带来的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务的隔离级别"><span class="nav-number">5.3.</span> <span class="nav-text">事务的隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取InnoDB行锁争用情况"><span class="nav-number">5.4.</span> <span class="nav-text">获取InnoDB行锁争用情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB的行锁模式以及加锁方法"><span class="nav-number">5.5.</span> <span class="nav-text">InnoDB的行锁模式以及加锁方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB行锁实现方式"><span class="nav-number">5.6.</span> <span class="nav-text">InnoDB行锁实现方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#间隙锁（Next-key锁）"><span class="nav-number">6.</span> <span class="nav-text">间隙锁（Next-key锁）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于死锁（DeadLock"><span class="nav-number">7.</span> <span class="nav-text">关于死锁（DeadLock)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#避免死锁的方法"><span class="nav-number">7.1.</span> <span class="nav-text">避免死锁的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">8.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">9.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

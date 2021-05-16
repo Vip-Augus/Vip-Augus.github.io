@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Spring 源码学习(六)扩展功能 上篇">
+<meta property="og:url" content="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-6/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/PantheraLeoDad_ZH-CN9580668524_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/property_placeholder_configure_diagram.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/invokeBeanFactoryPostProcessors.png">
+<meta property="og:updated_time" content="2019-07-21T03:23:32.498Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Spring 源码学习(六)扩展功能 上篇">
+<meta name="twitter:description" content="Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/PantheraLeoDad_ZH-CN9580668524_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-6/"/>
+
+
+
+
+
+  <title>Spring Spring 源码学习(六)扩展功能 上篇 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Spring 源码学习(六)扩展功能 上篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-22T00:06:00+08:00">
+                2019-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/PantheraLeoDad_ZH-CN9580668524_1920x1080.jpg" alt=""></p>
+<center>Spring 提供的强大扩展功能- BeanFactoryPostProcessor 后处理器</center>
+
+<a id="more"></a>
+<hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>结束了前面的基础结构分析，了解到 <code>Spring</code> 是如何识别配置文件和进行解析属性，最终将 <code>bean</code> 加载到内存中。<strong>同时为了更好得理解 <code>Spring</code> 的扩展功能，我们先来巩固一下 <code>beanFactory</code> 和 <code>bean</code> 的概念，然后再分析新内容后处理器 <code>PostProcessor</code> 。</strong></p>
+<p>首先我们先将 <code>Spring</code> 想像成一个大容器，然后保存了很多 <code>bean</code> 的信息，根据定义：<strong><code>bean</code> 是一个被实例化，组装，并通过 <code>Spring IoC</code> 容器所管理的对象</strong>，也可以简单得理解为我们在配置文件配置好元数据，<code>Spring IoC</code> 容器会帮我们对 <code>bean</code> 进行管理，这些对象在=使用的时候通过 <code>Spring</code> 取出就能使用。</p>
+<p><strong>那么是谁帮这个 <code>Spring</code> 管理呢，那就是 <code>BeanFactory</code>，粗暴点直译为 <code>bean</code> 工厂，但其实它才是承担容器功能的幕后实现者，它是一个接口，提供了获取 <code>bean</code> 、获取别名 <code>Alias</code> 、判断单例、类型是否匹配、是否原型等方法定义，所以需要通过引用，实现具体方法才后才能使用。</strong></p>
+<p>回顾完 <code>beanFactory</code> 后，我们再来回顾在前面内容中，看到过很多后处理器 <code>PostProcessor</code> 的代码影子，分别是 <code>BeanFactoryPostProcessor</code>：主体是 <code>BeanFactory</code>， 和 <code>BeanPostProcessor</code>：主体是 <code>Bean</code>，<strong>这两者都是 <code>Spring</code> 用来为使用者提供的扩展功能之一。</strong></p>
+<p>接下来为了更好的分析和了解使用后处理器，实现扩展功能，一起跟踪源码学习吧~</p>
+<hr>
+<h1 id="BeanFactoryPostProcessor"><a href="#BeanFactoryPostProcessor" class="headerlink" title="BeanFactoryPostProcessor"></a>BeanFactoryPostProcessor</h1><h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p><code>BeanFactoryPostProcessor</code> 是一个接口，在里面只有一个方法定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>定义：是 <code>Spring</code> 对外提供可扩展的接口，能够在容器加载了所有 <code>bean</code> 信息（<code>AbstractApplicationContext#obtainFreshBeanFactory</code> 方法）之后，<code>bean</code> 实例化之前执行，用来修改 <code>bean</code> 的定义属性。</strong></p>
+<p><strong>可以看到，方法参数是 <code>ConfigurableListableBeanFactory beanFactory</code> ，说明我们可以通过引用该接口，在方法中实现逻辑，对容器中 <code>bean</code> 的定义（配置元数据）进行处理</strong></p>
+<p>同时，执行后处理器是有先后顺序的概念，我们可以通过设置 <code>order</code> 属性来控制它们的执行次序，前提是 <code>BeanFactoryPostProcessor</code> 实现了 <code>Order</code> 接口。</p>
+<p>下面一起来看下它的如何使用，以及是如何进行注册和执行~</p>
+<hr>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="官方例子：PropertyPlaceholderConfigurer"><a href="#官方例子：PropertyPlaceholderConfigurer" class="headerlink" title="官方例子：PropertyPlaceholderConfigurer"></a>官方例子：PropertyPlaceholderConfigurer</h3><p>这个类是 <code>Spring</code> 容器里自带的后处理器，是用来替换占位符，填充属性到 <code>bean</code> 中。</p>
+<p>像我们在 <code>xml</code> 文件中配置了属性值为 <code>${max.threads}</code>，能够通过它来找到 <code>max.threads</code> 在配置文件对应的值，然后将属性填充到 <code>bean</code> 中。</p>
+<p><strong>虽然在 Spring 5 中，<code>PropertyPlaceholderConfigurer</code> 已经打上了不建议使用的标志 <code>@Deprecated</code>，看了文件注释，提示我们去使用 <code>Environment</code> 来设置属性，但我觉得这个后处理器的思想是一样的，所以还是拿它作为例子进行熟悉。</strong></p>
+<p>先来看下它的继承体系：</p>
+<p><img src="http://img.sevenyuan.cn/property_placeholder_configure_diagram.png" alt="property_placeholder_configure_diagram"></p>
+<p><del>忽略它被冷落的下划线标签</del></p>
+<p>当 <code>Spring</code> 加载任何实现了 <code>BeanFactoryPostProcessor</code> 接口的 <code>bean</code> 配置时，<strong>都会在 <code>bean</code> 工厂载入所有 <code>bean</code> 的配置之后执行 <code>postProcessBeanFactory</code> 方法</strong>。 </p>
+<p>可以看到它引用了 <code>BeanFactoryPostProcessor</code> 接口，在 <code>PropertyResourceConfigurer</code> 父类中实现了 <code>postProcessBeanFactory</code>，在方法中依次调用了合并资源 <code>mergedProps</code> 方法，属性转换 <code>convertProperties</code> 方法和<strong>真正修改 <code>beanFactory</code> 中配置元数据的 <code>processProperties(beanFactory, mergedProps)</code> 方法</strong>。</p>
+<p>因为通过在 <code>PropertyPlaceholderConfigurer</code> 的后处理方法 <code>postProcessBeanFactory</code>，<code>BeanFactory</code> 在实例化任何 <code>bean</code> 之前获得配置信息，<strong>从而能够正确解析 <code>bean</code> 描述文件中的变量引用</strong>。</p>
+<p><strong>所以通过后处理器，我们能够对 <code>beanFactory</code> 中的 <code>bean</code> 配置信息在实例化前还有机会进行修改。</strong></p>
+<p>题外话：想到之前我遇到全半角空格的配置问题，程序认为全半角空格不是同一个字符，但肉眼却很难察觉，所以感觉可以在加载配置信息时，通过自定义一个后处理，在实例化之前，将全角空格转成半角空格，这样程序比较时都变成统一样式。<strong>所以后处理器提供的扩展功能可以让我们对想要处理的 <code>bean</code> 配置信息进行特定修改</strong></p>
+<hr>
+<h3 id="使用自定义-BeanFactoryPostProcessor"><a href="#使用自定义-BeanFactoryPostProcessor" class="headerlink" title="使用自定义 BeanFactoryPostProcessor"></a>使用自定义 BeanFactoryPostProcessor</h3><p>实现的功能与书中的类似，例如之前西安奔驰汽车维权事件，如果相关网站想要屏蔽这奔驰这两个字，可以通过后处理器进行替换：</p>
+<p><strong>1. 配置文件 factory-post-processor.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"carPostProcessor"</span> <span class="attr">class</span>=<span class="string">"context.CarBeanFactoryPostProcessor"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"obscenties"</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!--set 属性--&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">set</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">value</span>&gt;</span>奔驰<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">value</span>&gt;</span>特斯拉<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">set</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"car"</span> <span class="attr">class</span>=<span class="string">"base.factory.bean.Car"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"price"</span> <span class="attr">value</span>=<span class="string">"10000"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"brand"</span> <span class="attr">value</span>=<span class="string">"奔驰"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>2. 后处理器 CarBeanFactoryPostProcessor</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarBeanFactoryPostProcessor</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line"><span class="comment">	 * 敏感词</span></div><div class="line"><span class="comment">	 */</span></div><div class="line">	<span class="keyword">private</span> Set&lt;String&gt; obscenties;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">		<span class="comment">// 从 beanFactory 中获取 bean 名字列表</span></div><div class="line">		String[] beanNames = beanFactory.getBeanDefinitionNames();</div><div class="line">		<span class="keyword">for</span> (String beanName : beanNames) &#123;</div><div class="line">			BeanDefinition definition = beanFactory.getBeanDefinition(beanName);</div><div class="line">			StringValueResolver valueResolver = strVal -&gt; &#123;</div><div class="line">				<span class="keyword">if</span> (isObscene(strVal)) <span class="keyword">return</span> <span class="string">"*****"</span>;</div><div class="line">				<span class="keyword">return</span> strVal;</div><div class="line">			&#125;;</div><div class="line">			BeanDefinitionVisitor visitor = <span class="keyword">new</span> BeanDefinitionVisitor(valueResolver);</div><div class="line">			<span class="comment">// 这一步才是真正处理 bean 的配置信息</span></div><div class="line">			visitor.visitBeanDefinition(definition);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line"><span class="comment">	 * 判断 value 是否在敏感词列表中</span></div><div class="line"><span class="comment">	 * <span class="doctag">@param</span> value	值</span></div><div class="line"><span class="comment">	 * <span class="doctag">@return</span>		boolean</span></div><div class="line"><span class="comment">	 */</span></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isObscene</span><span class="params">(Object value)</span> </span>&#123;</div><div class="line">		String potentialObscenity = value.toString().toUpperCase();</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.obscenties.contains(potentialObscenity);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>3. 启动</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanFactoryPostProcessorBootstrap</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	    ConfigurableApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"factory.bean/factory-post-processor.xml"</span>);</div><div class="line">	    <span class="comment">// 这两行其实可以不写，因为在 refresh() 方法中，调用了一个函数将后处理器执行了，具体请往下看~</span></div><div class="line">	    BeanFactoryPostProcessor beanFactoryPostProcessor = (BeanFactoryPostProcessor) context.getBean(<span class="string">"carPostProcessor"</span>);</div><div class="line">	    beanFactoryPostProcessor.postProcessBeanFactory(context.getBeanFactory());</div><div class="line">	    <span class="comment">// 输出 ：Car&#123;maxSpeed=0, brand='*****', price=10000.0&#125;，敏感词被替换了</span></div><div class="line">	    System.out.println(context.getBean(<span class="string">"car"</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过上面的演示代码，新增一个自定义实现 <code>BeanFactoryPostProcessor</code> 的后处理器 <code>CarBeanFactoryPostProcessor</code>，在 <code>postProcessBeanFactory</code> 方法中进行逻辑处理，最后通过 <code>visitor.visitBeanDefinition</code> 修改配置信息。</p>
+<p><strong>查看输出结果，能发现宝马敏感词已经被屏蔽了，实现了后处理器的逻辑功能~</strong></p>
+<hr>
+<h2 id="在哪注册"><a href="#在哪注册" class="headerlink" title="在哪注册"></a>在哪注册</h2><p>按照一般套路，后处理器需要有个地方进行注册，然后才能进行执行，通过代码分析，的确在 <code>AbstractApplicationContext</code> 中看到了 <code>beanFactoryPostProcessors</code> 数组列表，但往数组中添加后处理器的方法 <code>addBeanFactoryPostProcessor</code> 只在单元测试包调用了。</p>
+<p><strong>这让我很迷惑它到底是在哪里进行注册，直到我看到它的执行方法，原来我们定义的后处理器在 <code>bean</code> 信息加载时就放入注册表中，然后通过 <code>beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false)</code> 方法获取后处理器列表遍历执行。</strong></p>
+<p><strong>所以前面的 <code>beanFactoryPostProcessors</code> 数组列表，是让我们通过硬编码方法方式，手动添加进去，然后通过 <code>context.refresh()</code> 方法后，再执行硬编码的后处理器</strong></p>
+<p>例如下面这个例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HardCodeBeanFactoryPostProcessor</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">		System.out.println(<span class="string">"Hard Code BeanFactory Post Processor execute time"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 硬编码 后处理器执行时间</span></div><div class="line">BeanFactoryPostProcessor hardCodeBeanFactoryPostProcessor = <span class="keyword">new</span> HardCodeBeanFactoryPostProcessor();</div><div class="line">context.addBeanFactoryPostProcessor(hardCodeBeanFactoryPostProcessor);</div><div class="line"><span class="comment">// 更新上下文</span></div><div class="line">context.refresh();</div><div class="line"><span class="comment">// 输出：</span></div><div class="line"><span class="comment">//Hard Code BeanFactory Post Processor execute time</span></div><div class="line"><span class="comment">//Car&#123;maxSpeed=0, brand='*****', price=10000.0&#125;</span></div><div class="line">System.out.println(context.getBean(<span class="string">"car"</span>));</div></pre></td></tr></table></figure>
+<h2 id="激活-BeanFactoryPostProcessor"><a href="#激活-BeanFactoryPostProcessor" class="headerlink" title="激活 BeanFactoryPostProcessor"></a>激活 BeanFactoryPostProcessor</h2><p>看完了怎么使用后，我们来分析下 <code>Spring</code> 是如何识别和执行 <code>BeanFactoryPostProcessor</code>，入口方法：</p>
+<blockquote>
+<p>org.springframework.context.support.AbstractApplicationContext#invokeBeanFactoryPostProcessors</p>
+</blockquote>
+<p>实际上，委派了 <code>PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors())</code> 代理进行执行。由于代码有点长，所以我画了一个流程图，可以结合流程图来分析代码：</p>
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p><img src="http://img.sevenyuan.cn/invokeBeanFactoryPostProcessors.png" alt=""></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeBeanFactoryPostProcessors</span><span class="params">(ConfigurableListableBeanFactory beanFactory, List&lt;BeanFactoryPostProcessor&gt; beanFactoryPostProcessors)</span> </span>&#123;</div><div class="line">	Set&lt;String&gt; processedBeans = <span class="keyword">new</span> HashSet&lt;&gt;();</div><div class="line">	<span class="comment">// beanFactory 默认使用的是 DefaultListableBeanFactory，属于 BeanDefinitionRegistry</span></div><div class="line">	<span class="keyword">if</span> (beanFactory <span class="keyword">instanceof</span> BeanDefinitionRegistry) &#123;</div><div class="line">		BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;</div><div class="line">		<span class="comment">// 两个后处理器列表</span></div><div class="line">		List&lt;BeanFactoryPostProcessor&gt; regularPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		List&lt;BeanDefinitionRegistryPostProcessor&gt; registryProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		<span class="comment">// 硬编码注册的后处理器</span></div><div class="line">		<span class="keyword">for</span> (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) &#123;</div><div class="line">			<span class="comment">// 分类处理</span></div><div class="line">		&#125;</div><div class="line">		List&lt;BeanDefinitionRegistryPostProcessor&gt; currentRegistryProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		<span class="comment">// 首先，调用实现 priorityOrder 的 beanDefinition 这就是前面提到过的优先级概念，这一步跟下面的优先级不一样之处，这一步的优先级是带有权重</span></div><div class="line">		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</div><div class="line">		<span class="keyword">for</span> (String ppName : postProcessorNames) &#123;</div><div class="line">			<span class="keyword">if</span> (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) &#123;</div><div class="line">				currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));</div><div class="line">				processedBeans.add(ppName);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 对后处理器进行排序</span></div><div class="line">		sortPostProcessors(currentRegistryProcessors, beanFactory);</div><div class="line">		registryProcessors.addAll(currentRegistryProcessors);</div><div class="line">		invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);</div><div class="line">		currentRegistryProcessors.clear();</div><div class="line">		<span class="comment">// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.</span></div><div class="line">		postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</div><div class="line">		<span class="keyword">for</span> (String ppName : postProcessorNames) &#123;</div><div class="line">			<span class="keyword">if</span> (!processedBeans.contains(ppName) &amp;&amp; beanFactory.isTypeMatch(ppName, Ordered.class)) &#123;</div><div class="line">				currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));</div><div class="line">				processedBeans.add(ppName);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		sortPostProcessors(currentRegistryProcessors, beanFactory);</div><div class="line">		registryProcessors.addAll(currentRegistryProcessors);</div><div class="line">		<span class="comment">// 执行 definitionRegistryPostProcessor 接口的方法 ：postProcessBeanDefinitionRegistry</span></div><div class="line">		invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);</div><div class="line">		currentRegistryProcessors.clear();</div><div class="line">		<span class="comment">// Finally, invoke all other BeanDefinitionRegistryPostProcessors until no further ones appear.最后，调用所有其他后处理器，直到不再出现其他 bean 为止</span></div><div class="line">		<span class="keyword">boolean</span> reiterate = <span class="keyword">true</span>;</div><div class="line">		<span class="keyword">while</span> (reiterate) &#123;</div><div class="line">			reiterate = <span class="keyword">false</span>;</div><div class="line">			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</div><div class="line">			<span class="keyword">for</span> (String ppName : postProcessorNames) &#123;</div><div class="line">				<span class="keyword">if</span> (!processedBeans.contains(ppName)) &#123;</div><div class="line">					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));</div><div class="line">					processedBeans.add(ppName);</div><div class="line">					reiterate = <span class="keyword">true</span>;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			sortPostProcessors(currentRegistryProcessors, beanFactory);</div><div class="line">			registryProcessors.addAll(currentRegistryProcessors);</div><div class="line">			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);</div><div class="line">			currentRegistryProcessors.clear();</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 执行 postProcessBeanFactory 回调方法</span></div><div class="line">		invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);</div><div class="line">		invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 不要在这里初始化 factoryBean:我们需要保留所有常规 bean 未初始化，以便让 bean 工厂后处理程序应用于它们</span></div><div class="line">	<span class="comment">// 注释 6.4 在这个步骤中，我们自定义的 carBeanFactoryPostProcessor 才真正注册并执行</span></div><div class="line">	String[] postProcessorNames =</div><div class="line">			beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, <span class="keyword">true</span>, <span class="keyword">false</span>);.</div><div class="line">    <span class="comment">// 跳过分类的逻辑</span></div><div class="line">	<span class="comment">// 首先执行的是带有权重顺序的后处理器</span></div><div class="line">	sortPostProcessors(priorityOrderedPostProcessors, beanFactory);</div><div class="line">	invokeBeanFactoryPostProcessors(priorityOrderedPostProcessors, beanFactory);</div><div class="line">	<span class="comment">// 下一步执行普通顺序的后处理器</span></div><div class="line">	List&lt;BeanFactoryPostProcessor&gt; orderedPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;(orderedPostProcessorNames.size());</div><div class="line">	<span class="keyword">for</span> (String postProcessorName : orderedPostProcessorNames) &#123;</div><div class="line">		orderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));</div><div class="line">	&#125;</div><div class="line">	sortPostProcessors(orderedPostProcessors, beanFactory);</div><div class="line">	invokeBeanFactoryPostProcessors(orderedPostProcessors, beanFactory);</div><div class="line">	<span class="comment">// 最后执行的是普通的后处理器</span></div><div class="line">	List&lt;BeanFactoryPostProcessor&gt; nonOrderedPostProcessors = <span class="keyword">new</span> ArrayList&lt;&gt;(nonOrderedPostProcessorNames.size());</div><div class="line">	<span class="keyword">for</span> (String postProcessorName : nonOrderedPostProcessorNames) &#123;</div><div class="line">		nonOrderedPostProcessors.add(beanFactory.getBean(postProcessorName, BeanFactoryPostProcessor.class));</div><div class="line">	&#125;</div><div class="line">	invokeBeanFactoryPostProcessors(nonOrderedPostProcessors, beanFactory);</div><div class="line">	<span class="comment">// 清除缓存的合并bean定义，因为后处理程序可能已经修改了原始元数据，例如替换值中的占位符</span></div><div class="line">	beanFactory.clearMetadataCache();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从上面贴的代码中能够看到，对于 <code>beanFactoryPostProcessor</code> 的处理主要分两种情况：</p>
+<ul>
+<li><strong><code>beanFactory</code>  是 <code>BeanDefinitionRegistry</code> 类型</strong>：需要特殊处理</li>
+<li><strong><code>beanFactory</code>  不是 <code>BeanDefinitionRegistry</code> 类型</strong>：进行普通处理</li>
+</ul>
+<p><strong>对于每种情况都需要考虑硬编码注入注册的后处理器（上面已经提到如何进行硬编码）以及通过配置注入的后处理器</strong></p>
+<p>对于 <code>BeanDefinitionRegistry</code> 类型的处理器的处理主要包括以下内容：</p>
+<ol>
+<li><strong>处理硬编码注册的后处理器</strong></li>
+<li><strong>记录后处理器主要使用以下三个 <code>List</code></strong></li>
+</ol>
+<ul>
+<li><code>registryPostProcessors</code>：记录通过<strong>硬编码</strong>方式注册的 <code>BeanDefinitionRegistryPostProcessor</code></li>
+<li><code>regularPostProcessors</code>：记录通过<strong>硬编码</strong>方式注册的 <code>BeanFactoryPostProcessor</code></li>
+<li><code>regitstryPostProcessorBeans</code>：记录通过<strong>配置</strong>方式注册的 <code>BeanDefinitionRegistryPostProcessor</code></li>
+</ul>
+<ol>
+<li><strong>对于以上后处理器列表，统一调用 <code>BeanFactoryPostProcessor</code> 的 <code>postProcessBeanFactory</code> 方法</strong></li>
+<li><strong>对 <code>beanFactoryPostProcessors</code> 中非 <code>BeanDefinitionRegistryPostProcessor</code> 类型的后处理器进行统一的 <code>postProcessBeanFactory</code> 方法</strong></li>
+<li><strong>普通 <code>beanFactory</code> 处理：其实在这一步中，就是忽略了 <code>BeanDefinitionRegistryPostProcessor</code> 类型，对 <code>BeanFactoryPostProcessor</code> 进行直接处理。</strong></li>
+</ol>
+<p>流程图中描述了整体调用链路，具体调用方法在代码中的注释也描述出来了，所以结合起来看应该能够理解整体流程~</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本次分析了 <code>beanFactory</code> 的后处理器 <code>BeanFactoryPostProcessor</code>，了解了 <code>Spring</code> 给我们提供的这个扩展接口使用用途和在源码中如何进行激活执行。</p>
+<p><strong>由于个人技术有限，如果有理解不到位或者错误的地方，请留下评论，我会根据朋友们的建议进行修正</strong></p>
+<p>因为我也是一边看书，一边做笔记，下载了源码。<br><strong>代码和注释都在里面，小伙伴们可以下载我上传的代码，亲测可运行~</strong></p>
+<p><a href="https://gitee.com/vip-augus/spring-analysis-note.git" target="_blank" rel="noopener">spring-analysis-note 码云 Gitee 地址</a></p>
+<p><a href="https://github.com/Vip-Augus/spring-analysis-note" target="_blank" rel="noopener">spring-analysis-note Github 地址</a></p>
+<hr>
+<h1 id="传送门："><a href="#传送门：" class="headerlink" title="传送门："></a>传送门：</h1><ul>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-env-prepared" target="_blank" rel="noopener">Spring 源码学习-环境准备</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/08/spring/2019-06-08-spring-analysis-note-1" target="_blank" rel="noopener">Spring 源码学习(一)容器的基础结构</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/14/spring/2019-06-14-spring-analysis-note-2" target="_blank" rel="noopener">Spring 源码学习(二)默认标签解析</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/16/spring/2019-06-16-spring-analysis-note-3" target="_blank" rel="noopener">Spring 源码学习(三)自定义标签</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/19/spring/2019-06-19-spring-analysis-note-4" target="_blank" rel="noopener">Spring 源码学习(四) bean 的加载</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-5" target="_blank" rel="noopener">Spring 源码学习(五)循环依赖</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/22/spring/2019-06-22-spring-analysis-note-6" target="_blank" rel="noopener">Spring 源码学习(六)扩展功能 上篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/06/30/spring/2019-06-30-spring-analysis-note-7" target="_blank" rel="noopener">Spring 源码学习(七)扩展功能 下篇</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/17/spring/2019-07-17-spring-analysis-note-8" target="_blank" rel="noopener">Spring 源码学习(八) AOP 使用和实现原理</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/18/spring/2019-07-18-spring-analysis-note-9" target="_blank" rel="noopener">Spring 源码学习(九) Transaction 事务</a></p>
+</li>
+<li><p><a href="https://vip-augus.github.io/2019/07/21/spring/2019-07-21-spring-analysis-note-10" target="_blank" rel="noopener">Spring 源码学习(十) Spring mvc</a></p>
+</li>
+</ul>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="https://wiki.jikexueyuan.com/project/spring/bean-definition.html" target="_blank" rel="noopener">Bean 定义</a></li>
+<li><a href="http://wiki.jikexueyuan.com/project/spring/ioc-container/spring-bean-fatory-container.html" target="_blank" rel="noopener">Sping 的 BeanFactory 容器</a></li>
+<li><a href="https://www.cnblogs.com/youzhibing/p/10559337.html" target="_blank" rel="noopener">Spring拓展接口之BeanFactoryPostProcessor，占位符与敏感信息解密原理</a></li>
+<li>Spring 源码深度解析 / 郝佳编著. – 北京 : 人民邮电出版社</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/19/spring/2019-06-19-spring-analysis-note-4/" rel="next" title="Spring 源码学习(四)bean 的加载">
+                <i class="fa fa-chevron-left"></i> Spring 源码学习(四)bean 的加载
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/22/spring/2019-06-22-spring-analysis-note-5/" rel="prev" title="Spring 源码学习(五)循环依赖">
+                Spring 源码学习(五)循环依赖 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BeanFactoryPostProcessor"><span class="nav-number">2.</span> <span class="nav-text">BeanFactoryPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#是什么"><span class="nav-number">2.1.</span> <span class="nav-text">是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">2.2.</span> <span class="nav-text">如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方例子：PropertyPlaceholderConfigurer"><span class="nav-number">2.2.1.</span> <span class="nav-text">官方例子：PropertyPlaceholderConfigurer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用自定义-BeanFactoryPostProcessor"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用自定义 BeanFactoryPostProcessor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在哪注册"><span class="nav-number">2.3.</span> <span class="nav-text">在哪注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#激活-BeanFactoryPostProcessor"><span class="nav-number">2.4.</span> <span class="nav-text">激活 BeanFactoryPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流程图"><span class="nav-number">2.4.1.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">2.4.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传送门："><span class="nav-number">3.</span> <span class="nav-text">传送门：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

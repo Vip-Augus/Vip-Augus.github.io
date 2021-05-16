@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Flink," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="为什么要学 Flink在 18 年时，就听说过 Flink 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。 由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。 于是规划了基于以下的系统架构：  可以看到，业务数据库与数据分析进行了">
+<meta name="keywords" content="Flink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink 基础学习(一)初识和基础概念">
+<meta property="og:url" content="http://yoursite.com/2019/10/10/Flink/2019-10-10-flink_learn_introduction/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="为什么要学 Flink在 18 年时，就听说过 Flink 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。 由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。 于是规划了基于以下的系统架构：  可以看到，业务数据库与数据分析进行了">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/system_architecture.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/bounded-unbounded.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/event_ingestion_processing_time.svg">
+<meta property="og:image" content="http://img.sevenyuan.cn/api-stack.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_architecture.jpeg">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_streaming_dataflow.svg">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_storm_throughput_contrast.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_strom_delayed_contrast.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_jobManager_worker.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_distract_architecture.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_state_checkpoint_introducation.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/Flink_study_diagram.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/alibaba_flink_preview.jpeg">
+<meta property="og:updated_time" content="2019-12-22T07:42:24.568Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flink 基础学习(一)初识和基础概念">
+<meta name="twitter:description" content="为什么要学 Flink在 18 年时，就听说过 Flink 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。 由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。 于是规划了基于以下的系统架构：  可以看到，业务数据库与数据分析进行了">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/system_architecture.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/10/Flink/2019-10-10-flink_learn_introduction/"/>
+
+
+
+
+
+  <title>Flink 基础学习(一)初识和基础概念 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/10/Flink/2019-10-10-flink_learn_introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flink 基础学习(一)初识和基础概念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-10T09:30:05+08:00">
+                2019-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flink/" itemprop="url" rel="index">
+                    <span itemprop="name">Flink</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="为什么要学-Flink"><a href="#为什么要学-Flink" class="headerlink" title="为什么要学 Flink"></a>为什么要学 Flink</h1><p>在 18 年时，就听说过 <code>Flink</code> 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。</p>
+<p>由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，<strong>我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。</strong></p>
+<p>于是规划了基于以下的系统架构：</p>
+<p><img src="http://img.sevenyuan.cn/system_architecture.png" alt=""></p>
+<p><strong>可以看到，业务数据库与数据分析进行了剥离，避免了对核心业务的影响，基于数据分析的结果存储到线下备份库，查询大量的分析结果也不会影响核心业务。</strong></p>
+<p>同时，在数据处理上，选择了 <code>Flink</code> 这个分布式处理引擎。随着深入的调研和了解，从它的描述、性能、接口编程和容错恢复上进行了学习，觉得它十分适合我们的场景，所以接下来我分享一下调研的结果~</p>
+<a id="more"></a>
+<h1 id="官网介绍"><a href="#官网介绍" class="headerlink" title="官网介绍"></a>官网介绍</h1><blockquote>
+<p><a href="https://flink.apache.org/zh/flink-architecture.html" target="_blank" rel="noopener">Apache Flink 是什么？</a><br>Apache Flink 是一个框架和分布式处理引擎，用于在无边界和有边界数据流上进行有状态的计算。Flink 能在所有常见集群环境中运行，并能以内存速度和任意规模进行计算。</p>
+</blockquote>
+<p>官网也有中文版的文档，但是翻译的并不是很全面，经常跳转到英文博文，<strong>这里推荐一个国内网站 <a href="https://ververica.cn/" target="_blank" rel="noopener">https://ververica.cn/</a>，上面的翻译和技术分享都十分的棒</strong>，一开始就看英文文档还是比较吃力的，所以可以先从国内牛人的分享中学习起来~</p>
+<hr>
+<h2 id="基础语义"><a href="#基础语义" class="headerlink" title="基础语义"></a>基础语义</h2><p>基础语义很重要，高层语法都是基础基础语义加工的，所以需要对它们有个了解，这里推荐的是 <a href="https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/" target="_blank" rel="noopener"><code>ververica</code></a> 中的介绍：</p>
+<h3 id="1、流-Stream"><a href="#1、流-Stream" class="headerlink" title="1、流 Stream"></a>1、流 Stream</h3><p><img src="http://img.sevenyuan.cn/bounded-unbounded.png" alt=""></p>
+<p>从上图中看出，分为 <strong>有界（bounded）</strong> 和 <strong>无界（unbounded）</strong> 数据流。二者的区别在于无限数据流的数据会随着时间的推演而持续增加，计算持续进行且不存在结束的状态，相对的有限数据流大小固定，计算最终会完成并处于结束的状态。</p>
+<p>同样还有 <strong>实时</strong> 和 <strong>历史记录</strong> 属性。流中的数据一生成就得到实时处理；另一种可能时效性要求不高，只需要在凌晨统计前一天完整的数据，可以先将数据流持久化到存储系统中，然后再进行批处理。</p>
+<h3 id="2、状态-State"><a href="#2、状态-State" class="headerlink" title="2、状态 State"></a>2、状态 State</h3><p>状态时计算过程中的数据信息，在容错恢复和 <code>Checkpoint</code> 中有重要的作用，流计算在本质上是增量处理，因此需要不断查询保持状态；另外，为了保证 <code>Excatly-once</code> 语义，还需要将数据写入到状态中，用来保证在故障发生时，通过保存在状态中的数据，进行恢复，保证一致性；还有持久化存储，能够保证在整个分布式系统运行失败或者挂掉的情况下做到 <code>Exactly-once</code>，这是状态的另一个价值。</p>
+<h3 id="3、时间-Time"><a href="#3、时间-Time" class="headerlink" title="3、时间 Time"></a>3、时间 Time</h3><p><img src="http://img.sevenyuan.cn/event_ingestion_processing_time.svg" alt=""></p>
+<p>分为<strong>事件时间（Event Time）</strong>、<strong>摄入时间（Ingestion Time）</strong>、<strong>处理时间（Processing Time）</strong>，<code>Flink</code> 的无限数据流是一个持续的过程，时间是我们判断业务状态是否滞后，数据处理是否及时的重要依据。</p>
+<p><code>事件时间</code>：事件发生的时间，一般数据源携带的一个字段，指明事件发生的时间。</p>
+<p><code>处理时间</code>：事件被处理的时间，也就是由机器的系统时间决定。</p>
+<p><code>摄入时间</code>：时间进入 <code>Flink</code> 的时间，在数据源处，事件将会以当源的操作时间作为时间戳。</p>
+<p><strong>三个时间出现的位置在上图的底部，具体的之后会专门讲述~</strong></p>
+<h3 id="4、接口-API"><a href="#4、接口-API" class="headerlink" title="4、接口 API"></a>4、接口 API</h3><p><img src="http://img.sevenyuan.cn/api-stack.png" alt=""></p>
+<p>从上往下有三层，分别是 <code>SQL/Table API</code>、<code>DataStream API</code> 和 <code>ProcessFunction</code>，<code>API</code> 的表达能力及业务抽象能力都非常强大，但越接近 <code>SQL</code> 层，表达能力会逐步减弱，抽象能力会增强（由于是基础了解，所以没有对于 <code>SQL API</code> 层深入学习，感兴趣的同学可以深入了解）。</p>
+<p>反之， <code>ProessFunction</code> 层 <code>API</code> 的表达能力非常强，可以进行多种灵活方便的操作，但抽象能力也相对越小。</p>
+<p><strong>结合上面说的，平时用到最多的是中间 <code>DataStream</code> 这层的 <code>API</code>，后面的内容学习基本也是围绕着它~</strong></p>
+<hr>
+<h2 id="架构介绍"><a href="#架构介绍" class="headerlink" title="架构介绍"></a>架构介绍</h2><p>来源 <a href="https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/" target="_blank" rel="noopener">https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/</a></p>
+<p><img src="http://img.sevenyuan.cn/flink_architecture.jpeg" alt=""></p>
+<h3 id="1、有界和无界数据流"><a href="#1、有界和无界数据流" class="headerlink" title="1、有界和无界数据流"></a>1、有界和无界数据流</h3><p><code>Flink</code> 具有统一的框架处理有界和无界两种数据流的能力（流处理是无界的，批处理是有界的，给无界的流处理加上窗口 <code>Window</code> 就相当于有界的批处理，由于 <code>API</code> 是一致的，所以算子写完后可以进行复用）</p>
+<h3 id="2、部署灵活"><a href="#2、部署灵活" class="headerlink" title="2、部署灵活"></a>2、部署灵活</h3><p><code>Flink</code> 底层支持多种资源调度器，包括 <code>Yarn</code>、<code>Kubernetes</code> 等。<code>Flink</code> 自身带的 <code>Standalone</code> 的调度器，在部署上也十分灵活。（<code>Standalone</code> 也是我们本地开发常用的模式）</p>
+<hr>
+<h3 id="3、极高的可伸缩性"><a href="#3、极高的可伸缩性" class="headerlink" title="3、极高的可伸缩性"></a>3、极高的可伸缩性</h3><p>可伸缩性对于分布式系统十分重要，资源不够可以动态添加节点，分摊压力，资源充足，撤下服务器，减少资源浪费。介绍中说到：阿里巴巴双 11 大屏采用 <code>Flink</code> 处理海量数据，使用过程中测得峰值可达 17 亿/秒。</p>
+<h3 id="4、极致的流式处理性能"><a href="#4、极致的流式处理性能" class="headerlink" title="4、极致的流式处理性能"></a>4、极致的流式处理性能</h3><p><code>Flink</code> 相对于 <code>Storm</code> 最大的特地就是将状态语义完全抽象到框架后只能怪，支持本地状态读取，避免了大量网络 <code>IO</code>，可以极大提升状态存储的性能。</p>
+<hr>
+<h1 id="特性和优点"><a href="#特性和优点" class="headerlink" title="特性和优点"></a>特性和优点</h1><p>上面是对于 <code>Flink</code> 的定义以及架构上的介绍，下面来看下关于它更具体一点的信息，<strong>在官网中，分为了【架构】、【应用】和【运维】三个方面来介绍</strong>。</p>
+<p>这里不会太深入分析，主要简单介绍它的特性和优点，有个大致的了解，由浅入深，在之后的文章中慢慢加深学习~</p>
+<h2 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h2><p><code>Flink</code> 程序的基本构建块是流和转换。 （请注意，<code>Flink</code> 的 <code>DataSet API</code>中使用的 <code>DataSet</code>也是内部流）从概念上讲，流是数据记录流（可能永无止境），而转换是将一个或多个流作为一个操作的操作。一个输入，可以产生一个（例如 <code>map</code>）或多个输出流（例如 <code>flatMap</code>）。</p>
+<p><img src="http://img.sevenyuan.cn/flink_streaming_dataflow.svg" alt=""></p>
+<p>上图是数据处理流程，可以看到有几个核心组件：</p>
+<h3 id="1、数据源-Source"><a href="#1、数据源-Source" class="headerlink" title="1、数据源 Source"></a>1、数据源 Source</h3><p>自带的 <code>api</code> 中，可以读取数据如下：集合数据（fromCollection）、文件数据（readFile）、网络套接字（socket）以及更多扩展来源（addSource），更多扩展中通过自定义来实现 <code>RichSourceFuncation</code>，实现读取更多来源的数据。</p>
+<p>像图中获取的数据源是 <code>Kafka</code>，与其它中间件整合中，也封装了很多方便的方法，调用它们可以更方便获取数据源的数据。</p>
+<h3 id="2、转换-Transaction"><a href="#2、转换-Transaction" class="headerlink" title="2、转换 Transaction"></a>2、转换 Transaction</h3><p>进行数据的转化，对应于文档中的算子 <code>Operator</code>。常见的数据操作有以下：<code>map</code>、<code>flatMap</code>、<code>filter</code>、<code>keyBy</code>、<code>reduce</code>、<code>fold</code>（在 1.9 中看到被标注为 <code>deprecated</code>）、<code>aggregate</code>、<code>window</code>等常用操作。</p>
+<p>同时从上图也能看出，转换的操作可以不止一次，多个算子可以形成 <code>chain</code> 链式调用，然后发挥作用。</p>
+<h3 id="3、存储-Sink"><a href="#3、存储-Sink" class="headerlink" title="3、存储 Sink"></a>3、存储 Sink</h3><p>进行数据的存储或发送，对应于文档中的 <code>connector</code>（既可以连接数据源，也能发送到某个地方存储起来）。</p>
+<p>常用的存储 <code>sink</code> 有 <code>Kafka</code>、<code>Apache Cassandra</code>、<code>Elasticsearch</code>、<code>RabbitMQ</code>、<code>Hadoop</code> 等。与前面一样，可以通过扩展 <code>RichSinkFunction</code> 进行自定义存储的逻辑。</p>
+<h2 id="性能比较"><a href="#性能比较" class="headerlink" title="性能比较"></a>性能比较</h2><p>例如 <code>Hadoop</code>、<code>Storm</code> 或 <code>Spark</code>，与这些优秀的前辈们进行比较，对比性能的高低，如果选择使用 <code>Flink</code>，必须得比以前的开发方便和性能好。</p>
+<p>由于之前没有使用过这些大数据框架，所以测评数据可以参考了这两篇：</p>
+<ul>
+<li><a href="https://ververica.cn/developers/shishijisuan/" target="_blank" rel="noopener">Flink实时计算性能分析 https://ververica.cn/developers/shishijisuan/</a></li>
+<li><a href="https://ververica.cn/developers/stream-computing-framework/" target="_blank" rel="noopener">流计算框架 Flink 与 Storm 的性能对比 https://ververica.cn/developers/stream-computing-framework/</a></li>
+</ul>
+<p>下面简单列出它俩的<strong>吞吐量和作业延迟的比较</strong></p>
+<p><img src="http://img.sevenyuan.cn/flink_storm_throughput_contrast.png" alt=""></p>
+<p>上图的数据源是 <code>Kafka Source</code>，蓝色是 <code>Storm</code>，橙色是 <code>Flink</code>，在一个分区 <code>partition</code> 情况下，<code>Flink</code> 吞吐约为 <code>Storm</code> 的 3.2 倍；而在 8 个分区情况下，性能提高到 4.6 倍。</p>
+<p><img src="http://img.sevenyuan.cn/flink_strom_delayed_contrast.png" alt=""></p>
+<p>上图采用的的 <code>outTime-eventTime</code> 作为延迟，可以看出，<code>Flink</code> 的延迟还是比 <code>Storm</code> 的要低。</p>
+<h2 id="管理方式-JobManager、TaskWorker"><a href="#管理方式-JobManager、TaskWorker" class="headerlink" title="管理方式 JobManager、TaskWorker"></a>管理方式 JobManager、TaskWorker</h2><p><img src="http://img.sevenyuan.cn/flink_jobManager_worker.jpg" alt=""></p>
+<p>上面是官方示意图，阐述了 <code>Flink</code> 提交作业的流程，应用程序 <code>Flink Program</code>、<code>JobManage</code> 和 <code>TaskManager</code> 之间的关系。</p>
+<p><img src="http://img.sevenyuan.cn/flink_distract_architecture.png" alt=""></p>
+<p>上面是我对它的理解，个人觉得 <code>zhisheng</code> 大佬写的更加详细，可以参考这篇文章：<a href="http://www.54tianzhisheng.cn/2018/10/13/flink-introduction/" target="_blank" rel="noopener">http://www.54tianzhisheng.cn/2018/10/13/flink-introduction/</a></p>
+<h2 id="高可用-HA、状态恢复"><a href="#高可用-HA、状态恢复" class="headerlink" title="高可用 HA、状态恢复"></a>高可用 HA、状态恢复</h2><p><code>High Availablity</code> 是个老生常谈的话题了，服务难免会遇到无法预测的意外，如何在出现异常情况下并尽快恢复，继续处理之前的数据，保证一致性，这是个考量服务稳定性的标准。</p>
+<p><code>Flink</code> 提供了丰富的状态访问（例如有 <code>List</code>、<code>Map</code>、<code>Aggregate</code> 等数据类型），以及高效的容错机制，存储状态 <code>State</code>，然后通过存储了状态的 <code>Checkpoint</code> 和 <code>Savepoint</code> 来帮助应用进行快速恢复。</p>
+<p><img src="http://img.sevenyuan.cn/flink_state_checkpoint_introducation.png" alt=""></p>
+<p>详细请参考这两篇：</p>
+<ul>
+<li><a href="https://ververica.cn/developers/state-management/" target="_blank" rel="noopener">Apache Flink 零基础入门（七）：状态管理及容错机制 https://ververica.cn/developers/state-management/</a></li>
+<li><a href="https://ververica.cn/developers/introduction-to-state-management-and-fault-tolerance/" target="_blank" rel="noopener">Apache Flink状态管理和容错机制介绍 https://ververica.cn/developers/introduction-to-state-management-and-fault-tolerance/</a> </li>
+</ul>
+<h2 id="社区生态"><a href="#社区生态" class="headerlink" title="社区生态"></a>社区生态</h2><p><strong>真的是十分敬仰发明优秀框架的团队，也十分敬佩每一个为技术做贡献的参与者，所以每次找到相关的资料都跟发现宝藏一样。</strong></p>
+<p>下面罗列一下目前找到的资料：</p>
+<ul>
+<li><code>Flink</code> 官网：<a href="https://ci.apache.org/projects/flink/flink-docs-release-1.9/" target="_blank" rel="noopener">https://ci.apache.org/projects/flink/flink-docs-release-1.9/</a></li>
+<li><code>Vererica</code> 国内牛人的分享：<a href="https://ververica.cn" target="_blank" rel="noopener">https://ververica.cn</a></li>
+<li><code>Github 项目</code> 可以关注一下提的问题和阿里分支 <code>Blink</code>：<a href="https://github.com/apache/flink" target="_blank" rel="noopener">https://github.com/apache/flink</a></li>
+<li><code>zhisheng</code> 个人学习的流程是跟着他的文章走了一遍，然后遇到不懂的继续深入学习和了解：<a href="http://www.54tianzhisheng.cn/tags/Flink/" target="_blank" rel="noopener">http://www.54tianzhisheng.cn/tags/Flink/</a></li>
+<li><code>wuchong</code> 这位大佬是从 16 年就开始研究 <code>Flink</code>，写的文章很有深度，想要详细了解 <code>Flink</code>，一定要看它的文章！：<a href="http://wuchong.me/categories/Flink/" target="_blank" rel="noopener">http://wuchong.me/categories/Flink/</a></li>
+</ul>
+<p><strong>从上面的资料可以看出，<code>Flink</code> 的社区慢慢从小众走向大众，越来越多人参与。</strong></p>
+<hr>
+<h2 id="基础知识点"><a href="#基础知识点" class="headerlink" title="基础知识点"></a>基础知识点</h2><p>运行环境如下：</p>
+<blockquote>
+<p>OS : Mac</p>
+<p>Flink Version : 1.9</p>
+<p>IDE : IDEA</p>
+<p>Java Version : 1.8</p>
+</blockquote>
+<p><img src="http://img.sevenyuan.cn/Flink_study_diagram.png" alt=""></p>
+<p>上图是我在学习过程中整理的一些知识点，之后将会根据罗列的知识点慢慢进行梳理和记录~</p>
+<h1 id="总结：未来的计算方式"><a href="#总结：未来的计算方式" class="headerlink" title="总结：未来的计算方式"></a>总结：未来的计算方式</h1><p>从调研的结果中能看出，无论从性能、接口编程和容错上，<code>Flink</code> 都是一个不错的计算引擎。 <code>github</code> 拥有 1w 多个 <code>star</code>，这么多人支持以及阿里巴巴的大力推广，还有在 2019.09 参加的云栖大会，演讲嘉宾对 <code>Flink</code> 的展望</p>
+<p><img src="http://img.sevenyuan.cn/alibaba_flink_preview.jpeg" alt=""></p>
+<ul>
+<li><strong><code>Apache Flink</code> 已经是非常优秀和成熟的流计算引擎</strong></li>
+<li><strong><code>Apache Flink</code> 已经成为优秀的批处理引擎的挑战者</strong></li>
+<li><strong>继续挖掘 <code>Apache Flink</code> 在 <code>OLAP</code> 数据分析领域的潜力，使其成为优秀的数据分析引擎</strong></li>
+</ul>
+<p>直觉相信，<code>Flink</code> 的发展前景不错，希望接下来与大家分享和更好的去学习它~</p>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="http://www.54tianzhisheng.cn/2018/10/13/flink-introduction/" target="_blank" rel="noopener">Flink 从 0 到 1 学习 —— Apache Flink 介绍</a></li>
+<li><a href="https://flink.apache.org/zh/flink-architecture.html" target="_blank" rel="noopener">Apache Flink 是什么？</a></li>
+<li><a href="https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/" target="_blank" rel="noopener">Apache Flink 零基础入门（一&amp;二）：基础概念解析</a></li>
+<li><a href="https://ververica.cn/developers/stream-processing-is-the-future/" target="_blank" rel="noopener">为什么说流处理即未来？</a></li>
+<li><a href="https://ververica.cn/developers/state-management/" target="_blank" rel="noopener">Apache Flink 零基础入门（七）：状态管理及容错机制</a></li>
+<li><a href="https://ververica.cn/developers/introduction-to-state-management-and-fault-tolerance/" target="_blank" rel="noopener">Apache Flink状态管理和容错机制介绍</a> </li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flink/" rel="tag"># Flink</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/03/java/2019-09-14-arthas_hot_update/" rel="next" title="记一次使用 Arthas 热更新线上代码（误）">
+                <i class="fa fa-chevron-left"></i> 记一次使用 Arthas 热更新线上代码（误）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/13/Flink/2019-10-13-flink_learn_hello_world/" rel="prev" title="Flink 基础学习(二)搭建一个 "Hello World" 程序">
+                Flink 基础学习(二)搭建一个 "Hello World" 程序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么要学-Flink"><span class="nav-number">1.</span> <span class="nav-text">为什么要学 Flink</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#官网介绍"><span class="nav-number">2.</span> <span class="nav-text">官网介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础语义"><span class="nav-number">2.1.</span> <span class="nav-text">基础语义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、流-Stream"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、流 Stream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、状态-State"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、状态 State</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、时间-Time"><span class="nav-number">2.1.3.</span> <span class="nav-text">3、时间 Time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、接口-API"><span class="nav-number">2.1.4.</span> <span class="nav-text">4、接口 API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构介绍"><span class="nav-number">2.2.</span> <span class="nav-text">架构介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、有界和无界数据流"><span class="nav-number">2.2.1.</span> <span class="nav-text">1、有界和无界数据流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、部署灵活"><span class="nav-number">2.2.2.</span> <span class="nav-text">2、部署灵活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、极高的可伸缩性"><span class="nav-number">2.2.3.</span> <span class="nav-text">3、极高的可伸缩性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、极致的流式处理性能"><span class="nav-number">2.2.4.</span> <span class="nav-text">4、极致的流式处理性能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#特性和优点"><span class="nav-number">3.</span> <span class="nav-text">特性和优点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#处理流程"><span class="nav-number">3.1.</span> <span class="nav-text">处理流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、数据源-Source"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、数据源 Source</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、转换-Transaction"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、转换 Transaction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、存储-Sink"><span class="nav-number">3.1.3.</span> <span class="nav-text">3、存储 Sink</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能比较"><span class="nav-number">3.2.</span> <span class="nav-text">性能比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理方式-JobManager、TaskWorker"><span class="nav-number">3.3.</span> <span class="nav-text">管理方式 JobManager、TaskWorker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高可用-HA、状态恢复"><span class="nav-number">3.4.</span> <span class="nav-text">高可用 HA、状态恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#社区生态"><span class="nav-number">3.5.</span> <span class="nav-text">社区生态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识点"><span class="nav-number">3.6.</span> <span class="nav-text">基础知识点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结：未来的计算方式"><span class="nav-number">4.</span> <span class="nav-text">总结：未来的计算方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

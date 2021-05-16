@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="读后感," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="每次看之前写的代码，都想删掉重新写%&amp;gt;_&amp;lt;%">
+<meta name="keywords" content="读后感">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《代码整洁之道》- 代码标准">
+<meta property="og:url" content="http://yoursite.com/2019/03/24/reading/《代码整洁之道》-代码标准/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="每次看之前写的代码，都想删掉重新写%&amp;gt;_&amp;lt;%">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/PWSRecovery_ZH-CN1234475074_1920x1080.jpg">
+<meta property="og:updated_time" content="2019-05-25T09:12:29.381Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《代码整洁之道》- 代码标准">
+<meta name="twitter:description" content="每次看之前写的代码，都想删掉重新写%&amp;gt;_&amp;lt;%">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/PWSRecovery_ZH-CN1234475074_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/24/reading/《代码整洁之道》-代码标准/"/>
+
+
+
+
+
+  <title>《代码整洁之道》- 代码标准 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/24/reading/《代码整洁之道》-代码标准/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《代码整洁之道》- 代码标准</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T19:52:46+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/读后感/" itemprop="url" rel="index">
+                    <span itemprop="name">读后感</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/PWSRecovery_ZH-CN1234475074_1920x1080.jpg" alt=""></p>
+<center><strong>每次看之前写的代码，都想删掉重新写%&gt;_&lt;%</strong></center>
+
+<a id="more"></a>
+<hr>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><blockquote>
+<p>代码越写越多，从一开始的能跑通就行，到现在对自己的要求越来越高，不仅要留下好的注释，对于函数和变量的命名也要合乎其名，慢慢融入学到的设计模式，还有优化逻辑来提高性能。</p>
+<p>所以看完这本《代码整洁之道》，发现获益良多，将书中最后一章的启示贴一下，用来提醒自己以后编码的要求~</p>
+</blockquote>
+<hr>
+<h2 id="启示（约定规则）"><a href="#启示（约定规则）" class="headerlink" title="启示（约定规则）"></a>启示（约定规则）</h2><hr>
+<h3 id="一个源文件中减少存在多种语言"><a href="#一个源文件中减少存在多种语言" class="headerlink" title="一个源文件中减少存在多种语言"></a>一个源文件中减少存在多种语言</h3><p>这个问题应该是存在于以前的JSP开发，现在一般都是前后端分离，后端代码中，基本没有前端代码的存在了</p>
+<hr>
+<h3 id="要实现函数名对应的行为"><a href="#要实现函数名对应的行为" class="headerlink" title="要实现函数名对应的行为"></a>要实现函数名对应的行为</h3><p>遵循“最小惊讶原则”（The Principle of Least Surprise)，函数或类应该实现有理由期待的行为。</p>
+<hr>
+<h3 id="边界行为要明确"><a href="#边界行为要明确" class="headerlink" title="边界行为要明确"></a>边界行为要明确</h3><p>追索每种边界条件，并编写测试。要求所有代码都有单元测试，这个条件比较严格，主要要注意的应该是在生产代码中，注意业务边界，避免NPE，数组越界等错误。</p>
+<hr>
+<h3 id="不要忽视安全"><a href="#不要忽视安全" class="headerlink" title="不要忽视安全"></a>不要忽视安全</h3><p>这里提到安全不仅仅是边界和单元测试，还有无限循环和线程安全等意识。</p>
+<hr>
+<h3 id="避免重复代码"><a href="#避免重复代码" class="headerlink" title="避免重复代码"></a>避免重复代码</h3><p>这个就是常说的胶水代码，这里copy一份到另一个地方。每次看到<strong>重复代码</strong>，都代表<strong>遗漏了抽象</strong>。</p>
+<p>可以将重复的代码抽象到上一层，或者封装成公共方法，很多地方使用到的，可以当成一个工具类的静态方法等等。</p>
+<p>学习到的设计模式，责任链、模板、抽象工厂等等，都可以用来消除重复代码~</p>
+<hr>
+<h3 id="编码要在正确的抽象层级上"><a href="#编码要在正确的抽象层级上" class="headerlink" title="编码要在正确的抽象层级上"></a>编码要在正确的抽象层级上</h3><p><strong>创建抽象类来容纳较高层级概念，创建派生类来容纳较低层次概念。</strong></p>
+<p>同时要注意，较低层级和较高层级概念不应该混杂在一起，分离要完整。</p>
+<hr>
+<h3 id="基类不应该依赖于派生类"><a href="#基类不应该依赖于派生类" class="headerlink" title="基类不应该依赖于派生类"></a>基类不应该依赖于派生类</h3><p>将概念分解到基类和派生类的最普遍的原因是较高层级概念可以不依赖于低层级派生类概念。（也就是说，基类应该对派生类一无所知，不提到派生类的名称）。</p>
+<hr>
+<h3 id="避免信息过多"><a href="#避免信息过多" class="headerlink" title="避免信息过多"></a>避免信息过多</h3><p>设计良好的模块，让接口保持简单。</p>
+<p>要学会限制类或模板中暴露的接口数量，减少类中的方法，减少函数的变量数目。（当然如果业务复杂时，简单变量可能越加越多，这个时候就该建立一个新的参数类来封装参数）。</p>
+<p>尽量保持接口紧凑，通过限制信息来控制耦合度。</p>
+<hr>
+<h3 id="删除死代码"><a href="#删除死代码" class="headerlink" title="删除死代码"></a>删除死代码</h3><p>有些方法可能在代码修改后就不会再调用了，这个时候路径就不会到达到，现在IDE很方便能看到方法是否被调用到。看到这些永远不会运行的代码，可以考虑将其删除~</p>
+<hr>
+<h3 id="垂直分隔"><a href="#垂直分隔" class="headerlink" title="垂直分隔"></a>垂直分隔</h3><p>变量和函数应该靠近被使用的地方定义。</p>
+<p>本地变量应该正好在其首次被使用的位置是哪个命名，垂直距离要短。</p>
+<p>私有函数应该刚好在其被使用的位置下面定义。</p>
+<hr>
+<h3 id="保持前后一致"><a href="#保持前后一致" class="headerlink" title="保持前后一致"></a>保持前后一致</h3><p>从一而终。小心选择约定，一旦选中，就小心持续遵循。</p>
+<p>例如参数命名，如果选中了HttpServletRequest request，那么之后的参数命名都按request来统一，让代码更加易于阅读和修改。</p>
+<hr>
+<h3 id="减少人为耦合"><a href="#减少人为耦合" class="headerlink" title="减少人为耦合"></a>减少人为耦合</h3><p>不互相依赖的东西不该耦合。</p>
+<p>不要将两个没有直接目的之间的模块耦合，例如将变量、常量或函数放在不恰当的位置，普通的enum不应在特殊类中。</p>
+<hr>
+<h3 id="减少特性依赖"><a href="#减少特性依赖" class="headerlink" title="减少特性依赖"></a>减少特性依赖</h3><p>类的方法只应对其所属类中的变量和函数感兴趣，不该垂青其他类中的变量和函数。</p>
+<p>当方法通过其他对象的访问器和修改器来操作该对象内部数据，则它就依恋于该对象所属类的范围。（当然在业务开发中，经常会遇到条件判断，然后修改对象的属性值，我觉得这这种场景是正常，但是下面说的例子就要避免出现了）</p>
+<p><strong>Bad Example：在B类方法中，基本依赖A类的属性</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HourlyPayCalculator</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateWeeklyPay</span><span class="params">(HourlyEmployee e)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> tenthRate = e.getTenthRate().getPennins();</div><div class="line">        <span class="keyword">int</span> tenthsWorked = e.getTenthsWorkeds()</div><div class="line">        <span class="keyword">int</span> straightTime = Math.min(<span class="number">400</span>, tenthsWorked);</div><div class="line">        <span class="keyword">int</span> overTime = Math.max(<span class="number">0</span>, tenthsWorked - straightTime);</div><div class="line">        <span class="keyword">int</span> straightPay = straightTime * tenthRate;</div><div class="line">        <span class="keyword">int</span> overtimePay = (<span class="keyword">int</span>) Math.round(overTime * tenthRate * <span class="number">1.5</span>)</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(straightPay + overtimePay);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，上面的<code>HourlyPayCalculator</code>类的计算工资方法，侵入到是钟点工类e的作用范围。</p>
+<p>现在看起来，这个方法更应该下沉到HourlyEmployee类中，让它对自己类中的属性进行操作（虽然之前这样写没感觉到什么不妥，但之后会改~）</p>
+<hr>
+<h3 id="避免在函数末尾出现选择算子函数（selector"><a href="#避免在函数末尾出现选择算子函数（selector" class="headerlink" title="避免在函数末尾出现选择算子函数（selector)"></a>避免在函数末尾出现选择算子函数（selector)</h3><p>个人理解上，应该是将复杂的选择算子函数拆分成多个子函数，然后通过组合调用，让函数的意图更加清晰。</p>
+<hr>
+<h3 id="避免晦涩的意图"><a href="#避免晦涩的意图" class="headerlink" title="避免晦涩的意图"></a>避免晦涩的意图</h3><p>代码要尽可能具有表达力。</p>
+<p>以前写Android代码时，看到匈牙利语标记语法和联排表示式，例如<code>m_</code>/<code>f_</code>等前缀，现在想想这些前缀有些多余，同时也要减少魔术数，毕竟写个数字5，在没有注释的情况下，除了开发者，估计其他人也无法理解这个5的实际含义~</p>
+<hr>
+<h3 id="使用解释性变量"><a href="#使用解释性变量" class="headerlink" title="使用解释性变量"></a>使用解释性变量</h3><p>一个例子你就能懂：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Matcher match = headerPattern.matcher(line);</div><div class="line"><span class="keyword">if</span> (match.find()) &#123;</div><div class="line">    String key = match.group(<span class="number">1</span>);</div><div class="line">    String value = match.group(<span class="number">2</span>);</div><div class="line">    headers.put(key.toLowerCase(), value);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>是不是感觉变量会说话，key和value让人一看就了解它们的含义，这种情况下都不需要加注释了~</p>
+<hr>
+<h3 id="函数名称应该表达其行为"><a href="#函数名称应该表达其行为" class="headerlink" title="函数名称应该表达其行为"></a>函数名称应该表达其行为</h3><p>以下这种应该是杜绝的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Date newDate = date.add(<span class="number">5</span>);</div></pre></td></tr></table></figure></p>
+<p>函数名add(int)，无法表达它的含义，是天数还是月份增加5，所以这些表意不明的函数名是要杜绝的。</p>
+<hr>
+<h3 id="理解算法"><a href="#理解算法" class="headerlink" title="理解算法"></a>理解算法</h3><p>这里的算法，应该是确认自己理解了这个函数是怎样工作，在此基础上，进行修改或者重构。</p>
+<hr>
+<h3 id="用多态替代If-Else或Switch-Case"><a href="#用多态替代If-Else或Switch-Case" class="headerlink" title="用多态替代If/Else或Switch/Case"></a>用多态替代If/Else或Switch/Case</h3><p>觉得这条建议应该是在业务复杂的情况下或者需要扩展代码逻辑情况下实施的，在简单业务情况下，为了避免类膨胀的话，是可以使用If/Else~（给自己偷懒找借口(^o^)/~）</p>
+<hr>
+<h3 id="用命名常量替代魔术数"><a href="#用命名常量替代魔术数" class="headerlink" title="用命名常量替代魔术数"></a>用命名常量替代魔术数</h3><p>避免在代码中硬编码数字，可以将常量数字写在类最上面的静态变量，或者抽象一个枚举，阐释这个数字的含义。</p>
+<hr>
+<h3 id="封装条件"><a href="#封装条件" class="headerlink" title="封装条件"></a>封装条件</h3><p>在if表达式中，将判断式封装起来（此方法会在条件简单偷懒=-=）：</p>
+<p>例如:<br><code>if (shouldBeDeleted(timer))</code><br>要好于<br><code>if (timer.hasExpired() &amp;&amp; !timer.isRecurrent())</code></p>
+<hr>
+<h3 id="避免否定性条件"><a href="#避免否定性条件" class="headerlink" title="避免否定性条件"></a>避免否定性条件</h3><p>例如：<br><code>if (buffer.shouldCompact())</code><br>要好于<br><code>if (!buffer.shouldNotCompact())</code></p>
+<hr>
+<h3 id="函数只该做一件事"><a href="#函数只该做一件事" class="headerlink" title="函数只该做一件事"></a>函数只该做一件事</h3><p>函数只做一件事有点难，可以将一个函数拆解出几个小函数，例如付工资函数，可以从一个大方法拆分成三个小方法，获取人员、计算工资、打钱到银行账户，这样这些小方法可以被其它方法复用。</p>
+<hr>
+<h3 id="掩蔽时序耦合"><a href="#掩蔽时序耦合" class="headerlink" title="掩蔽时序耦合"></a>掩蔽时序耦合</h3><p>常常有必要使用时序耦合，上一个步骤的结果交给下一个步骤处理，这个时候就不应该掩蔽它们之间的时序性。</p>
+<p>例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MovieDiver</span> </span>&#123;</div><div class="line">    Gradient gradient;</div><div class="line">    List&lt;Spline&gt; splines;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dive</span><span class="params">(String reason)</span> </span>&#123;</div><div class="line">        saturateGradient();</div><div class="line">        reticulateSplines();</div><div class="line">        diveForMoog(reason);</div><div class="line">    &#125;</div><div class="line">    ···</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>dive()</code>方法的代码没有强调时序耦合，如果其他开发人员调换了执行顺序，这样dive方法就无法正常执行了。</p>
+<p>可以更新成下面的形式:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dive</span><span class="params">(String reason)</span> </span>&#123;</div><div class="line">    Gradient gradient = saturateGradient();</div><div class="line">    List&lt;Spline&gt; splines = reticulateSplines(gradient);</div><div class="line">    diveForMoog(reason);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样通过创建顺序队列暴露时序耦合。</p>
+<hr>
+<h3 id="封装边界条件"><a href="#封装边界条件" class="headerlink" title="封装边界条件"></a>封装边界条件</h3><p>这个规则挺像封装判断条件，不过这条规则同样适用于封装变量：<br>例如，将出现过两次的<code>level + 1</code>封装成一个变量<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> nextLevel = level + <span class="number">1</span>;</div><div class="line"><span class="keyword">if</span> (nextLevel &lt; tags.length) &#123;</div><div class="line">    parts = <span class="keyword">new</span> Parse(body, tags, nextLevel, offset + endTag);</div><div class="line">    body = <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="在较高层级放置可配置数据"><a href="#在较高层级放置可配置数据" class="headerlink" title="在较高层级放置可配置数据"></a>在较高层级放置可配置数据</h3><p>可以理解为，变量定义在类起始的位置，不要将共有变量定义在函数后面。</p>
+<hr>
+<h3 id="函数名称要说明函数副作用"><a href="#函数名称要说明函数副作用" class="headerlink" title="函数名称要说明函数副作用"></a>函数名称要说明函数副作用</h3><p>例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> ObjectOutputStream <span class="title">getOos</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    <span class="keyword">if</span> (oss == <span class="keyword">null</span>) &#123;</div><div class="line">        oos = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream());</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> oos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个方法名只说了获取输出流，但没说明如果输出流不存在的情况下，它将新建一个输出流，所以这个函数名称应该修改成<code>createOrReturnOos</code>。</p>
+<hr>
+<h3 id="避免传递游览"><a href="#避免传递游览" class="headerlink" title="避免传递游览"></a>避免传递游览</h3><p>例如有A、B、C三个类，下面这种行为是要禁止的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">a.getB().getC().doSomething();</div></pre></td></tr></table></figure></p>
+<p>正确的做法应该是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">myCollaborator.doSomething();</div></pre></td></tr></table></figure></p>
+<p>让我们的直接协作者提供所需的全部服务~~</p>
+<hr>
+<h2 id="参考书籍"><a href="#参考书籍" class="headerlink" title="参考书籍"></a>参考书籍</h2><ol>
+<li>《代码整洁之道》-第十七章</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/读后感/" rel="tag"># 读后感</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/19/java/Spring自定义注解实现AOP/" rel="next" title="Spring自定义注解实现AOP">
+                <i class="fa fa-chevron-left"></i> Spring自定义注解实现AOP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/25/linux/AWK命令和SED命令/" rel="prev" title="AWK命令和SED命令">
+                AWK命令和SED命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启示（约定规则）"><span class="nav-number">2.</span> <span class="nav-text">启示（约定规则）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个源文件中减少存在多种语言"><span class="nav-number">2.1.</span> <span class="nav-text">一个源文件中减少存在多种语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#要实现函数名对应的行为"><span class="nav-number">2.2.</span> <span class="nav-text">要实现函数名对应的行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#边界行为要明确"><span class="nav-number">2.3.</span> <span class="nav-text">边界行为要明确</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不要忽视安全"><span class="nav-number">2.4.</span> <span class="nav-text">不要忽视安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免重复代码"><span class="nav-number">2.5.</span> <span class="nav-text">避免重复代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码要在正确的抽象层级上"><span class="nav-number">2.6.</span> <span class="nav-text">编码要在正确的抽象层级上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基类不应该依赖于派生类"><span class="nav-number">2.7.</span> <span class="nav-text">基类不应该依赖于派生类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免信息过多"><span class="nav-number">2.8.</span> <span class="nav-text">避免信息过多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除死代码"><span class="nav-number">2.9.</span> <span class="nav-text">删除死代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垂直分隔"><span class="nav-number">2.10.</span> <span class="nav-text">垂直分隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保持前后一致"><span class="nav-number">2.11.</span> <span class="nav-text">保持前后一致</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减少人为耦合"><span class="nav-number">2.12.</span> <span class="nav-text">减少人为耦合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减少特性依赖"><span class="nav-number">2.13.</span> <span class="nav-text">减少特性依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免在函数末尾出现选择算子函数（selector"><span class="nav-number">2.14.</span> <span class="nav-text">避免在函数末尾出现选择算子函数（selector)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免晦涩的意图"><span class="nav-number">2.15.</span> <span class="nav-text">避免晦涩的意图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用解释性变量"><span class="nav-number">2.16.</span> <span class="nav-text">使用解释性变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数名称应该表达其行为"><span class="nav-number">2.17.</span> <span class="nav-text">函数名称应该表达其行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解算法"><span class="nav-number">2.18.</span> <span class="nav-text">理解算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用多态替代If-Else或Switch-Case"><span class="nav-number">2.19.</span> <span class="nav-text">用多态替代If/Else或Switch/Case</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用命名常量替代魔术数"><span class="nav-number">2.20.</span> <span class="nav-text">用命名常量替代魔术数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装条件"><span class="nav-number">2.21.</span> <span class="nav-text">封装条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免否定性条件"><span class="nav-number">2.22.</span> <span class="nav-text">避免否定性条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数只该做一件事"><span class="nav-number">2.23.</span> <span class="nav-text">函数只该做一件事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#掩蔽时序耦合"><span class="nav-number">2.24.</span> <span class="nav-text">掩蔽时序耦合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装边界条件"><span class="nav-number">2.25.</span> <span class="nav-text">封装边界条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在较高层级放置可配置数据"><span class="nav-number">2.26.</span> <span class="nav-text">在较高层级放置可配置数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数名称要说明函数副作用"><span class="nav-number">2.27.</span> <span class="nav-text">函数名称要说明函数副作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免传递游览"><span class="nav-number">2.28.</span> <span class="nav-text">避免传递游览</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考书籍"><span class="nav-number">3.</span> <span class="nav-text">参考书籍</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

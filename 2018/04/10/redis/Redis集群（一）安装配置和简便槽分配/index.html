@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="为什么要用 Redis 集群Redis 集群是 Redis 提供的分布式数据库方案，集群通过分片(sharding)来进行数据提供，并提供复制和故障转移功能。 学习记录以下几点：  节点 槽指派 命令执行 重新分片 转向 故障转移 消息  首先先看如何以集群模式启动Redis1.复制三份配置 redis.conf，修改端口号 port 和 node.conf 12345678#可选操作，该项设置后">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis集群（一）安装配置和简便槽分配">
+<meta property="og:url" content="http://yoursite.com/2018/04/10/redis/Redis集群（一）安装配置和简便槽分配/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="为什么要用 Redis 集群Redis 集群是 Redis 提供的分布式数据库方案，集群通过分片(sharding)来进行数据提供，并提供复制和故障转移功能。 学习记录以下几点：  节点 槽指派 命令执行 重新分片 转向 故障转移 消息  首先先看如何以集群模式启动Redis1.复制三份配置 redis.conf，修改端口号 port 和 node.conf 12345678#可选操作，该项设置后">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-25T07:08:17.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis集群（一）安装配置和简便槽分配">
+<meta name="twitter:description" content="为什么要用 Redis 集群Redis 集群是 Redis 提供的分布式数据库方案，集群通过分片(sharding)来进行数据提供，并提供复制和故障转移功能。 学习记录以下几点：  节点 槽指派 命令执行 重新分片 转向 故障转移 消息  首先先看如何以集群模式启动Redis1.复制三份配置 redis.conf，修改端口号 port 和 node.conf 12345678#可选操作，该项设置后">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/10/redis/Redis集群（一）安装配置和简便槽分配/"/>
+
+
+
+
+
+  <title>Redis集群（一）安装配置和简便槽分配 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/10/redis/Redis集群（一）安装配置和简便槽分配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis集群（一）安装配置和简便槽分配</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T16:55:55+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="为什么要用-Redis-集群"><a href="#为什么要用-Redis-集群" class="headerlink" title="为什么要用 Redis 集群"></a>为什么要用 Redis 集群</h2><p>Redis 集群是 Redis 提供的分布式数据库方案，集群通过<strong>分片(sharding)</strong>来进行数据提供，并提供复制和故障转移功能。</p>
+<p>学习记录以下几点：</p>
+<ul>
+<li>节点</li>
+<li>槽指派</li>
+<li>命令执行</li>
+<li>重新分片</li>
+<li>转向</li>
+<li>故障转移</li>
+<li>消息</li>
+</ul>
+<h2 id="首先先看如何以集群模式启动Redis"><a href="#首先先看如何以集群模式启动Redis" class="headerlink" title="首先先看如何以集群模式启动Redis"></a><strong>首先先看如何以集群模式启动Redis</strong></h2><p>1.复制三份配置 redis.conf，<strong>修改端口号 port 和 node.conf</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">可选操作，该项设置后台方式运行，</span></div><div class="line">daemonize yes</div><div class="line"></div><div class="line">port 7000</div><div class="line">cluster-enabled yes</div><div class="line">cluster-config-file nodes0.conf</div><div class="line">cluster-node-timeout 5000</div><div class="line">appendonly yes</div></pre></td></tr></table></figure>
+<p><strong>记住三份文件要在不同文件夹下（例如/7001/redis.conf、/7002/redis.conf···）</strong></p>
+<p><strong>node.conf </strong>虽然此配置的名字叫”集群配置文件”，但是此配置文件不能人工编辑，它是集群节点自动维护的文件，主要用于记录集群中有哪些节点、他们的状态以及一些持久化参数等，方便在重启时恢复这些状态。通常是在收到请求之后这个文件就会被更新。</p>
+<p>配置文件结构:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Redis/</div><div class="line">├── 7000</div><div class="line">|   ├── redis.conf</div><div class="line">|   ├── nodes0.conf</div><div class="line">├── 7001</div><div class="line">|   ├── redis.conf</div><div class="line">|   ├── nodes1.conf</div><div class="line">├── 7002</div><div class="line">|   ├── redis.conf</div><div class="line">|   ├── nodes2.conf</div></pre></td></tr></table></figure>
+<p>2.依次通过redis-server根据具体配置启动<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> redis-server /7000/redis.conf</span></div></pre></td></tr></table></figure></p>
+<p>如果遇到以下错误：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Sorry, the cluster configuration file nodes.conf is already used by a different Redis Cluster node. Please make sure that different nodes use different cluster configuration files.</div></pre></td></tr></table></figure></p>
+<p>请确认node.conf文件名是否修改正确</p>
+<p>我是以前台方式启动的，所以能看到打印以下打印信息：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">10992:M 10 Apr 13:48:38.266 * No cluster configuration found, I'm f745788c4c24711a11c8ad516ead9a485e5b1dbb</div></pre></td></tr></table></figure></p>
+<p>此时表示 redis 已经以集群模式启动了</p>
+<hr>
+<h2 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h2><p>一个Redis集群通常有多个节点(Node)组成，在刚开始的时候，每个节点都是互相独立的，它们都处于一个只包含自己的集群当中，要组件一个真正可工作的集群，我们必须将各个独立的节点连接起来，构成一个包含多个节点的集群。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">连接各个节点的工作可以使用 CLUSTER MEET 命令，可以让 node 节点与 io 和 port 所指定的节点进行握手</div><div class="line"><span class="meta">#</span><span class="bash"> CLUSTER MEET &lt;ip&gt; &lt;port&gt;</span></div></pre></td></tr></table></figure>
+<p>测试，用三个独立的节点（本地打开7000、7001、7002三个端口）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> redis-cli -c -p 7000</span></div><div class="line">27.0.0.1:7000&gt; CLUSTER NODES</div><div class="line">f745788c4c24711a11c8ad516ead9a485e5b1dbb :7000@17000 myself,master - 0 0 0 connected</div><div class="line">可以看出，现在集群只包含700自己一个节点</div></pre></td></tr></table></figure></p>
+<p>开始节点之间的连接：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:7000&gt; CLUSTER MEET 127.0.0.1 7001</div><div class="line">OK</div><div class="line">127.0.0.1:7000&gt; CLUSTER NODES</div><div class="line">2a1035a6642f8f1020c279c8a69ce66ff7eb564b 127.0.0.1:7001@17001 master - 0 1523341290344 1 connected</div><div class="line">f745788c4c24711a11c8ad516ead9a485e5b1dbb 127.0.0.1:7000@17000 myself,master - 0 0 0 connected</div><div class="line">127.0.0.1:7000&gt; CLUSTER MEET 127.0.0.1 7002</div><div class="line">OK</div><div class="line">127.0.0.1:7000&gt; CLUSTER NODES</div><div class="line">3110ed887330d428e1b544932dc22b1fcbd3fa45 127.0.0.1:7002@17002 master - 0 1523341327519 2 connected</div><div class="line">2a1035a6642f8f1020c279c8a69ce66ff7eb564b 127.0.0.1:7001@17001 master - 0 1523341328553 1 connected</div><div class="line">f745788c4c24711a11c8ad516ead9a485e5b1dbb 127.0.0.1:7000@17000 myself,master - 0 1523341327000 0 connected</div></pre></td></tr></table></figure></p>
+<p> 通过 CLUSTER NODES 可以看出，现在集群中包含了三个节点。</p>
+<h3 id="集群数据结构"><a href="#集群数据结构" class="headerlink" title="集群数据结构"></a>集群数据结构</h3><p>clusterNode结构保存了一个节点的当前状态，比如节点的创建时间节点的名字、节点当前的配置纪元节点的IP地址和端口号等等。</p>
+<p>结构如下定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"> <span class="class"><span class="keyword">struct</span> <span class="title">clusterNdoe</span> &#123;</span></div><div class="line">   <span class="comment">//创建节点的时间</span></div><div class="line">   <span class="keyword">mstime_t</span> ctime;</div><div class="line">   </div><div class="line">   <span class="comment">//节点的名字</span></div><div class="line">   <span class="keyword">char</span> name[REDIS_CLUSTER_NAMELEN];</div><div class="line">   </div><div class="line">   <span class="comment">//节点标识</span></div><div class="line">   <span class="keyword">int</span> flags;</div><div class="line">   </div><div class="line">   <span class="comment">//节点当前的配置纪元，用来实现故障转移</span></div><div class="line">   <span class="keyword">uint64_t</span> configEpoch;</div><div class="line">   </div><div class="line">   <span class="comment">//节点的IP地址</span></div><div class="line">   <span class="keyword">char</span> ip[REDIS_IP_STR_LEN];</div><div class="line">   </div><div class="line">   <span class="comment">//节点的端口号</span></div><div class="line">   <span class="keyword">int</span> port;</div><div class="line">   </div><div class="line">   <span class="comment">//保存连接节点所需的有关信息</span></div><div class="line">   clusterLink *link;</div><div class="line">   </div><div class="line">   ···</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>每个节点都保存着一个clusterState结构，这个结构在当前节点描述集群当前所处的状态，例如集群是在线还是下线，集群包含多少个节点，集群当前的配置纪元等。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">clusterState</span> &#123;</span></div><div class="line">  <span class="comment">// 指向当前节点的指针</span></div><div class="line">  clusterNode *myself;</div><div class="line">  </div><div class="line">  <span class="comment">//集群当前的配置纪元，用于实现故障转移</span></div><div class="line">  <span class="keyword">uint64_t</span> currentEpoch;</div><div class="line">  </div><div class="line">  <span class="comment">//集群当前的状态：在线OR下线</span></div><div class="line">  <span class="keyword">int</span> state;</div><div class="line">  </div><div class="line">  <span class="comment">//集群节点名单（包括自己）</span></div><div class="line">  dict *nodes;</div><div class="line">  </div><div class="line">  ···</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="槽指派"><a href="#槽指派" class="headerlink" title="槽指派"></a>槽指派</h2><p>Redis 集群通过分片的方式来保存数据库中的键值对：集群的整个数据库被分为 16384 个槽(slot)，数据库中的每个键都属于这 16384 个槽的其中一个，集群中的每个节点可以处理 0 个或最多 16384 个槽。</p>
+<p>当数据库中的 16384 全部槽都有节点在处理时，表示集群处于上线状态；否则，处于下线状态。</p>
+<h4 id="通过CLUSTER-INFO进行集群状态查看"><a href="#通过CLUSTER-INFO进行集群状态查看" class="headerlink" title="通过CLUSTER_INFO进行集群状态查看"></a><strong>通过CLUSTER_INFO进行集群状态查看</strong></h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:7000&gt; cluster info</div><div class="line"><span class="meta">#</span><span class="bash"> state显示是fail，因为没有处理槽</span></div><div class="line">cluster_state:fail</div><div class="line">cluster_slots_assigned:0</div><div class="line">cluster_slots_ok:0</div><div class="line">cluster_slots_pfail:0</div><div class="line">cluster_slots_fail:0</div><div class="line">cluster_known_nodes:3</div><div class="line">cluster_size:0</div><div class="line">cluster_current_epoch:2</div><div class="line">cluster_my_epoch:0</div><div class="line">cluster_stats_messages_ping_sent:1261</div><div class="line">cluster_stats_messages_pong_sent:1350</div><div class="line">cluster_stats_messages_meet_sent:2</div><div class="line">cluster_stats_messages_sent:2613</div><div class="line">cluster_stats_messages_ping_received:1350</div><div class="line">cluster_stats_messages_pong_received:1263</div><div class="line">cluster_stats_messages_received:2613</div></pre></td></tr></table></figure>
+<h4 id="使用-redis-trib-rb-创建集群并分配槽"><a href="#使用-redis-trib-rb-创建集群并分配槽" class="headerlink" title="使用 redis-trib.rb 创建集群并分配槽"></a>使用 redis-trib.rb 创建集群并分配槽</h4><p>在节点中通过 CLUSTER ADDSLOTS <slot> [slot …]<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 将0-5000槽指派给7000负责</span></div><div class="line">127.0.0.1:7000&gt;CLUSTER ADDSLOTS 0 1 2 3 ... 5000</div></pre></td></tr></table></figure></slot></p>
+<p><strong>大雾！！！一个一个将槽位打出来不现实，所以使用redis-trib.rb帮助我们进行简单集群配置，但redis-trib.rb是由ruby语言编写的所以需要安装ruby环境。</strong></p>
+<p><strong>发现绕来绕去，REDIS的集群安装还需要RUBY环境和使用gem安装redis接口。</strong></p>
+<p>给大伙一个<a href="https://blog.csdn.net/s12117719679/article/details/54380227" target="_blank" rel="noopener">安装传送门</a></p>
+<p><strong>注意：</strong><br>Mac 通过 Homebrew 没有 src 目录，gem install redis后找不到redis-trib.rb，被折磨很久后，直接去<a href="https://github.com/beebol/redis-trib.rb" target="_blank" rel="noopener">GITHUB下载这个文件</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> redis-trib.rb create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Creating cluster</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Performing <span class="built_in">hash</span> slots allocation on 3 nodes...</span></div><div class="line">Using 3 masters:</div><div class="line">127.0.0.1:7000</div><div class="line">127.0.0.1:7001</div><div class="line">127.0.0.1:7002</div><div class="line">M: f745788c4c24711a11c8ad516ead9a485e5b1dbb 127.0.0.1:7000</div><div class="line">   slots:0-5460 (5461 slots) master</div><div class="line">M: 2a1035a6642f8f1020c279c8a69ce66ff7eb564b 127.0.0.1:7001</div><div class="line">   slots:5461-10922 (5462 slots) master</div><div class="line">M: 3110ed887330d428e1b544932dc22b1fcbd3fa45 127.0.0.1:7002</div><div class="line">   slots:10923-16383 (5461 slots) master</div><div class="line">Can I set the above configuration? (type 'yes' to accept): yes</div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Nodes configuration updated</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Assign a different config epoch to each node</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Sending CLUSTER MEET messages to join the cluster</span></div><div class="line">Waiting for the cluster to join.</div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Performing Cluster Check (using node 127.0.0.1:7000)</span></div><div class="line">M: f745788c4c24711a11c8ad516ead9a485e5b1dbb 127.0.0.1:7000</div><div class="line">   slots:0-5460 (5461 slots) master</div><div class="line">M: 2a1035a6642f8f1020c279c8a69ce66ff7eb564b 127.0.0.1:7001</div><div class="line">   slots:5461-10922 (5462 slots) master</div><div class="line">M: 3110ed887330d428e1b544932dc22b1fcbd3fa45 127.0.0.1:7002</div><div class="line">   slots:10923-16383 (5461 slots) master</div><div class="line">[OK] All nodes agree about slots configuration.</div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Check <span class="keyword">for</span> open slots...</span></div><div class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Check slots coverage...</span></div><div class="line">[OK] All 16384 slots covered.</div></pre></td></tr></table></figure>
+<p><strong>踩坑：之前通过 CLUSTER MEET，让各个节点进行握手，所以使用 redis-trib.rb 会报下面这个错误</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ERR] Node 127.0.0.1:7001 is not empty. Either the node already knows other nodes (check with CLUSTER NODES) or contains some key in database 0.</div></pre></td></tr></table></figure>
+<p><strong>解决方法：</strong><br>在每个节点查询nodes编号后，使用 CLUSTER FOTGET 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ cluster forget 3110ed887330d428e1b544932dc22b1fcbd3fa45</div><div class="line"></div><div class="line"># 接着重新输入命令</div><div class="line">$ redis-trib.rb create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002</div></pre></td></tr></table></figure>
+<h4 id="查看槽分派情况"><a href="#查看槽分派情况" class="headerlink" title="查看槽分派情况"></a>查看槽分派情况</h4><p>使用 CLUSTER SLOTS 查询<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:7000&gt; CLUSTER SLOTS</div><div class="line">1) 1) (integer) 10923</div><div class="line">   2) (integer) 16383</div><div class="line">   3) 1) "127.0.0.1"</div><div class="line">      2) (integer) 7002</div><div class="line">      3) "3110ed887330d428e1b544932dc22b1fcbd3fa45"</div><div class="line">2) 1) (integer) 5461</div><div class="line">   2) (integer) 10922</div><div class="line">   3) 1) "127.0.0.1"</div><div class="line">      2) (integer) 7001</div><div class="line">      3) "2a1035a6642f8f1020c279c8a69ce66ff7eb564b"</div><div class="line">3) 1) (integer) 0        //起始槽编号</div><div class="line">   2) (integer) 5460     //结束槽编号</div><div class="line">   3) 1) "127.0.0.1"     //IP</div><div class="line">      2) (integer) 7000  //PORT</div><div class="line">      3) "f745788c4c24711a11c8ad516ead9a485e5b1dbb" //NODE编号</div></pre></td></tr></table></figure></p>
+<p>从上图可以看出，每个节点负责处理自己对应的槽。</p>
+<p>一个节点除了会将自己负责处理的槽记录在 clusterNode 结构的 slots 属性和 numslot s属性之外，还会将自己的 slots 数组通过消息发送给集群中的其他节点，以此来告知其他节点自己目前负责处理哪些槽。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/25/redis/Redis哨兵/" rel="next" title="Redis哨兵">
+                <i class="fa fa-chevron-left"></i> Redis哨兵
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/10/redis/Redis集群（二）发送命令和故障转移/" rel="prev" title="Redis集群（二）发送命令和故障转移">
+                Redis集群（二）发送命令和故障转移 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要用-Redis-集群"><span class="nav-number">1.</span> <span class="nav-text">为什么要用 Redis 集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#首先先看如何以集群模式启动Redis"><span class="nav-number">2.</span> <span class="nav-text">首先先看如何以集群模式启动Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#节点"><span class="nav-number">3.</span> <span class="nav-text">节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群数据结构"><span class="nav-number">3.1.</span> <span class="nav-text">集群数据结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#槽指派"><span class="nav-number">4.</span> <span class="nav-text">槽指派</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过CLUSTER-INFO进行集群状态查看"><span class="nav-number">4.0.1.</span> <span class="nav-text">通过CLUSTER_INFO进行集群状态查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-redis-trib-rb-创建集群并分配槽"><span class="nav-number">4.0.2.</span> <span class="nav-text">使用 redis-trib.rb 创建集群并分配槽</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看槽分派情况"><span class="nav-number">4.0.3.</span> <span class="nav-text">查看槽分派情况</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RocketMQ," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="学习一下火箭消息 - Broker 的原理和使用🚀">
+<meta name="keywords" content="RocketMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RocketMQ Broker 深入学习">
+<meta property="og:url" content="http://yoursite.com/2020/10/31/jms/2020-11-01-RocketMQ-Learning-Broker/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="学习一下火箭消息 - Broker 的原理和使用🚀">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Architecture.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_CommitLog_Item.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_ConsumeQueue_Item.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Index_Item.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Processor_Implemention.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor_flow.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-Broker-Netty-Model.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png">
+<meta property="og:updated_time" content="2020-11-22T14:38:50.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RocketMQ Broker 深入学习">
+<meta name="twitter:description" content="学习一下火箭消息 - Broker 的原理和使用🚀">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/10/31/jms/2020-11-01-RocketMQ-Learning-Broker/"/>
+
+
+
+
+
+  <title>RocketMQ Broker 深入学习 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/31/jms/2020-11-01-RocketMQ-Learning-Broker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RocketMQ Broker 深入学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-31T20:48:00+08:00">
+                2020-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RocketMQ/" itemprop="url" rel="index">
+                    <span itemprop="name">RocketMQ</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg" alt=""></p>
+<center><strong>学习一下火箭消息 - Broker 的原理和使用🚀</strong></center>
+
+<a id="more"></a>
+<h1 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h1><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>brokerClusterName=rocketmq-cluster-1</td>
+<td>所属集群名字</td>
+</tr>
+<tr>
+<td>brokerName=broker-a</td>
+<td>broker名字，注意此处不同的配置文件填写的不一样</td>
+</tr>
+<tr>
+<td>brokerId=0</td>
+<td>0 表示Master, &gt; 0 表示slave</td>
+</tr>
+<tr>
+<td>namesrvAddr=127.0.0.1:9876;127.0.0.2:9876</td>
+<td>nameServer 地址，分号分割</td>
+</tr>
+<tr>
+<td>defaultTopicQueueNums=4</td>
+<td>在发送消息时，自动创建服务器不存在的Topic，默认创建的队列数</td>
+</tr>
+<tr>
+<td>autoCreateTopicEnable=false</td>
+<td>是否允许Broker 自动创建Topic，建议线下开启，线上关闭</td>
+</tr>
+<tr>
+<td>autoCreateSubscriptionGroup=false</td>
+<td>是否允许Broker自动创建订阅组，建议线下开启，线上关闭</td>
+</tr>
+<tr>
+<td>useEpollNativeSelector=true</td>
+<td></td>
+</tr>
+<tr>
+<td>listenPort=10923</td>
+<td>Broker 对外服务的监听端口</td>
+</tr>
+<tr>
+<td>haListenPort=10924</td>
+<td></td>
+</tr>
+<tr>
+<td>deleteWhen=04</td>
+<td>删除时间，默认是凌晨四点</td>
+</tr>
+<tr>
+<td>fileReservedTime=120</td>
+<td>文件保留时间，默认48小时，单位是 hour</td>
+</tr>
+<tr>
+<td>mapedFileSizeCommitLog=1073741824</td>
+<td>commitLog每个文件的大小默认1G</td>
+</tr>
+<tr>
+<td>mapedFileSizeConsumeQueue=300000</td>
+<td>ConsumeQueue每个文件默认存30W条，根据业务情况调整</td>
+</tr>
+<tr>
+<td>#redeleteHangedFileInterval=120000</td>
+<td>destroyMapedFileIntervalForcibly=120000</td>
+</tr>
+<tr>
+<td>diskMaxUsedSpaceRatio=88</td>
+<td>检测物理文件磁盘空间</td>
+</tr>
+<tr>
+<td>storePathRootDir=/data/store</td>
+<td>存储路径</td>
+</tr>
+<tr>
+<td>storePathCommitLog=/data/store/commitlog</td>
+<td>commitLog存储路径</td>
+</tr>
+<tr>
+<td>storePathConsumeQueue=/data/store/consumequeue</td>
+<td>消费队列存储路径</td>
+</tr>
+<tr>
+<td>storePathIndex=/data/store/index</td>
+<td>消息索引存储路径</td>
+</tr>
+<tr>
+<td>storeCheckpoint=/data/store/checkpoint</td>
+<td>checkpoint 文件存储路径</td>
+</tr>
+<tr>
+<td>abortFile=/data/store/abort</td>
+<td>abort 文件存储路径</td>
+</tr>
+<tr>
+<td>maxMessageSize=5242880</td>
+<td>限制的消息大小，默认 1M</td>
+</tr>
+<tr>
+<td># flushCommitLogLeastPages=4</td>
+<td></td>
+</tr>
+<tr>
+<td># flushConsumeQueueLeastPages=2</td>
+<td></td>
+</tr>
+<tr>
+<td># flushCommitLogThoroughInterval=10000</td>
+<td></td>
+</tr>
+<tr>
+<td># flushConsumeQueueThoroughInterval=60000</td>
+<td></td>
+</tr>
+<tr>
+<td>brokerRole=SYNC_MASTER</td>
+<td>Broker 的角色  - ASYNC_MASTER 异步复制Master  - SYNC_MASTER 同步双写Master - SLAVE</td>
+</tr>
+<tr>
+<td>flushDiskType=ASYNC_MASTER</td>
+<td>刷盘方式 - ASYNC_FLUSH 异步刷盘 - SYNC_FLUSH 同步刷盘</td>
+</tr>
+<tr>
+<td>#checkTransactionMessageEnable=false</td>
+<td></td>
+</tr>
+<tr>
+<td>sendMessageThreadPoolNums=128</td>
+<td>发消息线程池数量</td>
+</tr>
+<tr>
+<td>#pullMessageTreadPoolNums=128</td>
+<td>拉消息线程池数量</td>
+</tr>
+<tr>
+<td>useReentrantLockWhenPutMessage=false</td>
+<td></td>
+</tr>
+<tr>
+<td>waitTimeMillsInSendQueue=2500</td>
+<td>刷盘等待时间，超时将会返回发送失败码给发送者</td>
+</tr>
+<tr>
+<td>transferMsgByHeap=false</td>
+<td></td>
+</tr>
+<tr>
+<td>slaveReadEnable=true</td>
+<td>是否允许 slave 读</td>
+</tr>
+</tbody>
+</table>
+<p>上面罗列的是常见的参数，例如 <code>Broker</code> 集群的名称，主从角色，消息存储路径、文件大小、清理时间等等</p>
+<p>之前也遇到默认参数不适合使用的常见，例如遇到业务方瞬间发送大量消息， <code>Broker</code> 同步刷盘时间超过默认的 2.5s，导致其它业务方遇到发送消息失败的场景，于是在 <code>Broker</code> 能力完全充足的情景下，调整了 <code>waitTimeMillsInSendQueue</code> 到 5s，避免影响其它业务方使用</p>
+<h1 id="文件存储机制"><a href="#文件存储机制" class="headerlink" title="文件存储机制"></a>文件存储机制</h1><p><strong>重要说明：</strong></p>
+<p>想要深入了解 RocketMQ 消息存储的内幕，需要了解这两方面</p>
+<ul>
+<li>文件存储的数据结构</li>
+<li>灵活利用 Linux 的文件机制 <a href="http://man7.org/linux/man-pages/man2/mmap.2.html" target="_blank" rel="noopener">mmap</a></li>
+</ul>
+<p>这次学习记录，参考了 <a href="https://tinylcy.me/2019/the-design-of-rocketmq-message-storage-system/" target="_blank" rel="noopener">STAR 皆空</a> 大神，这里记录的是『消息存储的数据结构』，关于 mmap 的内容，可以点击参考链接深入学习。</p>
+<hr>
+<p>RocketMQ 有很多亮点，其中一个是选择直接使用操作系统来提升存储效率，写入二进制格式的文件，消息持久化过程最大化的转成顺序写，避免随机写的额外开销。</p>
+<p>这里记录一下跟 Broker 消息存储相关的内容</p>
+<ul>
+<li>CommitLog（消息内容）</li>
+<li>ConsumeQueue（位点数据）</li>
+<li>Index（检索索引）</li>
+<li>Broker 接收到【发送消息】操作</li>
+<li>Broker 接收到【获取消息】操作</li>
+</ul>
+<h2 id="Broker-端整体架构"><a href="#Broker-端整体架构" class="headerlink" title="Broker 端整体架构"></a>Broker 端整体架构</h2><p><code>Broker</code> 作为消息中转器，提供了消息发送、存储、查询，还有高可用的功能。</p>
+<p>其中有几个重要模块：</p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Architecture.png" alt=""></p>
+<ul>
+<li><strong>Remoing Module：</strong> 请求的入口，使用了 Netty 作为远程通讯工具，处理发送过来的请求。</li>
+<li><strong>Client Manager：</strong> 管理客户端（发送者、消费者）并维护消费者的主题订阅。</li>
+<li><strong>Store Service：</strong> 提供 API 来存储或查询物理磁盘上的消息。</li>
+<li><strong>HA Service：</strong> 高可用服务，为主从节点之间提供数据同步功能。</li>
+<li><strong>Index Service：</strong> 索引服务，可以根据特定 Key，建立消息索引，并提供快速消息查询功能。</li>
+</ul>
+<hr>
+<h2 id="消息物理存储结构"><a href="#消息物理存储结构" class="headerlink" title="消息物理存储结构"></a>消息物理存储结构</h2><p>从前面表格中的参数 <code>storePathXXXX</code> 可以知道，文件存储相关位置在 <code>/data/store</code>，使用 <code>tree</code> 命令查看这些消息文件的存储结构</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$tree</span> commitlog/ consumequeue/ index/</div><div class="line">commitlog/</div><div class="line">├── 00000000051539607552</div><div class="line">├── 00000000052613349376</div><div class="line">├── 00000000053687091200</div><div class="line">├── 00000000054760833024</div><div class="line">├── 00000000055834574848</div><div class="line">├── 00000000056908316672</div><div class="line">...</div><div class="line">consumequeue/</div><div class="line">├── prod%<span class="built_in">test</span>-events</div><div class="line">│   ├── 0</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">│   │   └── 00000000000006000000</div><div class="line">│   ├── 1</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">│   │   └── 00000000000006000000</div><div class="line">│   ├── 10</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">│   │   └── 00000000000006000000</div><div class="line">│   ├── 11</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">...</div><div class="line">│   ├── 2</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">│   │   └── 00000000000006000000</div><div class="line">│   ├── 3</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">│   │   └── 00000000000006000000</div><div class="line">│   ├── 4</div><div class="line">│   │   ├── 00000000000000000000</div><div class="line">│   │   └── 00000000000006000000</div><div class="line">...</div><div class="line">index/</div><div class="line">├── 20200930012239943</div><div class="line">├── 20201012111555094</div><div class="line">└── 20201017045900966</div></pre></td></tr></table></figure>
+<h3 id="CommitLog-消息数据文件"><a href="#CommitLog-消息数据文件" class="headerlink" title="CommitLog 消息数据文件"></a>CommitLog 消息数据文件</h3><p>借鉴于 Kafka，RocketMQ 也是以 Topic 作为文件存储的基本单元，每个 Topic 都有其对应的数据文件和索引文件。</p>
+<p>RocketMQ 与 Kafka 不同点在于，Kafka 将消息数据文件按 Topic 分开存储，如果存在大量 Topic 情况下，消息持久化会逐渐变成随机磁盘读写，消息中间件的高性能被磁盘IO 所限制；而 RocketMQ 对其进行改进，将全部 Topic 的数据文件写入同一个文件（commitLog）中，实现消息的顺序写。</p>
+<p><strong>单个 CommitLog 的大小为 1GB，每条消息及其元信息被顺序追加至文件，文件的尾部可能存在空闲区域。</strong></p>
+<p>除了记录消息本身的属性（消息长度、消息体、Topic 长度、Topic、消息属性长度、消息属性)，CommitLog 同时记录了消息所在 ConsumeQueue 消费队列的信息（消费队列 ID 和偏移量）。</p>
+<p>由于存储条目具备不定长的特性，当 CommitLog 剩余空间无法满足下一条消息的存储，会在当前 CommitLog 的尾部追加一个 <code>MAGIC CODE</code> 等于 <code>BLANK_MAGIC_CODE</code> 的存储条目作为结束标记，并开始下一个 CommitLog 文件的操作。</p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_CommitLog_Item.png" alt=""></p>
+<h3 id="ConsumeQueue-消息队列文件"><a href="#ConsumeQueue-消息队列文件" class="headerlink" title="ConsumeQueue 消息队列文件"></a>ConsumeQueue 消息队列文件</h3><p>Topic 是个抽象概念，消息实际发往的是 consumeQueue 这个逻辑队列中，在 consumeQueue 中，记录了消息在 CommitLog 中的位置信息</p>
+<p><strong>单个 ConsumeQueue 文件大小为 6000000 Byte，存储 30W 条记录，每条记录固定 20B</strong></p>
+<p>与 CommitLog 不同，ConsumeQueue 的存储条目采用定长存储结构。</p>
+<p>为了实现定长存储，ConsumeQueue 存储到了消息 Tag 的 HashCode，在 Broker 端进行消息过滤时，通过比较 Consumer 订阅 Tag 的 HashCode 和存储条目中的 Tag 的 HashCode 是否一致来决定是否消费消息。</p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_ConsumeQueue_Item.png" alt=""></p>
+<h3 id="Index-索引文件"><a href="#Index-索引文件" class="headerlink" title="Index 索引文件"></a>Index 索引文件</h3><p>在已有的 CommitLog 和 ConsumeQueue 基础上，已经满足一个消息中间件的消息发送和消费功能，RMQ 提供 Index 目的是为了检索消息更快，方便排查问题。</p>
+<p>这个目录下的文件，提供了跟数据库索引一样的作用，<strong>「给定 Topic 和消息 Key，通过索引文件能快速找到消息」</strong>，提供了消息检索的作用，监控端的【消息查询】界面使用了这个功能。</p>
+<p><strong>单个 Index 文件大小等于 420000040 B，包含索引头（IndexHeader）、哈希槽（HashSlot）和消息索引（MessageIndex）</strong></p>
+<p>Index 存储条目的结构有点像 HashMap，使用链式地址法解决哈希冲突：<br><strong>「每个 Hash Slot 关联一个 Message Index 链表，多个 Message Index 通过 preIndexOffset 连接。」</strong></p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Index_Item.png" alt=""></p>
+<h1 id="Broker-代码实现初探"><a href="#Broker-代码实现初探" class="headerlink" title="Broker 代码实现初探"></a>Broker 代码实现初探</h1><p>Broker 启动阶段：</p>
+<h2 id="Broker-Startup"><a href="#Broker-Startup" class="headerlink" title="Broker Startup"></a>Broker Startup</h2><blockquote>
+<p>org.apache.rocketmq.broker.BrokerStartup#main</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#org.apache.rocketmq.broker.BrokerStartup#main</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrokerStartup</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        start(createBrokerController(args));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div><div class="line"></div><div class="line">#org.apache.rocketmq.broker.BrokerController#registerProcessor</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerProcessor</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">/**</span></div><div class="line"><span class="comment">         * SendMessageProcessor</span></div><div class="line"><span class="comment">         */</span></div><div class="line">        SendMessageProcessor sendProcessor = <span class="keyword">new</span> SendMessageProcessor(<span class="keyword">this</span>);</div><div class="line">        sendProcessor.registerSendMessageHook(sendMessageHookList);</div><div class="line">        sendProcessor.registerConsumeMessageHook(consumeMessageHookList);</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.SEND_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.SEND_BATCH_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.CONSUMER_SEND_MSG_BACK, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.SEND_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.SEND_BATCH_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.CONSUMER_SEND_MSG_BACK, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="comment">/**</span></div><div class="line"><span class="comment">         * PullMessageProcessor</span></div><div class="line"><span class="comment">         */</span></div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.PULL_MESSAGE, <span class="keyword">this</span>.pullMessageProcessor, <span class="keyword">this</span>.pullMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.pullMessageProcessor.registerConsumeMessageHook(consumeMessageHookList);</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Broker 将消息处理器注册到核心控制器 <code>BrokerController</code>，<code>Broker</code> 定义了很多种消息处理器，查看 <code>AsyncNettyRequestProcessor</code> 继承图：</p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Processor_Implemention.png" alt=""></p>
+<ul>
+<li>AdminBrokerProcessor</li>
+<li>ClientManageProcessor</li>
+<li>ConsumerManageProcessor</li>
+<li>EndTransactionProcessor</li>
+<li>ForwardRequestProcessor</li>
+<li>PullMessageProcessor</li>
+<li>QueryMessageProcessor</li>
+<li>ReplyMessageProcessor</li>
+<li>SendMessageProcessor</li>
+</ul>
+<p>其中 SendMessageProcessor 负责处理【Producer 发送消息】的请求，PullMessageProcessor 负责处理【Consumer 消费消息】的请求。</p>
+<p><code>SendMessageProcessor</code> 处理器实现了 <code>NettyRequestProcessor</code> 接口，处理请求的 <code>processRequest</code> 方法，然后在 <code>BrokerController</code> 启动时，往 <code>RemotingServer</code> 中按照 <code>RequestCode</code> 来注册处理器。</p>
+<hr>
+<h2 id="Broker-接收到发送消息的请求"><a href="#Broker-接收到发送消息的请求" class="headerlink" title="Broker 接收到发送消息的请求"></a>Broker 接收到发送消息的请求</h2><p>如果请求中的标志是 <code>RequestCode.SEND_MESSAGE</code>，那么就会交给 <code>SendMessageProcessor</code> 进行处理，同时底层大量使用线程池技术。</p>
+<p>例如 <code>Debug Broker</code> 端代码：</p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor.png" alt=""></p>
+<p>可以看到，处理的线程名字前缀是 <code>SendMessageThread_</code>，异步回调处理请求。</p>
+<hr>
+<h2 id="Broker-接收到消费消息的请求"><a href="#Broker-接收到消费消息的请求" class="headerlink" title="Broker 接收到消费消息的请求"></a>Broker 接收到消费消息的请求</h2><p>如果请求中的标志是 <code>RequestCode.PULL_MESSAGE</code>，那么就会交给 <code>PullMessageProcessor</code> 来进行处理，代码细节可以后续跟进看看。</p>
+<p>测试发送消息的接口为：<code>org.springframework.messaging.core.AbstractMessageSendingTemplate#convertAndSend(D, java.lang.Object)</code></p>
+<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor_flow.png" alt=""></p>
+<p>核心方法：<code>org.apache.rocketmq.broker.processor.SendMessageProcessor#asyncProcessRequest(io.netty.channel.ChannelHandlerContext, org.apache.rocketmq.remoting.protocol.RemotingCommand, org.apache.rocketmq.remoting.netty.RemotingResponseCallback)</code></p>
+<ul>
+<li>反序列化请求头 requestHeader</li>
+<li>从消息上下文恢复 mqTrace 链路</li>
+<li>判断是否批量发送</li>
+<li>进入单条发送逻辑</li>
+<li>预发送 preSend 校验</li>
+<li>完善消息详情，用户参数等</li>
+<li>消息存储 messageStore</li>
+</ul>
+<p>进入消息存储：<code>org.apache.rocketmq.store.MessageStore#asyncPutMessage</code></p>
+<ul>
+<li>检查存储状态 checkStoreStatus，主要是确认服务状态，主从节点角色，是否可写入，还有页面缓存是否繁忙 pageCacheBusy</li>
+<li>消息常规性校验，topic 长度，参数合法性</li>
+<li>写入 commitLog 的方法 <code>this.commitLog.asyncPutMessage(msg)</code></li>
+</ul>
+<p>简单小结：</p>
+<ul>
+<li>客户端在调用 API 发送消息时，构造 <code>RemotingCommand</code>，头部信息设置 <code>RequestCode.SEND_MESSAGE_V2</code>，还有相关属性以及消息体。</li>
+<li>消息中转器 <code>Broker</code>，启动着 <code>NettyRemotingServer</code>，接收到请求</li>
+<li>识别请求头的 <code>RequestCode.SEND_MESSAGE_V2</code> 状态码，将请求交给对应的处理器 <code>SendMessageProcessor</code></li>
+<li>从 <code>Request</code> 中恢复消息，校验消息合法性</li>
+<li>消息存储，将消息详情写入到 commitLog 中</li>
+<li>返回处理结果 <code>putMessageResult</code></li>
+</ul>
+<hr>
+<h1 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h1><p><code>Broker</code> 的良好性能，有一半得归功于 <code>Netty</code> 这个优秀的通讯框架，扒了一下 <code>Broker</code> 上代码实现还有网上资料，记录一下使用到的 <code>Netty</code> 网络模型。</p>
+<h2 id="Netty-网络模型"><a href="#Netty-网络模型" class="headerlink" title="Netty 网络模型"></a>Netty 网络模型</h2><p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-Broker-Netty-Model.png" alt=""></p>
+<p>各模块作用：</p>
+<ul>
+<li>eventLoopGroupBoss </li>
+</ul>
+<p>作为 acceptor 负责接收客户端的连接请求</p>
+<ul>
+<li>eventLoopGroupSelector </li>
+</ul>
+<p>负责 NIO 的读写操作</p>
+<ul>
+<li>NettyServerHandler </li>
+</ul>
+<p>读取 IO 数据，并对消息头进行解析</p>
+<ul>
+<li>disatch </li>
+</ul>
+<p>过程根据注册的消息 code 和 processsor 把不同的事件分发给不同的线程。<br>由 processTable 维护（类型为 HashMap）</p>
+<h2 id="线程池-amp-请求码"><a href="#线程池-amp-请求码" class="headerlink" title="线程池 &amp; 请求码"></a>线程池 &amp; 请求码</h2><p><code>Broker</code> 中大量使用线程池技术，通过状态码对请求进行分类，将请求分发到不同的线程池，以此达到资源隔离的目的，每个线程池接收到请求，经过解码 <code>decode</code> 请求体和组装上下文 <code>ctx</code>，接着交给相应的处理器 <code>xxxProcessor</code> 差异化处理网络请求。</p>
+<p><code>RequestCode</code> 位置在：</p>
+<blockquote>
+<p>org.apache.rocketmq.common.protocol.RequestCode</p>
+</blockquote>
+<p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png" alt=""><br><code>broker</code> 启动时，注册处理线程池的位置在:</p>
+<blockquote>
+<p>org.apache.rocketmq.broker.BrokerController#registerProcessor</p>
+</blockquote>
+<p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png" alt=""></p>
+<h2 id="对照表"><a href="#对照表" class="headerlink" title="对照表"></a>对照表</h2><table>
+<thead>
+<tr>
+<th>作用</th>
+<th>线程池</th>
+<th>处理器</th>
+<th>请求码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发送消息</td>
+<td><strong>sendMessageExecutor</strong></td>
+<td>SendMessageProcessor</td>
+<td>RequestCode.<strong>SEND_MESSAGE</strong>  RequestCode.<strong>SEND_MESSAGE_V2</strong> RequestCode.<strong>SEND_BATCH_MESSAGE</strong> RequestCode.<strong>CONSUMER_SEND_MSG_BACK</strong></td>
+</tr>
+<tr>
+<td>拉取消息</td>
+<td><strong>pullMessageExecutor</strong></td>
+<td>PullMessageProcessor</td>
+<td>RequestCode.<strong>PULL_MESSAGE</strong></td>
+</tr>
+<tr>
+<td>消息重试</td>
+<td><strong>replyMessageExecutor</strong></td>
+<td>replyMessageProcessor</td>
+<td>RequestCode.<strong>SEND_REPLY_MESSAGE</strong> RequestCode.<strong>SEND_REPLY_MESSAGE_V2</strong></td>
+</tr>
+<tr>
+<td>查询消息</td>
+<td><strong>queryMessageExecutor</strong></td>
+<td>NettyRequestProcessor</td>
+<td>RequestCode.<strong>QUERY_MESSAGE</strong> RequestCode.<strong>VIEW_MESSAGE_BY_ID</strong></td>
+</tr>
+<tr>
+<td>客户端注册、心跳检测</td>
+<td><strong>heartbeatExecutor、clientManageExecutor</strong></td>
+<td>ClientManageProcessor</td>
+<td>RequestCode.<strong>HEART_BEAT</strong> RequestCode.<strong>UNREGISTER_CLIENT</strong>, RequestCode.<strong>CHECK_CLIENT_CONFIG</strong></td>
+</tr>
+<tr>
+<td>消费端处理（例如位点更新）</td>
+<td><strong>consumerManageExecutor</strong></td>
+<td>ConsumerManageProcessor</td>
+<td>RequestCode.<strong>GET_CONSUMER_LIST_BY_GROUPRequestCode.</strong>UPDATE_CONSUMER_OFFSET<strong> RequestCode.</strong>QUERY_CONSUMER_OFFSET**</td>
+</tr>
+<tr>
+<td>事务消息处理</td>
+<td><strong>endTransactionExecutor</strong></td>
+<td>EndTransactionProcessor</td>
+<td>RequestCode.<strong>END_TRANSACTION</strong></td>
+</tr>
+<tr>
+<td>处理集群信息</td>
+<td><strong>adminBrokerExecutor</strong></td>
+<td>AdminBrokerProcessor</td>
+<td>Default，不属于前面的请求码都由它进行处理</td>
+</tr>
+</tbody>
+</table>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本次学习主要从以下三个方面去了解：</p>
+<ul>
+<li>Broker 启动参数说明</li>
+<li>消息文件的存储机制</li>
+<li>使用的 Netty 网络模型</li>
+</ul>
+<p>从简单的使用到底层原理学习，逐渐剖开 <code>MQ</code> 框架的深层，慢慢将文件操作使用到的技术也文件存储机制了解，接着再去学习 Netty 网络模型，将网络通讯的基础也开始补起来，从一个点发散，将知识体系补全，还有很多需要去学习和了解的，后面继续补充吧~</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://zhuanlan.zhihu.com/p/93602392" target="_blank" rel="noopener">RocketMQ高性能揭秘</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RocketMQ/" rel="tag"># RocketMQ</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/31/jms/2020-10-31-RocketMQ-Learning-Producer/" rel="next" title="RocketMQ Producer 深入学习">
+                <i class="fa fa-chevron-left"></i> RocketMQ Producer 深入学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/18/jms/2020-11-18-RocketMQ-Learning-Client/" rel="prev" title="RocketMQ Consumer 深入学习">
+                RocketMQ Consumer 深入学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参数说明"><span class="nav-number">1.</span> <span class="nav-text">参数说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件存储机制"><span class="nav-number">2.</span> <span class="nav-text">文件存储机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Broker-端整体架构"><span class="nav-number">2.1.</span> <span class="nav-text">Broker 端整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息物理存储结构"><span class="nav-number">2.2.</span> <span class="nav-text">消息物理存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CommitLog-消息数据文件"><span class="nav-number">2.2.1.</span> <span class="nav-text">CommitLog 消息数据文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConsumeQueue-消息队列文件"><span class="nav-number">2.2.2.</span> <span class="nav-text">ConsumeQueue 消息队列文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index-索引文件"><span class="nav-number">2.2.3.</span> <span class="nav-text">Index 索引文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Broker-代码实现初探"><span class="nav-number">3.</span> <span class="nav-text">Broker 代码实现初探</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Broker-Startup"><span class="nav-number">3.1.</span> <span class="nav-text">Broker Startup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Broker-接收到发送消息的请求"><span class="nav-number">3.2.</span> <span class="nav-text">Broker 接收到发送消息的请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Broker-接收到消费消息的请求"><span class="nav-number">3.3.</span> <span class="nav-text">Broker 接收到消费消息的请求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络模型"><span class="nav-number">4.</span> <span class="nav-text">网络模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-网络模型"><span class="nav-number">4.1.</span> <span class="nav-text">Netty 网络模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程池-amp-请求码"><span class="nav-number">4.2.</span> <span class="nav-text">线程池 &amp; 请求码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对照表"><span class="nav-number">4.3.</span> <span class="nav-text">对照表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.5.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

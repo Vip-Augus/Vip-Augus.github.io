@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="springboot," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="结束了前面的《Spring 源码深度学习》，八月给自己放松了一下，看了几本小说和电视剧，还有写一个工作中用到的小工具，周报数据渲染的前端界面（前端是真的难）。  当然技术上的学习也要注意，所以看了松哥写的《Spring Boot + Vue 全栈开发》，来系统学习 SpringBoot，下面是简单的速记，根据使用场景可以快速定位到知识点：  Demo 脚手架项目地址： https://githu">
+<meta name="keywords" content="springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot 速记">
+<meta property="og:url" content="http://yoursite.com/2019/08/28/spring/2019-08-28-springboot-shorthand/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="结束了前面的《Spring 源码深度学习》，八月给自己放松了一下，看了几本小说和电视剧，还有写一个工作中用到的小工具，周报数据渲染的前端界面（前端是真的难）。  当然技术上的学习也要注意，所以看了松哥写的《Spring Boot + Vue 全栈开发》，来系统学习 SpringBoot，下面是简单的速记，根据使用场景可以快速定位到知识点：  Demo 脚手架项目地址： https://githu">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/generate_boot_project.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/mybatis_mapper_demo.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/druid_monitor.png">
+<meta property="og:updated_time" content="2019-10-10T14:18:03.196Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot 速记">
+<meta name="twitter:description" content="结束了前面的《Spring 源码深度学习》，八月给自己放松了一下，看了几本小说和电视剧，还有写一个工作中用到的小工具，周报数据渲染的前端界面（前端是真的难）。  当然技术上的学习也要注意，所以看了松哥写的《Spring Boot + Vue 全栈开发》，来系统学习 SpringBoot，下面是简单的速记，根据使用场景可以快速定位到知识点：  Demo 脚手架项目地址： https://githu">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/generate_boot_project.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/28/spring/2019-08-28-springboot-shorthand/"/>
+
+
+
+
+
+  <title>SpringBoot 速记 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/28/spring/2019-08-28-springboot-shorthand/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot 速记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-28T11:12:00+08:00">
+                2019-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> 结束了前面的《Spring 源码深度学习》，八月给自己放松了一下，看了几本小说和电视剧，还有写一个工作中用到的小工具，周报数据渲染的前端界面（前端是真的难）。</p>
+<p> 当然技术上的学习也要注意，所以看了<strong>松哥写的《Spring Boot + Vue 全栈开发》</strong>，来系统学习 <code>SpringBoot</code>，下面是简单的速记，根据使用场景可以快速定位到知识点：</p>
+<p> <code>Demo</code> 脚手架项目地址：</p>
+<p><a href="https://github.com/Vip-Augus/springboot-note" target="_blank" rel="noopener">https://github.com/Vip-Augus/springboot-note</a></p>
+<a id="more"></a> 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank" rel="noopener">DocToc</a></em></p>
+<ul>
+<li><a href="#springboot-%E9%80%9F%E8%AE%B0">SpringBoot 速记</a><ul>
+<li><a href="#%E6%9E%84%E5%BB%BA%E9%A1%B9%E7%9B%AE">构建项目</a></li>
+<li><a href="#springboot-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE">SpringBoot 基础配置</a></li>
+<li><a href="#spring-boot-starters">Spring Boot Starters</a></li>
+<li><a href="#springbootapplication">@SpringBootApplication</a></li>
+<li><a href="#web-%E5%AE%B9%E5%99%A8%E9%85%8D%E7%BD%AE">Web 容器配置</a><ul>
+<li><a href="#%E5%B8%B8%E8%A7%84%E9%85%8D%E7%BD%AE">常规配置</a></li>
+<li><a href="#https-%E9%85%8D%E7%BD%AE">HTTPS 配置</a></li>
+</ul>
+</li>
+<li><a href="#configurationproperties">@ConfigurationProperties</a></li>
+<li><a href="#profile">Profile</a></li>
+<li><a href="#controlleradvice-%E7%94%A8%E6%9D%A5%E5%A4%84%E7%90%86%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE">@ControllerAdvice 用来处理全局数据</a><ul>
+<li><a href="#exceptionhandler-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86">@ExceptionHandler 错误处理</a></li>
+<li><a href="#modelattribute-%E8%A7%86%E5%9B%BE%E5%B1%9E%E6%80%A7">@ModelAttribute 视图属性</a></li>
+</ul>
+</li>
+<li><a href="#cors-%E6%94%AF%E6%8C%81%E8%B7%A8%E5%9F%9F%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%AB">CORS 支持，跨域资源共享</a></li>
+<li><a href="#%E6%B3%A8%E5%86%8C-mvc-%E6%8B%A6%E6%88%AA%E5%99%A8">注册 MVC 拦截器</a></li>
+<li><a href="#%E5%BC%80%E5%90%AF-aop-%E5%88%87%E9%9D%A2%E6%8E%A7%E5%88%B6">开启 AOP 切面控制</a></li>
+<li><a href="#%E6%95%B4%E5%90%88-mybatis-%E5%92%8C-druid">整合 Mybatis 和 Druid</a><ul>
+<li><a href="#%E4%B8%80%E6%B7%BB%E5%8A%A0-mybatis-%E5%92%8C-druid-%E4%BE%9D%E8%B5%96">一、添加 mybatis 和 druid 依赖</a></li>
+<li><a href="#%E4%BA%8C%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E8%BF%9E%E6%8E%A5%E6%B1%A0%E5%8F%82%E6%95%B0">二、配置数据库和连接池参数</a></li>
+<li><a href="#%E4%B8%89%E5%85%B6%E4%BB%96-mybatis-%E9%85%8D%E7%BD%AE">三、其他 mybatis 配置</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B4%E5%90%88-redis">整合 Redis</a><ul>
+<li><a href="#%E4%B8%80%E5%BC%95%E7%94%A8-redis-%E4%BE%9D%E8%B5%96">一、引用 Redis 依赖</a></li>
+<li><a href="#%E4%BA%8C%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE">二、参数配置</a></li>
+<li><a href="#%E4%B8%89%E4%BB%A3%E7%A0%81%E4%BD%BF%E7%94%A8">三、代码使用</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%91%E9%80%81-html-%E6%A0%B7%E5%BC%8F%E7%9A%84%E9%82%AE%E4%BB%B6">发送 HTML 样式的邮件</a><ul>
+<li><a href="#%E4%B8%80%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96">一、引入依赖</a></li>
+<li><a href="#%E4%BA%8C%E9%85%8D%E7%BD%AE%E9%82%AE%E7%AE%B1%E7%9A%84%E5%8F%82%E6%95%B0">二、配置邮箱的参数</a></li>
+<li><a href="#%E4%B8%89%E5%86%99%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%8F%91%E9%80%81%E5%86%85%E5%AE%B9">三、写模板和发送内容</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B4%E5%90%88-swagger-api-%E6%96%87%E6%A1%A3">整合 Swagger (API 文档)</a><ul>
+<li><a href="#%E4%B8%80%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96-1">一、引入依赖</a></li>
+<li><a href="#%E4%BA%8C%E9%85%8D%E7%BD%AE-swagger-%E5%8F%82%E6%95%B0">二、配置 Swagger 参数</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h2 id="构建项目"><a href="#构建项目" class="headerlink" title="构建项目"></a>构建项目</h2><p>相比于使用 <code>IDEA</code> 的模板创建项目，我更推荐的是在 <code>Spring</code> 官网上选择参数一步生成项目</p>
+<p><a href="https://start.spring.io/" target="_blank" rel="noopener">https://start.spring.io/</a></p>
+<p><img src="http://img.sevenyuan.cn/generate_boot_project.png" alt="generate_boot_project"></p>
+<p>我们只需要做的事情，就是修改组织名和项目名，点击 <code>Generate the project</code>，下载到本地，然后使用 <code>IDEA</code> 打开</p>
+<p>这个时候，不需要任何配置，点击 <code>Application</code> 类的 <code>run</code> 方法就能直接启动项目。</p>
+<hr>
+<h2 id="SpringBoot-基础配置"><a href="#SpringBoot-基础配置" class="headerlink" title="SpringBoot 基础配置"></a>SpringBoot 基础配置</h2><h2 id="Spring-Boot-Starters"><a href="#Spring-Boot-Starters" class="headerlink" title="Spring Boot Starters"></a>Spring Boot Starters</h2><p><strong>引用自参考资料 1 描述：</strong></p>
+<blockquote>
+<p><strong>starter的理念</strong>：starter 会把所有用到的依赖都给包含进来，避免了开发者自己去引入依赖所带来的麻烦。需要注意的是不同的 starter 是为了解决不同的依赖，所以它们内部的实现可能会有很大的差异，例如 jpa 的 starter 和 Redis 的 starter 可能实现就不一样，这是因为 starter 的本质在于 synthesize，这是一层在逻辑层面的抽象，也许这种理念有点类似于 Docker，因为它们都是在做一个“包装”的操作，如果你知道 Docker 是为了解决什么问题的，也许你可以用 Docker 和 starter 做一个类比。</p>
+</blockquote>
+<p>我们知道在 <code>SpringBoot</code> 中很重要的一个概念就是，<strong>「约定优于配置」</strong>，通过特定方式的配置，可以减少很多步骤来实现想要的功能。</p>
+<p>例如如果我们想要使用缓存 <code>Redis</code></p>
+<p><strong>在之前的可能需要通过以下几个步骤：</strong></p>
+<ol>
+<li>在 <code>pom</code> 文件引入特定版本的 <code>redis</code></li>
+<li>在 <code>.properties</code> 文件中配置参数</li>
+<li>根据参数，新建一个又一个 <code>jedis</code> 连接</li>
+<li>定义一个工具类，手动创建连接池来管理</li>
+</ol>
+<p>经历了上面的步骤，我们才能正式使用 <code>Redis</code></p>
+<p><strong>但在 <code>Spring Boot</code> 中，一切因为 <code>Starter</code> 变得简单</strong></p>
+<ol>
+<li>在 <code>pom</code> 文件中引入 <code>spring-boot-starter-data-redis</code></li>
+<li>在 <code>.properties</code> 文件中配置参数</li>
+</ol>
+<p>通过上面两个步骤，配置自动生效，具体生效的 <code>bean</code> 是 <code>RedisAutoConfiguration</code>，自动配置类的名字都有一个特点，叫做 <code>xxxAutoConfiguration</code>。</p>
+<p>可以来简单看下这个类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@ConditionalOnClass</span>(RedisOperations.class)</div><div class="line"><span class="meta">@EnableConfigurationProperties</span>(RedisProperties.class)</div><div class="line"><span class="meta">@Import</span>(&#123; LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class &#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisAutoConfiguration</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Bean</span></div><div class="line">	<span class="meta">@ConditionalOnMissingBean</span>(name = <span class="string">"redisTemplate"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> RedisTemplate&lt;Object, Object&gt; <span class="title">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span></span></div><div class="line"><span class="function">			<span class="keyword">throws</span> UnknownHostException </span>&#123;</div><div class="line">		RedisTemplate&lt;Object, Object&gt; template = <span class="keyword">new</span> RedisTemplate&lt;&gt;();</div><div class="line">		template.setConnectionFactory(redisConnectionFactory);</div><div class="line">		<span class="keyword">return</span> template;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Bean</span></div><div class="line">	<span class="meta">@ConditionalOnMissingBean</span></div><div class="line">	<span class="function"><span class="keyword">public</span> StringRedisTemplate <span class="title">stringRedisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span></span></div><div class="line"><span class="function">			<span class="keyword">throws</span> UnknownHostException </span>&#123;</div><div class="line">		StringRedisTemplate template = <span class="keyword">new</span> StringRedisTemplate();</div><div class="line">		template.setConnectionFactory(redisConnectionFactory);</div><div class="line">		<span class="keyword">return</span> template;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.redis"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisProperties</span> </span>&#123;...&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，<code>Redis</code> 自动配置类，读取了以 <code>spring.redis</code> 为前缀的配置，然后加载 <code>redisTemplate</code> 到容器中，然后我们在应用中就能使用 <code>RedisTemplate</code> 来对缓存进行操作~（还有很多细节没有细说，例如 <code>@ConditionalOnMissingBean</code> 先留个坑(●´∀｀●)ﾉ）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> RedisTemplate redisTemplate;</div><div class="line"></div><div class="line">ValueOperations ops2 = redisTemplate.opsForValue();</div><div class="line">Book book = (Book) ops2.get(<span class="string">"b1"</span>);</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h2><p>该注解是加载项目的启动类上的，而且它是一个组合注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SpringBootConfiguration</span></div><div class="line"><span class="meta">@EnableAutoConfiguration</span></div><div class="line"><span class="meta">@ComponentScan</span>(excludeFilters = &#123; <span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),</div><div class="line">		<span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) &#125;)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SpringBootApplication &#123;...&#125;</div></pre></td></tr></table></figure>
+<p>下面是这三个核心注解的解释：</p>
+<table>
+<thead>
+<tr>
+<th>注解名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@SpringBootConfiguration</td>
+<td><strong>表明这是一个配置类，开发者可以在这个类中配置 Bean</strong></td>
+</tr>
+<tr>
+<td>@EnableAutoConfiguration</td>
+<td><strong>表示开启自动化配置</strong></td>
+</tr>
+<tr>
+<td>@ComponentScan</td>
+<td><strong>完成包扫描，默认扫描的类位于当前类所在包的下面</strong></td>
+</tr>
+</tbody>
+</table>
+<p>通过该注解，我们执行 <code>mian</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SpringApplication.run(SpringBootLearnApplication.class, args);</div></pre></td></tr></table></figure>
+<p>就可以启动一个 <code>SpringApplicaiton</code> 应用了。</p>
+<hr>
+<h2 id="Web-容器配置"><a href="#Web-容器配置" class="headerlink" title="Web 容器配置"></a>Web 容器配置</h2><h3 id="常规配置"><a href="#常规配置" class="headerlink" title="常规配置"></a>常规配置</h3><table>
+<thead>
+<tr>
+<th>配置名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>server.port=8081</td>
+<td><strong>配置了容器的端口号，默认是 8080</strong></td>
+</tr>
+<tr>
+<td>server.error.path=/error</td>
+<td><strong>配置了项目出错时跳转的页面</strong></td>
+</tr>
+<tr>
+<td>server.servlet.session.timeout=30m</td>
+<td><strong>session 失效时间，m 表示分钟，如果不写单位，默认是秒 s</strong></td>
+</tr>
+<tr>
+<td>server.servlet.context-path=/</td>
+<td><strong>项目名称，不配置时默认为/。配置后，访问时需加上前缀</strong></td>
+</tr>
+<tr>
+<td>server.tomcat.uri-encoding=utf-8</td>
+<td><strong>Tomcat 请求编码格式</strong></td>
+</tr>
+<tr>
+<td>server.tomcat.max-threads=500</td>
+<td><strong>Tomcat 最大线程数</strong></td>
+</tr>
+<tr>
+<td>server.tomcat.basedir=/home/tmp</td>
+<td><strong>Tomcat 运行日志和临时文件的目录，如不配置，默认使用系统的临时目录</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="HTTPS-配置"><a href="#HTTPS-配置" class="headerlink" title="HTTPS 配置"></a>HTTPS 配置</h3><table>
+<thead>
+<tr>
+<th>配置名</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>server.ssl.key-store=xxx</td>
+<td><strong>秘钥文件名</strong></td>
+</tr>
+<tr>
+<td>server.ssl.key-alias=xxx</td>
+<td><strong>秘钥别名</strong></td>
+</tr>
+<tr>
+<td>server.ssl.key-store-password=123456</td>
+<td><strong>秘钥密码</strong></td>
+</tr>
+</tbody>
+</table>
+<p>想要详细了解如何配置 <code>HTTPS</code>，可以参考这篇文章 <a href="https://zhuanlan.zhihu.com/p/31385073" target="_blank" rel="noopener">Spring Boot 使用SSL-HTTPS</a></p>
+<hr>
+<h2 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h2><p>这个注解可以放在类上或者 <code>@Bean</code> 注解所在方法上，这样 <code>SpringBoot</code> 就能够从配置文件中，读取特定前缀的配置，将属性值注入到对应的属性。</p>
+<p>使用例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"spring.datasource"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DruidConfigBean</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Integer initialSize;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Integer minIdle;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Integer maxActive;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> List&lt;String&gt; customs;</div><div class="line">    </div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>application.properties</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">spring.datasource.initialSize=5</div><div class="line">spring.datasource.minIdle=5</div><div class="line">spring.datasource.maxActive=20</div><div class="line">spring.datasource.customs=test1,test2,test3</div></pre></td></tr></table></figure>
+<p>其中，如果对象是列表结构，可以在配置文件中使用 , 逗号进行分割，然后注入到相应的属性中。</p>
+<hr>
+<h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><p>使用该属性，可以快速切换配置文件，在 <code>SpringBoot</code> 默认约定中，不同环境下配置文件名称规则为 <code>application-{profile}.propertie</code>，<code>profile</code> 占位符表示当前环境的名称。</p>
+<p>1、配置 <code>application.properties</code><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">spring.profiles.active=dev</div></pre></td></tr></table></figure></p>
+<p>2、在代码中配置<br>在启动类的 <code>main</code> 方法上添加 <code>setAdditionalProfiles(&quot;{profile}&quot;)</code>;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">SpringApplicationBuilder builder = <span class="keyword">new</span> SpringApplicationBuilder(SpringBootLearnApplication.class);</div><div class="line">builder.application().setAdditionalProfiles(<span class="string">"prod"</span>);</div><div class="line">builder.run(args);</div></pre></td></tr></table></figure>
+<p>3、启动参数配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar demo.jar --spring.active.profile=dev</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="ControllerAdvice-用来处理全局数据"><a href="#ControllerAdvice-用来处理全局数据" class="headerlink" title="@ControllerAdvice 用来处理全局数据"></a>@ControllerAdvice 用来处理全局数据</h2><p><code>@ControllerAdvice</code> 是 <code>@Controller</code> 的增强版。主要用来处理全局数据，一般搭配 <code>@ExceptionHandler</code> 、<code>@ModelAttribute</code> 以及 <code>@InitBinder</code> 使用。</p>
+<h3 id="ExceptionHandler-错误处理"><a href="#ExceptionHandler-错误处理" class="headerlink" title="@ExceptionHandler 错误处理"></a>@ExceptionHandler 错误处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 加强版控制器，拦截自定义的异常处理</span></div><div class="line"><span class="comment"> *</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomExceptionHandler</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="comment">// 指定全局拦截的异常类型，统一处理</span></div><div class="line">    <span class="meta">@ExceptionHandler</span>(MaxUploadSizeExceededException.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uploadException</span><span class="params">(MaxUploadSizeExceededException e, HttpServletResponse response)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        response.setContentType(<span class="string">"text/html;charset=utf-8"</span>);</div><div class="line">        PrintWriter out = response.getWriter();</div><div class="line">        out.write(<span class="string">"上传文件大小超出限制"</span>);</div><div class="line">        out.flush();</div><div class="line">        out.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ModelAttribute-视图属性"><a href="#ModelAttribute-视图属性" class="headerlink" title="@ModelAttribute 视图属性"></a>@ModelAttribute 视图属性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@ControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomModelAttribute</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="comment">// </span></div><div class="line">    <span class="meta">@ModelAttribute</span>(value = <span class="string">"info"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, String&gt; <span class="title">userInfo</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">        map.put(<span class="string">"test"</span>, <span class="string">"testInfo"</span>);</div><div class="line">        <span class="keyword">return</span> map;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@GetMapping</span>(<span class="string">"/hello"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(Model model)</span> </span>&#123;</div><div class="line">    Map&lt;String, Object&gt; map = model.asMap();</div><div class="line">    Map&lt;String, String&gt; infoMap = (Map&lt;String, String&gt;) map.get(<span class="string">"info"</span>);</div><div class="line">    <span class="keyword">return</span> infoMap.get(<span class="string">"test"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><code>key : @ModelAttribute</code> 注解中的 <code>value</code> 属性</li>
+<li>使用场景：任何请求 <code>controller</code> 类，通过方法参数中的 <code>Model</code> 都可以获取 <code>value</code> 对应的属性</li>
+</ul>
+<hr>
+<h2 id="CORS-支持，跨域资源共享"><a href="#CORS-支持，跨域资源共享" class="headerlink" title="CORS 支持，跨域资源共享"></a>CORS 支持，跨域资源共享</h2><p><code>CORS（Cross-Origin Resource Sharing）</code>，跨域资源共享技术，目的是为了解决前端的跨域请求。</p>
+<blockquote>
+<p><strong>引用：当一个资源从与该资源本身所在服务器不同的域或端口请求一个资源时，资源会发起一个跨域HTTP请求</strong></p>
+</blockquote>
+<p>详细可以参考这篇文章-<a href="https://juejin.im/post/5b99dcca6fb9a05d3154f8b7" target="_blank" rel="noopener">springboot系列文章之实现跨域请求(CORS)</a>，这里只是记录一下如何使用：</p>
+<p>例如在我的前后端分离 <code>demo</code> 中，如果没有通过 <code>Nginx</code> 转发，那么将会提示如下信息：</p>
+<blockquote>
+<p>Access to fetch at ‘<a href="http://localhost:8888/login" target="_blank" rel="noopener">http://localhost:8888/login</a>‘ from origin ‘<a href="http://localhost:3000" target="_blank" rel="noopener">http://localhost:3000</a>‘ has been blocked by CORS policy: Response to preflight request doesn’t pass access control check: The value of the ‘Access-Control-Allow-Credentials’ header in the response is ‘’ which must be ‘true’ when the request’s credentials mode is ‘include’</p>
+</blockquote>
+<p>为了解决这个问题，在前端不修改的情况下，需要后端加上如下两行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第一行，支持的域</span></div><div class="line"><span class="meta">@CrossOrigin</span>(origins = <span class="string">"http://localhost:3000"</span>)</div><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/login"</span>, method = RequestMethod.GET)</div><div class="line"><span class="meta">@ResponseBody</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(HttpServletResponse response)</span> </span>&#123;</div><div class="line">    <span class="comment">// 第二行，响应体添加头信息（这一行是解决上面的提示）</span></div><div class="line">    response.setHeader(<span class="string">"Access-Control-Allow-Credentials"</span>, <span class="string">"true"</span>);</div><div class="line">    <span class="keyword">return</span> HttpRequestUtils.login();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="注册-MVC-拦截器"><a href="#注册-MVC-拦截器" class="headerlink" title="注册 MVC 拦截器"></a>注册 MVC 拦截器</h2><p>在 <code>MVC</code> 模块中，也提供了类似 <code>AOP</code> 切面管理的扩展，能够拥有更加精细的拦截处理能力。</p>
+<p>核心在于该接口：<code>HandlerInterceptor</code>，使用方式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 自定义 MVC 拦截器</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="comment">// 在 controller 方法之前调用</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="comment">// 在 controller 方法之后调用</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="comment">// 在 postHandle 方法之后调用</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注册代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 全局控制的 mvc 配置</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyWebMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> </span>&#123;</div><div class="line">        registry.addInterceptor(<span class="keyword">new</span> MyInterceptor())</div><div class="line">                <span class="comment">// 表示拦截的 URL</span></div><div class="line">                .addPathPatterns(<span class="string">"/**"</span>)</div><div class="line">                <span class="comment">// 表示需要排除的路径</span></div><div class="line">                .excludePathPatterns(<span class="string">"/hello"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>拦截器执行顺序： <code>preHandle</code> -&gt;  <code>controller</code> -&gt; <code>postHandle</code> -&gt; <code>afterCompletion</code>，同时需要注意的是，只有 <code>preHandle</code> 方法返回 <code>true</code>，后面的方法才会继续执行。</p>
+<hr>
+<h2 id="开启-AOP-切面控制"><a href="#开启-AOP-切面控制" class="headerlink" title="开启 AOP 切面控制"></a>开启 AOP 切面控制</h2><p>切面注入是老生常谈的技术，之前学习 <code>Spring</code> 时也有了解，可以参考我之前写过的文章参考一下：</p>
+<p><a href="https://vip-augus.github.io/2019/03/19/java/Spring%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0AOP/" target="_blank" rel="noopener">Spring自定义注解实现AOP</a></p>
+<p><a href="https://vip-augus.github.io/2019/07/17/spring/2019-07-17-spring-analysis-note-8" target="_blank" rel="noopener">Spring 源码学习(八) AOP 使用和实现原理</a></p>
+<p>在 <code>SpringBoot</code> 中，使用起来更加简便，只需要加入该依赖，使用方法与上面一样。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="整合-Mybatis-和-Druid"><a href="#整合-Mybatis-和-Druid" class="headerlink" title="整合 Mybatis 和 Druid"></a>整合 Mybatis 和 Druid</h2><p><code>SpringBoot</code> 整合数据库操作，目前主流使用的是 <code>Druid</code> 连接池和 <code>Mybatis</code> 持久层，同样的，<code>starter</code> 提供了简洁的整合方案</p>
+<p>项目结构如下：</p>
+<p><img src="http://img.sevenyuan.cn/mybatis_mapper_demo.jpg" alt="project structure"></p>
+<h3 id="一、添加-mybatis-和-druid-依赖"><a href="#一、添加-mybatis-和-druid-依赖" class="headerlink" title="一、添加 mybatis 和 druid 依赖"></a>一、添加 mybatis 和 druid 依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="二、配置数据库和连接池参数"><a href="#二、配置数据库和连接池参数" class="headerlink" title="二、配置数据库和连接池参数"></a>二、配置数据库和连接池参数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 数据库配置</span></div><div class="line">spring.datasource.type=com.alibaba.druid.pool.DruidDataSource</div><div class="line">spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver</div><div class="line">spring.datasource.url=jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true</div><div class="line">spring.datasource.username=root</div><div class="line">spring.datasource.password=12345678</div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash"> druid 配置</span></div><div class="line">spring.datasource.druid.initial-size=5</div><div class="line">spring.datasource.druid.max-active=20</div><div class="line">spring.datasource.druid.min-idle=5</div><div class="line">spring.datasource.druid.max-wait=60000</div><div class="line">spring.datasource.druid.pool-prepared-statements=true</div><div class="line">spring.datasource.druid.max-pool-prepared-statement-per-connection-size=20</div><div class="line">spring.datasource.druid.max-open-prepared-statements=20</div><div class="line">spring.datasource.druid.validation-query=SELECT 1</div><div class="line">spring.datasource.druid.validation-query-timeout=30000</div><div class="line">spring.datasource.druid.test-on-borrow=true</div><div class="line">spring.datasource.druid.test-on-return=false</div><div class="line">spring.datasource.druid.test-while-idle=false</div><div class="line"><span class="meta">#</span><span class="bash">spring.datasource.druid.time-between-eviction-runs-millis=</span></div><div class="line"><span class="meta">#</span><span class="bash">spring.datasource.druid.min-evictable-idle-time-millis=</span></div><div class="line"><span class="meta">#</span><span class="bash">spring.datasource.druid.max-evictable-idle-time-millis=10000</span></div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash"> Druid <span class="built_in">stat</span> filter config</span></div><div class="line">spring.datasource.druid.filters=stat,wall</div><div class="line">spring.datasource.druid.web-stat-filter.enabled=true</div><div class="line">spring.datasource.druid.web-stat-filter.url-pattern=/*</div><div class="line"><span class="meta">#</span><span class="bash"> session 监控</span></div><div class="line">spring.datasource.druid.web-stat-filter.session-stat-enable=true</div><div class="line">spring.datasource.druid.web-stat-filter.session-stat-max-count=10</div><div class="line">spring.datasource.druid.web-stat-filter.principal-session-name=admin</div><div class="line">spring.datasource.druid.web-stat-filter.principal-cookie-name=admin</div><div class="line">spring.datasource.druid.web-stat-filter.profile-enable=true</div><div class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">stat</span> 监控</span></div><div class="line">spring.datasource.druid.web-stat-filter.exclusions=*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*</div><div class="line">spring.datasource.druid.filter.stat.db-type=mysql</div><div class="line">spring.datasource.druid.filter.stat.log-slow-sql=true</div><div class="line">spring.datasource.druid.filter.stat.slow-sql-millis=1000</div><div class="line">spring.datasource.druid.filter.stat.merge-sql=true</div><div class="line">spring.datasource.druid.filter.wall.enabled=true</div><div class="line">spring.datasource.druid.filter.wall.db-type=mysql</div><div class="line">spring.datasource.druid.filter.wall.config.delete-allow=true</div><div class="line">spring.datasource.druid.filter.wall.config.drop-table-allow=false</div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash"> Druid manage page config</span></div><div class="line">spring.datasource.druid.stat-view-servlet.enabled=true</div><div class="line">spring.datasource.druid.stat-view-servlet.url-pattern=/druid/*</div><div class="line">spring.datasource.druid.stat-view-servlet.reset-enable=true</div><div class="line">spring.datasource.druid.stat-view-servlet.login-username=admin</div><div class="line">spring.datasource.druid.stat-view-servlet.login-password=admin</div><div class="line"><span class="meta">#</span><span class="bash">spring.datasource.druid.stat-view-servlet.allow=</span></div><div class="line"><span class="meta">#</span><span class="bash">spring.datasource.druid.stat-view-servlet.deny=</span></div><div class="line">spring.datasource.druid.aop-patterns=cn.sevenyuan.demo.*</div></pre></td></tr></table></figure>
+<h3 id="三、其他-mybatis-配置"><a href="#三、其他-mybatis-配置" class="headerlink" title="三、其他 mybatis 配置"></a>三、其他 mybatis 配置</h3><p>本地工程，将 <code>xml</code> 文件放入 <code>resources</code> 资源文件夹下，所以需要加入以下配置，让应用进行识别：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">build</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*<span class="tag">&lt;/<span class="name">include</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>通过上面的配置，我本地开启了三个页面的监控：<code>SQL</code> 、 <code>URL</code> 和 <code>Sprint</code> 监控，如下图：</p>
+<p><img src="http://img.sevenyuan.cn/druid_monitor.png" alt="druid monitor"></p>
+<p><strong>通过上面的配置，SpringBoot 很方便的就整合了 Druid 和 mybatis，同时根据在 <code>properties</code> 文件中配置的参数，开启了 <code>Druid</code> 的监控。</strong></p>
+<p>但我根据上面的配置，始终开启不了 <code>session</code> 监控，所以如果需要配置 <code>session</code> 监控或者调整参数具体配置，可以查看官方网站</p>
+<p><a href="https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter" target="_blank" rel="noopener">alibaba/druid</a></p>
+<hr>
+<h2 id="整合-Redis"><a href="#整合-Redis" class="headerlink" title="整合 Redis"></a>整合 Redis</h2><p>我用过 <code>Redis</code> 和 <code>NoSQL</code>，但最熟悉和常用的，还是 <code>Redis</code> ，所以这里记录一下如何整合</p>
+<h3 id="一、引用-Redis-依赖"><a href="#一、引用-Redis-依赖" class="headerlink" title="一、引用 Redis 依赖"></a>一、引用 Redis 依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lettuce-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.lettuce<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="二、参数配置"><a href="#二、参数配置" class="headerlink" title="二、参数配置"></a>二、参数配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> redis 配置</span></div><div class="line">spring.redis.database=0</div><div class="line">spring.redis.host=localhost</div><div class="line">spring.redis.port=6379</div><div class="line">spring.redis.password=</div><div class="line">spring.redis.jedis.pool.max-active=8</div><div class="line">spring.redis.jedis.pool.max-idle=8</div><div class="line">spring.redis.jedis.pool.max-wait=-1ms</div><div class="line">spring.redis.jedis.pool.min-idle=0</div></pre></td></tr></table></figure>
+<h3 id="三、代码使用"><a href="#三、代码使用" class="headerlink" title="三、代码使用"></a>三、代码使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> RedisTemplate redisTemplate;</div><div class="line"></div><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> StringRedisTemplate stringRedisTemplate;</div><div class="line"></div><div class="line"><span class="meta">@GetMapping</span>(<span class="string">"/testRedis"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> Book <span class="title">getForRedis</span><span class="params">()</span> </span>&#123;</div><div class="line">    ValueOperations&lt;String, String&gt; ops1 = stringRedisTemplate.opsForValue();</div><div class="line">    ops1.set(<span class="string">"name"</span>, <span class="string">"Go 语言实战"</span>);</div><div class="line">    String name = ops1.get(<span class="string">"name"</span>);</div><div class="line">    System.out.println(name);</div><div class="line">    ValueOperations ops2 = redisTemplate.opsForValue();</div><div class="line">    Book book = (Book) ops2.get(<span class="string">"b1"</span>);</div><div class="line">    <span class="keyword">if</span> (book == <span class="keyword">null</span>) &#123;</div><div class="line">        book = <span class="keyword">new</span> Book(<span class="string">"Go 语言实战"</span>, <span class="number">2</span>, <span class="string">"none name"</span>, BigDecimal.ONE);</div><div class="line">        ops2.set(<span class="string">"b1"</span>, book);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> book;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里只是简单记录引用和使用方式，更多功能可以看这里：<a href="https://www.cnkirito.moe/spring-data-redis-1/" target="_blank" rel="noopener">Spring Data Redis（一）–解析RedisTemplate</a></p>
+<hr>
+<h2 id="发送-HTML-样式的邮件"><a href="#发送-HTML-样式的邮件" class="headerlink" title="发送 HTML 样式的邮件"></a>发送 HTML 样式的邮件</h2><p>之前也使用过，所以可以参考这篇文章：<a href="https://vip-augus.github.io/2018/07/30/java/Java%E6%95%B4%E5%90%88Spring%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/" target="_blank" rel="noopener">Java整合Spring发送邮件</a></p>
+<h3 id="一、引入依赖"><a href="#一、引入依赖" class="headerlink" title="一、引入依赖"></a>一、引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">&lt;!-- mail --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-mail<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-thymeleaf<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="二、配置邮箱的参数"><a href="#二、配置邮箱的参数" class="headerlink" title="二、配置邮箱的参数"></a>二、配置邮箱的参数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> mail</span></div><div class="line">spring.mail.host=smtp.qq.com</div><div class="line">spring.mail.port=465</div><div class="line">spring.mail.username=xxxxxxxx</div><div class="line">spring.mail.password=xxxxxxxx</div><div class="line">spring.mail.default-encoding=UTF-8</div><div class="line">spring.mail.properties.mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory</div><div class="line">spring.mail.properties.mail.debug=true</div></pre></td></tr></table></figure>
+<p>如果使用的是 <code>QQ</code> 邮箱，需要在邮箱的设置中获取授权码，填入上面的 <code>password</code> 中</p>
+<h3 id="三、写模板和发送内容"><a href="#三、写模板和发送内容" class="headerlink" title="三、写模板和发送内容"></a>三、写模板和发送内容</h3><p><code>MailServiceImpl.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> JavaMailSender javaMailSender;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendHtmlMail</span><span class="params">(String from, String to, String subject, String content)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        MimeMessage message = javaMailSender.createMimeMessage();</div><div class="line">        MimeMessageHelper helper = <span class="keyword">new</span> MimeMessageHelper(message, <span class="keyword">true</span>);</div><div class="line">        helper.setFrom(from);</div><div class="line">        helper.setTo(to);</div><div class="line">        helper.setSubject(subject);</div><div class="line">        helper.setText(content, <span class="keyword">true</span>);</div><div class="line">        javaMailSender.send(message);</div><div class="line">    &#125; <span class="keyword">catch</span> (MessagingException e) &#123;</div><div class="line">        System.out.println(<span class="string">"发送邮件失败"</span>);</div><div class="line">        log.error(<span class="string">"发送邮件失败"</span>, e);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>mailtemplate.html</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span> <span class="attr">xmlns:th</span>=<span class="string">"http://www.thymeleaf.org"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>邮件<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:text</span>=<span class="string">"$&#123;subject&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>书籍清单</div><div class="line">    <span class="tag">&lt;<span class="name">table</span> <span class="attr">border</span>=<span class="string">"1"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">tr</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>图书编号<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>图书名称<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">td</span>&gt;</span>图书作者<span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">tr</span> <span class="attr">th:each</span>=<span class="string">"book:$&#123;books&#125;"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.id&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.name&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">td</span> <span class="attr">th:text</span>=<span class="string">"$&#123;book.author&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">table</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><code>test.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> MailService mailService;</div><div class="line"></div><div class="line"><span class="meta">@Autowired</span></div><div class="line"><span class="keyword">private</span> TemplateEngine templateEngine;</div><div class="line">    </div><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendThymeleafMail</span><span class="params">()</span> </span>&#123;</div><div class="line">    Context context = <span class="keyword">new</span> Context();</div><div class="line">    context.setVariable(<span class="string">"subject"</span>, <span class="string">"图书清册"</span>);</div><div class="line">    List&lt;Book&gt; books = Lists.newArrayList();</div><div class="line">    books.add(<span class="keyword">new</span> Book(<span class="string">"Go 语言基础"</span>, <span class="number">1</span>, <span class="string">"nonename"</span>, BigDecimal.TEN));</div><div class="line">    books.add(<span class="keyword">new</span> Book(<span class="string">"Go 语言实战"</span>, <span class="number">2</span>, <span class="string">"nonename"</span>, BigDecimal.TEN));</div><div class="line">    books.add(<span class="keyword">new</span> Book(<span class="string">"Go 语言进阶"</span>, <span class="number">3</span>, <span class="string">"nonename"</span>, BigDecimal.TEN));</div><div class="line">    context.setVariable(<span class="string">"books"</span>, books);</div><div class="line">    String mail = templateEngine.process(<span class="string">"mailtemplate.html"</span>, context);</div><div class="line">    mailService.sendHtmlMail(<span class="string">"xxxx@qq.com"</span>, <span class="string">"xxxxxxxx@qq.com"</span>, <span class="string">"图书清册"</span>, mail);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过上面简单步骤，就能够在代码中发送邮件，例如我们每周要写周报，统计系统运行状态，可以设定定时任务，统计数据，然后自动化发送邮件。</p>
+<hr>
+<h2 id="整合-Swagger-API-文档"><a href="#整合-Swagger-API-文档" class="headerlink" title="整合 Swagger (API 文档)"></a>整合 Swagger (API 文档)</h2><h3 id="一、引入依赖-1"><a href="#一、引入依赖-1" class="headerlink" title="一、引入依赖"></a>一、引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- swagger --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="二、配置-Swagger-参数"><a href="#二、配置-Swagger-参数" class="headerlink" title="二、配置 Swagger 参数"></a>二、配置 Swagger 参数</h3><p><code>SwaggerConfig.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableSwagger</span>2</div><div class="line"><span class="meta">@EnableWebMvc</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">Docket <span class="title">docket</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</div><div class="line">                .select()</div><div class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">"cn.sevenyuan.demo.controller"</span>))</div><div class="line">                .paths(PathSelectors.any())</div><div class="line">                .build().apiInfo(</div><div class="line">                        <span class="keyword">new</span> ApiInfoBuilder()</div><div class="line">                                .description(<span class="string">"Spring Boot learn project"</span>)</div><div class="line">                                .contact(<span class="keyword">new</span> Contact(<span class="string">"JingQ"</span>, <span class="string">"https://github.com/vip-augus"</span>, <span class="string">"=-=@qq.com"</span>))</div><div class="line">                                .version(<span class="string">"v1.0"</span>)</div><div class="line">                                .title(<span class="string">"API 测试文档"</span>)</div><div class="line">                                .license(<span class="string">"Apache2.0"</span>)</div><div class="line">                                .licenseUrl(<span class="string">"http://www.apache.org/licenese/LICENSE-2.0"</span>)</div><div class="line">                                .build());</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>设置页面 <code>UI</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableRedisHttpSession</span>(maxInactiveIntervalInSeconds = <span class="number">60</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyWebMvcConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span> </span>&#123;</div><div class="line">        registry.addResourceHandler(<span class="string">"swagger-ui.html"</span>)</div><div class="line">                .addResourceLocations(<span class="string">"classpath:/META-INF/resources/"</span>);</div><div class="line"></div><div class="line">        registry.addResourceHandler(<span class="string">"/webjars/**"</span>)</div><div class="line">                .addResourceLocations(<span class="string">"classpath:/META-INF/resources/webjars/"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过这样就能够识别 <code>@ApiOperation</code> 等接口标志，在网页查看 <code>API</code> 文档，参考文档：<a href="https://www.cnblogs.com/paddix/p/8204916.html" target="_blank" rel="noopener">Spring Boot实战：集成Swagger2</a></p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这边总结的整合经验，只是很基础的配置，在学习的初期，秉着先跑起来，然后不断完善和精进学习。</p>
+<p>而且单一整合很容易，但多个依赖会出现想不到的错误，所以在解决环境问题时遇到很多坑，想要使用基础的脚手架，可以尝试跑我上传的项目。</p>
+<p>数据库脚本在 <code>resources</code> 目录的 <code>test.sql</code> 文件中</p>
+<p><strong>同时，这篇文章中有很多技术没有归纳到，想要深入学习的，请关注松哥的《Spring Boot + Vue 全栈开发》</strong></p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="https://www.nosuchfield.com/2017/10/15/Spring-Boot-Starters/" target="_blank" rel="noopener">Spring Boot Starters</a></p>
+<p>2、<a href="https://zhuanlan.zhihu.com/p/31385073" target="_blank" rel="noopener">Spring Boot 使用SSL-HTTPS</a></p>
+<p>3、<a href="https://www.iteye.com/blog/elim-2434028" target="_blank" rel="noopener">Spring Boot（07）——ConfigurationProperties介绍</a></p>
+<p>4、<a href="https://juejin.im/post/5b99dcca6fb9a05d3154f8b7" target="_blank" rel="noopener">springboot系列文章之实现跨域请求(CORS)</a></p>
+<p>5、<a href="https://www.cnkirito.moe/spring-data-redis-1/" target="_blank" rel="noopener">Spring Data Redis（一）–解析RedisTemplate</a></p>
+<p>6、<a href="https://www.cnblogs.com/paddix/p/8204916.html" target="_blank" rel="noopener">Spring Boot实战：集成Swagger2</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/02/spring/2019-08-02-spring-analysis-artsdome/" rel="next" title="Spring 源码学习总结篇">
+                <i class="fa fa-chevron-left"></i> Spring 源码学习总结篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/03/java/2019-09-14-arthas_hot_update/" rel="prev" title="记一次使用 Arthas 热更新线上代码（误）">
+                记一次使用 Arthas 热更新线上代码（误） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建项目"><span class="nav-number">1.</span> <span class="nav-text">构建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot-基础配置"><span class="nav-number">2.</span> <span class="nav-text">SpringBoot 基础配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot-Starters"><span class="nav-number">3.</span> <span class="nav-text">Spring Boot Starters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">4.</span> <span class="nav-text">@SpringBootApplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-容器配置"><span class="nav-number">5.</span> <span class="nav-text">Web 容器配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常规配置"><span class="nav-number">5.1.</span> <span class="nav-text">常规配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS-配置"><span class="nav-number">5.2.</span> <span class="nav-text">HTTPS 配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConfigurationProperties"><span class="nav-number">6.</span> <span class="nav-text">@ConfigurationProperties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Profile"><span class="nav-number">7.</span> <span class="nav-text">Profile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ControllerAdvice-用来处理全局数据"><span class="nav-number">8.</span> <span class="nav-text">@ControllerAdvice 用来处理全局数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ExceptionHandler-错误处理"><span class="nav-number">8.1.</span> <span class="nav-text">@ExceptionHandler 错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ModelAttribute-视图属性"><span class="nav-number">8.2.</span> <span class="nav-text">@ModelAttribute 视图属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CORS-支持，跨域资源共享"><span class="nav-number">9.</span> <span class="nav-text">CORS 支持，跨域资源共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册-MVC-拦截器"><span class="nav-number">10.</span> <span class="nav-text">注册 MVC 拦截器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启-AOP-切面控制"><span class="nav-number">11.</span> <span class="nav-text">开启 AOP 切面控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整合-Mybatis-和-Druid"><span class="nav-number">12.</span> <span class="nav-text">整合 Mybatis 和 Druid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、添加-mybatis-和-druid-依赖"><span class="nav-number">12.1.</span> <span class="nav-text">一、添加 mybatis 和 druid 依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、配置数据库和连接池参数"><span class="nav-number">12.2.</span> <span class="nav-text">二、配置数据库和连接池参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、其他-mybatis-配置"><span class="nav-number">12.3.</span> <span class="nav-text">三、其他 mybatis 配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整合-Redis"><span class="nav-number">13.</span> <span class="nav-text">整合 Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、引用-Redis-依赖"><span class="nav-number">13.1.</span> <span class="nav-text">一、引用 Redis 依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、参数配置"><span class="nav-number">13.2.</span> <span class="nav-text">二、参数配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、代码使用"><span class="nav-number">13.3.</span> <span class="nav-text">三、代码使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送-HTML-样式的邮件"><span class="nav-number">14.</span> <span class="nav-text">发送 HTML 样式的邮件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、引入依赖"><span class="nav-number">14.1.</span> <span class="nav-text">一、引入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、配置邮箱的参数"><span class="nav-number">14.2.</span> <span class="nav-text">二、配置邮箱的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、写模板和发送内容"><span class="nav-number">14.3.</span> <span class="nav-text">三、写模板和发送内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整合-Swagger-API-文档"><span class="nav-number">15.</span> <span class="nav-text">整合 Swagger (API 文档)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、引入依赖-1"><span class="nav-number">15.1.</span> <span class="nav-text">一、引入依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、配置-Swagger-参数"><span class="nav-number">15.2.</span> <span class="nav-text">二、配置 Swagger 参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">16.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">17.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

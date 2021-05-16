@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring AOP Demo">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring自定义注解实现AOP">
+<meta property="og:url" content="http://yoursite.com/2019/03/19/java/Spring自定义注解实现AOP/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Spring AOP Demo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png">
+<meta property="og:updated_time" content="2019-03-19T15:21:13.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring自定义注解实现AOP">
+<meta name="twitter:description" content="Spring AOP Demo">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/19/java/Spring自定义注解实现AOP/"/>
+
+
+
+
+
+  <title>Spring自定义注解实现AOP | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/19/java/Spring自定义注解实现AOP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring自定义注解实现AOP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-19T23:19:26+08:00">
+                2019-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg" alt=""></p>
+<center><strong>Spring AOP Demo</strong></center>
+
+<a id="more"></a>
+<hr>
+<h2 id="AOP和OOP"><a href="#AOP和OOP" class="headerlink" title="AOP和OOP"></a>AOP和OOP</h2><p>使用Java开发，大家应该都听过这两个概念，其实两者很好分辨：</p>
+<ul>
+<li>OOP（Object-Oriended Programming，面向对象编程）：自顶向下</li>
+<li>AOP（Aspect-Oriented Programming，面向方面编程）：切面编程</li>
+</ul>
+<p>OOP编程下，代码自顶向下查看就能了解它的业务含义；AOP编程，需要去查看它的切入点（PointCut）和通知（Advice）</p>
+<p>关于AOP的详细概念可以参考资料一，感觉讲得很不错！</p>
+<hr>
+<h2 id="为啥要用AOP"><a href="#为啥要用AOP" class="headerlink" title="为啥要用AOP"></a>为啥要用AOP</h2><p>有些OOP编程会造成重复的胶水代码，这些可以通过AOP切面编程消灭它们，例如下面我遇到过的业务场景。</p>
+<p>在业务上，需要对方法增加前置校验和后置操作，然后有多个类和多个方法需要增加这些操作，这时有三种方案可以选择：</p>
+<ol>
+<li><p>使用硬编码，在每个方法前后各加一段代码。</p>
+</li>
+<li><p>抽离相同方法，在同一个类中，将相同的代码抽成同一个方法，然后进行调用。比第一种略微减少胶水代码，但还是存在多个类中会重复。</p>
+</li>
+<li><p>使用切面进行统一管理。使用自定义注解或者@Aspect进行管理，减少了胶水代码，同时便于管理。</p>
+</li>
+</ol>
+<p><img src="http://img.sevenyuan.cn/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1.png" alt=""></p>
+<p>通过上图对比，切面可以使代码更加整洁和管理，唯一的缺点可能就类膨胀，多了很多个类=-=，可是为了编程水平的提高，我选择了切面管理嘿嘿~</p>
+<hr>
+<h2 id="Demo思路"><a href="#Demo思路" class="headerlink" title="Demo思路"></a>Demo思路</h2><ol>
+<li>自定义一个注解，设定注解的属性</li>
+<li>定义注解的Handler，在xml文件中配置该Handler为自定义注解的切入点</li>
+<li>根据注解中的属性，通过工厂模式取出真正的执行者</li>
+<li>在连接点（JoinPoint）前执行前置方法</li>
+<li>执行连接点的方法</li>
+<li>在连接点后执行后置方法</li>
+<li>End</li>
+</ol>
+<hr>
+<h2 id="Demo代码"><a href="#Demo代码" class="headerlink" title="Demo代码"></a>Demo代码</h2><p><strong>项目结构：</strong></p>
+<p><img src="http://img.sevenyuan.cn/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p>先看主要的注解和XML文件如何配置：</p>
+<hr>
+<h3 id="自定义注解TypeCheck"><a href="#自定义注解TypeCheck" class="headerlink" title="自定义注解TypeCheck"></a>自定义注解TypeCheck</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义了该Annotation被保留的时间长短，RUNTIME表示在运行时有效</span></div><div class="line"><span class="meta">@Retention</span>(RUNTIME)</div><div class="line"><span class="comment">//说明了Annotation所修饰的对象范围，可以定义为package、parameter</span></div><div class="line"><span class="comment">//在这里我用的是METHOD，表示修饰范围是方法</span></div><div class="line"><span class="meta">@Target</span>(ElementType.METHOD)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> TypeCheck &#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">    * 加一些自定义的属性吧</span></div><div class="line"><span class="comment">    **/</span></div><div class="line">    <span class="function">Type <span class="title">type</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">paramIndex</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="定义切入点和XML配置"><a href="#定义切入点和XML配置" class="headerlink" title="定义切入点和XML配置"></a>定义切入点和XML配置</h3><p>定义切入点有两种方式，一种是XML，还有一种是使用@Aspect注解和@PointCut（我这次使用的是XML，与@Around环绕切入类似）</p>
+<p><strong>TypeCheckHandler.java</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TypeCheckHandler</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> TypeFactory typeFactory;</div><div class="line"></div><div class="line">    <span class="comment">//可以看参考资料三，直接使用@Around注解实现</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">doAround</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">        <span class="comment">// 获取连接点的参数列表</span></div><div class="line">        Object[] args = joinPoint.getArgs();</div><div class="line">        <span class="comment">// 获取连接点方法的签名</span></div><div class="line">        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();</div><div class="line">        <span class="comment">// 方法签名中获取注解</span></div><div class="line">        TypeCheck ann = method.getAnnotation(TypeCheck.class);</div><div class="line">        String content = <span class="string">""</span>;</div><div class="line">        <span class="keyword">if</span> (ann.paramIndex() &lt; args.length) &#123;</div><div class="line">            content = (String) args[ann.paramIndex()];</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 根据注解中的属性，从工厂类中取出真正的执行者</span></div><div class="line">        TypeProcessor processor = typeFactory.getProcessor(ann.type());</div><div class="line">        <span class="comment">// 前置方法</span></div><div class="line">        processor.before();</div><div class="line">        <span class="comment">// 执行连接点的方法</span></div><div class="line">        joinPoint.proceed();</div><div class="line">        <span class="comment">// 后置方法</span></div><div class="line">        processor.after(Lists.newArrayList(content));</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>XML配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> </span></div><div class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></div><div class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></div><div class="line"><span class="tag"><span class="string">                           http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></div><div class="line"><span class="tag"><span class="string">						   http://www.springframework.org/schema/aop</span></span></div><div class="line"><span class="tag"><span class="string">						   http://www.springframework.org/schema/aop/spring-aop.xsd"</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 切面处理器 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"checkHandler"</span> <span class="attr">class</span>=<span class="string">"com.example.demo.test.ann.TypeCheckHandler"</span>/&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 拦截切面 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">aop:config</span> <span class="attr">proxy-target-class</span>=<span class="string">"true"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">"checkHandler"</span>&gt;</span></div><div class="line">            <span class="comment">&lt;!-- 该expression表示拦截使用TypeCheck注解的地方 --&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"typeCut"</span> <span class="attr">expression</span>=<span class="string">" @annotation(com.example.demo.test.ann.TypeCheck)"</span>/&gt;</span></div><div class="line">            <span class="comment">&lt;!-- 设定Advice通知时机，我这边使用的是Around环绕通知 --&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">pointcut-ref</span>=<span class="string">"typeCut"</span> <span class="attr">method</span>=<span class="string">"doAround"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="接口和枚举"><a href="#接口和枚举" class="headerlink" title="接口和枚举"></a>接口和枚举</h3><p>接口定义：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TypeProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Before</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">before</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * After</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> content   自定义内容</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">after</span><span class="params">(List&lt;String&gt; content)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>枚举：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Type &#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 客户</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    CLIENT(<span class="string">"c"</span>, <span class="string">"客户"</span>),</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 供应商</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    SUPPLIER(<span class="string">"s"</span>, <span class="string">"供应商"</span>);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String code;</div><div class="line">   </div><div class="line">    <span class="keyword">private</span> String text;</div><div class="line"></div><div class="line">    Type(String code, String text) &#123;</div><div class="line">        <span class="keyword">this</span>.code = code;</div><div class="line">        <span class="keyword">this</span>.text = text;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="实际执行者ClientProcessor"><a href="#实际执行者ClientProcessor" class="headerlink" title="实际执行者ClientProcessor"></a>实际执行者ClientProcessor</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientProcessor</span> <span class="keyword">implements</span> <span class="title">TypeProcessor</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Before I'm a client"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">(List&lt;String&gt; content)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"I'm a client processor"</span>);</div><div class="line">        StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</div><div class="line">        <span class="keyword">for</span> (String temp : content) &#123;</div><div class="line">            stringBuilder.append(temp).append(<span class="string">","</span>);</div><div class="line">        &#125;</div><div class="line">        System.out.println(stringBuilder.toString());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="执行者工厂类Factory"><a href="#执行者工厂类Factory" class="headerlink" title="执行者工厂类Factory"></a>执行者工厂类Factory</h3><p>根据注解的属性判断实际取哪个执行者：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TypeFactory</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span>  ClientProcessor clientProcessor;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span>  SupplierProcessor supplierProcessor;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> TypeProcessor <span class="title">getProcessor</span><span class="params">(Type type)</span> </span>&#123;</div><div class="line">        TypeProcessor processor = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">if</span> (Type.CLIENT.equals(type)) &#123;</div><div class="line">            processor = clientProcessor;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Type.SUPPLIER.equals(type)) &#123;</div><div class="line">            processor = supplierProcessor;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> processor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@TypeCheck</span>(type = Type.CLIENT, paramIndex = <span class="number">0</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(String content)</span> </span>&#123;</div><div class="line">    <span class="comment">// Do something</span></div><div class="line">    System.out.println(<span class="string">"Hei, I'm the middle process"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>例如我传入的content是“TEST TEST TEST”，实际输出接口为：</p>
+<blockquote>
+<p>Before I’m a client<br>Hei, I’m the middle process<br>I’m a client processor<br>TEST TEST TEST,</p>
+</blockquote>
+<p>可以看到该方法成功被切面注入了~~</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://segmentfault.com/a/1190000017403541" target="_blank" rel="noopener">Spring思维导图，让Spring不再难懂（AOP 篇）</a></li>
+<li><a href="https://segmentfault.com/a/1190000013258647" target="_blank" rel="noopener">spring 自定义注解（annotation）与 aop获取注解</a></li>
+<li><a href="https://www.yiibai.com/spring_aop/annotation_around_advice.html" target="_blank" rel="noopener">Spring AOP基于注解的Around通知</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/18/使用Jenkins持续集成Hexo博客/" rel="next" title="使用Jenkins持续集成Hexo博客">
+                <i class="fa fa-chevron-left"></i> 使用Jenkins持续集成Hexo博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/24/reading/《代码整洁之道》-代码标准/" rel="prev" title="《代码整洁之道》- 代码标准">
+                《代码整洁之道》- 代码标准 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AOP和OOP"><span class="nav-number">1.</span> <span class="nav-text">AOP和OOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为啥要用AOP"><span class="nav-number">2.</span> <span class="nav-text">为啥要用AOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo思路"><span class="nav-number">3.</span> <span class="nav-text">Demo思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo代码"><span class="nav-number">4.</span> <span class="nav-text">Demo代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义注解TypeCheck"><span class="nav-number">4.1.</span> <span class="nav-text">自定义注解TypeCheck</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义切入点和XML配置"><span class="nav-number">4.2.</span> <span class="nav-text">定义切入点和XML配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口和枚举"><span class="nav-number">4.3.</span> <span class="nav-text">接口和枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际执行者ClientProcessor"><span class="nav-number">4.4.</span> <span class="nav-text">实际执行者ClientProcessor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行者工厂类Factory"><span class="nav-number">4.5.</span> <span class="nav-text">执行者工厂类Factory</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试代码"><span class="nav-number">5.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

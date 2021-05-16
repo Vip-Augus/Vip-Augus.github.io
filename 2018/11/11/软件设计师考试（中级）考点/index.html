@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="日常生活," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="考完软考的我，继续更新博客😊">
+<meta name="keywords" content="日常生活">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件设计师考试（中级）考点">
+<meta property="og:url" content="http://yoursite.com/2018/11/11/软件设计师考试（中级）考点/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="考完软考的我，继续更新博客😊">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/7097c713ly1fx46myddamj21hc0u0thk.jpg">
+<meta property="og:updated_time" content="2019-05-25T07:32:58.014Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="软件设计师考试（中级）考点">
+<meta name="twitter:description" content="考完软考的我，继续更新博客😊">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713ly1fx46myddamj21hc0u0thk.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/11/软件设计师考试（中级）考点/"/>
+
+
+
+
+
+  <title>软件设计师考试（中级）考点 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/11/软件设计师考试（中级）考点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">软件设计师考试（中级）考点</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-11T17:41:34+08:00">
+                2018-11-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/日常生活/" itemprop="url" rel="index">
+                    <span itemprop="name">日常生活</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/7097c713ly1fx46myddamj21hc0u0thk.jpg" alt=""></p>
+<center><strong>考完软考的我，继续更新博客😊</strong></center>
+
+<a id="more"></a>
+<hr>
+<p><strong>昨天18.11.10考完试的我，又可以开始浪了，昨天考完忘得差不多，赶紧记录一下😆</strong></p>
+<hr>
+<h2 id="计算机系统知识"><a href="#计算机系统知识" class="headerlink" title="计算机系统知识"></a>计算机系统知识</h2><p>一般出现在上午的选择题，前六道选择题，考的知识点有：</p>
+<ul>
+<li>存储单元</li>
+<li>Cache与主存的地址映象</li>
+<li>指令的执行过程（比较常考的是流水线）</li>
+<li>可靠性计算（MTBF平均无故障时间/(MTBF+MTRF平均修复时间))</li>
+<li>校验码（前几年考的比较多的是海明码，这次考的是奇偶校验码）</li>
+<li>寻址方式（会有直接、一级、二级之分，还会有根据地址编码计算内存容量之类的题目）</li>
+<li>逻辑运算</li>
+</ul>
+<p><strong>这次考了程序计数器PC的作用，并联和串联的可靠性计算，奇偶校验中的奇校验</strong></p>
+<hr>
+<h2 id="程序语言基础知识"><a href="#程序语言基础知识" class="headerlink" title="程序语言基础知识"></a>程序语言基础知识</h2><p>在上午的选择题出现的，大概6道选择题：</p>
+<ul>
+<li>参数传递（传值还是传引用）</li>
+<li>后缀式</li>
+<li>有穷自动机</li>
+<li>编译和解释程序的区别</li>
+<li>文法</li>
+<li>逻辑表达式</li>
+</ul>
+<p><strong>这次考了逻辑表达式的短路逻辑运算，编译程序各个阶段所做的任务（词法阶段、语法阶段等），根据有限自动机识别字符串，根据后缀式识别算术表达式，c程序的传值传参函数的计算</strong></p>
+<hr>
+<h2 id="操作系统知识"><a href="#操作系统知识" class="headerlink" title="操作系统知识"></a>操作系统知识</h2><p>只在上午的选择题出现，大概有六道选择题：</p>
+<ul>
+<li>设备管理</li>
+<li>死锁</li>
+<li>进程管理（PV信号量）</li>
+<li>索引存储结构</li>
+<li>作业管理</li>
+</ul>
+<p><strong>这次考了要达到死锁的最少资源数量，多个进程之间根据信号量和P(passeren 通知其他进程，信号量-1）、V（vrijgeven 表示进程执行完释放，信号量+1），文件索引采用的是直接地址索引还是一级、二级索引</strong></p>
+<hr>
+<h2 id="系统开发和运行"><a href="#系统开发和运行" class="headerlink" title="系统开发和运行"></a>系统开发和运行</h2><p>上午会有12题~14题（忘了=-=），下午试题一：</p>
+<ul>
+<li>数据流图</li>
+<li>模块划分</li>
+<li>关键路径，项目里程碑和松弛时间</li>
+<li>软件开发模型</li>
+<li>SEI能力成熟度模型</li>
+<li>路径测试和McCabe度量法</li>
+</ul>
+<p><strong>这次考了数据流程，模块的作用范围和控制范围，SEI七级成熟度中的优化级，软件开发适用于什么开发模型，路径测试用例数量和McCabe计算复杂度（V=m-n+2），项目里程碑和松弛时间，结构化分析法</strong></p>
+<p><strong>下午的第一道大题，考的内容是数据流图，15分。一般细心一点，在说明中找到对应的实体和数据源，然后注意父图和子图中的数据流数量和名称是否相同，还有从说明中找出缺少的数据流，最后一小问一般会问父图和子图如何保持平衡，不过这次问的是关系模式，从说明中就能找出</strong></p>
+<hr>
+<h2 id="网络基础知识"><a href="#网络基础知识" class="headerlink" title="网络基础知识"></a>网络基础知识</h2><p>上午的选择题出现，8道选择题，还算比较简单的题目：</p>
+<ul>
+<li>数字证书</li>
+<li>公开私有秘钥的加密算法</li>
+<li>计算机病毒</li>
+<li>IP协议</li>
+<li>HTML网页设计</li>
+<li>子网划分</li>
+</ul>
+<p><strong>这次考了MD5（公开密钥）算法生成密文的长度（128），计算机病毒的特性，windows系统释放当前所获取的IP地址命令（ipconfig/release，IP协议（TCP、UDP），HTML的注释)</strong></p>
+<hr>
+<h2 id="多媒体知识"><a href="#多媒体知识" class="headerlink" title="多媒体知识"></a>多媒体知识</h2><p>上午的选择题出现，3道选择题：</p>
+<ul>
+<li>视频信息</li>
+<li>图像文件格式</li>
+<li>信号数字化</li>
+<li>图像分辨率</li>
+</ul>
+<p><strong>忘了这次考了啥，主要这章只是粗略看一下，所以难度反而觉得是难的=-=</strong></p>
+<hr>
+<h2 id="数据库技术"><a href="#数据库技术" class="headerlink" title="数据库技术"></a>数据库技术</h2><p>上午的选择题有六道题，下午试题二：</p>
+<ul>
+<li>视图</li>
+<li>SQL语句</li>
+<li>关系代数</li>
+<li>关系模式</li>
+</ul>
+<p><strong>这次考了数据库的范式，视图，SQL语句和关系模式，两个关系的自然链接后进行选择和投影计算还有SQL语句都不难，主要对于数据库的范式和函数依赖这两点概念需要弄清，所以我没弄懂范式和函数依赖，觉得数据库考的还是有点难的</strong></p>
+<p><strong>下午的第二大题，15分，考的是数据库分析和设计。我记得之前做过很相近的题目：公司内的部门和员工的数据库设计分析，补全四个联系还有它们之间1:1、1:n、n:n的联系，指出关系模式中的主键和外键，还有一问是自由回答（是否需要增加一个实体、关系之类的）</strong></p>
+<hr>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p>上午考了5~7道选择题（忘了=-=）：</p>
+<ul>
+<li>线性表</li>
+<li>链接表</li>
+<li>有向图</li>
+<li>栈</li>
+<li>二叉线索树</li>
+</ul>
+<p><strong>这次上午考了链接表实现的栈，根据邻接矩阵判断图的性质，中序遍历、先序遍历的树性质</strong></p>
+<hr>
+<h2 id="算法设计和分析"><a href="#算法设计和分析" class="headerlink" title="算法设计和分析"></a>算法设计和分析</h2><p>上午考了4道选择题，下午试题四：</p>
+<ul>
+<li>时间复杂度</li>
+<li>贪心算法</li>
+<li>算法的C语言实现</li>
+<li>动态规划</li>
+</ul>
+<p><strong>上午考了时间复杂度，根据题目意思判读使用的算法思想（个人觉得是贪心算法），然后选择输出结果</strong></p>
+<p><strong>下午考了动态规划，算法复杂度，还有C语言程序的实现，推荐看多几遍题目说明，理解题目意思再去看代码，而且题目和代码提示挺多的</strong></p>
+<hr>
+<h2 id="面向对象技术"><a href="#面向对象技术" class="headerlink" title="面向对象技术"></a>面向对象技术</h2><p>上午考了10道题左右，下午的试题三和试题六（JAVA语言开发者当然选择它啦哈哈哈）：</p>
+<ul>
+<li>UML图（活动、通信、组件、状态…)</li>
+<li>设计模式（桥接、策略、生成器、观察者…)</li>
+<li>继承的概念</li>
+<li>多态</li>
+</ul>
+<p><strong>这次上午考了UML图，根据题目意思和类图判断设计模式，还有它的作用，继承的概念</strong></p>
+<p><strong>下午的试题三考了观察者设计模式，它的意图和适用场合。试题六比较简单，判断旅客的旅行里程数，然后设置各个旅客的状态</strong></p>
+<hr>
+<h2 id="软件知识产权"><a href="#软件知识产权" class="headerlink" title="软件知识产权"></a>软件知识产权</h2><p>上午两道选择题：</p>
+<ul>
+<li>软件产权的有效期</li>
+<li>软件保护法</li>
+</ul>
+<p><strong>虽然只有两道题目，但是这种不需要计算，纯粹靠背的题目，还是有点难度的，主要要去看知识产权的知识点</strong></p>
+<hr>
+<h2 id="计算机专业英文"><a href="#计算机专业英文" class="headerlink" title="计算机专业英文"></a>计算机专业英文</h2><p>上午最后的5道选择题：</p>
+<ul>
+<li>Professional English</li>
+</ul>
+<p><strong>这个就不需要多说了吧，慢慢看题目，理解意思后再去选择</strong></p>
+<hr>
+<h2 id="写到最后"><a href="#写到最后" class="headerlink" title="写到最后"></a>写到最后</h2><p>这次考试一开始没有打算报名的，看到同事报名才报名，没想到年末遇到系统大重构，导致平时加班到十点才回家，由于秉着不能浪费的精神，还是强迫自己看书复习，快12点才睡觉，所以希望这次能一把过，下次不要再考中级了T^T。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/日常生活/" rel="tag"># 日常生活</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/25/DRDS-新增字段报错-ERR-1062-Duplicate-entry/" rel="next" title="DRDS 新增字段报错 ERR 1062 - Duplicate entry">
+                <i class="fa fa-chevron-left"></i> DRDS 新增字段报错 ERR 1062 - Duplicate entry
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/02/服务器CPU负载过高问题查询记录/" rel="prev" title="服务器CPU负载过高问题查询记录">
+                服务器CPU负载过高问题查询记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机系统知识"><span class="nav-number">1.</span> <span class="nav-text">计算机系统知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序语言基础知识"><span class="nav-number">2.</span> <span class="nav-text">程序语言基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统知识"><span class="nav-number">3.</span> <span class="nav-text">操作系统知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统开发和运行"><span class="nav-number">4.</span> <span class="nav-text">系统开发和运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络基础知识"><span class="nav-number">5.</span> <span class="nav-text">网络基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多媒体知识"><span class="nav-number">6.</span> <span class="nav-text">多媒体知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库技术"><span class="nav-number">7.</span> <span class="nav-text">数据库技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">8.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法设计和分析"><span class="nav-number">9.</span> <span class="nav-text">算法设计和分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象技术"><span class="nav-number">10.</span> <span class="nav-text">面向对象技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件知识产权"><span class="nav-number">11.</span> <span class="nav-text">软件知识产权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机专业英文"><span class="nav-number">12.</span> <span class="nav-text">计算机专业英文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写到最后"><span class="nav-number">13.</span> <span class="nav-text">写到最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

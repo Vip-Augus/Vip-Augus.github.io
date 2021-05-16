@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="飘了飘了，最近都没好好学习，加把劲吧😔">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot整合Kafka实践">
+<meta property="og:url" content="http://yoursite.com/2018/07/12/java/SpringBoot整合Kafka实践/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="飘了飘了，最近都没好好学习，加把劲吧😔">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/mountains-2532825_1920.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/kafka%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86.png">
+<meta property="og:updated_time" content="2019-06-02T04:01:00.109Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot整合Kafka实践">
+<meta name="twitter:description" content="飘了飘了，最近都没好好学习，加把劲吧😔">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/mountains-2532825_1920.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/12/java/SpringBoot整合Kafka实践/"/>
+
+
+
+
+
+  <title>SpringBoot整合Kafka实践 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/12/java/SpringBoot整合Kafka实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot整合Kafka实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-12T10:16:51+08:00">
+                2018-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/mountains-2532825_1920.jpg" alt=""></p>
+<center>飘了飘了，最近都没好好学习，加把劲吧😔</center>
+
+<a id="more"></a>
+<hr>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>Apache的Kafka™是一个分布式流平台(a distributed streaming platform)</strong><br>有以下几个特性：（来自百度百科）</p>
+<ol>
+<li>通过O(1)的磁盘数据结构提供消息的持久化，这种结构对于即使数以TB的消息存储也能够保持长时间的稳定性能。</li>
+<li>高吞吐量 ：即使是非常普通的硬件Kafka也可以支持每秒数百万的消息。</li>
+<li>支持通过Kafka服务器和消费机集群来分区消息。</li>
+<li>支持Hadoop并行数据加载。</li>
+</ol>
+<p>本文记录的是如何将kafka和SpringBoot整合使用，调用生产者Producer和消费者Consumer的API进行消息发送和消费，更加深入的点并未详细了解。</p>
+<hr>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>代码整合之后，需要安装zookeeper作为注册中心，还有kafka服务。<br>我选择使用的是Centos 7服务器上进行环境配置的。</p>
+<h3 id="Zookeeper启动"><a href="#Zookeeper启动" class="headerlink" title="Zookeeper启动"></a>Zookeeper启动</h3><p>首先去<a href="http://zookeeper.apache.org/releases.html#download" target="_blank" rel="noopener">官网下载</a>tar压缩包，选择合适的版本，然后进行解压</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos app]<span class="comment"># wget </span></div><div class="line">[root@VM_234_23_centos app]<span class="comment"># tar -zxvf zookeeper-3.4.10.tar</span></div><div class="line">[root@VM_234_23_centos app]<span class="comment"># cd zookeeper-3.4.10/</span></div></pre></td></tr></table></figure>
+<p>复制一份配置文件，文件名修改成zoo.cfg，由于是单机模式，所以使用默认的配置即可，不需要进行修改<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos zookeeper-<span class="number">3.4</span>.<span class="number">10</span>]<span class="comment"># cp conf/zoo_sample.cfg conf/zoo.cfg</span></div><div class="line">[root@VM_234_23_centos zookeeper-<span class="number">3.4</span>.<span class="number">10</span>]<span class="comment"># cat conf/zoo.cfg</span></div><div class="line"><span class="comment"># The number of milliseconds of each tick</span></div><div class="line"><span class="comment"># 服务器与客户端之间交互的基本事件单元（ms）</span></div><div class="line">tickTime=<span class="number">2000</span></div><div class="line"><span class="comment"># The number of ticks that the initial</span></div><div class="line"><span class="comment"># synchronization phase can take</span></div><div class="line"><span class="comment"># 初始化可以连接的客户端数量</span></div><div class="line">initLimit=<span class="number">10</span></div><div class="line"><span class="comment"># The number of ticks that can pass between</span></div><div class="line"><span class="comment"># sending a request and getting an acknowledgement</span></div><div class="line"><span class="comment"># 客户端与服务器之前请求和应答的时间间隔</span></div><div class="line">syncLimit=<span class="number">5</span></div><div class="line"><span class="comment"># the directory where the snapshot is stored.</span></div><div class="line"><span class="comment"># do not use /tmp for storage, /tmp here is just</span></div><div class="line"><span class="comment"># example sakes.</span></div><div class="line">dataDir=/tmp/zookeeper</div><div class="line"><span class="comment"># the port at which the clients will connect</span></div><div class="line"><span class="comment"># 客户端进行连接的端口号</span></div><div class="line">clientPort=<span class="number">2181</span></div><div class="line"><span class="comment"># the maximum number of client connections.</span></div><div class="line"><span class="comment"># increase this if you need to handle more clients</span></div><div class="line"><span class="comment">#maxClientCnxns=60</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Be sure to read the maintenance section of the</span></div><div class="line"><span class="comment"># administrator guide before turning on autopurge.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># The number of snapshots to retain in dataDir</span></div><div class="line"><span class="comment">#autopurge.snapRetainCount=3</span></div><div class="line"><span class="comment"># Purge task interval in hours</span></div><div class="line"><span class="comment"># Set to "0" to disable auto purge feature</span></div><div class="line"><span class="comment">#autopurge.purgeInterval=1</span></div></pre></td></tr></table></figure></p>
+<p>启动zkServer服务<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos zookeeper-<span class="number">3.4</span>.<span class="number">10</span>]<span class="comment"># bin/zk</span></div><div class="line">zkCleanup.sh  zkCli.cmd     zkCli.sh      zkEnv.cmd     zkEnv.sh      zkServer.cmd  zkServer.sh</div><div class="line">[root@VM_234_23_centos zookeeper-<span class="number">3.4</span>.<span class="number">10</span>]<span class="comment"># bin/zkServer.sh start</span></div><div class="line">ZooKeeper JMX enabled by default</div><div class="line">Using config: /home/app/zookeeper-<span class="number">3.4</span>.<span class="number">10</span>/bin/../conf/zoo.cfg</div><div class="line">Starting zookeeper ... STARTED</div><div class="line">[root@VM_234_23_centos zookeeper-<span class="number">3.4</span>.<span class="number">10</span>]<span class="comment"># jps</span></div><div class="line"><span class="number">1122</span> QuorumPeerMain   ---- zk启动好的标志</div><div class="line"><span class="number">1139</span> Jps</div><div class="line">[root@VM_234_23_centos zookeeper-<span class="number">3.4</span>.<span class="number">10</span>]<span class="comment"># bin/zkServer.sh status</span></div><div class="line">ZooKeeper JMX enabled by default</div><div class="line">Using config: /home/app/zookeeper-<span class="number">3.4</span>.<span class="number">10</span>/bin/../conf/zoo.cfg</div><div class="line">Mode: standalone --- 单机模式</div></pre></td></tr></table></figure></p>
+<h3 id="Kafka安装"><a href="#Kafka安装" class="headerlink" title="Kafka安装"></a>Kafka安装</h3><p>同样需要先去<a href="https://www.apache.org/dyn/closer.cgi?path=/kafka/1.1.0/kafka_2.12-1.1.0.tgz" target="_blank" rel="noopener">官网</a>进行下载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos app]# wget http://mirrors.hust.edu.cn/apache/kafka/1.1.0/kafka_2.12-1.1.0.tgz</div></pre></td></tr></table></figure>
+<p>接着解压和修改配置文件，同样也是按照默认即可（有个spring进行连接的坑，最后讲）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos app]<span class="comment"># tar -zxvf kafka_2.12-1.1.0.tgz</span></div><div class="line">[root@VM_234_23_centos app]<span class="comment"># cd kafka_2.12-1.1.0/</span></div><div class="line"></div><div class="line">root@VM_234_23_centos kafka_2.<span class="number">12</span>-<span class="number">1.1</span>.<span class="number">0</span>]<span class="comment"># cat config/server.properties</span></div><div class="line">···</div><div class="line"><span class="comment"># see kafka.server.KafkaConfig for additional details and defaults</span></div><div class="line"></div><div class="line"><span class="comment">############################# Server Basics #############################</span></div><div class="line"></div><div class="line"><span class="comment"># The id of the broker. This must be set to a unique integer for each broker.</span></div><div class="line"><span class="comment"># boker全局唯一的编号，不能重复</span></div><div class="line">broker.id=<span class="number">0</span></div><div class="line"></div><div class="line"><span class="comment">############################# Socket Server Settings(Socket服务设置) #############################</span></div><div class="line"><span class="comment"># 用来监听链接的端口，producer和consumer将在此端口建立连接</span></div><div class="line"><span class="comment">#listeners=PLAINTEXT://:9092</span></div><div class="line"></div><div class="line"><span class="comment">#advertised.listeners=PLAINTEXT://your.host.name:9092</span></div><div class="line"></div><div class="line"><span class="comment"># The number of threads that the server uses for receiving requests from the network and sending responses to the network</span></div><div class="line"><span class="comment"># 处理网络请求的线程数量</span></div><div class="line">num.network.threads=<span class="number">3</span></div><div class="line"></div><div class="line"><span class="comment"># The number of threads that the server uses for processing requests, which may include disk I/O</span></div><div class="line"><span class="comment"># 处理磁盘IO的线程数量</span></div><div class="line">num.io.threads=<span class="number">8</span></div><div class="line"></div><div class="line"><span class="comment"># The send buffer (SO_SNDBUF) used by the socket server</span></div><div class="line"><span class="comment"># 发送套接字的缓冲区大小</span></div><div class="line">socket.send.buffer.bytes=<span class="number">102400</span></div><div class="line"></div><div class="line"><span class="comment"># The receive buffer (SO_RCVBUF) used by the socket server</span></div><div class="line"><span class="comment"># 接收套接字缓冲区大小</span></div><div class="line">socket.receive.buffer.bytes=<span class="number">102400</span></div><div class="line"></div><div class="line"><span class="comment"># The maximum size of a request that the socket server will accept (protection against OOM)</span></div><div class="line"><span class="comment"># 请求套接字最大容量</span></div><div class="line">socket.request.max.bytes=<span class="number">104857600</span></div><div class="line">···</div><div class="line"><span class="comment">############################# Log Basics(打印设置) #############################</span></div><div class="line"></div><div class="line"><span class="comment"># A comma separated list of directories under which to store log files</span></div><div class="line"><span class="comment"># 消息存放的路径</span></div><div class="line">log.dirs=/tmp/kafka-logs</div><div class="line"></div><div class="line"><span class="comment"># The default number of log partitions per topic. More partitions allow greater</span></div><div class="line"><span class="comment"># parallelism for consumption, but this will also result in more files across</span></div><div class="line"><span class="comment"># the brokers.</span></div><div class="line"><span class="comment"># topic在当前broker上的分片数量</span></div><div class="line">num.partitions=<span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment"># The number of threads per data directory to be used for log recovery at startup and flushing at shutdown.</span></div><div class="line"><span class="comment"># This value is recommended to be increased for installations with data dirs located in RAID array.</span></div><div class="line"><span class="comment"># 用来恢复和清理data下数据的线程数量</span></div><div class="line">num.recovery.threads.per.data.dir=<span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment">############################# Internal Topic Settings  #############################</span></div><div class="line"><span class="comment"># The replication factor for the group metadata internal topics "__consumer_offsets" and "__transaction_state"</span></div><div class="line"><span class="comment"># For anything other than development testing, a value greater than 1 is recommended for to ensure availability such as 3.</span></div><div class="line"><span class="comment"># 用于配置offset记录的topic的partition的副本个数</span></div><div class="line">offsets.topic.replication.factor=<span class="number">1</span></div><div class="line"><span class="comment"># 事务主题的复制因子（设置更高以确保可用性）， 内部主题创建将失败，直到群集大小满足此复制因素要求</span></div><div class="line">transaction.state.log.replication.factor=<span class="number">1</span></div><div class="line"><span class="comment"># 覆盖事务主题的min.insync.replicas配置</span></div><div class="line">transaction.state.log.min.isr=<span class="number">1</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">############################# Log Retention Policy #############################</span></div><div class="line"></div><div class="line"><span class="comment"># The minimum age of a log file to be eligible for deletion due to age</span></div><div class="line"><span class="comment"># segment文件保留的最长时间，超时将被删除</span></div><div class="line">log.retention.hours=<span class="number">168</span></div><div class="line"></div><div class="line"><span class="comment"># A size-based retention policy for logs. Segments are pruned from the log unless the remaining</span></div><div class="line"><span class="comment"># segments drop below log.retention.bytes. Functions independently of log.retention.hours.</span></div><div class="line"><span class="comment">#log.retention.bytes=1073741824</span></div><div class="line"></div><div class="line"><span class="comment"># The maximum size of a log segment file. When this size is reached a new log segment will be created.</span></div><div class="line"><span class="comment"># 日志文件中每个segment的大小</span></div><div class="line">log.segment.bytes=<span class="number">1073741824</span></div><div class="line"></div><div class="line"><span class="comment"># The interval at which log segments are checked to see if they can be deleted according</span></div><div class="line"><span class="comment"># to the retention policies</span></div><div class="line"><span class="comment"># 周期性检查文件大小的时间</span></div><div class="line">log.retention.check.interval.ms=<span class="number">300000</span></div><div class="line"></div><div class="line"><span class="comment">############################# Zookeeper #############################</span></div><div class="line"></div><div class="line"><span class="comment"># Zookeeper connection string (see zookeeper docs for details).</span></div><div class="line"><span class="comment"># This is a comma separated host:port pairs, each corresponding to a zk</span></div><div class="line"><span class="comment"># server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".</span></div><div class="line"><span class="comment"># You can also append an optional chroot string to the urls to specify the</span></div><div class="line"><span class="comment"># root directory for all kafka znodes.</span></div><div class="line"><span class="comment"># 链接zookeeper的端口号</span></div><div class="line">zookeeper.connect=localhost:<span class="number">2181</span></div><div class="line"></div><div class="line"><span class="comment"># Timeout in ms for connecting to zookeeper</span></div><div class="line"><span class="comment"># zookeeper链接超时的时间</span></div><div class="line">zookeeper.connection.timeout.ms=<span class="number">6000</span></div></pre></td></tr></table></figure>
+<p>启动kafka<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos kafka]<span class="comment"># bin/kafka-server-start.sh config/server.properties</span></div><div class="line">[<span class="number">2018</span>-<span class="number">07</span>-<span class="number">11</span> <span class="number">17</span>:<span class="number">10</span>:<span class="number">24</span>,<span class="number">315</span>] INFO Registered kafka:type=kafka.Log4jController MBean (kafka.utils.Log4jControllerRegistration$)</div><div class="line">[<span class="number">2018</span>-<span class="number">07</span>-<span class="number">11</span> <span class="number">17</span>:<span class="number">10</span>:<span class="number">25</span>,<span class="number">645</span>] INFO starting (kafka.server.KafkaServer)</div><div class="line">[<span class="number">2018</span>-<span class="number">07</span>-<span class="number">11</span> <span class="number">17</span>:<span class="number">10</span>:<span class="number">25</span>,<span class="number">647</span>] INFO Connecting to zookeeper on localhost:<span class="number">2181</span> (kafka.server.KafkaServer)</div><div class="line">[<span class="number">2018</span>-<span class="number">07</span>-<span class="number">11</span> <span class="number">17</span>:<span class="number">10</span>:<span class="number">25</span>,<span class="number">693</span>] INFO [ZooKeeperClient] Initializing a new session to localhost:<span class="number">2181</span>. (kafka.zookeeper.ZooKeeperClient)</div><div class="line">···</div><div class="line">[root@VM_234_23_centos ~]<span class="comment"># jps</span></div><div class="line"><span class="number">10002</span> Jps</div><div class="line"><span class="number">1122</span> QuorumPeerMain</div><div class="line"><span class="number">9673</span> Kafka --- 成功启动的标志</div></pre></td></tr></table></figure></p>
+<p>还有一些比较常用的客户端命令，例如查询topic列表，更多可以参考<a href="https://www.cnblogs.com/zzt-lovelinlin/p/6228773.html" target="_blank" rel="noopener">这里</a></p>
+<hr>
+<h2 id="代码进行整合"><a href="#代码进行整合" class="headerlink" title="代码进行整合"></a>代码进行整合</h2><p><strong>首先加入依赖，maven与gradle都可以</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka</div><div class="line">compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '1.3.5.RELEASE'</div></pre></td></tr></table></figure></p>
+<p><strong>在application.properties进行配置</strong><br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#============== kafka ===================</span></div><div class="line"><span class="comment"># 指定kafka 代理地址，可以多个</span></div><div class="line">spring.kafka.bootstrap-servers=localhost:<span class="number">9092</span></div><div class="line"></div><div class="line"><span class="comment">#=============== provider  =======================</span></div><div class="line"></div><div class="line">spring.kafka.producer.retries=<span class="number">0</span></div><div class="line"><span class="comment"># 每次批量发送消息的数量</span></div><div class="line">spring.kafka.producer.batch-size=<span class="number">16384</span></div><div class="line">spring.kafka.producer.buffer-memory=<span class="number">33554432</span></div><div class="line"></div><div class="line"><span class="comment"># 指定消息key和消息体的编解码方式</span></div><div class="line">spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer</div><div class="line">spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer</div><div class="line"></div><div class="line"><span class="comment">#=============== consumer  =======================</span></div><div class="line"><span class="comment"># 指定默认消费者group id</span></div><div class="line">spring.kafka.consumer.group-id=test-consumer-group</div><div class="line"></div><div class="line">spring.kafka.consumer.auto-offset-reset=earliest</div><div class="line">spring.kafka.consumer.enable-auto-commit=true</div><div class="line">spring.kafka.consumer.auto-commit-interval=<span class="number">100</span></div><div class="line"></div><div class="line"><span class="comment"># 指定消息key和消息体的编解码方式</span></div><div class="line">spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer</div><div class="line">spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer</div></pre></td></tr></table></figure></p>
+<h3 id="发送消息-amp-处理消息"><a href="#发送消息-amp-处理消息" class="headerlink" title="发送消息&amp;处理消息"></a>发送消息&amp;处理消息</h3><p><strong>发送消息需要使用到kafkaTemplate，还要指定发送的topic名称</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * kafka发送消息</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> KafkaTemplate kafkaTemplate;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/test"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testkafka</span><span class="params">(String message)</span> </span>&#123;</div><div class="line">        User user = <span class="keyword">new</span> User();</div><div class="line">        user.setName(<span class="string">"hahaha"</span>);</div><div class="line">        user.setAddress(message);</div><div class="line">        <span class="comment">// 第一个参数是topic名称</span></div><div class="line">        kafkaTemplate.send(<span class="string">"test"</span>, JSON.toJSONString(user));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>监听消息，进行处理，使用到@KafkaListener注解</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestKafkaMessageHandler</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//  参数对应的是topic名称，可以监听多个topic，中间用逗号分开</span></div><div class="line">    <span class="meta">@KafkaListener</span>(topics = &#123;<span class="string">"test"</span>&#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">processMessage</span><span class="params">(String content)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            User m = JSON.parseObject(content, User.class);</div><div class="line">            System.out.println(m.toString());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            System.out.println(e.toString());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="发送消息测试"><a href="#发送消息测试" class="headerlink" title="发送消息测试"></a>发送消息测试</h3><p><strong>正常启动之后，发送消息后，能够看到消息处理的结果</strong></p>
+<p><strong>举个🌰，示例代码的执行结果如下所示：</strong></p>
+<p><img src="http://img.sevenyuan.cn/kafka%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86.png" alt=""></p>
+<p><strong>Springboot配置简易化了许多，简单调用API就能进行消息的发送和消息处理，当然Kafka还有更强的功能和作用，可以深入去了解一下</strong></p>
+<hr>
+<h2 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h2><p>个人环境</p>
+<blockquote>
+<p>Mac<br>IDEA 2017.03<br>SpringBoot 2.0.3.RELEASE<br>JDK 1.8<br>Centos 7 安装了 zookeeper-3.4.10 kafka_2.12</p>
+</blockquote>
+<hr>
+<h3 id="启动提示java-lang-NoSuchMethodError-org-springframework-util-Assert-state"><a href="#启动提示java-lang-NoSuchMethodError-org-springframework-util-Assert-state" class="headerlink" title="启动提示java.lang.NoSuchMethodError: org.springframework.util.Assert.state"></a>启动提示java.lang.NoSuchMethodError: org.springframework.util.Assert.state</h3><p><strong>kafka版本过高，springboot版本低不支持</strong></p>
+<p>原本打算引用最新的kafka依赖2.1.7.RELEASE，后来启动时报错，然后发现2.1.7版本的kafka需要依赖高版本的spring（5.0.6版本）</p>
+<table>
+<thead>
+<tr>
+<th>Group / Artifact</th>
+<th>Version</th>
+<th>Updates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>org.springframework » spring-messaging</td>
+<td>5.0.6.RELEASE</td>
+<td>5.0.7.RELEASE</td>
+</tr>
+<tr>
+<td>org.springframework » spring-context</td>
+<td>5.0.6.RELEASE</td>
+<td>5.0.7.RELEASE</td>
+</tr>
+<tr>
+<td>org.springframework » spring-tx</td>
+<td>5.0.6.RELEASE</td>
+<td>5.0.7.RELEASE</td>
+</tr>
+<tr>
+<td>········</td>
+<td>·······</td>
+<td>·······</td>
+</tr>
+</tbody>
+</table>
+<p>但是SpringBoot-2.0.3版本的spring使用的是spring-context是4.3.14，导致无法启动，所以需要调整依赖的版本号（我选择了kafka降级）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka</div><div class="line">compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '1.3.5.RELEASE'</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="启动提示Connection-to-node-0-could-not-be-established-Broker-may-not-be-available"><a href="#启动提示Connection-to-node-0-could-not-be-established-Broker-may-not-be-available" class="headerlink" title="启动提示Connection to node 0 could not be established. Broker may not be available."></a>启动提示Connection to node 0 could not be established. Broker may not be available.</h3><p><strong>我是用Centos服务器搭建的kafka服务，然后使用本地环境进行连接kafka，消息订阅和发布失败，看到两篇博文，发现是解析服务器的hostname失败所导致的。</strong></p>
+<p><strong>解决方法：</strong>修改kafka的server.properties配置文件<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos kafka]<span class="comment"># vim config/server.properties</span></div><div class="line">····</div><div class="line"><span class="comment">############################# Server Basics #############################</span></div><div class="line"></div><div class="line"><span class="comment"># The id of the broker. This must be set to a unique integer for each broker.</span></div><div class="line">broker.id=<span class="number">0</span></div><div class="line"></div><div class="line"><span class="comment">############################# Socket Server Settings #############################</span></div><div class="line"><span class="comment"># The address the socket server listens on. It will get the value returned from</span></div><div class="line"><span class="comment"># java.net.InetAddress.getCanonicalHostName() if not configured.</span></div><div class="line"><span class="comment">#   FORMAT:</span></div><div class="line"><span class="comment">#     listeners = listener_name://host_name:port</span></div><div class="line"><span class="comment">#   EXAMPLE:</span></div><div class="line"><span class="comment">#     listeners = PLAINTEXT://your.host.name:9092</span></div><div class="line"><span class="comment">#listeners=PLAINTEXT://:9092</span></div><div class="line"></div><div class="line"><span class="comment"># Hostname and port the broker will advertise to producers and consumers. If not set,</span></div><div class="line"><span class="comment"># it uses the value for "listeners" if configured.  Otherwise, it will use the value</span></div><div class="line"><span class="comment"># returned from java.net.InetAddress.getCanonicalHostName().</span></div><div class="line"><span class="comment"># 找到该行，进行修改</span></div><div class="line">advertised.listeners=PLAINTEXT://个人服务器的ip:<span class="number">9092</span></div></pre></td></tr></table></figure></p>
+<p><strong>然后重新启动解决问题</strong><br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos kafka]<span class="comment"># bin/kafka-server-start.sh config/server.properties</span></div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://blog.csdn.net/memoordit/article/details/78850086" target="_blank" rel="noopener">Kafka配置文档</a></li>
+<li><a href="https://blog.csdn.net/cslucifer/article/details/78830988" target="_blank" rel="noopener">被版本更新坑到哭系列:SpringBoot整合Kafka</a></li>
+<li><a href="https://blog.csdn.net/caoshangpa/article/details/79901648" target="_blank" rel="noopener">如何通过外部电脑访问kafka服务器</a></li>
+<li><a href="https://blog.csdn.net/tzs_1041218129/article/details/78988439" target="_blank" rel="noopener">SpringBoot Kafka 整合使用</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/30/MyBatis源码学习(二)/" rel="next" title="MyBatis源码学习(二)">
+                <i class="fa fa-chevron-left"></i> MyBatis源码学习(二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/21/reading/京东《决战618》读后感/" rel="prev" title="京东《决战618》读后感">
+                京东《决战618》读后感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Zookeeper启动"><span class="nav-number">2.1.</span> <span class="nav-text">Zookeeper启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka安装"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码进行整合"><span class="nav-number">3.</span> <span class="nav-text">代码进行整合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发送消息-amp-处理消息"><span class="nav-number">3.1.</span> <span class="nav-text">发送消息&amp;处理消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送消息测试"><span class="nav-number">3.2.</span> <span class="nav-text">发送消息测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的坑"><span class="nav-number">4.</span> <span class="nav-text">遇到的坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动提示java-lang-NoSuchMethodError-org-springframework-util-Assert-state"><span class="nav-number">4.1.</span> <span class="nav-text">启动提示java.lang.NoSuchMethodError: org.springframework.util.Assert.state</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动提示Connection-to-node-0-could-not-be-established-Broker-may-not-be-available"><span class="nav-number">4.2.</span> <span class="nav-text">启动提示Connection to node 0 could not be established. Broker may not be available.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

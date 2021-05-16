@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="tool," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言一个适合后端仔排查问题的 iterm2 终端应该是这样的：  交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（实际上服务器数量比这个更多:-O）">
+<meta name="keywords" content="tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个!">
+<meta property="og:url" content="http://yoursite.com/2020/01/11/tool/2020-01-11-iterm2_useful_suggestion/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="前言一个适合后端仔排查问题的 iterm2 终端应该是这样的：  交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（实际上服务器数量比这个更多:-O）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/itemr2/eight_terminal.png">
+<meta property="og:image" content="https://camo.githubusercontent.com/5c385f15f3eaedb72cfcfbbaf75355b700ac0757/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6f686d797a73682f6f682d6d792d7a73682d6c6f676f2e706e67">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/effect_diagram.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/themes_directory.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/remove_prompt_context.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_profile.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_triggers.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_tab.gif">
+<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_boardcast.gif">
+<meta property="og:updated_time" content="2020-01-11T17:29:04.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个!">
+<meta name="twitter:description" content="前言一个适合后端仔排查问题的 iterm2 终端应该是这样的：  交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（实际上服务器数量比这个更多:-O）">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/itemr2/eight_terminal.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/11/tool/2020-01-11-iterm2_useful_suggestion/"/>
+
+
+
+
+
+  <title>收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个! | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/11/tool/2020-01-11-iterm2_useful_suggestion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个!</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-11T15:00:00+08:00">
+                2020-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tool/" itemprop="url" rel="index">
+                    <span itemprop="name">tool</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>一个适合后端仔排查问题的 iterm2 终端应该是这样的：</strong></p>
+<p><img src="http://img.sevenyuan.cn/itemr2/eight_terminal.png" alt=""></p>
+<p>交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（<strong>实际上服务器数量比这个更多:-O</strong>）</p>
+<a id="more"></a>
+<p>当然，我们也有日志监控平台，从 UI 上查询信息也很方便，但看过《鸟哥的 Linux 私房菜》后，感觉里面的命令十分有用，所以在排查问题时，更喜欢直接在终端进行信息统计（grep、awk、sed、wc 和正则表达式来一套），而且终端查询比网页查询更快，所以决定好好改造 iterm2 这个工具！</p>
+<h2 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h2><p>iterm2 被称为 Mac 下最好用的终端软件，我觉得更重要的是它与 zsh 的结合，才让 iterm2 变得这么好用！ </p>
+<p><img src="https://camo.githubusercontent.com/5c385f15f3eaedb72cfcfbbaf75355b700ac0757/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6f686d797a73682f6f682d6d792d7a73682d6c6f676f2e706e67" alt=""></p>
+<p>在 github 官网上（<a href="https://github.com/ohmyzsh/ohmyzsh），它是这么介绍它的：" target="_blank" rel="noopener">https://github.com/ohmyzsh/ohmyzsh），它是这么介绍它的：</a></p>
+<blockquote>
+<p>oh my zsh 是一个开放源代码，社区驱动的框架，用于管理zsh配置。<br>一旦完成安装，你的终端 shell 一定会成为村里最靓的那个仔（不是的话你可以找我退款！）<br>在命令提示符中进行每次输入，您都将利用数百个功能强大的插件和精美的主题。在咖啡馆时，会有陌生人找你，问你：“太好了！你是不是天才？”</p>
+</blockquote>
+<p>当然，上面的介绍是 「谷歌专业翻译+个人渣翻译」，就是为了突出 zsh 的强大，下面来看下具体如何配置吧</p>
+<h3 id="个性化打造"><a href="#个性化打造" class="headerlink" title="个性化打造"></a>个性化打造</h3><p>关于 <strong>「iTerm2 + Oh My Zsh 打造舒适终端体验」</strong>，这篇文章已经说得很全面了：<a href="https://segmentfault.com/a/1190000014992947" target="_blank" rel="noopener">https://segmentfault.com/a/1190000014992947</a></p>
+<p>我按照上面的提示和步骤，一步一步往下实践，也成功完成了自己的 iterm2 改造：</p>
+<p><img src="http://img.sevenyuan.cn/iterm2/effect_diagram.png" alt=""></p>
+<p>来介绍下上面出现过的插件：</p>
+<ul>
+<li>PowerLine：<br>Powerline 是一个比较酷炫的状态栏工具，主要用于显示状态行和提示信息（上面蓝色的状态栏，当然还有其它主题，读者慢慢去发掘吧）：<a href="https://github.com/powerline/powerline" target="_blank" rel="noopener">https://github.com/powerline/powerline</a></li>
+<li>PowerFonts：<br>它是一个字体库，用来替换字体，有些主题需要字体的配合，所以从中选择一款好看且兼容主题的字体吧：<a href="https://github.com/powerline/fonts" target="_blank" rel="noopener">https://github.com/powerline/fonts</a></li>
+<li>Solarized 配色：<br>原来的背景颜色是黑白的，看起来不够冲击力，所以可以从下面的调色板中，选择一款自己喜欢的配置：<a href="https://github.com/altercation/solarized" target="_blank" rel="noopener">https://github.com/altercation/solarized</a></li>
+<li>选择主题样式：<br>Robby 主题是默认的主题。但经过博主推荐，我也喜欢上了使用 agnoster 主题。更多主题选择截图请参考该链接：<a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes" target="_blank" rel="noopener">https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</a></li>
+<li>highlighting：<br>它是一个代码高亮插件，例如输入正确的 git 命令，字体颜色显示的是黄色，而输入 gti 错误命令时，它将显示红色。它能提前检查我们输入的命令是否正确，让我们得到更快提示：<a href="https://github.com/zsh-users/zsh-syntax-highlighting" target="_blank" rel="noopener">https://github.com/zsh-users/zsh-syntax-highlighting</a></li>
+<li>autosuggestions：<br>自动补全功能，它将会记录我们输入过的命令，用于建议和补全，例如效果图中，输入命令 cd ，按下方向右键，就能将命令补全，或者方向上下键，可以选择曾经定位过的路径：<a href="https://github.com/zsh-users/zsh-autosuggestions" target="_blank" rel="noopener">https://github.com/zsh-users/zsh-autosuggestions</a></li>
+</ul>
+<p>由于博主写的图文并茂，每一步都有详细操作，我就不重复记录啦，建议大家好好看着步骤进行配置，也可以在每个步骤中选择自己喜欢的插件，做自己的个性化配置~</p>
+<h3 id="去掉提示前缀"><a href="#去掉提示前缀" class="headerlink" title="去掉提示前缀"></a>去掉提示前缀</h3><p>在配置完后，终端的提示状态栏，存在着一长串前缀提示：xxxx@MacBook-Pro，它是每个人的电脑名字，如果遇到定位的路径长，加上主机名，一整行就放不下，于是找到了消除前缀的办法：</p>
+<ul>
+<li>定位到主题文件：<br>打开「访达」，点击顶部状态栏「前往 -&gt; 前往文件夹」（或者按快捷键 Shift + ⌘（command） + G)，接着定位到该目录：~/.oh-my-zsh/themes/</li>
+</ul>
+<p><img src="http://img.sevenyuan.cn/iterm2/themes_directory.png" alt=""></p>
+<p>例如我选择的是 agnoster 主题，于是打开了 agnoster.zsh-theme 文件，然后在最底部的添加了注释符：</p>
+<p><img src="http://img.sevenyuan.cn/iterm2/remove_prompt_context.png" alt=""></p>
+<p>加上 # 前缀后，注释掉上下文提示符，然后记得保存，接着打开新的终端窗口，就看不到长长的主机名啦~</p>
+<h2 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h2><p>既然是远端 Linux 服务器，我们需要通过 SSH 进行登录，常用以下形式进行操作：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh root@ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> you first login, alter this</span></div><div class="line">The authenticity of host 'host (xxx)' can't be established.</div><div class="line">...</div><div class="line">Are you sure you want to continue connecting (yes/no)?</div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash">after enter</span></div><div class="line"></div><div class="line">[entery your password]</div></pre></td></tr></table></figure>
+<p>上面的 root 是登录角色，输入第一行后，如果是第一次登录，会提示你是否确认保存”公钥指纹”，点击回车后，就可以输入登录密码，然后登录。</p>
+<p>使用公钥加密是为了 SSH 安全登录，具体加密算法和原理，可以查看该篇文章：<a href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" target="_blank" rel="noopener">SSH原理与运用（一）：远程登录 http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html</a></p>
+<p>可是每次都要进行这样重复的操作，输入 ssh 命令后还要继续输入密码，浪费了宝贵的三秒时间，于是找到了「免密登录」，输入指令后，不需要再输入密码。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>前面提到了“公钥”，ssh 提供了公钥登录，通过公钥登录可以不需要输入密码直接登录</p>
+<blockquote>
+<p>公钥登录：<br>用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。<strong>远程主机用事先储存的公钥进行解密，如果成功，就证明用户是可信的，直接允许登录 shell，不再要求密码。</strong></p>
+</blockquote>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><ul>
+<li><strong>客户端生成公钥</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa</span></div></pre></td></tr></table></figure>
+<p>上述语句输入后，中途会提示你是否需要输入私钥，个人开发时比较少用到，所以可以直接回车，最后会提示你成功生成公钥和私钥。</p>
+<p>具体文件生成路径在 <code>~/.ssh</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">├── authorized_keys     # 已认证的 key</div><div class="line">├── id_rsa              # 生成的私钥</div><div class="line">├── id_rsa.pub          # 生成的公钥，待会被复制过去的就是这个</div><div class="line">└── known_hosts         # 已保存的公钥对应 ip 地址</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>拷贝公钥到服务器</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh-copy-id -i id_rsa.pub root@ip</span></div></pre></td></tr></table></figure>
+<p>在本地终端上，输入 ssh-copy-id 命令，将本地公钥拷贝到远端服务器上，成功拷贝后，你将会在远端服务器上的 ~/.ssh/authorized_keys 文件上看到自己电脑的公钥信息。</p>
+<p>接着下一次登录，直接输入 ssh 命令，不需密码就能直接登录到服务器~</p>
+<h2 id="使用脚本登录"><a href="#使用脚本登录" class="headerlink" title="使用脚本登录"></a>使用脚本登录</h2><p>如果有小伙伴的登录方式跟我们相似，是通过跳板机，服务器信息是通过跳板机管理和访问的，这样无法直接 ssh 连上远端服务器，这时候可以考虑这种方式，在 iterm2 的 profiles 界面，保存登录命令，通过 profile 直接登录。</p>
+<ul>
+<li><strong>添加脚本</strong></li>
+</ul>
+<p>shell 脚本保存的目录可以自己设置，个人保存在了 <strong>/usr/local/bin/iterm2login.sh</strong> 文件下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo vim /usr/<span class="built_in">local</span>/bin/iterm2login.sh</span></div><div class="line"><span class="meta">#</span><span class="bash">!/usr/bin/expect</span></div><div class="line"></div><div class="line">set timeout 30</div><div class="line">spawn ssh -p [lindex $argv 0] [lindex $argv 1]@[lindex $argv 2]</div><div class="line">expect &#123;</div><div class="line">        "(yes/no)?"</div><div class="line">        &#123;send "yes\n";exp_continue&#125;</div><div class="line">        "password:"</div><div class="line">        &#123;send "[lindex $argv 3]\n"&#125;</div><div class="line">        "Password"</div><div class="line">        &#123;send "[lindex $argv 3]\n"&#125;</div><div class="line">&#125;</div><div class="line"><span class="meta">interact%</span><span class="bash"></span></div></pre></td></tr></table></figure>
+<p>保存后记得赋予该脚本可执行权限（由于在个人电脑，直接赋予了 777 权限(#^.^#)）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> chmod 777 /usr/<span class="built_in">local</span>/bin/iterm2login.sh</span></div></pre></td></tr></table></figure>
+<ul>
+<li><strong>保存 profile 信息</strong></li>
+</ul>
+<p>在这里设置配置文件信息</p>
+<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_profile.png" alt=""></p>
+<p>左下角的 + 号，进行添加一个配置文件，接着在右边的 Command 栏，输入以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/iterm2login.sh port root ip password</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>port</td>
+<td>开放登录的端口号，常见的是 22</td>
+</tr>
+<tr>
+<td>root</td>
+<td>登录者角色</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>远端服务器 ip</td>
+</tr>
+<tr>
+<td>password</td>
+<td>登录角色对应的密码</td>
+</tr>
+</tbody>
+</table>
+<p>根据上述格式，可能输入如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/iterm2login.sh 22 root 127.0.0.1 123456</div></pre></td></tr></table></figure>
+<p>输入完成后，可以通过快捷键：⌘（command） + O（英文 O），调出配置信息，然后选择刚才保存的配置，iterm2 调用脚本后，会自动帮我们输入密码，进行登录。</p>
+<ul>
+<li><strong>配置 Shortcut Key</strong></li>
+</ul>
+<p>在右侧，有一行 「Shortcut Keys」，点击下拉选择，可以选一个自己喜欢，而且与其它软件不冲突的快捷键。</p>
+<p>例如我使用了 「⌘（command） + Shift + P」，这样可以快速的通过快捷键，直接就能进行登录~</p>
+<h2 id="rz、sz-上传下载"><a href="#rz、sz-上传下载" class="headerlink" title="rz、sz 上传下载"></a>rz、sz 上传下载</h2><p>有时候想传点小工具到远端服务器，或者将服务器上的排查结果下载到本地进行分析，这时候就可以祭出我们的大杀器 rz、sz 脚本。</p>
+<p>网上也有很多介绍和安装步骤，但是由于配置问题，弄了挺久，最后才成功配置，所以这次记录下自己的配置流程：</p>
+<ul>
+<li><strong>安装 lrzsz</strong></li>
+</ul>
+<p>HomeBrew 是 mac 上一个很好用的包管理软件，如果没安装的话，可以使用以下命令安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span></div></pre></td></tr></table></figure>
+<ul>
+<li><strong>拷贝脚本文件</strong></li>
+</ul>
+<p>定位到 /usr/local/bin 目录</p>
+<p>下载下面地址的两个文件并放入 ：<a href="https://github.com/Vip-Augus/iterm2-tool" target="_blank" rel="noopener">https://github.com/Vip-Augus/iterm2-tool</a></p>
+<ul>
+<li><strong>添加权限</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /usrlocal/bin</span></div><div class="line"><span class="meta">$</span><span class="bash"> chmod 777 iterm2-*</span></div></pre></td></tr></table></figure>
+<ul>
+<li><strong>添加触发器</strong></li>
+</ul>
+<p>定位到 Perferences -&gt; Profiles -&gt; Advanced -&gt; Triggers -&gt; Edit</p>
+<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_triggers.png" alt=""></p>
+<p>左下角的 + 号，添加以下两个触发器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">一、SZ 命令</div><div class="line">Regular expression: \*\*B0100</div><div class="line">Action: Run Silent Coprocess</div><div class="line">Parameters: /usr/local/bin/iterm2-send-zmodem.sh</div><div class="line"></div><div class="line">二、RZ 命令</div><div class="line">Regular expression: \*\*B00000000000000</div><div class="line">Action: Run Silent Coprocess</div><div class="line">Parameters: /usr/local/bin/iterm2-recv-zmodem.sh</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>使用方式</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 上传本地文件到服务器，直接输入 rz 命令，将会弹出文件选择框</span></div><div class="line"><span class="meta">$</span><span class="bash"> rz</span></div><div class="line"><span class="meta">#</span><span class="bash"> 将服务器的文件发送到本地，输入 sz 命令，同时后面接上服务器的文件路径</span></div><div class="line"><span class="meta">$</span><span class="bash"> sz /&#123;patch&#125;/file.out</span></div></pre></td></tr></table></figure>
+<p>通过上面的配置方式，就可以愉快上传和下载文件了~</p>
+<h2 id="快捷键推荐"><a href="#快捷键推荐" class="headerlink" title="快捷键推荐"></a>快捷键推荐</h2><p>像一开始，在一个窗口打开过个 tab 页，是通过拖拽 tab 形式实现的：</p>
+<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_tab.gif" alt=""></p>
+<p>接着，在命令发送到所有窗口，是通过广播命令实现的，广播命令也分很多种，例如全部 window 的面板，或者是当前 window 的面板，我使用的是当前 window：</p>
+<p>快捷键：「⌘（command） + Shift + i」</p>
+<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_boardcast.gif" alt=""></p>
+<p>使用广播命令，在一个窗口上输入指令，可以将它们发送到其它窗口上，实现多个服务器同时执行指令的功能。</p>
+<p>还有更多快捷键，可以参考这篇文章：<a href="https://www.jianshu.com/p/a0249778872e" target="_blank" rel="noopener">https://www.jianshu.com/p/a0249778872e</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在工作中，一点一点小工具的使用和积累，逐渐形成习惯，本次将 iterm2 这个工具常用的技巧记录下来，做个备忘，同时希望能帮到大家~</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://segmentfault.com/a/1190000014992947" target="_blank" rel="noopener">iTerm2 + Oh My Zsh 打造舒适终端体验 https://segmentfault.com/a/1190000014992947</a></li>
+<li><a href="https://blog.csdn.net/syani/article/details/52618840" target="_blank" rel="noopener">Linux配置免密码登录（原理 + 实践） https://blog.csdn.net/syani/article/details/52618840</a></li>
+<li><a href="https://www.jianshu.com/p/55216ca70963" target="_blank" rel="noopener">iterm2保存ssh登录密码快速登录 https://www.jianshu.com/p/55216ca70963</a></li>
+<li><a href="https://segmentfault.com/a/1190000012166969" target="_blank" rel="noopener">Mac osx 下安装iTerm2，并使用rz sz上传下载（附homebrew配置） https://segmentfault.com/a/1190000012166969</a></li>
+<li><a href="https://www.jianshu.com/p/a0249778872e" target="_blank" rel="noopener">让你的iTerm更Geek! https://www.jianshu.com/p/a0249778872e</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tool/" rel="tag"># tool</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/01/Flink/2019-12-01-flink_learn_window/" rel="next" title="Flink 基础学习(七) 窗口 Window">
+                <i class="fa fa-chevron-left"></i> Flink 基础学习(七) 窗口 Window
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/16/java/2020-02-16-reread-jvm1/" rel="prev" title="重读 JVM - javac & javap">
+                重读 JVM - javac & javap <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-zsh"><span class="nav-number">2.</span> <span class="nav-text">安装 zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个性化打造"><span class="nav-number">2.1.</span> <span class="nav-text">个性化打造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去掉提示前缀"><span class="nav-number">2.2.</span> <span class="nav-text">去掉提示前缀</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#免密登录"><span class="nav-number">3.</span> <span class="nav-text">免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">3.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用脚本登录"><span class="nav-number">4.</span> <span class="nav-text">使用脚本登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rz、sz-上传下载"><span class="nav-number">5.</span> <span class="nav-text">rz、sz 上传下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键推荐"><span class="nav-number">6.</span> <span class="nav-text">快捷键推荐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

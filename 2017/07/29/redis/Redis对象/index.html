@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Redis是基于上一篇文章所说的数据结构创建了一个对象系统，这个系统包含字符串对象、列表对象、哈希对象、集合对象和有序集合对象这五种类型的对象。 Redis的对象系统还实现了基于引用技术技术的内存回收机制，当程序不在使用某个对象的时候，这个对象所占用的内存就会被自动释放。 对象的类型和编码对象结构12345678910typedef struct redisObject &amp;#123;    //">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis对象">
+<meta property="og:url" content="http://yoursite.com/2017/07/29/redis/Redis对象/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Redis是基于上一篇文章所说的数据结构创建了一个对象系统，这个系统包含字符串对象、列表对象、哈希对象、集合对象和有序集合对象这五种类型的对象。 Redis的对象系统还实现了基于引用技术技术的内存回收机制，当程序不在使用某个对象的时候，这个对象所占用的内存就会被自动释放。 对象的类型和编码对象结构12345678910typedef struct redisObject &amp;#123;    //">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-25T06:50:26.125Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis对象">
+<meta name="twitter:description" content="Redis是基于上一篇文章所说的数据结构创建了一个对象系统，这个系统包含字符串对象、列表对象、哈希对象、集合对象和有序集合对象这五种类型的对象。 Redis的对象系统还实现了基于引用技术技术的内存回收机制，当程序不在使用某个对象的时候，这个对象所占用的内存就会被自动释放。 对象的类型和编码对象结构12345678910typedef struct redisObject &amp;#123;    //">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/29/redis/Redis对象/"/>
+
+
+
+
+
+  <title>Redis对象 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/29/redis/Redis对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis对象</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T11:22:37+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/" itemprop="url" rel="index">
+                    <span itemprop="name">NoSQL</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>Redis是基于上一篇文章所说的数据结构创建了一个对象系统，这个系统包含<strong>字符串对象、列表对象、哈希对象、集合对象和有序集合对象</strong>这五种类型的对象。</p>
+<p>Redis的对象系统还实现了基于引用技术技术的内存回收机制，当程序不在使用某个对象的时候，这个对象所占用的内存就会被自动释放。</p>
+<h3 id="对象的类型和编码"><a href="#对象的类型和编码" class="headerlink" title="对象的类型和编码"></a><strong>对象的类型和编码</strong></h3><p>对象结构<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span> &#123;</span></div><div class="line">    <span class="comment">//类型</span></div><div class="line">    <span class="keyword">unsigned</span> type:<span class="number">4</span>;</div><div class="line">    <span class="comment">//编码</span></div><div class="line">    <span class="keyword">unsigned</span> encoding:<span class="number">4</span>;</div><div class="line">    <span class="comment">//指向底层实现数据结构的指针</span></div><div class="line">    <span class="keyword">void</span> *ptr;</div><div class="line">    <span class="comment">//</span></div><div class="line">    ...</div><div class="line">&#125;robj；</div></pre></td></tr></table></figure></p>
+<h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a><strong>类型</strong></h4><p>对象的type属性记录了对象的类型，值是五种基础对象之一。</p>
+<p>对于Redis数据库保存对的键值对来说，键总是一个字符串对象，而值可以是字符串对象、列表对象、哈希对象、集合对象或者有序集合对象的其中一种。</p>
+<table>
+<thead>
+<tr>
+<th>对象</th>
+<th>对象 <code>type</code> 属性的值</th>
+<th>TYPE 命令的输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符串对象</td>
+<td><code>REDIS_STRING</code></td>
+<td><code>&quot;string&quot;</code></td>
+</tr>
+<tr>
+<td>列表对象</td>
+<td><code>REDIS_LIST</code></td>
+<td><code>&quot;list&quot;</code></td>
+</tr>
+<tr>
+<td>哈希对象</td>
+<td><code>REDIS_HASH</code></td>
+<td><code>&quot;hash&quot;</code></td>
+</tr>
+<tr>
+<td>集合对象</td>
+<td><code>REDIS_SET</code></td>
+<td><code>&quot;set&quot;</code></td>
+</tr>
+<tr>
+<td>有序集合对象</td>
+<td><code>REDIS_ZSET</code></td>
+<td><code>&quot;zset&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p>使用Type命令可以返回数据库键对应的值对象的类型：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">键为字符串对象，值为字符串对象</span></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SET msg <span class="string">"hello world"</span></span></div><div class="line">OK</div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> TYPE msg</span></div><div class="line">string</div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash">键为字符串对象，值为列表对象</span></div><div class="line"><span class="meta">redis&gt;</span><span class="bash">RPUSH numbers 1 3 5</span></div><div class="line">(integer) 6</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash">TYPE numbers</span></div><div class="line">list</div><div class="line">·····</div></pre></td></tr></table></figure></p>
+<h4 id="编码和底层实现"><a href="#编码和底层实现" class="headerlink" title="编码和底层实现"></a><strong>编码和底层实现</strong></h4><p>对象的ptr指针指向对象的底层实现数据结构，而这些数据结构由对象的encoding属性决定。</p>
+<p>encoding属性记录了对象所使用的编码，也即是说这个对象使用了什么数据结构作为对象的底层实现。</p>
+<p>每种类型的对象都至少使用了两种不同的编码。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>编码</th>
+<th>对象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REDIS_STRING</code></td>
+<td><code>REDIS_ENCODING_INT</code></td>
+<td>使用整数值实现的字符串对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_STRING</code></td>
+<td><code>REDIS_ENCODING_EMBSTR</code></td>
+<td>使用 <code>embstr</code> 编码的简单动态字符串实现的字符串对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_STRING</code></td>
+<td><code>REDIS_ENCODING_RAW</code></td>
+<td>使用简单动态字符串实现的字符串对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_LIST</code></td>
+<td><code>REDIS_ENCODING_ZIPLIST</code></td>
+<td>使用压缩列表实现的列表对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_LIST</code></td>
+<td><code>REDIS_ENCODING_LINKEDLIST</code></td>
+<td>使用双端链表实现的列表对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_HASH</code></td>
+<td><code>REDIS_ENCODING_ZIPLIST</code></td>
+<td>使用压缩列表实现的哈希对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_HASH</code></td>
+<td><code>REDIS_ENCODING_HT</code></td>
+<td>使用字典实现的哈希对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_SET</code></td>
+<td><code>REDIS_ENCODING_INTSET</code></td>
+<td>使用整数集合实现的集合对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_SET</code></td>
+<td><code>REDIS_ENCODING_HT</code></td>
+<td>使用字典实现的集合对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_ZSET</code></td>
+<td><code>REDIS_ENCODING_ZIPLIST</code></td>
+<td>使用压缩列表实现的有序集合对象。</td>
+</tr>
+<tr>
+<td><code>REDIS_ZSET</code></td>
+<td><code>REDIS_ENCODING_SKIPLIST</code></td>
+<td>使用跳跃表和字典实现的有序集合对象。</td>
+</tr>
+</tbody>
+</table>
+<p>使用 <strong>OBJECT ENCODING</strong> 命令可以查看一个数据库键的值对象的编码：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SET msg <span class="string">"hello wordl"</span></span></div><div class="line">OK</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING msg</span></div><div class="line">"embstr"</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SET story <span class="string">"long long long long long long ago ..."</span></span></div><div class="line">OK</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING story</span></div><div class="line">"raw"</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SADD numbers 1 3 5</span></div><div class="line">(integer) 3</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING numbers</span></div><div class="line">"intset"</div><div class="line">····</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="字符串对象"><a href="#字符串对象" class="headerlink" title="字符串对象"></a><strong>字符串对象</strong></h3><p>字符串对象的编码可以是int、raw或者embstr</p>
+<p>如果一个字符串对象保存的是整数值，并且这个整数值可以用long类型来表示，那么字符串对象会将整数值保存在字符串对象结构的<strong>ptr属性</strong>里面。</p>
+<p>如果字符串对象保存的是一个字符串值，并且这个字符串值的长度<strong>大于32字节</strong>，那么字符串对象将使用一个简单动态字符串（SDS）来保存这个字符串值，并将对象的编码设置为<strong>raw</strong>。</p>
+<p>如果字符串对象保存的是一个字符串值，并且这个字符串值的长度<strong>小于等于32字节</strong>，那么字符串对象将使用<strong>embstr</strong>编码的方式来保存这个字符串值。</p>
+<p><strong>embstr</strong>编码是专门用于和保存短字符串的一种优化编码方式，这种编码和raw编码一样，都是用redisObject结构和sdshdr结构来表示字符串对象，但raw编码会调用两次内存分配函数来分别创建redisObject结构和sdshdr结构，而embstr编码则通过调用一次内存分配函数来分配一块连续的空间，空间中依次包含redisObject和sdshdr两个结构。</p>
+<hr>
+<h3 id="列表对象"><a href="#列表对象" class="headerlink" title="列表对象"></a><strong>列表对象</strong></h3><p>列表对象的编码可以是ziplist或者linkedlist。</p>
+<p><strong>ziplist编码</strong>的列表对象使用压缩列表作为底层实现，每个压缩列表节点（entry）保存了一个列表元素。</p>
+<p><strong>linkedlist编码</strong>的列表对象使用双端链表作为底层实现，每个双端链表节点（node）都保存了一个字符串对象，而每个字符串对象都保存了一个列表元素。</p>
+<p>linkdedlist编码的列表对象在底层的双端链表结构中包含了多个字符串对象，这种嵌套字符串对象的行为在哈希对象、集合对象和有序结合对象中都会出现，<strong>字符串对象</strong>是Redis五种类型的对象中唯一一种会被其它四中类型对象<strong>嵌套</strong>的对象。</p>
+<hr>
+<h3 id="哈希对象"><a href="#哈希对象" class="headerlink" title="哈希对象"></a><strong>哈希对象</strong></h3><p>哈希对象的编码可以是ziplist或者hashtable。</p>
+<p><strong>ziplist编码</strong>的哈希对象使用压缩列表作为底层实现，每当有新的键值对要加入到哈希对象时，程序会先将保存了键的压缩列表节点推入到压缩列表表尾，然后再将保存了值的压缩列表节点推入到压缩列表表尾。</p>
+<p><strong>hashtable编码</strong>的哈希对象使用了字典作为底层实现，哈希对象中的每个键值对都使用一个字典键值对来保存：</p>
+<ul>
+<li>字典的每个键都是一个字符串对象，对象中保存了键值对的键；</li>
+<li>字典的每个值都是一个字符串对象，对象中保存了键值对的值。</li>
+</ul>
+<hr>
+<h3 id="集合对象"><a href="#集合对象" class="headerlink" title="集合对象"></a><strong>集合对象</strong></h3><p>结合对象的编码可以是intset或者hashtable。</p>
+<p><strong>intset编码</strong>的集合对象使用整数集合作为底层实现，集合对象包含的所有元素都被保存在整数集合里面。</p>
+<p><strong>hashtable编码</strong>的集合对象使用字典作为底层实现，字典的每个键都是一个字符串对象，每个字符串对象包含了一个集合元素，而字典的值则全部被设置为NULL。</p>
+<hr>
+<h3 id="有序集合对象"><a href="#有序集合对象" class="headerlink" title="有序集合对象"></a><strong>有序集合对象</strong></h3><p>有序集合的编码可以是ziplist或者skiplist。</p>
+<p><strong>ziplist编码</strong>的压缩列表对象使用压缩列表作为底层实现，每个集合元素使用两个紧挨在一起的压缩列表节点来保存，第一个节点保存元素的成员（member），而第二个元素则保存元素的分值（score）。</p>
+<p>压缩列表内的集合元素按分值从小到大进行排序，分值较小的元素被放置在靠近表头的位置，而分值较大的元素则被放置在靠近表尾的方向。</p>
+<p><strong>skiplist编码</strong>的有序结合对象使用zset结构作为底层实现，一个zset结构包含一个字典和一个跳跃表：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zset</span>&#123;</span></div><div class="line">    zskiplist *zsl;</div><div class="line">    dict *dict;</div><div class="line">&#125;zset;</div></pre></td></tr></table></figure></p>
+<p>zset结构中的zsl跳跃表按分值从小到大保存了所有集合元素，每个跳跃表节点都保存了一个集合元素：跳跃表节点的object属性保存了元素的成员，而跳跃表节点的score属性则保存了元素的分值。</p>
+<p>通过这个跳跃表，程序可以对有序集合进行范围型操作。、</p>
+<p>除此之外，zset结构中的dict字典为有序集合创建了一个从成员到分值的映射，字典中的每个键值对都保存了一个集合元素：字典的键保存了元素的成员，而字典的值则保存了元素的分值。</p>
+<p>通过这个字典，程序可以用<strong>O（1）复杂度</strong>查找给定成员的分值。</p>
+<p>zset结构同时使用跳跃表和字典来保存有序集合元素，但这两种数据结构都会通过<strong>指针</strong>来共享相同元素的成员和分值，所以同时使用跳跃表和字典来保存集合元素不会产生任何重复成员或者分值，也不会因此而浪费额外的内存。</p>
+<hr>
+<h3 id="编码与转换"><a href="#编码与转换" class="headerlink" title="编码与转换"></a><strong>编码与转换</strong></h3><p>在每一种对象中，都会存在编码和转换，个人的理解是在满足特定条件下，对象底层的编码方式会从这种转换为另一种。</p>
+<p>举些例子：</p>
+<p>在<strong>字符串对象</strong>中：<br>int编码的字符串对象和embstr编码的字符串对象在条件满足的情况下，会被转换成raw编码的字符串对象。</p>
+<p>如果通过APPEND命令，向一个保存了整数值的字符串对象追加了一个字符串值，因为追加操作只能对字符串值执行，所以程序会先将之前保存的整数值转换成字符串值，然后再执行追加操作，操作的执行结果就是一个raw编码的保存了字符串值的字符串对象。</p>
+<p>在<strong>哈希对象</strong>中：<br>当哈希对象可以同时满足以下两个条件时，哈希对象使用ziplist编码：</p>
+<ul>
+<li>哈希对象保存的所有键值对的键和值的字符串长度都小于64字节；</li>
+<li>哈希对象保存的键值对数量小于512个；</li>
+</ul>
+<p>不能满足这两个条件的哈希对象需要使用hashtable编码；</p>
+<hr>
+<p><strong>还有关于每个对象API就不细说，根据每个对象的特性，用于保存相应的数据上。</strong></p>
+<p><strong>Redis还有很多需要学习，关于单机和集群、事务、持久化等都还没了解到，但是底层了解之后就是用于实战，下一篇文章将会在实际项目中使用Redis</strong></p>
+<p><a href="http://redisbook.com" target="_blank" rel="noopener">Redis学习地址</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/29/redis/Redis数据结构/" rel="next" title="Redis数据结构">
+                <i class="fa fa-chevron-left"></i> Redis数据结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/15/redis/SSM框架中使用Redis单机版/" rel="prev" title="SSM框架中使用Redis单机版">
+                SSM框架中使用Redis单机版 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的类型和编码"><span class="nav-number">1.</span> <span class="nav-text">对象的类型和编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型"><span class="nav-number">1.1.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编码和底层实现"><span class="nav-number">1.2.</span> <span class="nav-text">编码和底层实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串对象"><span class="nav-number">2.</span> <span class="nav-text">字符串对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表对象"><span class="nav-number">3.</span> <span class="nav-text">列表对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希对象"><span class="nav-number">4.</span> <span class="nav-text">哈希对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合对象"><span class="nav-number">5.</span> <span class="nav-text">集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合对象"><span class="nav-number">6.</span> <span class="nav-text">有序集合对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码与转换"><span class="nav-number">7.</span> <span class="nav-text">编码与转换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

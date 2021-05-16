@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存  每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted se">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis基础使用">
+<meta property="og:url" content="http://yoursite.com/2017/06/06/redis/Redis基础使用/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存  每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted se">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-25T06:49:01.140Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis基础使用">
+<meta name="twitter:description" content="简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存  每个键值对(key-value pair)都是由对象(object)组成的.  数据库键总是一个字符串对象(string object) 数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted se">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/06/redis/Redis基础使用/"/>
+
+
+
+
+
+  <title>Redis基础使用 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/redis/Redis基础使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis基础使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T23:34:23+08:00">
+                2017-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/" itemprop="url" rel="index">
+                    <span itemprop="name">NoSQL</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>简介： Redis是用来做缓存的工具,简单,高效且对服务器要求较小,用于大数据量下的缓存</p>
+</blockquote>
+<p>每个键值对(key-value pair)都是由对象(object)组成的.</p>
+<ul>
+<li>数据库键总是一个字符串对象(string object)</li>
+<li>数据库键的值可以使字符串对象/列表对象(list object)/哈希对象(hash object)/集合对象(set object)/有序集合对象(sorted set object)这五种对象中的其中一种.</li>
+</ul>
+<hr>
+<h2 id="简单动态字符串SDS-simple-dynamic-string"><a href="#简单动态字符串SDS-simple-dynamic-string" class="headerlink" title="简单动态字符串SDS(simple dynamic string)"></a>简单动态字符串SDS(simple dynamic string)</h2><h5 id="链表-LinkList"><a href="#链表-LinkList" class="headerlink" title="链表(LinkList)"></a>链表(LinkList)</h5><blockquote>
+<ul>
+<li>广泛用于实现Redis的各种功能,比如列表键,发布和订阅,慢查询,监视器等</li>
+<li>每个链表节点由一个listNode结构来表示,每个节点都有一个指向前置节点和后置节点的指针,所以Redis是一个双端链表.</li>
+<li>每个链表使用一个list结构来表示,这个结构带有表头节点指针,表尾节点指针以及链表长度等信息.</li>
+<li>因为链表表头节点的前置节点和表尾节点的后置节点都指向Null,所以redis的链表实现是无环链表.</li>
+<li>通过为链表设置不同的类型设定函数,Redis的链表可以用于保存各种不同的类型的值.</li>
+</ul>
+</blockquote>
+<h5 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h5><p>字典又称为符号表(symbol table),关联数组(associative array)或映射(map),是一种用于保存键值对(key-value pair)的抽象数据结构.</p>
+<p>解决键冲突的方法:Redis的哈希表使用链地址法(separate chaining)来解决键冲突,每个哈希表节点都有一个next指针,多个哈希表节点可以用next指针构成一个单向链表,被分配到同一个索引上的多个节点可以用这个单向里哦按表连接起来.</p>
+<p>扩展和收缩哈希表的工作可以通过执行rehash(重新散列)操作来完成</p>
+<h5 id="字典重点"><a href="#字典重点" class="headerlink" title="字典重点"></a>字典重点</h5><blockquote>
+<ul>
+<li>包括数据库和哈希键</li>
+<li>Redis中的字典使用哈希表座位底层实现,每个字典带有两个哈希表,一个平时使用,另一个仅在进行rehash时使用.</li>
+<li>当字典被用作数据库的底层实现,或者哈希键的底层是实现时,Redis使用MurmurHash2算法来计算键的哈希值.</li>
+<li>哈希表使用链地址法来解决键冲突,被分配到同一个索引上的多个键值对会连接成一个单向链表.</li>
+<li>在对哈希表进行扩展货站收缩操作时,程序需要将现有哈希表包含的所有键值对rehash到新哈希表里面,并且这个rehash过程并不是一次性得完成的,而是渐进式地完成的.</li>
+</ul>
+</blockquote>
+<h5 id="跳跃表的重点"><a href="#跳跃表的重点" class="headerlink" title="跳跃表的重点"></a>跳跃表的重点</h5><blockquote>
+<ul>
+<li>是有序集合的底层实现之一.</li>
+<li>Redis的跳跃表实现由zskiplist和zskiplistNode两个结构组成,其中zskiplist用于保存跳跃表信息(比如表头节点,表尾节点,长度),而zskiplistNode则用于表示跳跃表节点.</li>
+<li>每个跳跃表节点的层高都是1至32之间的随机数.</li>
+<li>在同一个跳跃表中,多个节点可以包含相同的分值,但每个节点的成员对象必须是唯一的.</li>
+<li>跳跃表中的节点按照分值大小进行排序,当分值相同时,节点按照成员对象的大小进行排序.</li>
+</ul>
+</blockquote>
+<h5 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h5><blockquote>
+<ul>
+<li>整数集合是集合键的底层实现之一.</li>
+<li>整数结合的底层实现为数组,这个数组以有序,无重复的方式保存结合元素,在有需要时,程序会根据新添加元素的类型,改变这个数组的类型.</li>
+<li>升级操作为整数结合带来了操作上的灵活性,并且尽可能地节约了内存.</li>
+<li>整数集合只支持升级操作,不支持降级操作.</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="命令使用"><a href="#命令使用" class="headerlink" title="命令使用"></a>命令使用</h3><p>Redis中用于操作键的命令基本上可以分为两种类型.<strong>（默认情况下,Redis客户端的目标数据库为0号数据库,但客户端可以通过执行SELECT命令来切换目标客户端.）</strong></p>
+<ul>
+<li><p>基础命令</p>
+<p>对任何类型的键执行,比如说DEL命令,EXPIRE命令,RENAME命令,TYPE命令,OBJECT命令.</p>
+</li>
+</ul>
+<ul>
+<li><p>持久化功能</p>
+<p>RDB 持久化功能所生成的RDB文件是一个经过压缩的二进制文件,通过该文件可以还原生成RDB文件时的数据库状态.</p>
+<p>有两个命令Redis命令可以用于生成RDB文件,一个是SAVE,另一个是BGSAVE.</p>
+<p>AOF(Append Only File)持久化功能.AOG持久化是通过保存Redis服务器所执行的写命令来记录数据库状态的.</p>
+</li>
+</ul>
+<hr>
+<h5 id="Redis-hash命令"><a href="#Redis-hash命令" class="headerlink" title="Redis hash命令"></a>Redis hash命令</h5><blockquote>
+<ul>
+<li>HDEL key field1 [field2]      删除一个或多个哈希表字段</li>
+<li>HEXISTS key field               查看哈希表key中,指定的字段是否存在</li>
+<li>HGET key field                    获取存储在哈希表中指定字段的值</li>
+<li>HGETALL key                     获取在哈希表中key的所有字段和值</li>
+<li>HMSET key field1 value1 [field2 value2]     同时将多个key-value设置在哈希表key中国</li>
+<li>HMGET key field1 [field21]     获取所有给定字段的值</li>
+<li>HSET key field value           将哈希表keykey中的字段field的值设为value</li>
+<li>HSETINX key field value     只有在字段field不存在时,设置哈希表字段的值</li>
+<li>HVALS key                         获取哈希表中所有值</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="Redis-List-命令"><a href="#Redis-List-命令" class="headerlink" title="Redis List 命令"></a>Redis List 命令</h5><blockquote>
+<ul>
+<li>BLPOP key1 [key2] timeout     列出并获取列表的第一个元素,如果列表没有元素会阻塞 列表直到等待超时或发现可弹出元素为止</li>
+<li>BRPPOP key1 [key2] timeout     列出并获取列表的最后一个元素,如果列表没有元素会阻塞 列表直到等待超时或发现可弹出元素为止</li>
+<li>BRPOPLPUSH source destination timeout</li>
+<li>LINDEX key index                    通过索引获取列表中的元素</li>
+<li>LPOP key                              移出并获取列表的第一个元素</li>
+<li>LPUSH key value1 [value2]    将一个或多个值插入到已存在的列表头部</li>
+<li>LRANGE key start stop          获取列表指定范围内的元素</li>
+<li>LREM key count value          移出列表元素</li>
+<li>LSET key index value            通过索引设置列表元素的值</li>
+<li>LTRIM key start stop              对一个列表进行修剪()(trim)解释说,让列表值保留指定区间内的元素,不在指定区间之内的元素都将被删除</li>
+<li>RPOP key                              移出并获取列表最后一个元素</li>
+<li>RPUSH key value1 [value2]     在列表中添加一个或多个值</li>
+<li>RPUSHX key value                  在已存在的列表添加值</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="Redis-Set命令"><a href="#Redis-Set命令" class="headerlink" title="Redis Set命令"></a>Redis Set命令</h5><blockquote>
+<ul>
+<li>SADD key member1 [member2]     向集合添加一个或多个成员</li>
+<li>SCARD key                                     获取集合的成员数</li>
+<li>SDIFF key1 [key2]                           返回给定所有结合的差集</li>
+<li>SMEMBERS key                              返回结合中所有成员</li>
+<li>SPOP key                                        移出并返回集合中的一个随机元素</li>
+<li>SMOVE source destination member  将member元素从source集合移动到destination结合</li>
+<li>SRANDMEMBER key [count]              返回集合中一个或多个随机数</li>
+<li>SREM key member1 [member2]          移除集合中一个或多个成员</li>
+<li>SUNION key1 [key2]                         返回所有给定集合的并集</li>
+<li>SUNIONSTORE destination key1 [key2]     所有给定集合的并集存储在 destination集合中</li>
+<li>SSCAN key cursor [MATCH pattern] [COUNT count]     迭代集合中的元素</li>
+</ul>
+</blockquote>
+<hr>
+<h5 id="Redis-Sorted-Set命令"><a href="#Redis-Sorted-Set命令" class="headerlink" title="Redis Sorted Set命令"></a>Redis Sorted Set命令</h5><blockquote>
+<ul>
+<li>ZADD key score1 member1[score2 member2] 向有序集合添加一个或多个成员,或者更新已存在的成员的分数</li>
+<li>ZCARD key                                                      获取有序集合的成员数</li>
+<li>ZCOUNT key min max                                    计算在有序集合中指定区间分数的成员数</li>
+<li>ZINCRBY key increment member                     有序集合上对指定成员的分数上增加increment</li>
+<li>ZINTERSTORE desitation numbers key [key …]  计算给定的一个或多个有序集的交集并将结果存储在新的有序集合的key中</li>
+<li>ZLEXCOUNT key min max                               在有序集合中计算指定字典区间的成员数量</li>
+<li>ZRANGE key start stop [WITHSCORES]          通过索引区间返回有序集合成指定区间内的成员</li>
+<li>ZRANGEBYLEX key min max [LIMIT offset number]          通过字典区间返回有序集合成指定区间内的成员</li>
+<li>ZRANK key member                                        返回有序集合中指定成员的索引</li>
+<li>ZREM key member [member…]                        移除有序集合中一个或多个成员</li>
+<li>ZREMRANGEBYLEX key min max                     移除有序集合中给定字典区间的所有成员</li>
+<li>ZREMRANGEBYLEX key start stop                    移除有序集合中给定的排名区间的所有成员</li>
+<li>ZREMRANGEBYSCORE key min max                移除有序集合中给定的分数区间的所有成员</li>
+<li>ZREVRANGE key start stop [withscores]          返回有序集合中指定区间的成员,通过索引,分数从高到低</li>
+</ul>
+</blockquote>
+<p>暂时写这些基础用法,还有更加深入的知识点需要继续学习.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/20/linux/Centos7安装Redis/" rel="next" title="Centos7 安装Redis">
+                <i class="fa fa-chevron-left"></i> Centos7 安装Redis
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/24/Web入门学习/" rel="prev" title="Web入门学习">
+                Web入门学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单动态字符串SDS-simple-dynamic-string"><span class="nav-number">1.</span> <span class="nav-text">简单动态字符串SDS(simple dynamic string)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#链表-LinkList"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">链表(LinkList)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字典"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字典重点"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">字典重点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跳跃表的重点"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">跳跃表的重点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#整数集合"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">整数集合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令使用"><span class="nav-number">1.1.</span> <span class="nav-text">命令使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-hash命令"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">Redis hash命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-List-命令"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">Redis List 命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-Set命令"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">Redis Set命令</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis-Sorted-Set命令"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">Redis Sorted Set命令</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

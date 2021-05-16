@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="上周五，发布前一周的服务器小动荡😶">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次线上OOM和性能优化">
+<meta property="og:url" content="http://yoursite.com/2018/08/25/记一次线上OOM和性能优化/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="上周五，发布前一周的服务器小动荡😶">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/OxfordBoxing_ZH-CN2854964515_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E7%BA%BF%E4%B8%8ACPU%E8%B4%9F%E8%BD%BD%E9%A3%99%E5%8D%87.png">
+<meta property="og:image" content="https://res.smzdm.com/images/emotions/40.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/dump%E5%A4%A7%E5%86%85%E5%AD%98.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/dump%E6%96%87%E4%BB%B6%E5%BC%95%E7%94%A8%E5%88%97%E8%A1%A8.png">
+<meta property="og:image" content="https://res.smzdm.com/images/emotions/91.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E4%BC%98%E5%8C%96%E5%89%8D.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E4%BC%98%E5%8C%96%E5%90%8E.png">
+<meta property="og:image" content="https://res.smzdm.com/images/emotions/111.png">
+<meta property="og:image" content="https://res.smzdm.com/images/emotions/78.png">
+<meta property="og:updated_time" content="2019-03-17T12:51:32.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次线上OOM和性能优化">
+<meta name="twitter:description" content="上周五，发布前一周的服务器小动荡😶">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/OxfordBoxing_ZH-CN2854964515_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/25/记一次线上OOM和性能优化/"/>
+
+
+
+
+
+  <title>记一次线上OOM和性能优化 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/记一次线上OOM和性能优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记一次线上OOM和性能优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-25T20:11:31+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/OxfordBoxing_ZH-CN2854964515_1920x1080.jpg" alt=""></p>
+<center><strong>上周五，发布前一周的服务器小动荡😶</strong></center>
+
+<a id="more"></a>
+<h2 id="事情回顾"><a href="#事情回顾" class="headerlink" title="事情回顾"></a>事情回顾</h2><p>上周五，通过<strong>Grafana监控</strong>，线上环境突然出现CPU和内存飙升的情况：</p>
+<p><img src="http://img.sevenyuan.cn/%E7%BA%BF%E4%B8%8ACPU%E8%B4%9F%E8%BD%BD%E9%A3%99%E5%8D%87.png" alt=""></p>
+<p>但是看到网络输入和输入流量都不是很高，所以网站被别人攻击的概率不高，后来服务器负荷居高不下，只能保存dump文件进行分析，并一台一台服务器进行重新启动（还好大家周五下班了）<img src="https://res.smzdm.com/images/emotions/40.png" alt=""></p>
+<h2 id="通过日志分析"><a href="#通过日志分析" class="headerlink" title="通过日志分析"></a>通过日志分析</h2><p>既然服务器在某个时间点出现了高负荷，于是就先去找一开始出现问题的服务器，去找耗时的服务，例如我当时去找数据库耗时的服务，由于上周的日志已经被刷掉，于是我大致描述一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[admin@xxx xxxyyyy]$ grep '15:14:' common-dal-digest.log |  grep -E '[0-9]&#123;4,&#125;ms'</div><div class="line">2018-08-25 15:14:21,656 - [(xxxxMapper,getXXXListByParams,Y,1089ms)](traceId=5da451277e14418abf5eea18fd2b61bf)</div></pre></td></tr></table></figure>
+<p>上述语句是<strong>查询在15:14那一分钟内，在common-dal-digest.log文件中，耗时超过1000ms的SQL服务</strong>（我上周查的是耗时超过10秒的服务）。</p>
+<p>通过<strong>traceId去查Nginx保存的访问日志</strong>，定位在该时间点内，分发到该服务器上的用户请求。还有根据该traceId，定位到整个调用流程所使用到的服务，发现的确十分耗时…</p>
+<p>于是拿到了该请求具体信息，包括用户的登录手机号码，因为这个时候，其它几台服务器也出现了CPU和内存负载升高，于是根据手机号查询了其它几台服务器的访问日志，发现同一个请求，该用户也调用了很多次…</p>
+<h2 id="使用mat进行dump文件分析"><a href="#使用mat进行dump文件分析" class="headerlink" title="使用mat进行dump文件分析"></a>使用mat进行dump文件分析</h2><p>通过mat工具对dump文件进行分析，调查是什么请求占用了大内存：</p>
+<p><img src="http://img.sevenyuan.cn/dump%E5%A4%A7%E5%86%85%E5%AD%98.png" alt=""></p>
+<p><strong>观察了该对象的引用树，右键选择【class_ reference】，查看对象列表，和观察GC日志，定位到具体的对象信息。</strong></p>
+<p><img src="http://img.sevenyuan.cn/dump%E6%96%87%E4%BB%B6%E5%BC%95%E7%94%A8%E5%88%97%E8%A1%A8.png" alt=""></p>
+<p>通过日志以及dump文件，都指向了某个文件导出接口，接着在代码中分析该接口具体调用链路，发现导出的数据很多，而且老代码进行计算的逻辑嵌套了很多for循环，计算效率低。</p>
+<p>查询了该用户在这个接口的所调用的数据量，需要查询三个表，然后for循环中大概会计算个100w+次，导致阻塞了其它请求，线上的服务器CPU和内存使用情况一直飙升。</p>
+<hr>
+<h2 id="代码进行性能优化"><a href="#代码进行性能优化" class="headerlink" title="代码进行性能优化"></a>代码进行性能优化</h2><p>在看到该业务在git提交记录是我上一年实习期写的时候，我的内心是崩溃的，当时对业务不熟悉，直接循环调用了老代码，而且也没有测试过这么大的数据量，所以GG了。<img src="https://res.smzdm.com/images/emotions/91.png" alt=""></p>
+<p>然后我就开始做代码性能优化，首先仔细梳理了一下整个业务流程，通过增加SQL查询条件，减少数据库IO和查询数据量，优化判断条件，减少for嵌套、循环次数和计算量。</p>
+<h2 id="通过jvisualVM进行对比"><a href="#通过jvisualVM进行对比" class="headerlink" title="通过jvisualVM进行对比"></a>通过jvisualVM进行对比</h2><p>对比新老代码所占用的CPU和内存状态</p>
+<p><strong>优化前：</strong></p>
+<p><img src="http://img.sevenyuan.cn/%E4%BC%98%E5%8C%96%E5%89%8D.png" alt=""></p>
+<p><strong>优化后：</strong></p>
+<p><img src="http://img.sevenyuan.cn/%E4%BC%98%E5%8C%96%E5%90%8E.png" alt=""></p>
+<p>通过上述优化之后，计算1w条数据量进行导出，在老代码需要48s，新代码也要8s<img src="https://res.smzdm.com/images/emotions/111.png" alt="">，不过这是大数据量的情况下，实际用户的数据没有这么多，所以基本上满足了线上99%的用户使用。</p>
+<p>当然，由于这些数据是本地开发环境新增加的，与出现OOM问题的用户数据量还有些差别，但通过优化后的代码，<strong>已经在数据库查询的时候就过滤掉很多无效的数据，在for循环计算前也加了过滤条件</strong>，所以真正计算起来起来就降低了很多计算量。</p>
+<p>恩，自己优化好了，还要等测试爸爸们测试后才敢上线，这次要疯狂造数据<img src="https://res.smzdm.com/images/emotions/78.png" alt=""></p>
+<hr>
+<h2 id="开发注意点"><a href="#开发注意点" class="headerlink" title="开发注意点"></a>开发注意点</h2><p>在开发一开始的时候，都没有考虑到性能问题，想着满足需求就完成任务，但数据量一大起来，就有可能出现这些OOM问题，所以以后开发时，需要考虑一下几点：</p>
+<ul>
+<li>梳理设计流程</li>
+<li>考虑是否有性能问题</li>
+<li>与产品经理商量控制查询条件，减少查询的范围</li>
+<li>与数据库交互时，减少无效的查询，合并查询和合并更新操作</li>
+<li>减少for循环，尤其注意for循环嵌套问题！</li>
+<li>调用老代码要看注意=-=</li>
+</ul>
+<hr>
+<h2 id="吐槽"><a href="#吐槽" class="headerlink" title="吐槽"></a>吐槽</h2><center><strong>果然每次看之前写的代码，都有种要si要si的感觉</strong></center>
+
+<hr>
+<p><a href="https://post.smzdm.com/p/669963/#comments" target="_blank" rel="noopener">万元预算玩新机</a> 还有沈大妈的表情真好玩，直接拿来用了~</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/25/记一次服务器执行MySQL耗时问题/" rel="next" title="记一次服务器执行MySQL耗时问题">
+                <i class="fa fa-chevron-left"></i> 记一次服务器执行MySQL耗时问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/01/MySQL锁机制/" rel="prev" title="MySQL锁机制">
+                MySQL锁机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#事情回顾"><span class="nav-number">1.</span> <span class="nav-text">事情回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过日志分析"><span class="nav-number">2.</span> <span class="nav-text">通过日志分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用mat进行dump文件分析"><span class="nav-number">3.</span> <span class="nav-text">使用mat进行dump文件分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码进行性能优化"><span class="nav-number">4.</span> <span class="nav-text">代码进行性能优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过jvisualVM进行对比"><span class="nav-number">5.</span> <span class="nav-text">通过jvisualVM进行对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发注意点"><span class="nav-number">6.</span> <span class="nav-text">开发注意点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#吐槽"><span class="nav-number">7.</span> <span class="nav-text">吐槽</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

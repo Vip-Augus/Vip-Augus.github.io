@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="用了这么久 Redis，想起来实现分布式锁🔐">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用注解形式实现 Redis 分布式锁">
+<meta property="og:url" content="http://yoursite.com/2020/04/04/redis/2020-04-04-annotation-redis-lock/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="用了这么久 Redis，想起来实现分布式锁🔐">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/waterway-3161256_1920.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/redis/20200404122113.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/redis/redis_lock_error.png">
+<meta property="og:updated_time" content="2020-04-16T12:15:41.937Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用注解形式实现 Redis 分布式锁">
+<meta name="twitter:description" content="用了这么久 Redis，想起来实现分布式锁🔐">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/waterway-3161256_1920.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/04/redis/2020-04-04-annotation-redis-lock/"/>
+
+
+
+
+
+  <title>使用注解形式实现 Redis 分布式锁 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/04/redis/2020-04-04-annotation-redis-lock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用注解形式实现 Redis 分布式锁</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-04T17:12:00+08:00">
+                2020-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/waterway-3161256_1920.jpg" alt=""></p>
+<center><strong>用了这么久 Redis，想起来实现分布式锁🔐</strong></center>
+
+<a id="more"></a>
+<h2 id="一、业务背景"><a href="#一、业务背景" class="headerlink" title="一、业务背景"></a>一、业务背景</h2><p>有些业务请求，属于耗时操作，需要加锁，防止后续的并发操作，同时对数据库的数据进行操作，需要避免对之前的业务造成影响。</p>
+<hr>
+<h2 id="二、分析流程"><a href="#二、分析流程" class="headerlink" title="二、分析流程"></a>二、分析流程</h2><p>使用 <code>Redis</code> 作为分布式锁，将锁的状态放到 <code>Redis</code> 统一维护，解决集群中单机 <code>JVM</code> 信息不互通的问题，规定操作顺序，保护用户的数据正确。</p>
+<p>梳理设计流程<br>1、<strong>新建注解 @interface，在注解里设定入参标志</strong><br>2、<strong>增加 AOP 切点，扫描特定注解</strong><br>3、<strong>建立 @Aspect 切面任务，注册 bean 和拦截特定方法</strong><br>4、<strong>特定方法参数 ProceedingJoinPoint，对方法 pjp.proceed() 前后进行拦截</strong><br>5、<strong>切点前进行加锁，任务执行后进行删除 key</strong></p>
+<p><strong>核心步骤：加锁、解锁和续时</strong></p>
+<h3 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h3><p><strong>使用了 RedisTemplate 的 opsForValue.setIfAbsent 方法，判断是否有 key，设定一个随机数 UUID.random().toString，生成一个随机数作为 value。</strong></p>
+<p>从 redis 中获取锁之后，对 key 设定 expire 失效时间，到期后自动释放锁。</p>
+<p>按照这种设计，只有第一个成功设定 <code>Key</code> 的请求，才能进行后续的数据操作，后续其它请求由于无法获得🔐资源，将会失败结束。</p>
+<h3 id="超时问题"><a href="#超时问题" class="headerlink" title="超时问题"></a>超时问题</h3><p>担心 <code>pjp.proceed()</code> 切点执行的方法太耗时，导致 <code>Redis</code> 中的 <code>key</code> 由于超时提前释放了。</p>
+<p>例如，线程 A 先获取锁，proceed 方法耗时，超过了锁超时时间，到期释放了锁，这时另一个线程 B 成功获取 <code>Redis</code> 锁，两个线程同时对同一批数据进行操作，导致数据不准确。</p>
+<h3 id="解决方案：增加一个「续时」"><a href="#解决方案：增加一个「续时」" class="headerlink" title="解决方案：增加一个「续时」"></a>解决方案：增加一个「续时」</h3><p><strong>任务不完成，锁不释放：</strong></p>
+<p>维护了一个定时线程池 <code>ScheduledExecutorService</code>，每隔 2s 去扫描加入队列中的 Task，判断是否失效时间是否快到了，公式为：【失效时间】&lt;= 【当前时间】+【失效间隔（三分之一超时）】</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 线程池，每个 JVM 使用一个线程去维护 keyAliveTime，定时执行 runnable</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ScheduledExecutorService SCHEDULER = </div><div class="line"><span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>, </div><div class="line"><span class="keyword">new</span> BasicThreadFactory.Builder().namingPattern(<span class="string">"redisLock-schedule-pool"</span>).daemon(<span class="keyword">true</span>).build());</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">static</span> &#123;</div><div class="line">    SCHEDULER.scheduleAtFixedRate(() -&gt; &#123;</div><div class="line">        <span class="comment">// do something to extend time</span></div><div class="line">    &#125;, <span class="number">0</span>,  <span class="number">2</span>, TimeUnit.SECONDS);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="三、设计方案"><a href="#三、设计方案" class="headerlink" title="三、设计方案"></a>三、设计方案</h2><p>经过上面的分析，同事小🐟设计出了这个方案：</p>
+<p><img src="http://img.sevenyuan.cn/redis/20200404122113.png" alt=""></p>
+<p>前面已经说了整体流程，这里强调一下几个核心步骤：</p>
+<ul>
+<li><strong>拦截注解 @RedisLock，获取必要的参数</strong></li>
+<li><strong>加锁操作</strong></li>
+<li><strong>续时操作</strong></li>
+<li><strong>结束业务，释放锁</strong></li>
+</ul>
+<hr>
+<h2 id="四、实操"><a href="#四、实操" class="headerlink" title="四、实操"></a>四、实操</h2><p>之前也有整理过 <code>AOP</code> 使用方法，可以参考一下</p>
+<h3 id="相关属性类配置"><a href="#相关属性类配置" class="headerlink" title="相关属性类配置"></a>相关属性类配置</h3><h4 id="业务属性枚举设定"><a href="#业务属性枚举设定" class="headerlink" title="业务属性枚举设定"></a>业务属性枚举设定</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> RedisLockTypeEnum &#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 自定义 key 前缀</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    ONE(<span class="string">"Business1"</span>, <span class="string">"Test1"</span>),</div><div class="line">    </div><div class="line">    TWO(<span class="string">"Business2"</span>, <span class="string">"Test2"</span>);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String code;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String desc;</div><div class="line"></div><div class="line">    RedisLockTypeEnum(String code, String desc) &#123;</div><div class="line">        <span class="keyword">this</span>.code = code;</div><div class="line">        <span class="keyword">this</span>.desc = desc;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> code;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> desc;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUniqueKey</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> String.format(<span class="string">"%s:%s"</span>, <span class="keyword">this</span>.getCode(), key);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="任务队列保存参数"><a href="#任务队列保存参数" class="headerlink" title="任务队列保存参数"></a>任务队列保存参数</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisLockDefinitionHolder</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 业务唯一 key</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> String businessKey;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 加锁时间 (秒 s)</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> Long lockTime;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 上次更新时间（ms）</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> Long lastModifyTime;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 保存当前线程</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> Thread currentTread;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 总共尝试次数</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> tryCount;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 当前尝试次数</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> currentCount;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 更新的时间周期（毫秒）,公式 = 加锁时间（转成毫秒） / 3</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> Long modifyPeriod;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RedisLockDefinitionHolder</span><span class="params">(String businessKey, Long lockTime, Long lastModifyTime, Thread currentTread, <span class="keyword">int</span> tryCount)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.businessKey = businessKey;</div><div class="line">        <span class="keyword">this</span>.lockTime = lockTime;</div><div class="line">        <span class="keyword">this</span>.lastModifyTime = lastModifyTime;</div><div class="line">        <span class="keyword">this</span>.currentTread = currentTread;</div><div class="line">        <span class="keyword">this</span>.tryCount = tryCount;</div><div class="line">        <span class="keyword">this</span>.modifyPeriod = lockTime * <span class="number">1000</span> / <span class="number">3</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="设定被拦截的注解名字"><a href="#设定被拦截的注解名字" class="headerlink" title="设定被拦截的注解名字"></a>设定被拦截的注解名字</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Target</span>(&#123;ElementType.METHOD, ElementType.TYPE&#125;)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> RedisLockAnnotation &#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 特定参数识别，默认取第 0 个下标</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">lockFiled</span><span class="params">()</span> <span class="keyword">default</span> 0</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 超时重试次数</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">tryCount</span><span class="params">()</span> <span class="keyword">default</span> 3</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 自定义加锁类型</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function">RedisLockTypeEnum <span class="title">typeEnum</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 释放时间，秒 s 单位</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">lockTime</span><span class="params">()</span> <span class="keyword">default</span> 30</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="核心切面拦截的操作"><a href="#核心切面拦截的操作" class="headerlink" title="核心切面拦截的操作"></a>核心切面拦截的操作</h3><p><code>RedisLockAspect.java</code> 该类分成三部分来描述具体作用</p>
+<h4 id="Pointcut-设定"><a href="#Pointcut-设定" class="headerlink" title="Pointcut 设定"></a>Pointcut 设定</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@annotation</span> 中的路径表示拦截特定注解</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@Pointcut</span>(<span class="string">"@annotation(cn.sevenyuan.demo.aop.lock.RedisLockAnnotation)"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">redisLockPC</span><span class="params">()</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Around-前后进行加锁和释放锁"><a href="#Around-前后进行加锁和释放锁" class="headerlink" title="Around 前后进行加锁和释放锁"></a>Around 前后进行加锁和释放锁</h4><p>前面步骤定义了我们想要拦截的切点，下一步就是在切点前后做一些自定义操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Around</span>(value = <span class="string">"redisLockPC()"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">    <span class="comment">// 解析参数</span></div><div class="line">    Method method = resolveMethod(pjp);</div><div class="line">    RedisLockAnnotation annotation = method.getAnnotation(RedisLockAnnotation.class);</div><div class="line">    RedisLockTypeEnum typeEnum = annotation.typeEnum();</div><div class="line">    Object[] params = pjp.getArgs();</div><div class="line">    String ukString = params[annotation.lockFiled()].toString();</div><div class="line">    <span class="comment">// 省略很多参数校验和判空</span></div><div class="line">    String businessKey = typeEnum.getUniqueKey(ukString);</div><div class="line">    String uniqueValue = UUID.randomUUID().toString();</div><div class="line">    <span class="comment">// 加锁</span></div><div class="line">    Object result = <span class="keyword">null</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">boolean</span> isSuccess = redisTemplate.opsForValue().setIfAbsent(businessKey, uniqueValue);</div><div class="line">        <span class="keyword">if</span> (!isSuccess) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"You can't do it，because another has get the lock =-="</span>);</div><div class="line">        &#125;</div><div class="line">        redisTemplate.expire(businessKey, annotation.lockTime(), TimeUnit.SECONDS);</div><div class="line">        Thread currentThread = Thread.currentThread();</div><div class="line">        <span class="comment">// 将本次 Task 信息加入「延时」队列中</span></div><div class="line">        holderList.add(<span class="keyword">new</span> RedisLockDefinitionHolder(businessKey, annotation.lockTime(), System.currentTimeMillis(),</div><div class="line">                currentThread, annotation.tryCount()));</div><div class="line">        <span class="comment">// 执行业务操作</span></div><div class="line">        result = pjp.proceed();</div><div class="line">        <span class="comment">// 线程被中断，抛出异常，中断此次请求</span></div><div class="line">        <span class="keyword">if</span> (currentThread.isInterrupted()) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InterruptedException(<span class="string">"You had been interrupted =-="</span>);</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e ) &#123;</div><div class="line">        log.error(<span class="string">"Interrupt exception, rollback transaction"</span>, e);</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"Interrupt exception, please send request again"</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        log.error(<span class="string">"has some error, please check again"</span>, e);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        <span class="comment">// 请求结束后，强制删掉 key，释放锁</span></div><div class="line">        redisTemplate.delete(businessKey);</div><div class="line">        log.info(<span class="string">"release the lock, businessKey is ["</span> + businessKey + <span class="string">"]"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上述流程简单总结一下：</p>
+<ul>
+<li><strong>解析注解参数，获取注解值和方法上的参数值</strong></li>
+<li><strong>redis 加锁并且设置超时时间</strong></li>
+<li><strong>将本次 Task 信息加入「延时」队列中，进行续时，方式提前释放锁</strong></li>
+<li><strong>加了一个线程中断标志</strong></li>
+<li><strong>结束请求，finally 中释放锁</strong></li>
+</ul>
+<h4 id="续时操作"><a href="#续时操作" class="headerlink" title="续时操作"></a>续时操作</h4><p>这里用了 <code>ScheduledExecutorService</code>，维护了一个线程，不断对任务队列中的任务进行判断和延长超时时间：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 扫描的任务队列</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> ConcurrentLinkedQueue&lt;RedisLockDefinitionHolder&gt; holderList = <span class="keyword">new</span> ConcurrentLinkedQueue();</div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 线程池，维护keyAliveTime</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ScheduledExecutorService SCHEDULER = <span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>,</div><div class="line">        <span class="keyword">new</span> BasicThreadFactory.Builder().namingPattern(<span class="string">"redisLock-schedule-pool"</span>).daemon(<span class="keyword">true</span>).build());</div><div class="line"></div><div class="line">&#123;</div><div class="line">    <span class="comment">// 两秒执行一次「续时」操作</span></div><div class="line">    SCHEDULER.scheduleAtFixedRate(() -&gt; &#123;</div><div class="line">        <span class="comment">// 这里记得加 try-catch，否者报错后定时任务将不会再执行=-=</span></div><div class="line">        Iterator&lt;RedisLockDefinitionHolder&gt; iterator = holderList.iterator();</div><div class="line">        <span class="keyword">while</span> (iterator.hasNext()) &#123;</div><div class="line">            RedisLockDefinitionHolder holder = iterator.next();</div><div class="line">            <span class="comment">// 判空</span></div><div class="line">            <span class="keyword">if</span> (holder == <span class="keyword">null</span>) &#123;</div><div class="line">                iterator.remove();</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// 判断 key 是否还有效，无效的话进行移除</span></div><div class="line">            <span class="keyword">if</span> (redisTemplate.opsForValue().get(holder.getBusinessKey()) == <span class="keyword">null</span>) &#123;</div><div class="line">                iterator.remove();</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="comment">// 超时重试次数，超过时给线程设定中断</span></div><div class="line">            <span class="keyword">if</span> (holder.getCurrentCount() &gt; holder.getTryCount()) &#123;</div><div class="line">                holder.getCurrentTread().interrupt();</div><div class="line">                iterator.remove();</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// 判断是否进入最后三分之一时间</span></div><div class="line">            <span class="keyword">long</span> curTime = System.currentTimeMillis();</div><div class="line">            <span class="keyword">boolean</span> shouldExtend = (holder.getLastModifyTime() + holder.getModifyPeriod()) &lt;= curTime;</div><div class="line">            <span class="keyword">if</span> (shouldExtend) &#123;</div><div class="line">                holder.setLastModifyTime(curTime);</div><div class="line">                redisTemplate.expire(holder.getBusinessKey(), holder.getLockTime(), TimeUnit.SECONDS);</div><div class="line">                log.info(<span class="string">"businessKey : ["</span> + holder.getBusinessKey() + <span class="string">"], try count : "</span> + holder.getCurrentCount());</div><div class="line">                holder.setCurrentCount(holder.getCurrentCount() + <span class="number">1</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;, <span class="number">0</span>, <span class="number">2</span>, TimeUnit.SECONDS);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码，用来实现设计图中虚线框的思想，避免一个请求十分耗时，导致提前释放了锁。</p>
+<p><strong>这里加了「线程中断」<code>Thread#interrupt</code>，希望超过重试次数后，能让线程中断</strong>（未经严谨测试，仅供参考哈哈哈哈）</p>
+<p>不过建议如果遇到这么耗时的请求，还是能够从根源上查找，分析耗时路径，进行业务优化或其它处理，避免这些耗时操作。</p>
+<p>所以记得多打点 <code>Log</code>，分析问题时可以更快一点。</p>
+<hr>
+<h2 id="五、开始测试"><a href="#五、开始测试" class="headerlink" title="五、开始测试"></a>五、开始测试</h2><p>在一个入口方法中，使用该注解，然后在业务中模拟耗时请求，使用了 <code>Thread#sleep</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@GetMapping</span>(<span class="string">"/testRedisLock"</span>)</div><div class="line"><span class="meta">@RedisLockAnnotation</span>(typeEnum = RedisLockTypeEnum.ONE, lockTime = <span class="number">3</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> Book <span class="title">testRedisLock</span><span class="params">(@RequestParam(<span class="string">"userId"</span>)</span> Long userId) </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        log.info(<span class="string">"睡眠执行前"</span>);</div><div class="line">        Thread.sleep(<span class="number">10000</span>);</div><div class="line">        log.info(<span class="string">"睡眠执行后"</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        <span class="comment">// log error</span></div><div class="line">        log.info(<span class="string">"has some error"</span>, e);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用时，在方法上添加该注解，然后设定相应参数即可，根据 <code>typeEnum</code> 可以区分多种业务，限制该业务被同时操作。</p>
+<p>测试结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">2020-04-04 14:55:50.864  INFO 9326 --- [nio-8081-exec-1] c.s.demo.controller.BookController       : 睡眠执行前</div><div class="line">2020-04-04 14:55:52.855  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 0</div><div class="line">2020-04-04 14:55:54.851  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 1</div><div class="line">2020-04-04 14:55:56.851  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 2</div><div class="line">2020-04-04 14:55:58.852  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 3</div><div class="line">2020-04-04 14:56:00.857  INFO 9326 --- [nio-8081-exec-1] c.s.demo.controller.BookController       : has some error</div><div class="line"></div><div class="line">java.lang.InterruptedException: sleep interrupted</div><div class="line">	at java.lang.Thread.sleep(Native Method) [na:1.8.0_221]</div></pre></td></tr></table></figure></p>
+<p>我这里测试的是重试次数过多，失败的场景，如果减少睡眠时间，就能让业务正常执行。</p>
+<p>如果同时请求，你将会发现以下错误信息：</p>
+<p><img src="http://img.sevenyuan.cn/redis/redis_lock_error.png" alt=""></p>
+<p>表示我们的锁🔐的确生效了，避免了重复请求。</p>
+<hr>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p>对于耗时业务和核心数据，不能让重复的请求同时操作数据，避免数据的不正确，所以要使用分布式锁来对它们进行保护。</p>
+<p>再来梳理一下设计流程：</p>
+<p>1、<strong>新建注解 @interface，在注解里设定入参标志</strong><br>2、<strong>增加 AOP 切点，扫描特定注解</strong><br>3、<strong>建立 @Aspect 切面任务，注册 bean 和拦截特定方法</strong><br>4、<strong>特定方法参数 ProceedingJoinPoint，对方法 pjp.proceed() 前后进行拦截</strong><br>5、<strong>切点前进行加锁，任务执行后进行删除 key</strong></p>
+<p>本次学习是通过 <code>Review</code> 小伙伴的代码设计，从中了解分布式锁的具体实现，仿照他的设计，重新写了一份简化版的业务处理。对于之前没考虑到的「续时」操作，这里使用了守护线程来定时判断和延长超时时间，避免了锁提前释放。</p>
+<p>于是乎，同时回顾了三个知识点：</p>
+<p>1、<strong><code>AOP</code> 的实现和常用方法</strong><br>2、<strong>定时线程池 <code>ScheduledExecutorService</code> 的使用和参数含义</strong><br>3、<strong>线程 <code>Thread#interrupt</code> 的含义以及用法（这个挺有意思的，可以深入再学习一下）</strong></p>
+<p>具体代码放在了之前学习 <code>SpringBoot</code> 的项目中，感兴趣的可以克隆一下，使用这个 <code>Redis</code> 🔐</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/Vip-Augus/springboot-note/blob/master/src/main/java/cn/sevenyuan/demo/aop/lock/RedisLockAspect.java</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="七、参考资料"><a href="#七、参考资料" class="headerlink" title="七、参考资料"></a>七、参考资料</h2><p>1、小🐟</p>
+<p>2、<a href="https://blog.csdn.net/XWForever/article/details/103163021" target="_blank" rel="noopener">@Pointcut注解表达式介绍</a></p>
+<p>3、<a href="https://www.zhihu.com/question/41048032" target="_blank" rel="noopener">Java里一个线程调用了Thread.interrupt()到底意味着什么？</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/21/java/2020-02-21-reread-jvm2/" rel="next" title="重读 JVM - ParNew & CMS GC">
+                <i class="fa fa-chevron-left"></i> 重读 JVM - ParNew & CMS GC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/12/jms/2020-04-12-RocketMQ-Learn&Share/" rel="prev" title="RocketMQ 学习与分享">
+                RocketMQ 学习与分享 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、业务背景"><span class="nav-number">1.</span> <span class="nav-text">一、业务背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、分析流程"><span class="nav-number">2.</span> <span class="nav-text">二、分析流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加锁"><span class="nav-number">2.1.</span> <span class="nav-text">加锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#超时问题"><span class="nav-number">2.2.</span> <span class="nav-text">超时问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案：增加一个「续时」"><span class="nav-number">2.3.</span> <span class="nav-text">解决方案：增加一个「续时」</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、设计方案"><span class="nav-number">3.</span> <span class="nav-text">三、设计方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、实操"><span class="nav-number">4.</span> <span class="nav-text">四、实操</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关属性类配置"><span class="nav-number">4.1.</span> <span class="nav-text">相关属性类配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#业务属性枚举设定"><span class="nav-number">4.1.1.</span> <span class="nav-text">业务属性枚举设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任务队列保存参数"><span class="nav-number">4.1.2.</span> <span class="nav-text">任务队列保存参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设定被拦截的注解名字"><span class="nav-number">4.1.3.</span> <span class="nav-text">设定被拦截的注解名字</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心切面拦截的操作"><span class="nav-number">4.2.</span> <span class="nav-text">核心切面拦截的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pointcut-设定"><span class="nav-number">4.2.1.</span> <span class="nav-text">Pointcut 设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Around-前后进行加锁和释放锁"><span class="nav-number">4.2.2.</span> <span class="nav-text">Around 前后进行加锁和释放锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#续时操作"><span class="nav-number">4.2.3.</span> <span class="nav-text">续时操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、开始测试"><span class="nav-number">5.</span> <span class="nav-text">五、开始测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、总结"><span class="nav-number">6.</span> <span class="nav-text">六、总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、参考资料"><span class="nav-number">7.</span> <span class="nav-text">七、参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

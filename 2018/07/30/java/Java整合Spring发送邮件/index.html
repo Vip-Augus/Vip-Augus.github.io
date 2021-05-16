@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="又懒了，要多看书和总结，然后早点写博客😝">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java整合Spring发送邮件">
+<meta property="og:url" content="http://yoursite.com/2018/07/30/java/Java整合Spring发送邮件/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="又懒了，要多看书和总结，然后早点写博客😝">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/tree-3089993_1920.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/QQ_MAIL.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/mail_sender.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/demo.png">
+<meta property="og:updated_time" content="2019-06-02T04:00:03.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java整合Spring发送邮件">
+<meta name="twitter:description" content="又懒了，要多看书和总结，然后早点写博客😝">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/tree-3089993_1920.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/30/java/Java整合Spring发送邮件/"/>
+
+
+
+
+
+  <title>Java整合Spring发送邮件 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/30/java/Java整合Spring发送邮件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java整合Spring发送邮件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T21:39:02+08:00">
+                2018-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/tree-3089993_1920.jpg" alt=""></p>
+<center>又懒了，要多看书和总结，然后早点写博客😝</center>
+
+<a id="more"></a>
+<hr>
+<p>有时候代码执行完之后，需要邮件进行通知，所以通过工作中的项目和网上的资料，特地去学习了如何使用Java发送邮件。Demo使用的是QQ邮箱进行邮件发送，可以先了解一下基础文档协议<strong>RFC882、MIME、SMTP等</strong>。</p>
+<hr>
+<h2 id="文档协议说明"><a href="#文档协议说明" class="headerlink" title="文档协议说明"></a>文档协议说明</h2><p>看了孤傲苍狼的文章，关于邮件协议，他解释的很好，这边进行记录了一下</p>
+<h3 id="RFC882文档（发送简单文字邮件）"><a href="#RFC882文档（发送简单文字邮件）" class="headerlink" title="RFC882文档（发送简单文字邮件）"></a>RFC882文档（发送简单文字邮件）</h3><p>RFC882文档规定了如何编写一封简单的邮件(纯文本邮件)，一封简单的邮件包含邮件头和邮件体两个部分，邮件头和邮件体之间使用空行分隔。</p>
+<p><strong>邮件头包含的内容有：</strong></p>
+<ul>
+<li><strong>from字段</strong> 　　–用于指明发件人</li>
+<li><strong>to字段</strong> 　　  –用于指明收件人</li>
+<li><strong>subject字段</strong>  –用于说明邮件主题</li>
+<li><strong>cc字段</strong> 　　   – 抄送，将邮件发送给收件人的同时抄送给另一个收件人，收件人可以看到邮件抄送给了谁</li>
+<li><strong>bcc字段</strong> 　　 – 密送，将邮件发送给收件人的同时将邮件秘密发送给另一个收件人，收件人无法看到邮件密送给了谁</li>
+</ul>
+<h3 id="MIME文档（可以发送HTML邮件）"><a href="#MIME文档（可以发送HTML邮件）" class="headerlink" title="MIME文档（可以发送HTML邮件）"></a>MIME文档（可以发送HTML邮件）</h3><p>在我们的实际开发当中，一封邮件既可能包含图片，又可能包含有附件，在这样的情况下，RFC882文档规定的邮件格式就无法满足要求了。</p>
+<p><strong>MIME协议是对RFC822文档的升级和补充</strong>，它描述了如何生产一封复杂的邮件。通常我们把MIME协议描述的邮件称之为MIME邮件。MIME协议描述的数据称之为MIME消息。<br>　　<br>对于一封复杂邮件，如果包含了多个不同的数据，MIME协议规定了要使用分隔线对多段数据进行分隔，并使用<strong>Content-Type头字段</strong>对数据的类型、以及多个数据之间的关系进行描述。
+　　</p>
+<h3 id="SMTP协议"><a href="#SMTP协议" class="headerlink" title="SMTP协议"></a>SMTP协议</h3><p>要使用QQ邮箱发送邮件，就要遵守SMTP协议。<strong>SMTP（Simple Mail Transfer Protocol）即简单邮件传输协议</strong>,它是一组用于由源地址到目的地址传送邮件的规则，由它来控制信件的中转方式。</p>
+<p>需要在QQ邮箱中<strong>打开SMTP服务和生成授权码</strong></p>
+<p><img src="http://img.sevenyuan.cn/QQ_MAIL.png" alt="QQ邮箱"></p>
+<hr>
+<h2 id="Demo的时序图"><a href="#Demo的时序图" class="headerlink" title="Demo的时序图"></a>Demo的时序图</h2><p><img src="http://img.sevenyuan.cn/mail_sender.png" alt=""></p>
+<hr>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>demo使用的是Velocity模板引擎进行html渲染，其它渲染方式类似，最后都是生成context内容。</p>
+<h3 id="基础依赖"><a href="#基础依赖" class="headerlink" title="基础依赖"></a>基础依赖</h3><p>java mail/spring-context-support/velocity<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'com.sun.mail'</span>, name: <span class="string">'javax.mail'</span>, version: <span class="string">'1.6.1'</span></div><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'org.springframework'</span>, name: <span class="string">'spring-context-support'</span>, version: <span class="string">'5.0.8.RELEASE'</span></div><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'org.apache.velocity'</span>, name: <span class="string">'velocity'</span>, version: <span class="string">'1.7'</span></div></pre></td></tr></table></figure></p>
+<h3 id="邮件基础Bean"><a href="#邮件基础Bean" class="headerlink" title="邮件基础Bean"></a>邮件基础Bean</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MailBean</span> </span>&#123;</div><div class="line">    <span class="comment">/** 邮件发送人地址,非空 */</span></div><div class="line">    <span class="keyword">private</span> String from;</div><div class="line">    <span class="comment">/** 邮件发送人姓名,非空 */</span></div><div class="line">    <span class="keyword">private</span> String fromName;</div><div class="line">    <span class="comment">/** 邮件接收人地址列表,非空 */</span></div><div class="line">    <span class="keyword">private</span> String[] toList;</div><div class="line">    <span class="comment">/** 邮件抄送人地址列表 */</span></div><div class="line">    <span class="keyword">private</span> String[] ccList;</div><div class="line">    <span class="comment">/** 邮件主题,非空 */</span></div><div class="line">    <span class="keyword">private</span> String subject;</div><div class="line">    <span class="comment">/** 邮件内容velocity上下文参数 */</span></div><div class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; mailContext;</div><div class="line">    <span class="comment">/** 邮件内容velocity模板,非空 */</span></div><div class="line">    <span class="keyword">private</span> String mailVmName;</div><div class="line">    ···</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="模板引擎渲染工具"><a href="#模板引擎渲染工具" class="headerlink" title="模板引擎渲染工具"></a>模板引擎渲染工具</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VelocityUtils</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(VelocityUtils.class);</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> VelocityEngine VE = <span class="keyword">new</span> VelocityEngine();</div><div class="line">    <span class="keyword">static</span> &#123;</div><div class="line">        initVelocity();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initVelocity</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            VE.setProperty(RuntimeConstants.RESOURCE_LOADER, <span class="string">"classpath"</span>);</div><div class="line">            VE.setProperty(</div><div class="line">                    <span class="string">"classpath.resource.loader.class"</span>,</div><div class="line">                    ClasspathResourceLoader.class.getName());</div><div class="line">            VE.setProperty(RuntimeConstants.RUNTIME_LOG, <span class="string">"logs/velocity.log"</span>);</div><div class="line">            VE.setProperty(</div><div class="line">                    RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,</div><div class="line">                    <span class="string">"org.apache.velocity.runtime.log.NullLogChute"</span>);</div><div class="line">            VE.init();</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            LOGGER.warn(<span class="string">"初始化velocity模板引擎失败"</span>, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/** 实际渲染的代码，map里面的字段与编写的模板相对应 **/</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">render</span><span class="params">(String vmName, Map&lt;String, Object&gt; context)</span> </span>&#123;</div><div class="line">        String renderStr = <span class="string">""</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Template template = VE.getTemplate(vmName, <span class="string">"UTF-8"</span>);</div><div class="line">            VelocityContext velocityContext = <span class="keyword">new</span> VelocityContext();</div><div class="line">            <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : context.entrySet()) &#123;</div><div class="line">                velocityContext.put(entry.getKey(), entry.getValue());</div><div class="line">            &#125;</div><div class="line">            StringWriter sw = <span class="keyword">new</span> StringWriter();</div><div class="line">            template.merge(velocityContext, sw);</div><div class="line">            renderStr = sw.toString();</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            LOGGER.warn(<span class="string">"渲染vm模板失败"</span>, e);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> renderStr;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="发送邮件的服务"><a href="#发送邮件的服务" class="headerlink" title="发送邮件的服务"></a>发送邮件的服务</h3><p>我们使用spring进行依赖注入，帮我们托管mailSender<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"javaMailSender"</span> <span class="attr">class</span>=<span class="string">"org.springframework.mail.javamail.JavaMailSenderImpl"</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!--         &lt;property name="host" value="smtp.qq.com"/&gt; --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"host"</span> <span class="attr">value</span>=<span class="string">"smtp.qq.com"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"port"</span> <span class="attr">value</span>=<span class="string">"587"</span>/&gt;</span></div><div class="line">        <span class="comment">&lt;!--         &lt;property name="username" value="xxxxx@qq.com"/&gt; --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"xxxxxx@qq.com"</span>/&gt;</span></div><div class="line">        <span class="comment">&lt;!-- qq邮箱的授权码，如果是企业邮箱，则使用登录密码 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"xxxxxxxxxxx"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"javaMailProperties"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">props</span> &gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">"mail.smtp.auth"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">props</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p><strong>面向接口编程</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MailService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 发送邮件</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> mailBean      邮件bean</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sendMail</span><span class="params">(MailBean mailBean)</span></span>;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MailServiceImpl</span> <span class="keyword">implements</span> <span class="title">MailService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"javaMailSender"</span>)</div><div class="line">    <span class="keyword">private</span> JavaMailSender mailSender;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendMail</span><span class="params">(MailBean mailBean)</span> </span>&#123;</div><div class="line">        <span class="comment">// 省略了校验</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">// 工具类进行内容渲染，传入的是模板名称和具体内容MAP</span></div><div class="line">            String mailContent = VelocityUtils.render(</div><div class="line">                    mailBean.getMailVmName(),</div><div class="line">                    mailBean.getMailContext());</div><div class="line">            MimeMessage msg = mailSender.createMimeMessage();</div><div class="line">            MimeMessageHelper mimeMessageHelper = <span class="keyword">new</span> MimeMessageHelper(msg, <span class="keyword">true</span>, <span class="string">"UTF-8"</span>);</div><div class="line">            mimeMessageHelper.setFrom(mailBean.getFrom(), mailBean.getFromName());</div><div class="line">            mimeMessageHelper.setSubject(mailBean.getSubject());</div><div class="line">            mimeMessageHelper.setTo(mailBean.getToList());</div><div class="line">            mimeMessageHelper.setText(mailContent, <span class="keyword">true</span>);</div><div class="line"></div><div class="line">            mailSender.send(msg);</div><div class="line"></div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            log.warn(<span class="string">"邮件发送失败,mailBean=&#123;&#125;"</span>, mailBean, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="demo-vm-模板文件"><a href="#demo-vm-模板文件" class="headerlink" title="demo.vm(模板文件)"></a>demo.vm(模板文件)</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/1999/xhtml "</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">class</span>=<span class="string">"word-style"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"title"</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span>DEMO<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"indent"</span>&gt;</span>$!&#123;msg&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h2><p>最后通过调用<strong>MailService</strong>进行邮件发送<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">MailBean mailBean = <span class="keyword">new</span> MailBean();</div><div class="line">mailBean.setFrom(<span class="string">"xxxxxx@qq.com"</span>);</div><div class="line">mailBean.setFromName(<span class="string">"DEMO"</span>);</div><div class="line">mailBean.setSubject(<span class="string">"Are you ok"</span>);</div><div class="line"><span class="comment">//模板</span></div><div class="line">mailBean.setMailVmName(<span class="string">"demo.vm"</span>);</div><div class="line"><span class="comment">//收件人地址</span></div><div class="line">String[] toList = &#123;<span class="string">"xxxxx@xxxx.com"</span>&#125;;</div><div class="line">mailBean.setToList(toList);</div><div class="line">Map&lt;String, Object&gt; context = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">context.put(<span class="string">"msg"</span>, <span class="string">"I'm fine, thank you~"</span>);</div><div class="line">mailBean.setMailContext(context);</div><div class="line">mailService.sendMail(mailBean);</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.sevenyuan.cn/demo.png" alt=""></p>
+<p>当然，你可以制作更加好看的html邮件~</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://www.cnblogs.com/xdp-gacl/p/4216311.html" target="_blank" rel="noopener">JavaWeb学习总结(五十二)——使用JavaMail创建邮件和发送邮件</a></li>
+<li><a href="http://www.runoob.com/java/java-sending-email.html" target="_blank" rel="noopener">Java 发送邮件</a></li>
+<li><a href="https://www.cnblogs.com/leechenxiang/p/6367432.html" target="_blank" rel="noopener">通过spring实现javamail发送邮件功能</a></li>
+<li><a href="http://service.mail.qq.com/cgi-bin/help?subtype=1&amp;&amp;id=28&amp;&amp;no=331" target="_blank" rel="noopener">腾讯的IMAP服务说明</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/21/reading/京东《决战618》读后感/" rel="next" title="京东《决战618》读后感">
+                <i class="fa fa-chevron-left"></i> 京东《决战618》读后感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/reading/《三体》读后感/" rel="prev" title="《三体》读后感">
+                《三体》读后感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文档协议说明"><span class="nav-number">1.</span> <span class="nav-text">文档协议说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RFC882文档（发送简单文字邮件）"><span class="nav-number">1.1.</span> <span class="nav-text">RFC882文档（发送简单文字邮件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MIME文档（可以发送HTML邮件）"><span class="nav-number">1.2.</span> <span class="nav-text">MIME文档（可以发送HTML邮件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP协议"><span class="nav-number">1.3.</span> <span class="nav-text">SMTP协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo的时序图"><span class="nav-number">2.</span> <span class="nav-text">Demo的时序图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础依赖"><span class="nav-number">3.1.</span> <span class="nav-text">基础依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邮件基础Bean"><span class="nav-number">3.2.</span> <span class="nav-text">邮件基础Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板引擎渲染工具"><span class="nav-number">3.3.</span> <span class="nav-text">模板引擎渲染工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送邮件的服务"><span class="nav-number">3.4.</span> <span class="nav-text">发送邮件的服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#demo-vm-模板文件"><span class="nav-number">3.5.</span> <span class="nav-text">demo.vm(模板文件)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送邮件"><span class="nav-number">4.</span> <span class="nav-text">发送邮件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

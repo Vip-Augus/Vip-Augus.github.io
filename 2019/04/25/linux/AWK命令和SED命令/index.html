@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="加班的日子也要抓紧时间学习哇🤩">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWK命令和SED命令">
+<meta property="og:url" content="http://yoursite.com/2019/04/25/linux/AWK命令和SED命令/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="加班的日子也要抓紧时间学习哇🤩">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/GOTPath_ZH-CN1955635212_1920x1080.jpg">
+<meta property="og:updated_time" content="2019-04-25T09:01:35.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWK命令和SED命令">
+<meta name="twitter:description" content="加班的日子也要抓紧时间学习哇🤩">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/GOTPath_ZH-CN1955635212_1920x1080.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/25/linux/AWK命令和SED命令/"/>
+
+
+
+
+
+  <title>AWK命令和SED命令 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/25/linux/AWK命令和SED命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AWK命令和SED命令</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-25T16:53:47+08:00">
+                2019-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/GOTPath_ZH-CN1955635212_1920x1080.jpg" alt=""></p>
+<center>加班的日子也要抓紧时间学习哇🤩</center>
+
+<a id="more"></a>
+<h2 id="为什么要用"><a href="#为什么要用" class="headerlink" title="为什么要用"></a>为什么要用</h2><p>对于我们后端人员来说，经常需要去服务器查找日志信息，排查详细错误信息或者监控服务器，强大如grep已经可以满足绝大部分需求，但是awk和sed这两个强大的命令工具也很好用，下面记录一下这两个工具如何使用。</p>
+<hr>
+<h2 id="AWK"><a href="#AWK" class="headerlink" title="AWK"></a>AWK</h2><p>引自百科：</p>
+<blockquote>
+<p>AWK是一个优良的文本处理工具，Linux及Unix环境中现有的功能最强大的数据处理引擎之一。这种编程及数据操作语言（其名称得自于它的创始人阿尔佛雷德·艾侯、彼得·温伯格和布莱恩·柯林汉姓氏的首个字母）的最大功能取决于一个人所拥有的知识。awk经过改进生成的新的版本nawk,gawk，现在默认linux系统下日常使用的是gawk，用命令可以查看正在应用的awk的来源（ls -l /bin/awk ）</p>
+</blockquote>
+<hr>
+<h3 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h3><p>先查询一份网络数据，使用重定向保存下来：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> netstat -ano &gt; netstat.txt</span></div><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'&#123;print&#125;'</span> netstat.txt</span></div><div class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</div><div class="line">tcp        0      0 0.0.0.0:8009            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:18090           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:41999           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:42801           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:42869           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:10050           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 127.0.0.1:8005          0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0.0.0.0:10050        192.168.120.1:7569      TIME_WAIT   timewait (27.08/0/0)</div></pre></td></tr></table></figure></p>
+<p>简单使用，输出第1列和第4列：</p>
+<ul>
+<li>其中单引号中的被大括号括起来的就是awk的语句，注意，其只能被单引号包含。</li>
+<li>其中的$1….$n表示第几列。($0表示整个行)</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'&#123;print $1,  $4&#125;'</span> netstat.txt</span></div><div class="line">Proto Local</div><div class="line">tcp 0.0.0.0:8009</div><div class="line">tcp 0.0.0.0:18090</div><div class="line">tcp 0.0.0.0:41999</div><div class="line">tcp 0.0.0.0:8080</div><div class="line">tcp 0.0.0.0:42801</div><div class="line">tcp 0.0.0.0:42869</div><div class="line">tcp 0.0.0.0:22</div><div class="line">tcp 0.0.0.0:10050</div><div class="line">tcp 127.0.0.1:8005</div></pre></td></tr></table></figure>
+<p>awk可以格式化输出，用过C和Java等语系的应该都挺熟悉：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'&#123;printf "%-8s %-8s %-8s %-18s %-22s %-15s\n",$1,$2,$3,$4,$5,$6&#125;'</span> netstat.txt</span></div><div class="line">Proto    Recv-Q   Send-Q   Local              Address                Foreign</div><div class="line">tcp      0        0        0.0.0.0:8009       0.0.0.0:*              LISTEN</div><div class="line">tcp      0        0        0.0.0.0:18090      0.0.0.0:*              LISTEN</div><div class="line">tcp      0        0        0.0.0.0:41999      0.0.0.0:*              LISTEN</div><div class="line">tcp      0        0        0.0.0.0:8080       0.0.0.0:*              LISTEN</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="过滤记录"><a href="#过滤记录" class="headerlink" title="过滤记录"></a>过滤记录</h3><p>可以对其中某个或某些字段进行判断，使用比较判断符即可（通过与或非进行连接）</p>
+<p>比较判断符：==、!=、&gt;=、&gt;=、&gt;、&lt;<br>连接符：|| 、&amp;&amp;、 !</p>
+<p>例如筛选出第三列大于0的数据行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'$3 &gt; 0 &#123;print &#125;'</span> netstat.txt</span></div><div class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</div><div class="line">tcp        0     48 10.96.0.33:22           0.0.0.0:42280       ESTABLISHED on (0.20/0/0)</div></pre></td></tr></table></figure>
+<p>如果需要打印行号的话，可以使用内建变量NR：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'$3 &gt; 0 &#123;print NR, $0 &#125;'</span> netstat.txt</span></div><div class="line">1 Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</div><div class="line">23 tcp        0         0.0.0.0:22            0.0.0.0:42280     ESTABLISHED on (0.20/0/0)</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h3><p>内建变量相当于该程序的内置变量，可以直接拿来使用：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>变量含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$0</td>
+<td>当前记录（这个变量存放当前行的内容</td>
+</tr>
+<tr>
+<td>$1~$n</td>
+<td>当前记录的第n个字段，字段由分隔符FS分割</td>
+</tr>
+<tr>
+<td>FS</td>
+<td>输入字段分隔符，默认是空格或Tab</td>
+</tr>
+<tr>
+<td>NF</td>
+<td>当前记录中的字段个数，就是有多少列</td>
+</tr>
+<tr>
+<td>NR</td>
+<td>已经读出的记录数，就是行号，从1开始，如果有多个文件的话，这个值也是不断累加中</td>
+</tr>
+<tr>
+<td>FNR</td>
+<td>当前记录数，与NR不同的是，这个值是各自文件自己的行号</td>
+</tr>
+<tr>
+<td>RS</td>
+<td>输入的记录分隔符，默认是换行符</td>
+</tr>
+<tr>
+<td>OFS</td>
+<td>输出字段分隔符，默认也是空格</td>
+</tr>
+<tr>
+<td>ORS</td>
+<td>输出的记录分隔符，默认是换行符</td>
+</tr>
+<tr>
+<td>FILENAME</td>
+<td>当前输入文件的名字</td>
+</tr>
+</tbody>
+</table>
+<p><strong>例如有些文件的分隔符不是空格，而是其他，可以自定义分隔符:</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'BEGIN&#123;FS=":"&#125; &#123;print $1, $3, $6&#125;'</span> /etc/passwd</span></div><div class="line">nobody -2 /var/empty</div><div class="line">root 0 /var/root</div></pre></td></tr></table></figure>
+<p>上面命令等价于：（-F的意思就是制定分隔符）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk -F: <span class="string">'&#123;print $1, $3, $6&#125;'</span> /etc/passwd</span></div></pre></td></tr></table></figure></p>
+<p>注意：如果要制定多个分隔符，可以使用：</p>
+<p>awk -F ‘[;:]’</p>
+<p><strong>自定义输出字段的分隔符（例如制表符\t)：</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'BEGIN&#123;FS=":"&#125; &#123;print $1, $3, $6&#125;'</span> OFS=<span class="string">"\t"</span> /etc/passwd</span></div><div class="line">nobody	-2	/var/empty</div><div class="line">root	0	/var/root</div><div class="line">daemon	1	/var/root</div></pre></td></tr></table></figure></p>
+<h3 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h3><p>可以跟grep一样，匹配相关字符:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'/LISTEN|WAIT/'</span> netstat.txt</span></div><div class="line">tcp        0      0 0.0.0.0:8009            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:18090           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:41999           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:42801           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:42869           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:10050           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 127.0.0.1:8005          0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:10050           0.0.0.0:7569      TIME_WAIT   timewait (27.08/0/0)</div></pre></td></tr></table></figure></p>
+<p>还可以精确匹配某个字段：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'$6 ~/LISTEN|CLOSE/ &#123;print $0&#125;'</span> netstat.txt</span></div><div class="line">tcp        0      0 0.0.0.0:8009            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:18090           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:41999           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:42801           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:42869           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 0.0.0.0:10050           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        0      0 127.0.0.1:8005          0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">tcp        1      0 0.0.0.0:44690           0.0.0.0:80            CLOSE_WAIT  off (0.00/0/0)</div><div class="line">tcp6       0      0 :::27777                :::*                    LISTEN      off (0.00/0/0)</div><div class="line">tcp6       0      0 :::10050                :::*                    LISTEN      off (0.00/0/0)</div></pre></td></tr></table></figure>
+<p><strong>其中：~表示模式开始，两个/中间是模式，相当于进行正则表达式的匹配（同样道理，在正则表达式前使用！可以进行取反操作，这里就不展示了）</strong></p>
+<hr>
+<h3 id="拆分文件"><a href="#拆分文件" class="headerlink" title="拆分文件"></a>拆分文件</h3><p>指定某列为分类符，使用重定向就可以导出到不同的文件中，例如下列语句通过第六列进行分割：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'NR!=1 &#123;print &gt; $6&#125;'</span> netstat.txt</span></div><div class="line"><span class="meta">$</span><span class="bash"> ls</span></div><div class="line">ESTABLISHED          TIME_WAIT            netstat.txt          test.txt     CLOSE_WAIT           LISTEN               off</div></pre></td></tr></table></figure>
+<p>可以查看各自文件，发现已经是分类后的结果：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> cat ESTABLISHED</span></div><div class="line">tcp        0      0 0.0.0.0:38440        0.0.0.0:20880       ESTABLISHED keepalive (5806.94/0/0)</div><div class="line">tcp        0      0 0.0.0.0:58814        0.0.0.0:20880        ESTABLISHED keepalive (5872.47/0/0)</div><div class="line">tcp        0      0 0.0.0.0:49998        0.0.0.0:80        ESTABLISHED off (0.00/0/0)</div><div class="line">tcp        0      0.0.0.03:22            0.0.0.02:42280    ESTABLISHED on (0.20/0/0)</div><div class="line">tcp        0      0 0.0.0.0:56146        0.0.0.0:20892    ESTABLISHED keepalive (2661.21/0/0)</div></pre></td></tr></table></figure></p>
+<p>同样，可以指定某些列进行输出，也可以使用复杂的表达式（例如if-else-if语句，awk是个脚本解释器）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'NR!=1&#123;if($6 ~ /TIME|ESTABLISHED/) print &gt; "1.txt";</span></span></div><div class="line">else if($6 ~ /LISTEN/) print &gt; "2.txt";</div><div class="line">else print &gt; "3.txt" &#125;' netstat.txt</div><div class="line"><span class="meta">$</span><span class="bash"> ls *.txt</span></div><div class="line">1.txt       2.txt       3.txt       netstat.txt</div></pre></td></tr></table></figure>
+<p>注意，if-else语句要在同一个花括号{}里~</p>
+<hr>
+<h3 id="统计"><a href="#统计" class="headerlink" title="统计"></a>统计</h3><p>下面语句是用来统计以.txt为后缀的文件总大小：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ll *.txt | awk <span class="string">'&#123;sum+=$5&#125; END &#123;print sum&#125;'</span></span></div><div class="line">769.9</div></pre></td></tr></table></figure>
+<p>同样，可以在统计时使用数据，分开统计不同项目的总数</p>
+<p>用来统计网络状态<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk <span class="string">'NR!=1&#123;a[$6]+=1&#125; END &#123;for (i in a) print i ", " a[i];&#125;'</span> netstat.txt</span></div><div class="line">LISTEN, 11</div><div class="line">CLOSE_WAIT, 1</div><div class="line">TIME_WAIT, 26</div><div class="line">off, 7</div><div class="line">ESTABLISHED, 10</div></pre></td></tr></table></figure></p>
+<p>用来统计每个用户的进程占了多少内存：(通过ps -aux查看，第六列表示占用的内存）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ps -aux | awk <span class="string">'NR!=1&#123;a[$1]+=$6&#125; END &#123;for (i in a) print i ", " a[i]"kb";&#125;'</span></span></div><div class="line">apache, 156952kb</div><div class="line">dbus, 1236kb</div><div class="line">polkitd, 8252kb</div><div class="line">named, 104220kb</div><div class="line">libstor+, 148kb</div><div class="line">mysql, 106304kb</div><div class="line">root, 325464kb</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="awk脚本"><a href="#awk脚本" class="headerlink" title="awk脚本"></a>awk脚本</h3><p><strong>有两个关键字需要注意BEGIN和END</strong>：</p>
+<ul>
+<li>BEGIN{这里放的是，执行前的语句}</li>
+<li>END{这里放的是，执行后的语句}</li>
+<li>{这里放的是处理每一行时要执行的语句}</li>
+</ul>
+<p>例如下面例子，简单统计行数:（只是简单介绍一下脚本如何写，更多定制化的可以小伙伴去探索~）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> vim cal.awk</span></div><div class="line"><span class="meta">#</span><span class="bash">! /bin/awk -f</span></div><div class="line"><span class="meta">#</span><span class="bash"> 运行前</span></div><div class="line">BEGIN &#123;</div><div class="line">    lineNumber = 0</div><div class="line">    print "开始执行"</div><div class="line">&#125;</div><div class="line"><span class="meta">#</span><span class="bash"> 运行中</span></div><div class="line">&#123;</div><div class="line">    lineNumber += 1</div><div class="line">    printf "当前行号 %s, 数据为 %s \n", lineNumber, $0</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="meta">#</span><span class="bash"> 运行后</span></div><div class="line">END &#123;</div><div class="line">    print "结束"</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>执行脚本（也可以使用./cal.awk netstat.txt)<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> awk -f cal.awk netstat.txt</span></div><div class="line">awk -f cal.awk netstat.txt</div><div class="line">开始执行</div><div class="line">当前行号 1, 数据为 Proto Recv-Q Send-Q Local Address           Foreign Address         State       Timer</div><div class="line">当前行号 2, 数据为 tcp        0      0 0.0.0.0:8009            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">当前行号 3, 数据为 tcp        0      0 0.0.0.0:18090           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">当前行号 4, 数据为 tcp        0      0 0.0.0.0:41999           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">当前行号 5, 数据为 tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">当前行号 6, 数据为 tcp        0      0 0.0.0.0:42801           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">当前行号 7, 数据为 tcp        0      0 0.0.0.0:42869           0.0.0.0:*               LISTEN      off (0.00/0/0)</div><div class="line">结束</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="结合环境变量"><a href="#结合环境变量" class="headerlink" title="结合环境变量"></a>结合环境变量</h3><p>通过使用-v参数和ENVIRON,与环境变量打交道：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> <span class="variable">$x</span></span></div><div class="line">0</div><div class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> <span class="variable">$&#123;test&#125;</span></span></div><div class="line">LISTEN</div><div class="line"><span class="meta">$</span><span class="bash"> awk -v val=<span class="variable">$&#123;x&#125;</span> <span class="string">'$2==val || $6==ENVIRON["test"] &#123; print $1, $2, $3&#125;'</span> netstat.txt</span></div><div class="line">tcp 0 0</div><div class="line">tcp 0 0</div><div class="line">tcp 0 0</div><div class="line">tcp 0 0</div><div class="line">tcp 0 0</div></pre></td></tr></table></figure>
+<p>当然，在使用环境变量的时候，记得要export该变量</p>
+<hr>
+<h2 id="SED命令"><a href="#SED命令" class="headerlink" title="SED命令"></a>SED命令</h2><blockquote>
+<p>全称是：Stream EDitor，功能月awk类似，差别在于，sed比awk简单一点，常用于字符替换。匹配符可以使用正则表达式进行匹配，所以想要用更强大的功能，需要去了解一下正则表达式~</p>
+</blockquote>
+<hr>
+<h3 id="使用S命令替换"><a href="#使用S命令替换" class="headerlink" title="使用S命令替换"></a>使用S命令替换</h3><p>使用以下文本进行测试<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> cat self.txt</span></div><div class="line">First line</div><div class="line">    My name is John</div><div class="line">Second line</div><div class="line">    I like milk</div><div class="line">Third line</div><div class="line">    I like basketball</div><div class="line">Four line</div><div class="line">    I live in china</div></pre></td></tr></table></figure></p>
+<p>S命令介绍：</p>
+<blockquote>
+<p>s表示替换命令，/I/表示匹配I， /John/表示将前面的I替换成Json，/g表示进行所有行上所有字符的匹配（注意，匹配时区分大小写）</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/I/John/g"</span> self.txt</span></div><div class="line">First line</div><div class="line">    My name is John</div><div class="line">Second line</div><div class="line">    John like milk</div><div class="line">Third line</div><div class="line">    John like basketball</div><div class="line">Four line</div><div class="line">    John live in china</div></pre></td></tr></table></figure>
+<p>这样只是对于输出流的字符进行替换，原文本的数据不会改变，有两种方法可以修改输出流的数据：</p>
+<ul>
+<li><p>使用重定向 &gt;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/I/John/g"</span> self.txt &gt; other.txt</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>使用-i参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed -i <span class="string">"s/I/John/g"</span> self.txt</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以在每一行最前面加数据:（例如将文本开头加个#字符）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/^/#/g"</span> self.txt</span></div><div class="line">sed "s/^/#/g" self.txt</div><div class="line"><span class="meta">#</span><span class="bash">First line</span></div><div class="line"><span class="meta">#</span><span class="bash">    My name is John</span></div><div class="line"><span class="meta">#</span><span class="bash">Second line</span></div><div class="line"><span class="meta">#</span><span class="bash">    I like milk</span></div><div class="line"><span class="meta">#</span><span class="bash">Third line</span></div><div class="line"><span class="meta">#</span><span class="bash">    I like basketball</span></div><div class="line"><span class="meta">#</span><span class="bash">Four line</span></div><div class="line"><span class="meta">#</span><span class="bash">    I live <span class="keyword">in</span> china</span></div></pre></td></tr></table></figure></p>
+<p>可以在行末尾加一些数据：（例如加分割符或者结束符)<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/$/---/g"</span> self.txt</span></div><div class="line">First line---</div><div class="line">    My name is John---</div><div class="line">Second line---</div><div class="line">    I like milk---</div><div class="line">Third line---</div><div class="line">    I like basketball---</div><div class="line">Four line---</div><div class="line">    I live in china---</div></pre></td></tr></table></figure></p>
+<p>使用正则表达式去掉html中的tags：</p>
+<p>Html文本为：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">b</span>&gt;</span>This is<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span> a test file<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">"text-decoration: underline;"</span>&gt;</span> @John hahah<span class="tag">&lt;/<span class="name">span</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>替换脚本：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 熟悉正则表达式的小伙伴应该不陌生</span></div><div class="line"><span class="meta">#</span><span class="bash"> 使用[^&gt;]表示除了&gt;之外的字符，*号表示任意个字符</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/&lt;[^&gt;]*&gt;//g"</span> html.txt</span></div><div class="line">This is a test file @John hahah</div></pre></td></tr></table></figure></p>
+<p>可以指定替换特定行号的文本，多行间使用逗号(,)进行连接：（例如下面只替换第5到第8行的数据）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"5,8s/I/John/g"</span> self.txt</span></div><div class="line">First line</div><div class="line">    My name is John</div><div class="line">Second line</div><div class="line">    I like milk             #这行的I没有被替换</div><div class="line">Third line</div><div class="line">    John like basketball     #替换了</div><div class="line">Four line</div><div class="line">    John live in china       #替换了</div></pre></td></tr></table></figure></p>
+<p>测试文本：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> cat 1.txt</span></div><div class="line">This is first line.</div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div></pre></td></tr></table></figure></p>
+<p>指定只替换每一行第一个出现的字符：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/s/S/1"</span> 1.txt</span></div><div class="line">ThiS is first line.</div><div class="line">ThiS is second line.</div><div class="line">ThiS is third line.</div><div class="line">ThiS is four line.</div></pre></td></tr></table></figure></p>
+<p>指定替换每一行第二个及第二个之后的字符:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">"s/s/S/2g"</span> 1.txt</span></div><div class="line">This iS firSt line.</div><div class="line">This iS Second line.</div><div class="line">This iS third line.</div><div class="line">This iS four line.</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="多个匹配"><a href="#多个匹配" class="headerlink" title="多个匹配"></a>多个匹配</h3><p>如果需要在一次命令中，匹配多个模式，可以写多个匹配表达式，通过分号;进行分割：（例如下面将1，2行的This替换成That，3到最后一行的is替换成are）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'1,2s/This/That/g; 3,$s/is/are/g'</span> 1.txt</span></div><div class="line">That is first line.</div><div class="line">That is second line.</div><div class="line">Thare are third line.   #没想到将This的is也替换成are了=-=</div><div class="line">Thare are four line.    #可以修改sed '1,2s/This/That/g; 3,$s/is/are/2' 1.txt， 指定替换第二个字符is</div></pre></td></tr></table></figure>
+<p>可以使用&amp;，用来当做被匹配的变量，然后在匹配的变量前后加一些内容：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'s/line/front [&amp;] end/g'</span> 1.txt</span></div><div class="line">This is first front [line] end.</div><div class="line">This is second front [line] end.</div><div class="line">This is third front [line] end.</div><div class="line">This is four front [line] end.</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="圆括号匹配"><a href="#圆括号匹配" class="headerlink" title="圆括号匹配"></a>圆括号匹配</h3><p>圆括号括起来的正则表达式所匹配的字符串可以当成变量来使用，其中，\1表示第一个匹配，\2表示第二个匹配，以此类推）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash">sed <span class="string">'s/^This is \([A-Za-z]*\) line.$/\1/g'</span> 1.txt</span></div><div class="line">first</div><div class="line">second</div><div class="line">third</div><div class="line">four</div></pre></td></tr></table></figure>
+<p>正则表达式博大精深，每次都是学到用时方恨少！</p>
+<hr>
+<h3 id="N命令"><a href="#N命令" class="headerlink" title="N命令"></a>N命令</h3><p>这条命令会将下一行的内容送入缓存区，两行并成一行进行匹配：<br>(例如下面的命令，两行合成一行后，两行之间的换行符\n被替换成空格，所以输出结果，原偶数行与奇数行合并）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'N;s/\n/ /g'</span> self.txt</span></div><div class="line">First line     My name is John</div><div class="line">Second line     I like milk</div><div class="line">Third line     I like basketball</div><div class="line">Four line     I live in china</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="a命令和i命令"><a href="#a命令和i命令" class="headerlink" title="a命令和i命令"></a>a命令和i命令</h3><p><strong>a：表示append，在某行后面进行追加：</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'$ a --- the end ---'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div><div class="line">--- the end ---</div></pre></td></tr></table></figure></p>
+<p><strong>i：表示insert，在某行之前进行插入：</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'1 i --- the start ---'</span> 1.txt</span></div><div class="line">--- the start ---</div><div class="line">This is first line.</div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div></pre></td></tr></table></figure></p>
+<p><strong>可以进行匹配，然后在匹配行后面进行追加或者之前插入数据：</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'/line/a  I find a line'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">I find a line</div><div class="line">This is second line.</div><div class="line">I find a line</div><div class="line">This is third line.</div><div class="line">I find a line</div><div class="line">This is four line.</div><div class="line">I find a line</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="c命令"><a href="#c命令" class="headerlink" title="c命令"></a>c命令</h3><p>C命令：替换命令，将匹配到的行替换掉</p>
+<p>单行替换：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'2 c You have been replaced'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">You have been replaced</div><div class="line">This is third line.</div><div class="line">This is four line.</div></pre></td></tr></table></figure></p>
+<p>多行替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'2,$ c You have been replaced'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">You have been replaced</div></pre></td></tr></table></figure></p>
+<p>或者匹配行进行替换：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'/This is/c You have been replaced'</span> 1.txt</span></div><div class="line">You have been replaced</div><div class="line">You have been replaced</div><div class="line">You have been replaced</div><div class="line">You have been replaced</div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="d命令"><a href="#d命令" class="headerlink" title="d命令"></a>d命令</h3><p>d命令：delete，删除<br>跟上面的替换c命令很类似</p>
+<p>单行删除：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'2 d'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div></pre></td></tr></table></figure></p>
+<p>多行替换<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'2,$ d'</span> 1.txt</span></div><div class="line">This is first line.</div></pre></td></tr></table></figure></p>
+<p>或者匹配行进行替换：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'/This is/d'</span> 1.txt</span></div><div class="line"><span class="meta">#</span><span class="bash"> 都木有了=-=</span></div></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="p命令"><a href="#p命令" class="headerlink" title="p命令"></a>p命令</h3><p>p命令：print，打印命令，与grep类似</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 匹配到third这一行，但是重复输出了</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'/third/p'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div><div class="line"><span class="meta">#</span><span class="bash"> 使用n参数进行过滤</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed -n <span class="string">'/third/p'</span> 1.txt</span></div><div class="line">This is third line.</div><div class="line"><span class="meta">#</span><span class="bash"> 多个模式匹配（两个模式中间的行次也会被匹配出来）</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed -n <span class="string">'/first/, /third/p'</span> 1.txt</span></div><div class="line">This is first line.</div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line"><span class="meta">#</span><span class="bash"> 指定某一行到匹配行进行打印</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed -n <span class="string">'2,/four/p'</span> 1.txt</span></div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="命令打包"><a href="#命令打包" class="headerlink" title="命令打包"></a>命令打包</h3><p>多个命令可以使用分号进行分开，使用大括号括起来作为嵌套命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 从一二行中，匹配到This字符，然后整行进行删除</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'1,2 &#123;/This/d&#125;'</span> 1.txt</span></div><div class="line">This is third line.</div><div class="line">This is four line.</div><div class="line"><span class="meta">#</span><span class="bash"> 从一二行中，匹配到This字符，然后再匹配first字符，最后整行进行删除</span></div><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'1,2 &#123;/This/&#123;/first/d&#125;&#125;'</span> 1.txt</span></div><div class="line">This is second line.</div><div class="line">This is third line.</div><div class="line">This is four line.</div><div class="line"><span class="meta">#</span><span class="bash"> 多命令用分号;分开</span></div><div class="line"><span class="meta">#</span><span class="bash"> 例如删掉包含first的行次，并且给每一行的开头加上<span class="comment">#号</span></span></div><div class="line"><span class="meta">$</span><span class="bash"> sed <span class="string">'1,$ &#123;/first/d;s/^/#/g&#125;'</span> 1.txt</span></div><div class="line"><span class="meta">#</span><span class="bash">This is second line.</span></div><div class="line"><span class="meta">#</span><span class="bash">This is third line.</span></div><div class="line"><span class="meta">#</span><span class="bash">This is four line.</span></div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这两个文档工具如grep一样好用，而且感觉awk的功能更加强大，建议大家去看耗子叔的酷壳博客，干货满满~</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>耗子大神的网站值得一看~</p>
+<ol>
+<li><a href="https://coolshell.cn/articles/9070.html" target="_blank" rel="noopener">AWK 简明教程</a></li>
+<li><a href="https://coolshell.cn/articles/9104.html" target="_blank" rel="noopener">SED 简明教程</a></li>
+<li><a href="https://regex101.com/" target="_blank" rel="noopener">正则表达式工具网站</a></li>
+<li><a href="http://www.runoob.com/regexp/regexp-syntax.html" target="_blank" rel="noopener">正则表达式学习文档</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/24/reading/《代码整洁之道》-代码标准/" rel="next" title="《代码整洁之道》- 代码标准">
+                <i class="fa fa-chevron-left"></i> 《代码整洁之道》- 代码标准
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/12/LeetCode-题解记录-双指针/" rel="prev" title="LeetCode 题解记录 - 双指针">
+                LeetCode 题解记录 - 双指针 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要用"><span class="nav-number">1.</span> <span class="nav-text">为什么要用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AWK"><span class="nav-number">2.</span> <span class="nav-text">AWK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开始使用"><span class="nav-number">2.1.</span> <span class="nav-text">开始使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤记录"><span class="nav-number">2.2.</span> <span class="nav-text">过滤记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内建变量"><span class="nav-number">2.3.</span> <span class="nav-text">内建变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串匹配"><span class="nav-number">2.4.</span> <span class="nav-text">字符串匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拆分文件"><span class="nav-number">2.5.</span> <span class="nav-text">拆分文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统计"><span class="nav-number">2.6.</span> <span class="nav-text">统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#awk脚本"><span class="nav-number">2.7.</span> <span class="nav-text">awk脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结合环境变量"><span class="nav-number">2.8.</span> <span class="nav-text">结合环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SED命令"><span class="nav-number">3.</span> <span class="nav-text">SED命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用S命令替换"><span class="nav-number">3.1.</span> <span class="nav-text">使用S命令替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个匹配"><span class="nav-number">3.2.</span> <span class="nav-text">多个匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#圆括号匹配"><span class="nav-number">3.3.</span> <span class="nav-text">圆括号匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N命令"><span class="nav-number">3.4.</span> <span class="nav-text">N命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a命令和i命令"><span class="nav-number">3.5.</span> <span class="nav-text">a命令和i命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c命令"><span class="nav-number">3.6.</span> <span class="nav-text">c命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d命令"><span class="nav-number">3.7.</span> <span class="nav-text">d命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p命令"><span class="nav-number">3.8.</span> <span class="nav-text">p命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令打包"><span class="nav-number">3.9.</span> <span class="nav-text">命令打包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Java8新特性学习😝">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8新特性学习-函数式接口">
+<meta property="og:url" content="http://yoursite.com/2019/01/30/java/Java8新特性学习-函数式接口/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Java8新特性学习😝">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/7097c713gy1fzoy2m995vj21hc0u0n6b.jpg">
+<meta property="og:updated_time" content="2019-05-25T08:02:56.190Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java8新特性学习-函数式接口">
+<meta name="twitter:description" content="Java8新特性学习😝">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713gy1fzoy2m995vj21hc0u0n6b.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/30/java/Java8新特性学习-函数式接口/"/>
+
+
+
+
+
+  <title>Java8新特性学习-函数式接口 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/30/java/Java8新特性学习-函数式接口/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java8新特性学习-函数式接口</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-30T22:03:25+08:00">
+                2019-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://img.sevenyuan.cn/7097c713gy1fzoy2m995vj21hc0u0n6b.jpg" alt=""></p>
+<center>Java8新特性学习😝</center>
+
+<a id="more"></a>
+<p>Java大家庭已经出到11版本了，我还在使用jdk7=-=，再不学就来不及了，所以赶紧学一下Java8的新特性。</p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口</strong></p>
+<p>函数式接口在java.util.function路径下。</p>
+<p>在这个包中，每一个接口都被@FunctionalInterface标注，表示这个类是一个函数式接口，主要用于编译级错误检查，加上该注解，当你写的接口不符合函数式接口定义的时候，编译器会报错。– 摘录自菜鸟编程</p>
+<hr>
+<h2 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h2><p>这次我们简单粗暴一下，贴出测试代码，看下具体使用场景和用法吧</p>
+<p><strong>在每个方法中都写上了注解</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.example.demo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.example.demo.test.Car;</div><div class="line"><span class="keyword">import</span> com.example.demo.test.PrintConsumer;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Comparator;</div><div class="line"><span class="keyword">import</span> java.util.function.BiConsumer;</div><div class="line"><span class="keyword">import</span> java.util.function.BiFunction;</div><div class="line"><span class="keyword">import</span> java.util.function.BiPredicate;</div><div class="line"><span class="keyword">import</span> java.util.function.BinaryOperator;</div><div class="line"><span class="keyword">import</span> java.util.function.BooleanSupplier;</div><div class="line"><span class="keyword">import</span> java.util.function.Consumer;</div><div class="line"><span class="keyword">import</span> java.util.function.DoubleToIntFunction;</div><div class="line"><span class="keyword">import</span> java.util.function.Function;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> JingQ at 2019/1/25</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JDK8FunctionInterfaceTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * BiConsumer&lt;T, U&gt;，接收两个参数，不返回结果（void）</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * 输出：（说明函数内修改对象引用的话同时会修改对象的值）</span></div><div class="line"><span class="comment">     * 娃哈哈真好喝</span></div><div class="line"><span class="comment">     * TEST</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">biConsumerTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        BiConsumer&lt;Car, String&gt; biConsumer = (a, b) -&gt; &#123;</div><div class="line">            System.out.println(a.getName() + b);</div><div class="line">            a.setName(<span class="string">"TEST"</span>);</div><div class="line">        &#125;;</div><div class="line">        Car car = <span class="keyword">new</span> Car();</div><div class="line">        car.setName(<span class="string">"娃哈哈"</span>);</div><div class="line">        biConsumer.accept(car, <span class="string">"真好喝"</span>);</div><div class="line">        System.out.println(car.getName());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * BiFunction&lt;T, U, R&gt;, 接收两个参数&lt;T, U&gt;，返回R类型的结果</span></div><div class="line"><span class="comment">     * 输出:</span></div><div class="line"><span class="comment">     * 0 - 相等</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">biFunctionTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        BiFunction&lt;Integer, Integer, String&gt; biFunction = (a, b) -&gt; String.valueOf(a+b);</div><div class="line">        System.out.println(biFunction.apply(<span class="number">1</span>, <span class="number">2</span>).compareTo(<span class="string">"3"</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * BinaryOperator&lt;T&gt; 用来接收两个T类型的参数，返回T类型的结果</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">binaryOperatorTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 比较两者的最大值</span></div><div class="line">        BinaryOperator&lt;Integer&gt; binaryOperator1 = BinaryOperator.maxBy(Comparator.naturalOrder());</div><div class="line">        System.out.println(binaryOperator1.apply(<span class="number">1</span>, <span class="number">2</span>));</div><div class="line"></div><div class="line">        <span class="comment">// 比较两者的最小值</span></div><div class="line">        BinaryOperator&lt;Integer&gt; binaryOperator2 = BinaryOperator.minBy(Comparator.naturalOrder());</div><div class="line">        System.out.println(binaryOperator2.apply(<span class="number">3</span>, <span class="number">4</span>));</div><div class="line"></div><div class="line">        <span class="comment">// 相加</span></div><div class="line">        BinaryOperator&lt;Integer&gt; add = (n1, n2) -&gt; n1 + n2;</div><div class="line">        System.out.println(add.apply(<span class="number">1</span>, <span class="number">3</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * BiPredicate&lt;T, U&gt;，接收两个参数&lt;T, U&gt;，返回一个boolean类型结果</span></div><div class="line"><span class="comment">     * 输出：</span></div><div class="line"><span class="comment">     * false</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">biPredicateTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        BiPredicate&lt;Integer, Integer&gt; biPredicate = (a, b) -&gt; a.equals(b);</div><div class="line">        System.out.println(biPredicate.test(<span class="number">1</span>, <span class="number">3</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Boolean类型 提供者，用来获取一个Boolean值</span></div><div class="line"><span class="comment">     * 如果只是用来返回true/false，感觉这个方法比较鸡肋；感觉可以使用statement，在返回结果前执行</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">booleanSupplierTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        BooleanSupplier booleanSupplier = () -&gt; &#123;</div><div class="line">            System.out.println(<span class="string">"Pre Action"</span>);</div><div class="line">            <span class="keyword">return</span> Boolean.TRUE;</div><div class="line">        &#125;;</div><div class="line">        System.out.println(booleanSupplier.getAsBoolean());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Consumer&lt;T&gt;，接受一个输入参数，返回空类型void</span></div><div class="line"><span class="comment">     * 还有一个andThen，可以用来实现责任链模式</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * 输出：</span></div><div class="line"><span class="comment">     * TEST</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * NEXT TEST</span></div><div class="line"><span class="comment">     * Pre</span></div><div class="line"><span class="comment">     * End</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">consumerTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 接受String类型的参数</span></div><div class="line">        Consumer&lt;String&gt; consumer = System.out::println;</div><div class="line">        consumer.accept(<span class="string">"TEST"</span>);</div><div class="line">        <span class="comment">//空格预定</span></div><div class="line">        System.out.println();</div><div class="line">        <span class="comment">// 责任链模式，可以设定下一个consumer</span></div><div class="line">        <span class="comment">//     PrintConsumer.java</span></div><div class="line">        <span class="comment">//      public void accept(String s) &#123;</span></div><div class="line">        <span class="comment">//        System.out.println("Pre");</span></div><div class="line">        <span class="comment">//        //xxx</span></div><div class="line">        <span class="comment">//        System.out.println("End");</span></div><div class="line">        <span class="comment">//    &#125;</span></div><div class="line">        Consumer&lt;String&gt; nextConsumer = <span class="keyword">new</span> PrintConsumer();</div><div class="line">        consumer.andThen(nextConsumer).accept(<span class="string">"NEXT TEST"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * DoubleToIntFunction 只有一个applyAsInt方法，接受double类型的参数，返回int类型的结果</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doubleToIntFunctionTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        DoubleToIntFunction doubleToIntFunction = a -&gt; (<span class="keyword">int</span>) a;</div><div class="line">        System.out.println(doubleToIntFunction.applyAsInt(<span class="number">10L</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * Function&lt;T, U&gt;函数接口，接受T类型的参数，返回U类型的结果</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * compose和andThen这两个方法的区别在于执行方法的顺序问题</span></div><div class="line"><span class="comment">     *</span></div><div class="line"><span class="comment">     * compose先执行后面函数，然后执行前面的函数；andThen先执行前面的函数，然后再执行后面的函数</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">functionTest</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 方法引用，Integer[类名]::valueOf[方法名]（这个是静态方法引用）</span></div><div class="line">        Function&lt;String, Integer&gt; function1 = Integer::valueOf;</div><div class="line">        System.out.println(function1.apply(<span class="string">"1010"</span>));</div><div class="line">        <span class="comment">// 输出 1010</span></div><div class="line"></div><div class="line">        <span class="comment">// andThen方法的入参类型为上一个方法的返回类型</span></div><div class="line">        Function&lt;Integer, String&gt; function2 = a -&gt; &#123;</div><div class="line">            System.out.println(<span class="string">"Pre Action : "</span>);</div><div class="line">            <span class="keyword">return</span> String.valueOf(a) + <span class="string">"10"</span>;</div><div class="line">        &#125;;</div><div class="line">        System.out.println(function1.andThen(function2).apply(<span class="string">"1010"</span>));</div><div class="line">        <span class="comment">//输出</span></div><div class="line">        <span class="comment">//Pre Action :</span></div><div class="line">        <span class="comment">//101010</span></div><div class="line"></div><div class="line">        <span class="comment">// compose方法</span></div><div class="line">        Function&lt;Integer, String&gt; function3 = a -&gt; &#123;</div><div class="line">            System.out.println(a);</div><div class="line">            <span class="keyword">return</span> a + <span class="string">"2020"</span>;</div><div class="line">        &#125;;</div><div class="line">        <span class="comment">//compose先执行后面函数, 需要注意参数传递时调用的方法是否兼容，避免报错</span></div><div class="line">        System.out.println(function1.compose(function3).apply(<span class="number">10</span>));</div><div class="line">        <span class="comment">//输出</span></div><div class="line">        <span class="comment">//10</span></div><div class="line">        <span class="comment">//102020</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>其它类型例如DoubleToLongFunction、IntSupplier之类的函数式接口，就是转换一下入参类型和出参类型，在用的时候查一下包下的API就能了解~</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="http://www.runoob.com/java/java8-functional-interfaces.html" target="_blank" rel="noopener">Java 8 函数式接口</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/22/redis/Redis高负载排查记录/" rel="next" title="Redis高负载排查记录">
+                <i class="fa fa-chevron-left"></i> Redis高负载排查记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/31/java/Java8新特性学习-Stream/" rel="prev" title="Java8新特性学习-Stream">
+                Java8新特性学习-Stream <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体使用"><span class="nav-number">2.</span> <span class="nav-text">具体使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

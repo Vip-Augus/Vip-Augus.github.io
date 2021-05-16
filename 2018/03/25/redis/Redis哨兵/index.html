@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis哨兵">
+<meta property="og:url" content="http://yoursite.com/2018/03/25/redis/Redis哨兵/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-25T07:00:26.014Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis哨兵">
+<meta name="twitter:description" content="Sentinel是Redis的高可用性（high availability）解决方案： 由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。 实际上这意味着使用哨兵模式，可以创">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/25/redis/Redis哨兵/"/>
+
+
+
+
+
+  <title>Redis哨兵 | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/25/redis/Redis哨兵/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis哨兵</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T00:44:08+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/" itemprop="url" rel="index">
+                    <span itemprop="name">NoSQL</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NoSQL/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Sentinel是Redis的<strong>高可用性（high availability）解决方案</strong>：</p>
+<p>由一个或多个 Sentinel 实例（instance）组成的 Sentinel 系统（system）可以监视任意多个主服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器，然后由新的主服务器代替已下线的主服务器继续处理命令请求。</p>
+<p>实际上这意味着使用哨兵模式，可以创建一个不用人为干预而应对各种故障的Redis部署。</p>
+<h2 id="哨兵模式的功能列表"><a href="#哨兵模式的功能列表" class="headerlink" title="哨兵模式的功能列表"></a>哨兵模式的功能列表</h2><ul>
+<li><p>监听：哨兵不断的检查 master 和 slave 是否正常的运行。</p>
+</li>
+<li><p>通知：当监控的某台 Redis 实例发生问题时，可以通过API通知系统管理员和其他的应用程序。</p>
+</li>
+<li><p>自动故障转移：如果一个 master 不正常运行了，哨兵可以启动一个故障转移进程，将一个 slave 升级成为 master，其他的 slave 被重新配置使用新的 master，并且应用程序使用 Redis 服务端通知的新地址。</p>
+</li>
+<li><p>配置提供者：哨兵作为 Redis 客户端发现的权威来源：客户端连接到哨兵请求当前可靠的 master 的地址。如果发生故障，哨兵将报告新地址。</p>
+</li>
+</ul>
+<h2 id="启动并初始化Sentinel"><a href="#启动并初始化Sentinel" class="headerlink" title="启动并初始化Sentinel"></a>启动并初始化Sentinel</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> redis-sentinel /path/to/your/sentinel.conf</span></div><div class="line">或者</div><div class="line"><span class="meta">$</span><span class="bash"> redis-server /path/to/your/sentinel.conf --sentinel</span></div></pre></td></tr></table></figure>
+<p>当一个Sentinel启动时，它需要执行以下五个步骤：</p>
+<ul>
+<li>初始化服务器</li>
+<li>将普通的Redis服务器使用的代码替换成Sentinel专用代码</li>
+<li>初始化Sentinel状态</li>
+<li>根据给定的配置文件，初始化Sentinel监视的主服务器列表</li>
+<li>创建连接主服务器的网络连接</li>
+</ul>
+<p>Redis的master和slave主从设定可以通过slaveof命令操作，举个🌰：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">redis-cli -p 6380</div><div class="line">127.0.0.1:6380&gt; ping</div><div class="line">PONG</div><div class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</div></pre></td></tr></table></figure></p>
+<p>通过Mac的HomeBrew安装Redis的话，默认配置文件在/usr/local/etc/redis-sentinel.conf目录<br>复制出两份相同文件，修改port端口号，简单的配置如下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">port 26379</div><div class="line"><span class="meta">#</span><span class="bash"> monitor后面的mymsater标志master和它的slave，最后一个参数2表示quoram设置</span></div><div class="line">sentinel monitor mymaster 127.0.0.1 6379 2</div><div class="line"><span class="meta">#</span><span class="bash"> 在这个时间范围内不能接收响应，master将会被标记为故障</span></div><div class="line">sentinel down-after-milliseconds mymaster 5000</div><div class="line">sentinel failover-timeout mymaster 60000</div><div class="line">sentinel parallel-syncs mymaster 1</div></pre></td></tr></table></figure></p>
+<p>默认运行在26379端口号，本地服务开多个哨兵的话，将26379改成26380、26381尝试。</p>
+<p>启动日志如下：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2285:X 24 Mar 23:34:17.514 # Sentinel ID is 0440e012ba17a7a5b4b517cab3589e764bbc03e3</div><div class="line">2285:X 24 Mar 23:34:17.514 # +monitor master mymaster 127.0.0.1 6379 quorum 2</div></pre></td></tr></table></figure></p>
+<p>如果启动三个Sentinel后，你就能从日志中看到已经成功启动了三个Sentinel，并且都是监听同一个Master服务器：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">2409:X 24 Mar 23:40:27.673 * +slave slave 127.0.0.1:6380 127.0.0.1 6380 @ mymaster 127.0.0.1 6379</div><div class="line">2409:X 24 Mar 23:40:27.905 * +sentinel sentinel 1c60d45db8d9f17f0be5a0ccc2dc62fb57de2d4b 127.0.0.1 26380 @ mymaster 127.0.0.1 6379</div><div class="line">2409:X 24 Mar 23:40:29.123 * +sentinel sentinel 0440e012ba17a7a5b4b517cab3589e764bbc03e3 127.0.0.1 26379 @ mymaster 127.0.0.1 6379</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="Sentinel的API"><a href="#Sentinel的API" class="headerlink" title="Sentinel的API"></a>Sentinel的API</h2><p>通过redis-cli -p 26379登录Sentinel（因为Sentinel就是一个特殊的Redis服务器）</p>
+<h3 id="检查master是否正常监控"><a href="#检查master是否正常监控" class="headerlink" title="检查master是否正常监控"></a>检查master是否正常监控</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">redis-cli -p 26379</div><div class="line">127.0.0.1:26379&gt; sentinel master mymaster</div><div class="line"> 1) "name"</div><div class="line"> 2) "mymaster"</div><div class="line"> 3) "ip"</div><div class="line"> 4) "127.0.0.1"</div><div class="line"> 5) "port"</div><div class="line"> 6) "6379"</div><div class="line"> 7) "runid"</div><div class="line"> 8) "737b3c33842f4c251b65494b4bf356ce2af8ad8c"</div><div class="line"><span class="meta"> #</span><span class="bash"> flags 是 master。如果master down了，我们在这里希望看到 s_down 或者 o_down。</span></div><div class="line"> 9) "flags"</div><div class="line">10) "master"</div><div class="line">11) "link-pending-commands"</div><div class="line">12) "0"</div><div class="line">13) "link-refcount"</div><div class="line">14) "1"</div><div class="line">15) "last-ping-sent"</div><div class="line">16) "0"</div><div class="line">17) "last-ok-ping-reply"</div><div class="line">18) "466"</div><div class="line">19) "last-ping-reply"</div><div class="line">20) "466"</div><div class="line">21) "down-after-milliseconds"</div><div class="line">22) "30000"</div><div class="line">23) "info-refresh"</div><div class="line">24) "6396"</div><div class="line">25) "role-reported"</div><div class="line">26) "master"</div><div class="line">27) "role-reported-time"</div><div class="line">28) "1492980"</div><div class="line">29) "config-epoch"</div><div class="line">30) "0"</div><div class="line"><span class="meta">#</span><span class="bash"> 表示该Master下有一个slave（例如：我刚才在6380端口启动的）</span></div><div class="line">31) "num-slaves"</div><div class="line">32) "1"</div><div class="line"><span class="meta">#</span><span class="bash"> 表示Sentinel已经检测到这个Master另外两个Sentinel</span></div><div class="line">33) "num-other-sentinels"</div><div class="line">34) "2"</div><div class="line"><span class="meta">#</span><span class="bash"> 集群配置</span></div><div class="line">35) "quorum"</div><div class="line">36) "2"</div><div class="line">37) "failover-timeout"</div><div class="line">38) "180000"</div><div class="line">39) "parallel-syncs"</div><div class="line">40) "1"</div></pre></td></tr></table></figure>
+<h4 id="获取当前master地址"><a href="#获取当前master地址" class="headerlink" title="获取当前master地址"></a>获取当前master地址</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1:26379&gt; SENTINEL get-master-addr-by-name mymaster</div><div class="line">1) "127.0.0.1"</div><div class="line">2) "6379"</div></pre></td></tr></table></figure>
+<h4 id="故障转移测试"><a href="#故障转移测试" class="headerlink" title="故障转移测试"></a>故障转移测试</h4><p>关掉Master服务器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6379 shundown</span></div></pre></td></tr></table></figure></p>
+<p>Sentinel哨兵的打印日志：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2379:X 25 Mar 00:27:52.341 # +switch-master mymaster 127.0.0.1 6379 127.0.0.1 6380</div><div class="line">2379:X 25 Mar 00:27:52.341 * +slave slave 127.0.0.1:6379 127.0.0.1 6379 @ mymaster 127.0.0.1 6380</div></pre></td></tr></table></figure></p>
+<p>重新启动6379的Redis<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6379</span></div><div class="line"></div><div class="line">2604:M 25 Mar 00:29:38.000 # Server initialized</div><div class="line">2604:M 25 Mar 00:29:38.000 * DB loaded from disk: 0.000 seconds</div><div class="line">2604:M 25 Mar 00:29:38.000 * Ready to accept connections</div><div class="line">2604:S 25 Mar 00:29:48.168 * Before turning into a slave, using my master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.</div><div class="line">2604:S 25 Mar 00:29:48.168 * SLAVE OF 127.0.0.1:6380 enabled (user request from 'id=2 addr=127.0.0.1:58752 fd=8 name=sentinel-fe82d064-cmd age=10 idle=0 flags=x db=0 sub=0 psub=0 multi=3 qbuf=0 qbuf-free=32768 obl=36 oll=0 omem=0 events=r cmd=exec')</div><div class="line">2604:S 25 Mar 00:29:48.371 * Connecting to MASTER 127.0.0.1:6380</div><div class="line">2604:S 25 Mar 00:29:48.371 * MASTER &lt;-&gt; SLAVE sync started</div><div class="line">2604:S 25 Mar 00:29:48.371 * Non blocking connect for SYNC fired the event.</div><div class="line">2604:S 25 Mar 00:29:48.371 * Master replied to PING, replication can continue...</div><div class="line">2604:S 25 Mar 00:29:48.372 * Trying a partial resynchronization (request 14da919a7f784c20260fe79893734941b6098734:1).</div><div class="line">2604:S 25 Mar 00:29:48.373 * Full resync from master: d2b5bdafe3c3fd8c7f8e0dfe7e0159e33c9a40fb:608136</div><div class="line">2604:S 25 Mar 00:29:48.373 * Discarding previously cached master state.</div><div class="line">2604:S 25 Mar 00:29:48.464 * MASTER &lt;-&gt; SLAVE sync: receiving 190 bytes from master</div><div class="line">2604:S 25 Mar 00:29:48.464 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</div><div class="line">2604:S 25 Mar 00:29:48.464 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</div><div class="line">2604:S 25 Mar 00:29:48.465 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div></pre></td></tr></table></figure></p>
+<p>从上面可以看出，6379 服务器挂掉后，哨兵可以启动一个故障转移进程，将一个 slave（例如：6380）升级成为master。接着 6379 启动后，哨兵系统会将 6379 设定为 master（6380）的 slave，开始复制 maste r的数据。</p>
+<p>通过测试，发现当主服务器出现故障的时候，<strong>会自动让从服务器成为主服务器</strong>，继续正常的工作，如果挂掉的主服务器重新启动的话，<strong>会让它成为新任主服务器的slave</strong>，完成故障转移。</p>
+<p>还有很多API就不列举了，详细可看第一个参考资料。</p>
+<hr>
+<h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><p>这把学习记录了哨兵系统的简单介绍，还有如何使用，以及它是如何完成故障转移的详细过程，感觉还是好多坑没填🐶</p>
+<hr>
+<p>参考资料<br>[1]<a href="http://redis.majunwei.com/topics/sentinel.html" target="_blank" rel="noopener">Redis哨兵-实现Redis高可用—Redis中文网</a><br>[2]Redis设计与实现第二版—黄健宏</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/25/redis/Redis复制/" rel="next" title="Redis复制">
+                <i class="fa fa-chevron-left"></i> Redis复制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/10/redis/Redis集群（一）安装配置和简便槽分配/" rel="prev" title="Redis集群（一）安装配置和简便槽分配">
+                Redis集群（一）安装配置和简便槽分配 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#哨兵模式的功能列表"><span class="nav-number">1.</span> <span class="nav-text">哨兵模式的功能列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动并初始化Sentinel"><span class="nav-number">2.</span> <span class="nav-text">启动并初始化Sentinel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sentinel的API"><span class="nav-number">3.</span> <span class="nav-text">Sentinel的API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检查master是否正常监控"><span class="nav-number">3.1.</span> <span class="nav-text">检查master是否正常监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取当前master地址"><span class="nav-number">3.1.1.</span> <span class="nav-text">获取当前master地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#故障转移测试"><span class="nav-number">3.1.2.</span> <span class="nav-text">故障转移测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结："><span class="nav-number">3.2.</span> <span class="nav-text">小结：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>

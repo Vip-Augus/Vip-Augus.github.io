@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+<html class="" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重读 JVM - ParNew &amp; CMS GC">
+<meta property="og:url" content="http://yoursite.com/2020/02/21/java/2020-02-21-reread-jvm2/index.html">
+<meta property="og:site_name" content="JingQ">
+<meta property="og:description" content="这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/parnew_flow.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/parnew_gc_memory.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cms_gc_flow.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cmsold_flow.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cms_gc_log.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/consweep_parnew.png">
+<meta property="og:updated_time" content="2020-05-16T16:13:35.633Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重读 JVM - ParNew &amp; CMS GC">
+<meta name="twitter:description" content="这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'JingQ'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/02/21/java/2020-02-21-reread-jvm2/"/>
+
+
+
+
+
+  <title>重读 JVM - ParNew & CMS GC | JingQ</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JingQ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-javatech">
+          <a href="http://www.justdojava.com/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Java Geek Tech
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/21/java/2020-02-21-reread-jvm2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JingQ">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JingQ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">重读 JVM - ParNew & CMS GC</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-21T19:02:44+08:00">
+                2020-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 游览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议</p>
+<a id="more"></a>
+<h2 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h2><p>GC 全称是 <code>Garbage Collect</code>，译为 「垃圾回收」，在代码编写过程中，我们new 一个对象后，在使用和结束阶段，都可以不需要关注内存分配和内存回收，因为 jvm 会自动识别到哪些对象不再被使用，然后进行清理，同时在内存中释放掉这些空间。</p>
+<h3 id="判断对象不可用的方法"><a href="#判断对象不可用的方法" class="headerlink" title="判断对象不可用的方法"></a>判断对象不可用的方法</h3><ul>
+<li><strong>引用计数 Reference Count</strong></li>
+</ul>
+<p>简单理解就是，每个对象都有一个计数器，如果该对象被其它对象引用后，计数器加一，如果计数器不为 0，表示它还在使用，不能被清理。</p>
+<p>这样会有个弊端，例如 <code>A &lt;-&gt; B</code>，如果存在互相引用，但没有被第三方继续引用，那么这两个对象其实没有其他使用，但由于计数器不为 0，无法得到清理。</p>
+<ul>
+<li><strong>可达性分析 Reachability Analysis</strong></li>
+</ul>
+<p>以 <code>GC Roots</code> 为起点，根据引用关系往下搜索，搜索过程中走过的路称为”引用连“（Reference Chain)，如果与 GC Roots 对象可连接，说明对象还在使用，反之表示不可达，说明这些对象不使用，可以被回收掉。</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png" alt=""></p>
+<p>其中关于 GC Roots 这些对象，有我们熟悉的，各个线程中调用的方法堆栈中的参数、局部变量、临时变量等，还有其它作为根路径的对象，可以参考书籍 3.2 章节</p>
+<h3 id="画图，说明-ParNew-和-CMS-回收垃圾的流程"><a href="#画图，说明-ParNew-和-CMS-回收垃圾的流程" class="headerlink" title="画图，说明 ParNew 和 CMS 回收垃圾的流程"></a>画图，说明 ParNew 和 CMS 回收垃圾的流程</h3><p>前面说了有哪些方法可以说明对象不可用，这里来说下用什么垃圾回收器去回收♻️</p>
+<p>在看完第二版之后，jdk8 之前的常用 gc 算法基本掌握，大多基于「分代收集」<code>Generational Collection</code>，主要分为了新生代 <code>Young</code> 区，存储一些朝生夕死的对象，另一个是老年代 <code>Old</code> 区，存储一些使用时间比较长，熬过了多次垃圾回收的对象</p>
+<p>回收核心的步骤：</p>
+<ul>
+<li><strong>标记出可以回收的对象</strong></li>
+<li><strong>清理被标志不可用的对象</strong></li>
+</ul>
+<p>在清理过程中，还会出现复制的操作，这是细化的操作，要看具体使用的哪个 GC 算法。</p>
+<p>目前用的比较熟悉的是 <code>[ParNew + CMS]</code> 垃圾回收器，所以来简单记录这两者使用到的 gc 算法和回收流程。</p>
+<p>区别于初始版本的线性 Serial 垃圾回收器，Serial 只能单线程操作，目前常用的都是多线程操作，跟多一双手多一份力一样，多线程能够提高垃圾回收的速度，常看到的 ParNew 和 Parallel Scanvenge，其中 <code>Parallel</code> 表示并行的意思，并行操作以降低用户线程（应用）因垃圾收集而导致的停顿。</p>
+<h3 id="ParNew-收集器"><a href="#ParNew-收集器" class="headerlink" title="ParNew 收集器"></a>ParNew 收集器</h3><p><code>ParNew</code> 收集器用于回收新生代资源，是 Serial 收集器的并行版本。</p>
+<p>为何要选择 ParNew 作为新生代的回收器，答案是目前好像除了 Serial 收集器外，只有它能够与老年代的 CMS 回收器搭配使用，在 jvm 启动参数中可以通过 <code>+XX:+/-UseParNewGC</code> 来开启或者关闭使用该收集器。</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/parnew_flow.png" alt=""></p>
+<p>顺便来介绍一下其它几个 jvm 参数：</p>
+<ul>
+<li><strong>-XX:SurvivorRatio</strong></li>
+</ul>
+<p>在新生代 <code>Young Generation</code> 中，分为了一个 Eden 区和两个 Survivor（From &amp; TO），这是一种更优的半区复制分代策略，每次分配使用 Eden 区 + 其中一个 Survivor 区，发生垃圾回收时，将 Eden 和 Survivor 中还存活的对象拷贝到另一个 Survivor 区（ From —&gt; TO），然后清理掉刚才的 Eden 和一块刚才使用过的 Survivor 区中数据。</p>
+<p>该参数的默认数值是 8，表示的是 Eden ：Survivor 比值，因为有两个 Survivor 区域，所以一块 Survivor 占新生代 1/10，Eden 占有 8/10。</p>
+<ul>
+<li><strong>–XX:NewRatio</strong></li>
+</ul>
+<p>该参数表示的是新生代与老年代的比值</p>
+<p>例如如果设置 <code>-XX:NewRatio=2</code>，新生代（Eden + 2 * Survivor）：老年代 = 1 ：2，所以新生代占堆的 1/3，老年代占堆的 2/3。</p>
+<ul>
+<li><strong>-XX:MetaspaceSize -XX:MaxMetaspaceSize</strong></li>
+</ul>
+<p>在 jdk8 之前，存在一个区域叫「永久代」（Permgen），与 jdk8 之后出现的「元空间」（Metaspace）作用一样，主要功能是存储类实例的具体信息（即类对象），这部分也叫做「类的元数据」，只对编译器或者 JVM 的运行时有用。</p>
+<p>不同于元空间，永久代里还存储了一些与类数据无关的杂项对象（miscellaneous object），这些对象在 jdk8 的时候，被挪回了普通的堆空间。除此之外，jdk8 开始从根本上改变了保存在这个特殊区域的元数据的类型。</p>
+<p>作为开发，可能不需要太关注里面存储了什么信息，不过得知道为啥「元空间」取代了「永久代」。</p>
+<p>翻看资料，发现了之前默认情况下，永久代大多分配的大小最多只有 82MB，如果遇到特别复杂的应用，加载的类特别多，所以存储的类信息也会很多。</p>
+<p><strong>在 jdk8 之前应用服务器（或者任何需要频繁重新载入类的环境）上经常会碰到由于永久代空间空间耗尽触发的 Full GC。</strong></p>
+<p><strong>而在 jdk8 之后，元空间并不在虚拟机中，而是使用本地内存，所以它的大小仅受到本地内存，也就是系统实际可用空间控制。</strong></p>
+<p>默认情况下，元空间是没有大小限制的，不过还是建议分配一个初始和最大值，例如 <code>-XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m</code>，虽然还是有可能触发 Full GC，这个时候就要排查定位出什么类导致元空间这么庞大，然后进行解决。</p>
+<h3 id="新生代-GC"><a href="#新生代-GC" class="headerlink" title="新生代 GC"></a>新生代 GC</h3><p>可以看下新生代 GC 前后的内存分布情况：(蓝色表示使用情况)</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/parnew_gc_memory.png" alt=""></p>
+<p>验证了前面说的场景，拷贝 Eden 区和其中一块使用的 Survivor 区 S1 中的还在使用对象到另一个 Survivor 区 S0，如果新生代放不下或者对象熬过多次垃圾回收，就会进入到老年代。</p>
+<p>翻看 gc 日志，回收新生代的日志格式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2020-02-20T11:02:44.255+0800: 3346835.272: [GC (Allocation Failure) 2020-02-20T11:02:44.255+0800: 3346835.273: [ParNew: 1123543K-&gt;11470K(1258304K), 0.0113857 secs] 2211645K-&gt;1099617K(4054528K), 0.0118211 secs] [Times: user=0.00 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
+<p>刚开始对于 <code>Failure</code> 有点敏感，以为是错误的，搜索资料后发现，原来是新生代空间不足，触发了 <code>Minor GC</code>，属于正常现象，顺便也来复习一下各个字段的含义。</p>
+<ul>
+<li><strong>Allocation Failure：</strong></li>
+</ul>
+<p>表示新生代没有足够的空间分配新对象，于是需要进行新生代对象回收，准备下一次分配</p>
+<ul>
+<li><strong>2020-02-20T11:02:44.255+0800: 3346835.273</strong></li>
+</ul>
+<p>表示完成的时间戳，后面的数字 3346835.273 表示程序开始多少秒</p>
+<ul>
+<li><strong>ParNew：</strong></li>
+</ul>
+<p>表示这次发生的是 <code>Minor GC</code> 是在新生代触发的，使用的是 <code>ParNew</code> 收集器，使用的是 「标记-复制」算法，同时该期间将会停止用户线程，也就是 <code>Stop The World</code>（常用 <code>STW</code> 表示）</p>
+<ul>
+<li><strong>1123543K-&gt;11470K(1258304K), 0.0113857 secs</strong></li>
+</ul>
+<p><code>k</code> 表示使用的单位为 <code>KB</code>，<strong>前三个数字分别表示新生代当前使用的容量，回收后的容量，以及新生代分配的总大小</strong>。</p>
+<p>后面的时间表示新生代 GC 耗时，sec 表示 second（秒）</p>
+<ul>
+<li><strong>2211645K-&gt;1099617K(4054528K), 0.0118211 secs</strong></li>
+</ul>
+<p>第二次出现的数字串，<strong>前三个数字分别表示堆 heap 当前使用的容量，回收后的容量，以及整个堆 heap 空间分配的总大小</strong></p>
+<ul>
+<li><strong>[Times: user=0.00 sys=0.00, real=0.01 secs]</strong></li>
+</ul>
+<p>分别表示用户态耗时（user），内核态耗（sys）时和总耗时（real）</p>
+<p>因为多线程的原因，通常来说总耗时 real 会比前两个少，所以我们实际关注更多的地方在 real 字段上，实际对用户线程造成了多少中断。</p>
+<h3 id="CMS-收集器"><a href="#CMS-收集器" class="headerlink" title="CMS 收集器"></a>CMS 收集器</h3><p><strong>CMS（Concurrent Mark Sweep）收集器是一种以获取最短回收停顿时间为目标的收集器。</strong></p>
+<p>目前很大一部分的Java应用集中在互联网网站或者基于浏览器的B/S系统的服务端上，这类应用通常都会较为关注服务的响应速度，希望系统停顿时间尽可能短，以给用户带来良好的交互体验。出于稳定性，G1 垃圾回收器有点超前，出了问题的维护成本会比较大，所以希望尽可能短的停顿时间，目前我们在用的是 CMS 垃圾回收期。</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/cms_gc_flow.png" alt=""></p>
+<h3 id="老年代回收"><a href="#老年代回收" class="headerlink" title="老年代回收"></a>老年代回收</h3><p><strong><code>-XX:CMSInitiatingOccupancyFraction=70</code> 默认情况下，当老年代的使用空间达到 70% 时，将会触发老年代回收</strong></p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/cmsold_flow.png" alt=""></p>
+<p><code>Concurrent Mark Sweep</code>，并发标记清理，CMS 收集器是用于老年代GC，从上图可以看出，使用 CMS 收集器后，老年代回收对象之后，不会进行压缩整理，所以老年代出现了不连续的内存空间。</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/cms_gc_log.png" alt=""></p>
+<p>上面是 CMS 收集时的日志格式，同时从时间上可以看出，1~2 天才出现一次老年代的 GC，表示老年代的 GC 频率不高，验证了大多数对象都是朝生夕死的，在 <code>Minor GC</code> 就被回收掉了，下面来记录每个字段的含义。</p>
+<ul>
+<li><strong>初始标记 Initial Mark</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[GC (CMS Initial Mark) [1 CMS-initial-mark: 2058107K(2796224K)] 2189383K(4054528K), 0.0167010 secs] [Times: user=0.00 sys=0.00, real=0.02 secs]</div></pre></td></tr></table></figure>
+<p>并发回收会由「初始标记」开始，这个阶段会暂停所有的应用程序线程（也就是 Stop The World），该阶段的任务时找到堆中所有的垃圾回收根节点对象（GC Roots）</p>
+<p><strong>第一组数字 2058107K(2796224K)</strong>：表示老年代使用了 2058MB，整个老年代大小为 2796MB（简单计算，除以 1000）。</p>
+<p><strong>第二组数字 2189383K(4054528K)</strong>：表示整个堆的大小为括号中的 4054MB，被使用了 2180MB</p>
+<p><strong>0.0167010 secs</strong>：表示用户线程被暂停了 0.0167010 秒</p>
+<ul>
+<li><strong>标记阶段 concurrent-mark-start</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[CMS-concurrent-mark-start]</div><div class="line">[CMS-concurrent-mark: 0.436/0.441 secs] [Times: user=0.95 sys=0.03, real=0.44 secs]</div></pre></td></tr></table></figure>
+<p>标记阶段耗时 0.44 秒（以及 0.95 秒的 CPU 时间）。该阶段进行的工作仅仅是标记，不会对堆的使用情况造成实质性的影响。</p>
+<p><strong>同时该阶段，应用程序还在持续运行着</strong>，所以如果有其它日志输出，有可能是在这 0.44s 内新生代对象进行了分配。</p>
+<ul>
+<li><strong>预清理 preclean</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[CMS-concurrent-preclean-start]</div><div class="line">[CMS-concurrent-preclean: 0.008/0.009 secs] [Times: user=0.01 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
+<p><strong>预清理阶段，应用程序也是在持续运行着</strong></p>
+<p>在预清理阶段，在书籍里面没有找到具体解释，所以查询后，觉得资料二中说的比较好，引用一下</p>
+<blockquote>
+<p>此阶段<strong>标记从新生代晋升的对象、新分配到老年代的对象以及在并发阶段被修改了的对象。</strong></p>
+</blockquote>
+<p>介绍起来有点太复杂，涉及到 jvm 底层保存对象时使用到的数据结构，感兴趣的请好好看下第二条资料~</p>
+<ul>
+<li><strong>重新标记 rescan</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[CMS-concurrent-abortable-preclean-start]</div><div class="line"> CMS: abort preclean due to time 2020-02-18T17:32:02.230+0800: 3197393.247: </div><div class="line">[CMS-concurrent-abortable-preclean: 5.638/5.968 secs] </div><div class="line">[Times: user=9.84 sys=0.15, real=5.96 secs]</div><div class="line"></div><div class="line">[GC (CMS Final Remark) [YG occupancy: 586303 K (1258304 K)]</div><div class="line">2020-02-18T17:32:02.234+0800: 3197393.251: [Rescan (parallel) , 0.0904047 secs]</div><div class="line">2020-02-18T17:32:02.325+0800: 3197393.342: [weak refs processing, 0.0029463 secs]</div><div class="line">2020-02-18T17:32:02.328+0800: 3197393.345: [class unloading, 0.0942777 secs]</div><div class="line">2020-02-18T17:32:02.422+0800: 3197393.439: [scrub symbol table, 0.0275075 secs]</div><div class="line">2020-02-18T17:32:02.450+0800: 3197393.467: [scrub string table, 0.0036712 secs]</div><div class="line">[1 CMS-remark: 2199444K(2796224K)] 2785747K(4054528K), 0.2585849 secs] [Times: user=0.46 sys=0.00, real=0.26 secs]</div></pre></td></tr></table></figure>
+<p><strong>该阶段不是并发的，将会阻塞用户线程，也就是 STW</strong></p>
+<p>其中出现的 <code>abortable clean</code> 表示「可中断清理」，使用它的原因是<strong>希望尽量缩短停顿的时间，避免连续的停顿</strong></p>
+<p>前面已经出现了「初始标记」，当时只是简单的标记一下 GC Roots 能直接关联到的对象，速度比较快。</p>
+<p>「并发标记」阶段就是从 GC Roots 的直接关联对象开始遍历整个对象图的过程，这个过程耗时较长但是不需要停顿用户线程，可以与垃圾收集线程一起并发运行</p>
+<p>「重新标记」阶段，使用它是为了<strong>修正在并发标记期间，因为用户线程继续运行而导致的新生代对象分配或者对象修改引用，会造成原有对象的标记记录变动</strong></p>
+<ul>
+<li><strong>并发清除 sweep</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[CMS-concurrent-sweep-start]</div><div class="line">[CMS-concurrent-sweep: 1.613/1.618 secs] [Times: user=2.30 sys=0.01, real=1.62 secs]</div></pre></td></tr></table></figure>
+<p>清理 sweep 阶段与用户线程是并发运行的，不会 STW</p>
+<p>也有可能出现这种场景：</p>
+<p><img src="http://img.sevenyuan.cn/reread/jvm/consweep_parnew.png" alt=""></p>
+<p>在 <code>con-sweep</code> 阶段中，发生了新生代 GC，说明新生代的 GC 和老年代的 GC 可以并发进行</p>
+<ul>
+<li><strong>并发重置 concurrent reset</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[CMS-concurrent-reset-start]</div><div class="line">[CMS-concurrent-reset: 0.008/0.008 secs] [Times: user=0.01 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
+<p><strong>该阶段也是并发的，不会中断用户线程</strong></p>
+<p>该阶段的日志出现，表示 CMS GC 的周期到此结束，老年代没有被引用的对象将会被回收。</p>
+<h2 id="总结-和-调优建议"><a href="#总结-和-调优建议" class="headerlink" title="总结 和 调优建议"></a>总结 和 调优建议</h2><p>新生代的垃圾回收比较简单，回收过程中，会短暂的 STW，而老年代的 GC 比较复杂，经历了下面的阶段：</p>
+<ul>
+<li>初步标记（有 STW）</li>
+<li>并发标记（并发）</li>
+<li>再次标记（有 STW）</li>
+<li>并发清理（并发）</li>
+</ul>
+<p>由于 CMS 算法不会对老年代进行压缩整理，碎片空间越来越多，如果出现老年代空间不足以让新生代的对象晋升，CMS 收集器将无法回收，那么老年代将会退化到 Full GC（由于手上暂时没有例子，所以不展示了）</p>
+<p>目前来说，默认参数配置已经够用了，例如下面这个：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">MEM_OPTS="</div><div class="line">-server                   # 以服务端形式运行</div><div class="line">-Xms4096m                 # 起始堆大小</div><div class="line">-Xmx4096m                 # 最大堆大小</div><div class="line">-XX:MetaspaceSize=256m    # 元空间大小 </div><div class="line">-XX:MaxMetaspaceSize=256m # 最大元空间大小</div><div class="line">-XX:NewRatio=2            # 新生代 : 老年代 = 1 : 2，该数值要注意，2 是老年代占的比例</div><div class="line">-XX:SurvivorRatio=8       # Eden : Survivor = 8 : 1，表示一个 Survivor 占新生代的 1/10</div><div class="line">"      </div><div class="line"></div><div class="line"></div><div class="line">GC_OPTS="</div><div class="line">-XX:+UseConcMarkSweepGC                 # 使用 CMS</div><div class="line">-XX:+UseCMSCompactAtFullCollection      # 在 Full GC 时进行压缩整理</div><div class="line">-XX:CMSInitiatingOccupancyFraction=70   # 老年代触发 GC 的百分比</div><div class="line">-XX:MaxTenuringThreshold=15             # 最大老年代回收线程数量，回收线程不是越多越好，要结合服务器性能一起评估，具体算法请查相关文章</div><div class="line">-XX:+DisableExplicitGC                  # 禁止在代码中显式调用 System.gc()</div><div class="line">-XX:+CMSParallelRemarkEnabled           # 开启并发重标记</div><div class="line">-verbose:gc                             # 设置 gc 输出的日志参数...</div><div class="line">-XX:+PrintGCDateStamps </div><div class="line">-XX:+PrintGCDetails </div><div class="line">-Xloggc:$&#123;LOGS_DIR&#125;/gc.log -XX:+UseGCLogFileRotation </div><div class="line">-XX:NumberOfGCLogFiles=5 </div><div class="line">-XX:GCLogFileSize=20M"</div></pre></td></tr></table></figure>
+<p>下面是几个调优建议</p>
+<p>1 <strong>升级配置</strong></p>
+<p>如果你的应用之前运行在 2C4G 的服务器上，发现相应速度越来越慢，那这个时候可以升级到 4C8G，配置越高，服务器的性能当然也会更好，这时你就可以可以调整 <code>MEM_OPTS</code>，将内存参数放大</p>
+<p>先别喷这个建议，有时候业务量上来了，原有的机器性能的确扛不住，这样的话升级硬件配置也是理所当然的</p>
+<p>2 <strong>调整 CMSInitiatingOccupancyFraction 参数</strong></p>
+<p><code>CMSInitiatingOccupancyFraction</code> 默认情况下是 70，老年代占用达到 70%后将会触发 CMS GC，但这个时候有可能出现新生代在不断分配对象，然后有对象能够晋升到老年代，将会出现老年代空间不足而触发的 Full GC。</p>
+<p>所以可以适当减小这个值，让并发后台线程尽早运行，去回收老年代不再使用的对象。</p>
+<p>3 <strong>优化代码逻辑</strong></p>
+<p>除去服务器配置问题，业务代码上如果出现大量耗时操作，例如频繁的数据库交互，大数据计算，这样 GC 将会更加频繁，并且时间可能越来越长，导致用户线程被占用，系统中断时间增加，会造成用户不好的使用体验。</p>
+<p>所以根本上，需要从应用代码着手，例如做以下几个方面的优化</p>
+<ul>
+<li>将频繁的数据库操作改成批处理，一次性获取数据或修改数据</li>
+<li>简化代码计算逻辑，去掉无用计算量</li>
+<li>减少嵌套循环，优化数据结构</li>
+<li>…</li>
+</ul>
+<p>还有更多 GC 的内容没有记录，所以强烈建议大家去看下周志明写的《深入理解 JVM》第三个章节，继续深入学习这些经典的 GC 算法。同时，我们在调优过程中，都是在吞吐量和应用停顿时间，这两者之间在做平衡，所以具体调整方案需要在我们了解 GC 细节后，选择合适的算法和配置参数，来达到预期的效果。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://blog.csdn.net/zc19921215/article/details/83029952" target="_blank" rel="noopener">GC(Allocation Failure)引发的一些JVM知识点梳理</a></li>
+<li><a href="https://www.cnblogs.com/littleLord/p/5380624.html#currentPreClean" target="_blank" rel="noopener">详解CMS垃圾回收机制</a></li>
+<li><a href="https://jacobchang.cn/gc-algorithms-and-garbage-collector.html" target="_blank" rel="noopener">JVM 探究（三）：垃圾回收算法和垃圾回收器</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/16/java/2020-02-16-reread-jvm1/" rel="next" title="重读 JVM - javac & javap">
+                <i class="fa fa-chevron-left"></i> 重读 JVM - javac & javap
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/04/redis/2020-04-04-annotation-redis-lock/" rel="prev" title="使用注解形式实现 Redis 分布式锁">
+                使用注解形式实现 Redis 分布式锁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjEzNi8xMjY3MQ=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               alt="JingQ" />
+          <p class="site-author-name" itemprop="name">JingQ</p>
+           
+              <p class="site-description motion-element" itemprop="description">努力学习</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vip-Augus" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/yjq41596" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.douban.com/people/YeJingQi" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-anchor"></i>
+                  
+                    
+                      Douban
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto://JingQBoom@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GC"><span class="nav-number">1.</span> <span class="nav-text">GC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断对象不可用的方法"><span class="nav-number">1.1.</span> <span class="nav-text">判断对象不可用的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#画图，说明-ParNew-和-CMS-回收垃圾的流程"><span class="nav-number">1.2.</span> <span class="nav-text">画图，说明 ParNew 和 CMS 回收垃圾的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ParNew-收集器"><span class="nav-number">1.3.</span> <span class="nav-text">ParNew 收集器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新生代-GC"><span class="nav-number">1.4.</span> <span class="nav-text">新生代 GC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMS-收集器"><span class="nav-number">1.5.</span> <span class="nav-text">CMS 收集器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#老年代回收"><span class="nav-number">1.6.</span> <span class="nav-text">老年代回收</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结-和-调优建议"><span class="nav-number">2.</span> <span class="nav-text">总结 和 调优建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-JingQ"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JingQ</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<a href="http://www.beian.miit.gov.cn">浙ICP备17002280号-1</a> 
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+</html>
