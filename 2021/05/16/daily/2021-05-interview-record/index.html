@@ -88,13 +88,13 @@
 
 
 
-<meta name="description" content="再不更新就成年更博客了">
+<meta name="description" content="再不更新就成年更博客了T^T">
 <meta name="keywords" content="Daily">
 <meta property="og:type" content="article">
 <meta property="og:title" content="七年杭漂，回深圳">
 <meta property="og:url" content="http://yoursite.com/2021/05/16/daily/2021-05-interview-record/index.html">
 <meta property="og:site_name" content="JingQ">
-<meta property="og:description" content="再不更新就成年更博客了">
+<meta property="og:description" content="再不更新就成年更博客了T^T">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://img.sevenyuan.cn/YurisNight_ZH-CN5738817931_1920x1080.jpg">
 <meta property="og:image" content="https://img-blog.csdn.net/20160417164808359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
@@ -103,12 +103,12 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7634245-7b7882e1f4ea5d7d.png">
 <meta property="og:image" content="https://p0.meituan.net/travelcube/01888770c8f84b1df258ddd1d424535c68559.png@1112w_282h_80q">
 <meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/daily/basketball_hz.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/daily/basketball_hz.JPEG">
 <meta property="og:image" content="http://img.sevenyuan.cn/daily/weekend_dinner.JPEG">
-<meta property="og:updated_time" content="2021-05-16T12:17:23.782Z">
+<meta property="og:updated_time" content="2021-05-25T16:15:07.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="七年杭漂，回深圳">
-<meta name="twitter:description" content="再不更新就成年更博客了">
+<meta name="twitter:description" content="再不更新就成年更博客了T^T">
 <meta name="twitter:image" content="https://img.sevenyuan.cn/YurisNight_ZH-CN5738817931_1920x1080.jpg">
 
 
@@ -366,11 +366,71 @@
 
       
         <p><img src="https://img.sevenyuan.cn/YurisNight_ZH-CN5738817931_1920x1080.jpg" alt=""></p>
-<center><strong>再不更新就成年更博客了</strong></center>
+<center><strong>再不更新就成年更博客了T^T</strong></center>
 
 <a id="more"></a>
 <hr>
-<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>又是好久没有静下心来总结，趁着五一假期结束，慢慢写点文字，来记录一下今年人生中一次重要的分叉口选择吧。</p>
+<ul>
+<li><a href="#%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D">背景介绍</a></li>
+<li><a href="#%E6%B7%B1%E5%9C%B3%E8%9A%82%E8%9A%81">深圳蚂蚁</a><ul>
+<li><a href="#%E4%B8%80%E9%9D%A2">一面</a><ul>
+<li><a href="#1%E7%94%A8%E7%9A%84%E6%AF%94%E8%BE%83%E5%A4%9A%E7%9A%84%E6%98%AF%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">1、用的比较多的是哪些数据结构？</a></li>
+<li><a href="#2%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9C%89%E4%BD%BF%E7%94%A8%E8%BF%87%E7%9A%84%E5%90%A7%E8%AF%B4%E4%B8%8B%E6%9E%84%E9%80%A0%E5%8F%82%E6%95%B0%E7%9A%84%E5%90%AB%E4%B9%89%E5%90%A7">2、线程池有使用过的吧？说下构造参数的含义吧</a></li>
+<li><a href="#3%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E6%9C%89%E9%81%87%E5%88%B0%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%E4%B9%88">3、多线程下有遇到什么问题么？</a></li>
+<li><a href="#4threadlocal-%E6%98%AF%E6%80%8E%E6%A0%B7%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%91%A2">4、ThreadLocal 是怎样实现的呢？</a></li>
+<li><a href="#5jvm-%E9%87%8C%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E6%9C%89%E4%BA%86%E8%A7%A3%E4%B9%88">5、JVM 里的内存分布有了解么？</a></li>
+<li><a href="#6%E7%94%9F%E4%BA%A7%E4%B8%8A%E4%BD%BF%E7%94%A8%E7%9A%84%E6%9E%B6%E6%9E%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98%E6%80%8E%E4%B9%88%E6%8E%92%E6%9F%A5">6、生产上使用的架构、中间件有哪些？服务器配置如何？遇到问题怎么排查？</a></li>
+<li><a href="#7spring-%E7%9A%84%E4%BA%86%E8%A7%A3%E6%9C%89%E5%A4%9A%E5%B0%91%E7%9F%A5%E9%81%93%E4%B8%80%E4%B8%AA-bean-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B9%88">7、Spring 的了解有多少？知道一个 Bean 的生命周期么？</a></li>
+<li><a href="#8%E5%89%8D%E9%9D%A2%E5%90%AC%E4%BD%A0%E6%8F%90%E5%88%B0%E4%BA%86-dubbo%E7%94%A8%E4%BA%86%E5%85%B6%E4%B8%AD%E4%BB%80%E4%B9%88%E7%89%B9%E6%80%A7%E5%91%A2">8、前面听你提到了 dubbo，用了其中什么特性呢？</a></li>
+<li><a href="#9%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E7%9A%84%E6%98%AF-mysql-%E4%B9%88%E6%95%B0%E6%8D%AE%E9%87%8F%E6%9C%89%E5%A4%9A%E5%B0%91">9、数据库用的是 MySQL 么？数据量有多少？</a></li>
+<li><a href="#10%E4%B9%8B%E5%89%8D%E5%81%9A%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%83%BD%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E4%B9%88">10、之前做的项目能介绍一下么？</a></li>
+<li><a href="#11%E6%9C%89%E4%BB%80%E4%B9%88%E6%83%B3%E9%97%AE%E6%88%91%E7%9A%84%E4%B9%88">11、有什么想问我的么？</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E9%9D%A2">二面</a><ul>
+<li><a href="#1%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA-lru">1、实现一个 LRU</a></li>
+<li><a href="#2cba-%E4%B8%89%E4%B8%AA%E7%BA%BF%E7%A8%8B%E9%A1%BA%E5%BA%8F%E5%90%AF%E5%8A%A8%E9%A1%BA%E5%BA%8F%E6%89%93%E5%8D%B0-abc">2、C，B，A 三个线程顺序启动，顺序打印 A，B，C</a></li>
+<li><a href="#3%E4%B8%80%E9%81%93%E4%B8%9A%E5%8A%A1%E9%A2%98">3、一道业务题</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89%E9%9D%A2">三面</a></li>
+<li><a href="#%E5%9B%9B%E9%9D%A2">四面</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BE%AE%E4%BC%97%E9%93%B6%E8%A1%8C">微众银行</a><ul>
+<li><a href="#%E4%B8%80%E9%9D%A2-1">一面</a><ul>
+<li><a href="#1%E5%85%88%E5%81%9A%E4%B8%AA%E7%AE%80%E5%8D%95%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D%E5%90%A7">1、先做个简单自我介绍吧</a></li>
+<li><a href="#2hashmap-%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E4%B9%88%E8%A6%81%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%80%8E%E4%B9%88%E5%8A%9Econcurrenthashmap-%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0">2、HashMap 怎么实现的？是线程安全的么？要线程安全怎么办？ConcurrentHashMap 怎么实现？</a></li>
+<li><a href="#3threadlocal-%E4%BA%86%E8%A7%A3%E4%B9%88%E5%A6%82%E6%9E%9C%E5%AD%90%E7%BA%BF%E7%A8%8B%E6%83%B3%E6%8B%BF%E5%88%B0%E7%88%B6%E7%BA%BF%E7%A8%8B%E7%9A%84%E4%B8%8A%E4%B8%8B%E6%96%87%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E5%A6%82%E6%9E%9C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E9%87%8C%E9%9D%A2%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%86%8D%E5%88%9B%E5%BB%BA%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%AF%9D%E6%80%8E%E4%B9%88%E4%BC%A0%E9%80%92%E4%B8%8A%E4%B8%8B%E6%96%87">3、ThreadLocal 了解么？如果子线程想拿到父线程的上下文怎么实现？如果线程池里面的线程再创建子线程的话，怎么传递上下文？</a></li>
+<li><a href="#4volatile-%E5%90%AC%E8%AF%B4%E8%BF%87%E4%B9%88synchronized-%E5%92%8C-reentrantlock-%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6%E5%A6%82%E4%BD%95">4、Volatile 听说过么？Synchronized 和 ReentrantLock 实现机制如何？</a></li>
+<li><a href="#5%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%E4%BA%86%E8%A7%A3%E4%B9%88%E5%90%8C%E5%90%8D%E7%B1%BB%E8%83%BD%E5%90%8C%E6%97%B6%E8%BF%90%E8%A1%8C%E4%B9%88">5、双亲委派机制了解么？同名类能同时运行么？</a></li>
+<li><a href="#6%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88innodb-%E7%89%B9%E6%80%A7%E6%9C%89%E5%93%AA%E4%BA%9B%E7%B4%A2%E5%BC%95%E6%9C%BA%E5%88%B6">6、数据库用的是什么？Innodb 特性有哪些？索引机制？</a></li>
+<li><a href="#7spring-bean-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%BA%86%E8%A7%A3%E4%B9%88bean-%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%90%8E%E5%A6%82%E4%BD%95%E5%81%9A%E4%B8%80%E4%BA%9B%E4%B8%AA%E6%80%A7%E5%8C%96%E6%93%8D%E4%BD%9C%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E7%9A%84%E9%97%AE%E9%A2%98">7、Spring Bean 生命周期了解么？Bean 实例化后，如何做一些个性化操作？如何解决循环依赖的问题？</a></li>
+<li><a href="#8%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%BA%86%E8%A7%A3%E4%B9%88%E4%BB%A3%E7%A0%81%E4%B8%AD%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E8%80%83%E5%AF%9F">8、事务隔离级别了解么？代码中事务管理怎么做的？事务传播机制考察</a></li>
+<li><a href="#8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%8F%82%E6%95%B0%E5%90%AB%E4%B9%89%E5%81%87%E5%A6%82%E6%98%AF%E8%80%97-cpu-%E8%AE%A1%E7%AE%97%E8%B5%84%E6%BA%90%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%8F%82%E6%95%B0">8、多线程参数含义？假如是耗 CPU 计算资源的任务，如何设置参数？</a></li>
+<li><a href="#9%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%AD%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E5%85%A8%E5%B1%80%E5%94%AF%E4%B8%80-id">9、分布式系统中，如何生成全局唯一 ID？</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E9%9D%A2-1">二面</a><ul>
+<li><a href="#1rocketmq-%E7%9A%84%E6%9E%B6%E6%9E%84%E5%A6%82%E4%BD%95">1、RocketMQ 的架构如何？</a></li>
+<li><a href="#2rocketmq-%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E5%90%8E%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E4%B8%A4%E4%B8%AA%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7">2、RocketMQ 发送消息后，如何保证两个系统的一致性？</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89%E9%9D%A2-1">三面</a></li>
+<li><a href="#%E5%9B%9B%E9%9D%A2-1">四面</a></li>
+</ul>
+</li>
+<li><a href="#shopee">Shopee</a><ul>
+<li><a href="#1netty-%E6%9C%89%E4%BD%BF%E7%94%A8%E8%BF%87%E4%B9%88%E5%AF%B9%E5%AE%83%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91%E5%91%A2">1、Netty 有使用过么？对它了解多少呢？</a></li>
+<li><a href="#2%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E8%AE%BE%E8%AE%A1%E7%9A%84%E4%BE%9D%E6%8D%AE%E6%98%AF%E4%BB%80%E4%B9%88">2、分库分表设计的依据是什么？</a></li>
+<li><a href="#3%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%A7%84%E6%A8%A1%E5%A6%82%E4%BD%95%E7%B3%BB%E7%BB%9F%E5%B9%B6%E5%8F%91%E9%87%8F%E5%A4%9A%E5%B0%91%E5%85%B7%E4%BD%93%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95">3、服务器规模如何？系统并发量多少？具体性能如何？</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E5%9C%B0%E5%9D%80">参考地址</a></li>
+</ul>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><font color="#dd0000">又是好久没有静下心来总结，趁着五一假期结束，慢慢写点文字，来记录一下今年人生中一次重要的分叉口选择吧。</font>
+
 <p>我呢，是广东人，在广州度过了大学前的求学经历，大学去了杭州念书，也就顺势在杭州实习和工作，毕业刚开始时，还是觉得很有盼头的，努努力学习和工作，有机会能在杭州买房定居，在老东家能够学习到很多东西，无论是业务知识，还是框架的知识，都能够深入扩展学习，而且大家对我也很好，十分照顾我，也没有强制加班，整体氛围感觉到很舒适。</p>
 <p>但一个人还是感觉到压力，工资涨幅没能跟上房价，而且家里人见面也经常会喊我回去，广东这边的广州、深圳都是一线大城市，机会也很多，建议我回来，所以在多重因数下，今年三月份的时候，开始投递深圳的岗位。</p>
 <p>本次春招总共投了三个，分别是以下几个：</p>
@@ -593,7 +653,7 @@
 <p>我在老东家，从 17 年到 21 年，大三下学期就开始实习，实习一年后，拿到毕业证顺利转正。在这里的氛围很 <code>nice</code>，有同龄人的愉快玩耍，也有成熟稳重的前辈带领，所以在这边的工作环境真的觉得还是挺不错的。</p>
 <p>同样，这边很多同事都是阿里、网易之类大厂过来的，技术能力和工作能力都不错，从他们身上也能学到很多东西。加上我两个师傅都超级厉害，有不懂的问题都能给我解释清楚，在他们的带领下，学习到很多知识，成长的速度很快。</p>
 <p>而且这边每周三有篮球俱乐部的活动，那天快到六点时，三五好友一起约着去打球，在球场上冲撞，挥洒汗水 <strong>（怎么突然感觉在演青春剧(<em>ﾟДﾟ</em>) ）</strong>，刚好当时三四月，也陆陆续续有朋友离职，每打一场球就送别一位球友，那段时间，打完球就找个烧烤店闲聊，好好道了个别。</p>
-<p><img src="http://img.sevenyuan.cn/daily/basketball_hz.jpg" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/daily/basketball_hz.JPEG" alt=""></p>
 <p>感觉遇到的每个人都很好，给我帮助很多，人际交往很融洽，工作上也给了很大自由度，虽然也有业务目标的要求，但更多会考虑工作安排合理性，而且也能自己提出技术需求，在做业务需求的同时，也能增强自己的技术，领导也十分赞成这种方式，培养人才。</p>
 <p>这几年时间，获得过一些荣誉，所负责的业务可以独当一面（小夸一下），也能带领新人，跟着成哥和小王爷学到很多很多，有相应的技术沉淀。</p>
 <p>总之总之，其实对老东家还是挺不舍的，但薪酬的确跟外面少，而且杭州离广州的确还是有点距离的。所以过年的时候，就确定今年要回广东的计划。</p>
@@ -601,7 +661,8 @@
 <p><img src="http://img.sevenyuan.cn/daily/weekend_dinner.JPEG" alt=""></p>
 <p>（<strong>上面是周末刚做的晚饭，各位也要记得按时吃饭~</strong>）</p>
 <p>接下来的规划，工作上也要继续努力，有更多东西需要学习，有很多基础需要继续夯实，要多去锻炼身体，周末尽量自己做饭吃，如果有时间的话，要去学一门乐器，<strong>尽量做到工作和生活的平衡。</strong></p>
-<p><strong>感谢各位小伙伴能看到最后，送上迟到的新年祝福，祝各位平安喜乐，万事胜意~</strong></p>
+<font color="#dd0000"><strong>感谢各位小伙伴能看到最后，送上迟到的新年祝福，祝各位平安喜乐，万事胜意~</strong></font>
+
 <hr>
 <h2 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h2><p><a href="https://blog.csdn.net/u014748504/article/details/108509910" target="_blank" rel="noopener">一篇文章搞定Spring中bean的作用域与生命周期以及对bean加载过程的理解</a></p>
 <p><a href="https://www.cnblogs.com/javazhiyin/p/10905294.html" target="_blank" rel="noopener">深究Spring中Bean的生命周期</a></p>
