@@ -97,15 +97,15 @@
 <meta property="og:description" content="再不更新就成年更博客了T^T">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://img.sevenyuan.cn/YurisNight_ZH-CN5738817931_1920x1080.jpg">
-<meta property="og:image" content="https://img-blog.csdn.net/20160417164808359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="https://z3.ax1x.com/2021/05/26/2Sqomn.png">
 <meta property="og:image" content="https://dubbo.apache.org/imgs/dev/dubbo-framework.jpg">
-<meta property="og:image" content="https://images2017.cnblogs.com/blog/834468/201709/834468-20170919190936118-1560718919.png">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7634245-7b7882e1f4ea5d7d.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/05/26/2SqXpF.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/05/26/2Sqv6J.png">
 <meta property="og:image" content="https://p0.meituan.net/travelcube/01888770c8f84b1df258ddd1d424535c68559.png@1112w_282h_80q">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/05/26/2SL9Tx.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/daily/basketball_hz.JPEG">
 <meta property="og:image" content="http://img.sevenyuan.cn/daily/weekend_dinner.JPEG">
-<meta property="og:updated_time" content="2021-05-25T16:15:07.795Z">
+<meta property="og:updated_time" content="2021-05-25T16:29:04.619Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="七年杭漂，回深圳">
 <meta name="twitter:description" content="再不更新就成年更博客了T^T">
@@ -462,7 +462,7 @@
 <p>面试官也很耐心，没有打算我说话，中间也有问细节，互相交流。</p>
 <h4 id="7、Spring-的了解有多少？知道一个-Bean-的生命周期么？"><a href="#7、Spring-的了解有多少？知道一个-Bean-的生命周期么？" class="headerlink" title="7、Spring 的了解有多少？知道一个 Bean 的生命周期么？"></a>7、Spring 的了解有多少？知道一个 Bean 的生命周期么？</h4><p>说到 <code>Spring</code> 当然就要介绍一下它的 <strong>IoC 控制反转和 AOP 切面注入</strong>，使用了 <code>BeanFactory</code> 管理起所有使用到的 <code>bean</code>，应用启动时初始化成单例，每次调用时可以直接拿到引用，避免重复的初始化，<strong>一来方便了使用，二来减少开销</strong>；接着还有 AOP 的思想，使用切面，将通用的操作，<strong>例如日志、事务等，统一管理起来，让业务方可以更专注于写业务代码，同时减少重复代码</strong>。</p>
 <p><code>Spring Bean</code> 的生命周期也是一个基础知识点，这里不多赘述，给个网上的中文图更好理解</p>
-<p><img src="https://img-blog.csdn.net/20160417164808359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/05/26/2Sqomn.png" alt=""></p>
 <p>这里也跟面试官聊到，Spring 容器启动时，AbstractApplicationContext 类里面的 refresh 方法，容器启动流程所做的事情。</p>
 <h4 id="8、前面听你提到了-dubbo，用了其中什么特性呢？"><a href="#8、前面听你提到了-dubbo，用了其中什么特性呢？" class="headerlink" title="8、前面听你提到了 dubbo，用了其中什么特性呢？"></a>8、前面听你提到了 dubbo，用了其中什么特性呢？</h4><p>我们使用 <code>dubbo</code> 来做 <code>RPC</code>，不同系统间通过 <code>dubbo</code> 来交互。具体来说，使用了 <code>zk</code> 作为注册中心，然后 <code>dubbo</code> 用来作为服务提供者 <code>provider</code> 和消费者 <code>consumer</code>。</p>
 <p>使用 <code>xml</code> 形式，<code>dubbo:provider</code> 和 <code>dubbo:reference</code> 来暴露服务和订阅服务，然后说了一些常用的配置参数含义。</p>
@@ -528,7 +528,7 @@
 <p>面试官还问到 <code>CAS</code> 的含义，于是就介绍了一下关键的三个值还有 <code>unsafe</code> 使用，在 【期望值】 == 【内存值】情况下，才将【结果值】更新到【内存值】中，常见的是 <code>Unsafe</code> 类中的 <code>compareAndSwapXXX</code> 等方法。</p>
 <p>还有具体调用的操作系统 <code>C</code> 指令这些，进行自旋等待这些概念，我只说有这个概念，但具体操作系统怎么实现的，不太清楚，后续有需要的话，可以去加深学习~</p>
 <h4 id="3、ThreadLocal-了解么？如果子线程想拿到父线程的上下文怎么实现？如果线程池里面的线程再创建子线程的话，怎么传递上下文？"><a href="#3、ThreadLocal-了解么？如果子线程想拿到父线程的上下文怎么实现？如果线程池里面的线程再创建子线程的话，怎么传递上下文？" class="headerlink" title="3、ThreadLocal 了解么？如果子线程想拿到父线程的上下文怎么实现？如果线程池里面的线程再创建子线程的话，怎么传递上下文？"></a>3、ThreadLocal 了解么？如果子线程想拿到父线程的上下文怎么实现？如果线程池里面的线程再创建子线程的话，怎么传递上下文？</h4><p><code>ThreadLocal</code> 的原理前面在阿里面试的时候有介绍到，这里补充一个博客园 <code>nullzx</code> 博主画的图，画得很好</p>
-<p><img src="https://images2017.cnblogs.com/blog/834468/201709/834468-20170919190936118-1560718919.png" alt="博客园 nullzx"></p>
+<p><img src="https://z3.ax1x.com/2021/05/26/2SqXpF.png" alt="博客园 nullzx"></p>
 <p>主要用来理解，每个线程都有一份自己的 <code>ThreadLocalMap</code> 副本，接着取出 <code>key</code> 类型为 <code>threadLocal</code>（自己创建的 <code>ThreadLocal</code> 对象）所对应的 <code>value</code>，起到线程隔离和上下文透传的作用~</p>
 <p>在子线程中想使用父线程的上下文信息，可以使用 <strong>InheritableThreadLocal</strong> 类，当创建一个子线程时，会将父线程的上下文信息，拷贝一份到子线程中。</p>
 <p>像是线程嵌套的场景，之前看到过阿里有介绍他们开源的 <strong>TransmittableThreadLocal</strong>，看的时间有点长，忘记了怎么实现的，而且项目中也没有实际使用的地方，于是跟面试官聊了这个概念，就诚实说自己并没有了解底层实现。</p>
@@ -545,7 +545,7 @@
 <p>然后加载类的时候，先会判断这个类有没有被加载过，加载过的话直接返回，否则进行加载流程。</p>
 <p>加载的时候，当前类加载器会先委派父类加载器进行 <code>loadClass</code>，一层一层往上进行尝试加载，只有父类加载器无法加载时，才会由自己进行加载。</p>
 <p><strong>简书平台上 <a href="https://www.jianshu.com/p/1e4011617650" target="_blank" rel="noopener">面试官：java双亲委派机制及作用</a>，【秦时的明月夜】博主这图很清晰，有介绍每个类加载器的用途，推荐一下~</strong></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7634245-7b7882e1f4ea5d7d.png" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/05/26/2Sqv6J.png" alt=""></p>
 <p>这样做的好处有两个</p>
 <ul>
 <li><p>避免重复加载。<br>  通过委派的形式，子类加载器不用重复加载父类加载器已经加载过的 <code>.class</code>，节省了资源。</p>
@@ -614,7 +614,7 @@
 <p>还有更多关于限流和负载均衡的内容没有细说，面试官就问下一题。</p>
 <h4 id="2、RocketMQ-发送消息后，如何保证两个系统的一致性？"><a href="#2、RocketMQ-发送消息后，如何保证两个系统的一致性？" class="headerlink" title="2、RocketMQ 发送消息后，如何保证两个系统的一致性？"></a>2、RocketMQ 发送消息后，如何保证两个系统的一致性？</h4><p>其实这题考察的是分布式事务，而 <code>RMQ</code> 作为可靠消息中间件，同时在金融领域也普遍应用，也有自己一套事务保证机制。</p>
 <p>具体事务消息机制：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/05/26/2SL9Tx.png" alt=""></p>
 <p>主要分为两个流程：</p>
 <ul>
 <li>正常消息的发送、提交<br> (1) <code>producer</code> 发送 <code>Half</code> 消息<br> (2) <code>broker</code> 本地写入 <code>Half</code> 消息（将 <code>Topic</code> 改成 <code>RMQ_SYS_TRANS_HALF_TOPIC</code>，该阶段 <code>Consumer</code> 由于没有订阅关系，无法消费）<br> (3) <code>producer</code> 根据 <code>broker</code> 写入消息结果，成功的话，执行本地事务；写入消息失败，<code>producer</code> 不执行本地事务<br> (4) 根据本地事务结果，往 <code>broker</code> 发送 <code>Commit</code> 或者 <code>Rollback</code>（如果是 <code>Commit</code>，将会将 <code>Half</code> 消息转回 <code>Real Topic</code>，生成消息索引，订阅者可以进行消费）</li>
