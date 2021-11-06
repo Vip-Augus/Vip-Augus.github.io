@@ -104,10 +104,10 @@
 <meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Processor_Implemention.png">
 <meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_SendMessageProcessor.png">
 <meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_SendMessageProcessor_flow.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-Broker-Netty-Model.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png">
-<meta property="og:updated_time" content="2021-11-02T16:14:17.000Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ-Broker-Netty-Model.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ-RequestCode.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Start_Register.png.png">
+<meta property="og:updated_time" content="2021-11-06T05:30:45.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RocketMQ Broker 深入学习">
 <meta name="twitter:description" content="学习一下火箭消息 - Broker 的原理和使用🚀">
@@ -278,7 +278,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg">
+      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -629,7 +629,7 @@
 </ul>
 <hr>
 <h1 id="网络模型"><a href="#网络模型" class="headerlink" title="网络模型"></a>网络模型</h1><p><code>Broker</code> 的良好性能，有一半得归功于 <code>Netty</code> 这个优秀的通讯框架，扒了一下 <code>Broker</code> 上代码实现还有网上资料，记录一下使用到的 <code>Netty</code> 网络模型。</p>
-<h2 id="Netty-网络模型"><a href="#Netty-网络模型" class="headerlink" title="Netty 网络模型"></a>Netty 网络模型</h2><p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-Broker-Netty-Model.png" alt=""></p>
+<h2 id="Netty-网络模型"><a href="#Netty-网络模型" class="headerlink" title="Netty 网络模型"></a>Netty 网络模型</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ-Broker-Netty-Model.png" alt=""></p>
 <p>各模块作用：</p>
 <ul>
 <li>eventLoopGroupBoss </li>
@@ -652,11 +652,11 @@
 <blockquote>
 <p>org.apache.rocketmq.common.protocol.RequestCode</p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png" alt=""><br><code>broker</code> 启动时，注册处理线程池的位置在:</p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ-RequestCode.png" alt=""><br><code>broker</code> 启动时，注册处理线程池的位置在:</p>
 <blockquote>
 <p>org.apache.rocketmq.broker.BrokerController#registerProcessor</p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Start_Register.png.png" alt=""></p>
 <h2 id="对照表"><a href="#对照表" class="headerlink" title="对照表"></a>对照表</h2><table>
 <thead>
 <tr>
@@ -834,7 +834,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="http://img.sevenyuan.cn/%E5%B0%8F%E7%86%8A%E7%8C%AB.jpeg"
+               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
                alt="JingQ" />
           <p class="site-author-name" itemprop="name">JingQ</p>
            
