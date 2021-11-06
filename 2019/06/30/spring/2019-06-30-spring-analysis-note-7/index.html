@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="在上一篇文章中，深入分析和学习了 BeanFactoryPostProcessor ，主体是 BeanFactory 的后处理器，这次来学习主体是 Bean 的后处理器：BeanPostProcessor。 定义：它也是 Spring 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 bean 实例化阶段前后 本篇思路：  BeanPostProcessor 定义 如何使用 代码实现分析">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/context_extend_method_list.png">
-<meta property="og:updated_time" content="2019-07-21T03:23:14.069Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring7/ManausBasin_ZH-CN4303809335_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring7/context_extend_method_list.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Spring 源码学习(七)扩展功能 下篇">
 <meta name="twitter:description" content="在上一篇文章中，深入分析和学习了 BeanFactoryPostProcessor ，主体是 BeanFactory 的后处理器，这次来学习主体是 Bean 的后处理器：BeanPostProcessor。 定义：它也是 Spring 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 bean 实例化阶段前后 本篇思路：  BeanPostProcessor 定义 如何使用 代码实现分析">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring7/ManausBasin_ZH-CN4303809335_1920x1080.jpg">
 
 
 
@@ -358,7 +358,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/ManausBasin_ZH-CN4303809335_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring7/ManausBasin_ZH-CN4303809335_1920x1080.jpg" alt=""></p>
 <p>在上一篇文章中，深入分析和学习了 <code>BeanFactoryPostProcessor</code> ，主体是 <code>BeanFactory</code> 的后处理器，这次来学习主体是 <code>Bean</code> 的后处理器：<code>BeanPostProcessor</code>。</p>
 <p><strong>定义：它也是 <code>Spring</code> 对外提供的接口，用来给用户扩展自定义的功能。执行的时机在 <code>bean</code> 实例化阶段前后</strong></p>
 <p>本篇思路：</p>
@@ -403,7 +403,7 @@
 <p>剩下顺序 <code>Order</code> 类型的后处理器注册 <code>BeanFactoryPostProcessor</code> 类似就不重复多讲解了，这段代码的逻辑挺清晰的~</p>
 <hr>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>结束两个扩展功能，<code>BeanFactoryPostProcessor</code> 和 <code>BeanPostProcessor</code> 的学习使用后，还有其它的扩展功能没学习到，<strong>在一开始基础机构篇就提到剩下的方法：</strong></p>
-<p><img src="http://img.sevenyuan.cn/context_extend_method_list.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring7/context_extend_method_list.png" alt=""></p>
 <p>这这些扩展功能中，个人感觉<strong>事件传播器、监听器和发送广播事件</strong>这三个会用得比较多，所以下面的内容会花比较大篇幅讲这三个扩展。</p>
 <hr>
 <h1 id="初始化消息资源"><a href="#初始化消息资源" class="headerlink" title="初始化消息资源"></a>初始化消息资源</h1><p>根据书中的内容介绍，这个消息资源 <code>messageSource</code> 是跟 <code>Spring</code> 国际化相关。</p>

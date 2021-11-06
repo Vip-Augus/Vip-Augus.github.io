@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="1. 简单动态字符串(SDS)Redis没有直接使用C语言传统的字符串表示(以空字符结尾的字符数据)，而是自己构建了一种名为简单动态字符串(simple dynamic string, SDS)的抽象类型，并将SDS用作Redis的默认字符串表示。 在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。 1.1 SDS的定义每个sds.h/sdshdr结构表示一个SDS值： 1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/SDS%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%B7%B3%E8%B7%83%E8%A1%A8.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png">
-<meta property="og:updated_time" content="2019-05-25T06:57:06.335Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/SDS%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E8%B7%B3%E8%B7%83%E8%A1%A8.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png">
+<meta property="og:updated_time" content="2021-10-30T16:52:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis数据结构">
 <meta name="twitter:description" content="1. 简单动态字符串(SDS)Redis没有直接使用C语言传统的字符串表示(以空字符结尾的字符数据)，而是自己构建了一种名为简单动态字符串(simple dynamic string, SDS)的抽象类型，并将SDS用作Redis的默认字符串表示。 在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。 1.1 SDS的定义每个sds.h/sdshdr结构表示一个SDS值： 1">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/SDS%E7%BB%93%E6%9E%84.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/SDS%E7%BB%93%E6%9E%84.png">
 
 
 
@@ -379,7 +379,7 @@
 <p>在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。</p>
 <h4 id="1-1-SDS的定义"><a href="#1-1-SDS的定义" class="headerlink" title="1.1 SDS的定义"></a><strong>1.1 SDS的定义</strong></h4><p>每个sds.h/sdshdr结构表示一个SDS值：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">struct sdshdr&#123;</div><div class="line">    //记录buf数组中已使用字节的数量</div><div class="line">    //等于SDS所保存字符串的长度</div><div class="line">    int len;</div><div class="line">    //记录buf数组中未使用字节的数量</div><div class="line">    int free;</div><div class="line">    //字节数组,用于保存字符串</div><div class="line">    char buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p><img src="http://img.sevenyuan.cn/SDS%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/SDS%E7%BB%93%E6%9E%84.png" alt=""></p>
 <p>SDS遵循C字符串以空字符结尾的管理，保存空字符的1空间不计算在SDS的len属性里面，<br>并且为空字符分配而额外的1字节空间，以及添加空字符到字符串末尾等操作，都是由SDS函数自动完成的。</p>
 <hr>
 <h4 id="1-2-简单比较一下C字符串："><a href="#1-2-简单比较一下C字符串：" class="headerlink" title="1.2 简单比较一下C字符串："></a><strong>1.2 简单比较一下C字符串：</strong></h4><p><strong>常数复杂度获取字符串长度</strong><br>​    可以直接通过len属性获取SDS本身的长度，时间复杂对是O（1）。</p>
@@ -407,10 +407,10 @@
 <h4 id="2-1-链表和链表节点的实现"><a href="#2-1-链表和链表节点的实现" class="headerlink" title="2.1 链表和链表节点的实现"></a><strong>2.1 链表和链表节点的实现</strong></h4><p>每个链表节点使用一个adlist.h/listNode结构来表示：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef strtct listNode &#123;</div><div class="line">    //前置节点</div><div class="line">    struct listNode *prev;</div><div class="line">    //后置节点</div><div class="line">    struct listNode *next;</div><div class="line">    //节点的值</div><div class="line">    void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure>
 <p>多个listNode可以通过prev和next指针组成双端链表，如下图</p>
-<p><img src="http://img.sevenyuan.cn/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png" alt=""></p>
 <p>还有一个list结构adlist.h/list来持有链表，操作起来更方便：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list &#123;</div><div class="line">    //表头节点</div><div class="line">    listNode *head;</div><div class="line">    //表尾节点</div><div class="line">    listNode *tail;</div><div class="line">    //链表所包含的节点数量</div><div class="line">    unsigned long len;</div><div class="line">    //节点值复制函数</div><div class="line">    void *(*dup) (void *ptr);</div><div class="line">    //节点值释放函数</div><div class="line">    void (*free) (void *ptr);</div><div class="line">    //节点值对比函数</div><div class="line">    int (*match) (void *ptr, void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p>
 <p>list结构：</p>
-<p><img src="http://img.sevenyuan.cn/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png" alt=""></p>
 <p><strong>Redis的链表实现的特性可以总结如下:</strong></p>
 <ul>
 <li>双端：链表节点带有prev和next指针，获取某个节点的前置和后置节点的复杂度都是O（1）。</li>
@@ -424,10 +424,9 @@
 <h4 id="3-1-字典的实现"><a href="#3-1-字典的实现" class="headerlink" title="3.1 字典的实现"></a><strong>3.1 字典的实现</strong></h4><p>Redis的字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。</p>
 <h5 id="3-1-1-哈希表"><a href="#3-1-1-哈希表" class="headerlink" title="3.1.1 哈希表"></a><strong>3.1.1 哈希表</strong></h5><p>Redis字典所使用的哈希表由dict.h/dictht结构定义:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictht</span> &#123;</span></div><div class="line">    <span class="comment">//哈希表数组</span></div><div class="line">    dictEntry **table;</div><div class="line">    <span class="comment">//哈希表大小</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> size;</div><div class="line">    <span class="comment">//哈希表大小掩码，用于计算索引值</span></div><div class="line">    <span class="comment">//总是等于size-1</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sizemask;</div><div class="line">    <span class="comment">//该哈希表已有节点的数量</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> used;</div><div class="line">&#125;dictht;</div></pre></td></tr></table></figure></p>
 <p>table属性是一个数组，数组中的每个元素都是一个指向dict.h/dictEntry结构的指针，每个dictEntry结构保存着一个键值对。</p>
-<center><br><img src="http://img.sevenyuan.cn/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png" alt=""><br></center>
-
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png" alt=""></p>
 <h5 id="3-1-2-字典结构"><a href="#3-1-2-字典结构" class="headerlink" title="3.1.2 字典结构"></a><strong>3.1.2 字典结构</strong></h5><p>Redis中的字典由dict.h/dict结构表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct *type &#123;</div><div class="line">    //类型特定函数</div><div class="line">    dictType *type;</div><div class="line">    //私有数据</div><div class="line">    void *privdata;</div><div class="line">    //哈希表</div><div class="line">    dictht ht[2];</div><div class="line">    //rehash 索引</div><div class="line">    //当rehash不在进行时，值为-1</div><div class="line">    in trehashidx; /*rehashing not in progress if rehashidx == -1*/</div><div class="line">&#125;dict;</div></pre></td></tr></table></figure></p>
-<p><img src="http://img.sevenyuan.cn/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png" alt="普通状态下的字典"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png" alt="普通状态下的字典"></p>
 <h4 id="3-2-哈希算法"><a href="#3-2-哈希算法" class="headerlink" title="3.2 哈希算法"></a><strong>3.2 哈希算法</strong></h4><p>当要将一个新的键值对添加到字典里面时，程序需要先更具键值对的键计算出哈希值和索引值，然后再根据<strong>索引值</strong>，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p>
 <p>#计算哈希值的方法：<br>hash = dict -&gt; type =&gt; hashFunction(key);</p>
 <p>#使用哈希表的sizemask属性和哈希值，计算出索引值：<br>index = hash &amp; dict -&gt; ht[x].sizemask;</p>
@@ -454,7 +453,7 @@
 <p>跳跃表支持平均O（logN）、最坏O（N）复杂度的节点查找，还可以通过顺序性操作来批量处理节点。</p>
 <p>Redis 只在两个地方用到了跳跃表，一个是实现有序集合键，另一个是在集群节点中用作内部数据结构。</p>
 <h4 id="4-1-跳跃表的实现"><a href="#4-1-跳跃表的实现" class="headerlink" title="4.1 跳跃表的实现"></a><strong>4.1 跳跃表的实现</strong></h4><p>Redis 的跳跃表由 <strong>redis.h/zskiplistNode</strong> 和 <strong>redis.h/zskiplist</strong> 两个结构定义，其中 zskipistNode 结构用于表示跳跃表节点，而 zskiplist 结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向及表头节点和表尾节点的指针等等。</p>
-<p><img src="http://img.sevenyuan.cn/%E8%B7%B3%E8%B7%83%E8%A1%A8.png" alt="跳跃表结构"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E8%B7%B3%E8%B7%83%E8%A1%A8.png" alt="跳跃表结构"></p>
 <p>zskiplist 比较简单，用于存放 zskiplistNode，属性值也比较易懂。</p>
 <p>zskiplistNode 的<strong>结构</strong>：</p>
 <ul>
@@ -532,7 +531,7 @@
 </tbody>
 </table>
 <h4 id="6-2-压缩列表节点的构成"><a href="#6-2-压缩列表节点的构成" class="headerlink" title="6.2 压缩列表节点的构成"></a><strong>6.2 压缩列表节点的构成</strong></h4><p>每个压缩列表节点（上面提到的entryX）可以保存一个字节数组或者一个整数值。</p>
-<p><img src="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png" alt="压缩列表节点的各个组成部分"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png" alt="压缩列表节点的各个组成部分"></p>
 <ol>
 <li>previous_entry_legth 的作用：<br> 节点的 previous_entry_lenght 属性记录了前一个节点的长度，程序通过当前节点的起始地址计算出前一个节点的起始地址： p = c - current_entry_length;</li>
 <li>encoding:<br> 该属性记录了节点的content属性所保存数据的类型以及长度</li>

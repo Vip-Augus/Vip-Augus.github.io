@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="设计模式-模板方法&amp;amp;策略模式">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.gif">
-<meta property="og:updated_time" content="2019-05-25T07:51:36.023Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.gif">
+<meta property="og:updated_time" content="2021-10-30T16:24:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java设计模式学习 - 模版方法模式&amp;策略模式">
 <meta name="twitter:description" content="设计模式-模板方法&amp;amp;策略模式">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg">
 
 
 
@@ -360,17 +360,17 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/ChannelIslandFox_ZH-CN5568101953_1920x1080.jpg" alt=""></p>
 <center><strong>设计模式-模板方法&amp;策略模式</strong></center>
 
 <a id="more"></a>
 <hr>
 <h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p><strong>模板方法模式（Template）：定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。</strong></p>
 <p>模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。</p>
-<p><img src="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png" alt=""></p>
 <p><strong>策略模式（Strategy）：定义了一系列的算法，并将每一个算法封装起来，而且使他们可以相互替换，让算法独立于使用它的客户而独立变化。</strong></p>
 <p>定义公共方法，创建一个工厂，通过策略模式，让它的子类可以根据策略相互替换。</p>
-<p><img src="http://img.sevenyuan.cn/%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%20%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png" alt=""></p>
 <hr>
 <h2 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h2><p>一群小动物要出门秋游，每个动物一开始都要准备出门远行的物品，不过不同动物穿的衣服和出门方式不同，例如酷酷的雪纳瑞，穿的是时髦的当季衣服，出门方式是小轿车；机智的拉布拉多，穿的是朴素的T恤，骑着拉风的小电驴；还有富有的🐶，穿的是钻石风衣，乘着🚁出门。</p>
 <p>从上所述，可以抽象出一个总的动作：出门秋游，然后分成三个步骤：</p>
@@ -396,7 +396,7 @@
 <hr>
 <h3 id="工厂-策略模式"><a href="#工厂-策略模式" class="headerlink" title="工厂-策略模式"></a>工厂-策略模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> JingQ at 2018/9/8</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AutumnOutingFactory</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"schnauzerAutumnOuting"</span>)</div><div class="line">    <span class="keyword">private</span> AbstractAutumnOuting schnauzerAutumnOuting;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"labradorAutumnOuting"</span>)</div><div class="line">    <span class="keyword">private</span> AbstractAutumnOuting labradorAutumnOuting;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="meta">@Qualifier</span>(<span class="string">"singleAutumnOuting"</span>)</div><div class="line">    <span class="keyword">private</span> AbstractAutumnOuting singleAutumnOuting;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> AbstractAutumnOuting <span class="title">getInstance</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (type) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">"1"</span>:</div><div class="line">                <span class="keyword">return</span> schnauzerAutumnOuting;</div><div class="line">            <span class="keyword">case</span> <span class="string">"2"</span>:</div><div class="line">                <span class="keyword">return</span> labradorAutumnOuting;</div><div class="line">            <span class="keyword">case</span> <span class="string">"3"</span>:</div><div class="line">                <span class="keyword">return</span> singleAutumnOuting;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">return</span> singleAutumnOuting;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
-<h3 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h3><p><img src="http://img.sevenyuan.cn/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.gif" alt=""></p>
+<h3 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.gif" alt=""></p>
 <p>从执行效果可以看出，通过策略模式（类似switch操作），工厂判断出真正执行的对象，然后模板方法中，step1是公有的，step2和step3是子类中差异化实现的操作。</p>
 <p>从控制台的打印结果可以看出，三个小动物的step操作都顺利执行了，而且代码的逻辑性看起来更强了。</p>
 <hr>

@@ -646,7 +646,7 @@
       
         
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>一个适合后端仔排查问题的 iterm2 终端应该是这样的：</strong></p>
-<p><img src="http://img.sevenyuan.cn/itemr2/eight_terminal.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/eight_terminal.png" alt=""></p>
 <p>交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（<strong>实际上服务器数量比这个更多:-O</strong>）</p>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1706,7 +1706,7 @@
           <h1 id="为什么要学-Flink"><a href="#为什么要学-Flink" class="headerlink" title="为什么要学 Flink"></a>为什么要学 Flink</h1><p>在 18 年时，就听说过 <code>Flink</code> 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。</p>
 <p>由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，<strong>我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。</strong></p>
 <p>于是规划了基于以下的系统架构：</p>
-<p><img src="http://img.sevenyuan.cn/system_architecture.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/system_architecture.png" alt=""></p>
 <p><strong>可以看到，业务数据库与数据分析进行了剥离，避免了对核心业务的影响，基于数据分析的结果存储到线下备份库，查询大量的分析结果也不会影响核心业务。</strong></p>
 <p>同时，在数据处理上，选择了 <code>Flink</code> 这个分布式处理引擎。随着深入的调研和了解，从它的描述、性能、接口编程和容错恢复上进行了学习，觉得它十分适合我们的场景，所以接下来我分享一下调研的结果~</p>
           <!--noindex-->

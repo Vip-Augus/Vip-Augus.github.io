@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="MySQL对我说“Too young, too naive!”">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/JapanCrane_ZH-CN7122024216_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%80%97%E6%97%B6SQL.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Druid%E7%9B%91%E6%B5%8B.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEJMX%E5%8F%82%E6%95%B0.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/JMC%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/21535079499_.pic_hd.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/InnoDB%E8%A1%8C%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png">
-<meta property="og:updated_time" content="2019-05-25T09:11:24.694Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/JapanCrane_ZH-CN7122024216_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/%E8%80%97%E6%97%B6SQL.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/Druid%E7%9B%91%E6%B5%8B.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/%E9%85%8D%E7%BD%AEJMX%E5%8F%82%E6%95%B0.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/JMC%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/21535079499_.pic_hd.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/InnoDB%E8%A1%8C%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png">
+<meta property="og:updated_time" content="2021-10-30T17:06:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次服务器执行MySQL耗时问题">
 <meta name="twitter:description" content="MySQL对我说“Too young, too naive!”">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/JapanCrane_ZH-CN7122024216_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/JapanCrane_ZH-CN7122024216_1920x1080.jpg">
 
 
 
@@ -363,7 +363,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/JapanCrane_ZH-CN7122024216_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/JapanCrane_ZH-CN7122024216_1920x1080.jpg" alt=""></p>
 <center><strong>MySQL对我说“Too young, too naive!”</strong></center>
 
 <a id="more"></a>
@@ -374,9 +374,9 @@
 <p><strong>下面记录的是跟祥哥一起的大致排查过程：</strong></p>
 <p>通过观察业务代码，确认没有内存溢出或者其它事务问题，于是只能考虑Docker环境的数据库和jvm底层详情了。</p>
 <h2 id="使用Druid监控SQL执行状态"><a href="#使用Druid监控SQL执行状态" class="headerlink" title="使用Druid监控SQL执行状态"></a>使用Druid监控SQL执行状态</h2><p>通过日志，发现有一句SQL严重超时，一句简单SQL，原本是批量插入多条记录，为了定位问题，测试时<strong>Mybatis只插入一条记录</strong>，但即便如此，还是耗时10秒</p>
-<p><img src="http://img.sevenyuan.cn/%E8%80%97%E6%97%B6SQL.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/%E8%80%97%E6%97%B6SQL.png" alt=""></p>
 <p>于是打算使用阿里巴巴的数据库连接池Druid进行监控，这篇文章有教如何<a href="https://my.oschina.net/wangmengjun/blog/788386" target="_blank" rel="noopener">使用Druid监控SQL执行状态</a>，监控SQL效果如下：</p>
-<p><img src="http://img.sevenyuan.cn/Druid%E7%9B%91%E6%B5%8B.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/Druid%E7%9B%91%E6%B5%8B.png" alt=""></p>
 <p>在SQL监控Tab中，可以看到执行SQL的具体情况，包括某条SQL语句执行的时间（平均、最慢）、SQL执行次数、SQL执行出错的次数等</p>
 <p>上面显示的是正常情况下，时间单位是ms，正常的SQL一般在10ms之内，数据量大的控制在30ms之内，这样用户的使用体验感才会良好。所以说之前的1000ms，是不可接受的结果。</p>
 <hr>
@@ -384,21 +384,21 @@
 <p>具体要<a href="https://blog.csdn.net/kong2030/article/details/80312417" target="_blank" rel="noopener">怎么配置和加的参数请参考此文</a></p>
 <p>为了简单，我加了一个tomcat无验证模式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>在tomcat的conf目录下的catalina.sh增加如下java启动参数： </div><div class="line">-Dcom.sun.management.jmxremote=true</div><div class="line">-Dcom.sun.management.jmxremote.port=8888</div><div class="line">-Dcom.sun.management.jmxremote.ssl=false</div><div class="line">-Dcom.sun.management.jmxremote.authenticate=false</div><div class="line">-XX:+UnlockCommercialFeatures -XX:+FlightRecorder</div></pre></td></tr></table></figure></p>
 <p>下面是自己本地调试的截图</p>
-<p><img src="http://img.sevenyuan.cn/%E9%85%8D%E7%BD%AEJMX%E5%8F%82%E6%95%B0.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/%E9%85%8D%E7%BD%AEJMX%E5%8F%82%E6%95%B0.png" alt=""></p>
 <p>然后打开jmc，创建一个JMX连接，输入对应的ip和JMX端口。接着可以设定一段时间内的飞行监控，监测这一分钟内jvm具体参数</p>
 <p>当时调试的时候，发现内存使用、CPU占用率、线程状态也挺正常的，没有发现明显的异常错误，效果如下图：</p>
-<p><img src="http://img.sevenyuan.cn/JMC%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/JMC%E9%A3%9E%E8%A1%8C%E6%A8%A1%E5%BC%8F.png" alt=""></p>
 <p>唯一比较耗时的是在代码tab页中，<strong>当时发现了大量的I/O，比上图的比例还高，当时大概占了80%，查看调用树，很多循环tcp socket连接</strong>，考虑到应用中本来就有很多需要io以及netty也需要tcp连接，所以大概排除了jvm虚拟机的问题，然后就去排查MySQL的问题。</p>
 <hr>
 <h2 id="排查MySQL"><a href="#排查MySQL" class="headerlink" title="排查MySQL"></a>排查MySQL</h2><p>在了解MySQL锁概念的时候，可以参考这篇文章<a href="http://www.cnblogs.com/sessionbest/articles/8689082.html" target="_blank" rel="noopener">mysql什么情况下会触发表锁</a>，由于现在使用的比较多的是InnoDB，所以可以着重看看InnoDB锁问题。</p>
 <h3 id="直接执行SQL语句"><a href="#直接执行SQL语句" class="headerlink" title="直接执行SQL语句"></a>直接执行SQL语句</h3><p>通过DEBUG代码，从mybatis中取出映射后的SQL语句，在MySQL客户款直接执行SQL和Explain查看执行计划，速度都很快，排除了SQL语句的问题。</p>
 <h3 id="查看MySQL线程列表"><a href="#查看MySQL线程列表" class="headerlink" title="查看MySQL线程列表"></a>查看MySQL线程列表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">show</span> <span class="keyword">processlist</span>;</div></pre></td></tr></table></figure>
-<p><img src="http://img.sevenyuan.cn/21535079499_.pic_hd.jpg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/21535079499_.pic_hd.jpg" alt=""></p>
 <p>从图中可以看出，有些线程的状态处于sending data，查阅资料：<strong>所谓的“Sending data”并不是单纯的发送数据，而是包括“收集 + 发送 数据”</strong>。</p>
 <p>然后后面一列info显示的是具体信息，是查询用来生成主键ID的函数，之前速度都很快，为啥突然就这么慢呢，于是回过头去查看该函数：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> next_value <span class="keyword">into</span> ret_val <span class="keyword">from</span> <span class="string">`xxx`</span> <span class="keyword">where</span> table_name=tableName <span class="keyword">for</span> <span class="keyword">update</span>;</div><div class="line"></div><div class="line"><span class="keyword">update</span> <span class="string">`xxx`</span> <span class="keyword">set</span></div><div class="line">		current_value=current_value+step,</div><div class="line">		next_value=next_value+step</div><div class="line">	<span class="keyword">where</span> table_name=tableName;</div></pre></td></tr></table></figure>
 <p>select for update，给这个表加了排它锁，阻止其它事务取得相同数据集的共享读锁和排他写锁，同时，这个序列表表中，用来检索的字段没有加索引，在InnoDB行锁机制中：</p>
-<p><img src="http://img.sevenyuan.cn/InnoDB%E8%A1%8C%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/MySQL/MySQL%E6%89%A7%E8%A1%8C%E8%80%97%E6%97%B6/InnoDB%E8%A1%8C%E9%94%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png" alt=""></p>
 <p>由于MySQL的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然是访问不同行的记录，但是如果是使用<strong>相同的索引键</strong>（在我们的场景中，就是查询时用到的table_name)，是会出现锁冲突的</p>
 <p>所以祥哥了解到其它团队因为查询这个表产生事务问题，造成死锁，这个序列表被锁住了。</p>
 <p>由于这个自增序列表每个团队都在使用，所以当时测试环境中，经常有dao层超时错误，最终祥哥将这些阻塞的线程kill掉，为序列表加了索引，解决了问题。</p>

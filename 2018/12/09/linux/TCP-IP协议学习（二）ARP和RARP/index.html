@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="来自网络小白的笔记二">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/Formula.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/ARP%E5%92%8CRARP.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/ARP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:updated_time" content="2019-05-25T06:35:11.096Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Formula.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/network-study/ARP%E5%92%8CRARP.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/network-study/ARP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F.png">
+<meta property="og:updated_time" content="2021-10-30T16:37:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP&#x2F;IP协议学习（二）ARP和RARP">
 <meta name="twitter:description" content="来自网络小白的笔记二">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/Formula.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Formula.jpg">
 
 
 
@@ -359,13 +359,13 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/Formula.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Formula.jpg" alt=""></p>
 <center>来自网络小白的笔记二</center>
 
 <a id="more"></a>
 <hr>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>ARP为IP地址到对应的硬件地址之间提供动态映射。</strong><br><strong>RARP是被哪些没有磁盘驱动器的系统使用，它需要系统管理员进行手工设置。</strong></p>
-<p><img src="http://img.sevenyuan.cn/ARP%E5%92%8CRARP.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/network-study/ARP%E5%92%8CRARP.png" alt=""></p>
 <hr>
 <h2 id="ARP工作过程"><a href="#ARP工作过程" class="headerlink" title="ARP工作过程"></a>ARP工作过程</h2><ul>
 <li>ARP发送一份称作ARP请求的以太网数据帧给以太网上的每个主机。这个过程称为广播，ARP请求数据帧中包含目的主机的IP地址，表示“如果你是这个IP地址的拥有者，请回答你的硬件地址”。</li>
@@ -377,7 +377,7 @@
 <h2 id="ARP高速缓存"><a href="#ARP高速缓存" class="headerlink" title="ARP高速缓存"></a>ARP高速缓存</h2><p>这是ARP高效运行的关键：每个主机上都有一个ARP告诉缓存。这个高速缓存存放了最近Internet地址到硬件地址之间的映射记录。</p>
 <p>使用“arp -a”查看系统中高速缓存的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># arp -a</div><div class="line">? (10.200.100.1) at 9c:6:1b:5:c7:f8 on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.10) at c8:ff:28:5c:6e:1d on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.55) at 2c:6f:c9:6:ae:5f on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.57) at c0:d0:12:d6:28:6c on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.71) at d0:25:98:3a:c0:c8 on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.198) at a0:99:9b:f:7a:9f on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.204) at c8:f6:50:1:a4:e7 on en0 ifscope [ethernet]</div><div class="line">? (10.200.100.252) at 34:e1:2d:6b:33:ed on en0 ifscope [ethernet]</div><div class="line">? (10.200.101.137) at ac:e0:10:27:2d:bf on en0 ifscope [ethernet]</div></pre></td></tr></table></figure></p>
 <hr>
-<h2 id="ARP报文格式"><a href="#ARP报文格式" class="headerlink" title="ARP报文格式"></a>ARP报文格式</h2><p><img src="http://img.sevenyuan.cn/ARP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F.png" alt=""></p>
+<h2 id="ARP报文格式"><a href="#ARP报文格式" class="headerlink" title="ARP报文格式"></a>ARP报文格式</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/network-study/ARP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F.png" alt=""></p>
 <ul>
 <li>硬件类型：指明了发送方想知道的硬件接口类型，以太网的值为1；</li>
 <li>协议类型：指明了发送方提供的高层协议类型，IP为0800（16进制）；</li>

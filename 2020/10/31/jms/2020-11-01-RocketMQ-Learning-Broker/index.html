@@ -96,22 +96,22 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="学习一下火箭消息 - Broker 的原理和使用🚀">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Architecture.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_CommitLog_Item.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_ConsumeQueue_Item.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Index_Item.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Processor_Implemention.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor_flow.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Architecture.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_CommitLog_Item.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_ConsumeQueue_Item.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Index_Item.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Processor_Implemention.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_SendMessageProcessor.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_SendMessageProcessor_flow.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-Broker-Netty-Model.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png">
 <meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-RequestCode.png">
-<meta property="og:updated_time" content="2020-11-22T14:38:50.050Z">
+<meta property="og:updated_time" content="2021-11-02T16:14:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RocketMQ Broker 深入学习">
 <meta name="twitter:description" content="学习一下火箭消息 - Broker 的原理和使用🚀">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg">
 
 
 
@@ -367,7 +367,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/MontageJupiterIo_ZH-CN2512372897_1920x1080.jpg" alt=""></p>
 <center><strong>学习一下火箭消息 - Broker 的原理和使用🚀</strong></center>
 
 <a id="more"></a>
@@ -546,7 +546,7 @@
 </ul>
 <h2 id="Broker-端整体架构"><a href="#Broker-端整体架构" class="headerlink" title="Broker 端整体架构"></a>Broker 端整体架构</h2><p><code>Broker</code> 作为消息中转器，提供了消息发送、存储、查询，还有高可用的功能。</p>
 <p>其中有几个重要模块：</p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Architecture.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Architecture.png" alt=""></p>
 <ul>
 <li><strong>Remoing Module：</strong> 请求的入口，使用了 Netty 作为远程通讯工具，处理发送过来的请求。</li>
 <li><strong>Client Manager：</strong> 管理客户端（发送者、消费者）并维护消费者的主题订阅。</li>
@@ -562,24 +562,24 @@
 <p><strong>单个 CommitLog 的大小为 1GB，每条消息及其元信息被顺序追加至文件，文件的尾部可能存在空闲区域。</strong></p>
 <p>除了记录消息本身的属性（消息长度、消息体、Topic 长度、Topic、消息属性长度、消息属性)，CommitLog 同时记录了消息所在 ConsumeQueue 消费队列的信息（消费队列 ID 和偏移量）。</p>
 <p>由于存储条目具备不定长的特性，当 CommitLog 剩余空间无法满足下一条消息的存储，会在当前 CommitLog 的尾部追加一个 <code>MAGIC CODE</code> 等于 <code>BLANK_MAGIC_CODE</code> 的存储条目作为结束标记，并开始下一个 CommitLog 文件的操作。</p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_CommitLog_Item.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_CommitLog_Item.png" alt=""></p>
 <h3 id="ConsumeQueue-消息队列文件"><a href="#ConsumeQueue-消息队列文件" class="headerlink" title="ConsumeQueue 消息队列文件"></a>ConsumeQueue 消息队列文件</h3><p>Topic 是个抽象概念，消息实际发往的是 consumeQueue 这个逻辑队列中，在 consumeQueue 中，记录了消息在 CommitLog 中的位置信息</p>
 <p><strong>单个 ConsumeQueue 文件大小为 6000000 Byte，存储 30W 条记录，每条记录固定 20B</strong></p>
 <p>与 CommitLog 不同，ConsumeQueue 的存储条目采用定长存储结构。</p>
 <p>为了实现定长存储，ConsumeQueue 存储到了消息 Tag 的 HashCode，在 Broker 端进行消息过滤时，通过比较 Consumer 订阅 Tag 的 HashCode 和存储条目中的 Tag 的 HashCode 是否一致来决定是否消费消息。</p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_ConsumeQueue_Item.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_ConsumeQueue_Item.png" alt=""></p>
 <h3 id="Index-索引文件"><a href="#Index-索引文件" class="headerlink" title="Index 索引文件"></a>Index 索引文件</h3><p>在已有的 CommitLog 和 ConsumeQueue 基础上，已经满足一个消息中间件的消息发送和消费功能，RMQ 提供 Index 目的是为了检索消息更快，方便排查问题。</p>
 <p>这个目录下的文件，提供了跟数据库索引一样的作用，<strong>「给定 Topic 和消息 Key，通过索引文件能快速找到消息」</strong>，提供了消息检索的作用，监控端的【消息查询】界面使用了这个功能。</p>
 <p><strong>单个 Index 文件大小等于 420000040 B，包含索引头（IndexHeader）、哈希槽（HashSlot）和消息索引（MessageIndex）</strong></p>
 <p>Index 存储条目的结构有点像 HashMap，使用链式地址法解决哈希冲突：<br><strong>「每个 Hash Slot 关联一个 Message Index 链表，多个 Message Index 通过 preIndexOffset 连接。」</strong></p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Index_Item.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Index_Item.png" alt=""></p>
 <h1 id="Broker-代码实现初探"><a href="#Broker-代码实现初探" class="headerlink" title="Broker 代码实现初探"></a>Broker 代码实现初探</h1><p>Broker 启动阶段：</p>
 <h2 id="Broker-Startup"><a href="#Broker-Startup" class="headerlink" title="Broker Startup"></a>Broker Startup</h2><blockquote>
 <p>org.apache.rocketmq.broker.BrokerStartup#main</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">#org.apache.rocketmq.broker.BrokerStartup#main</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BrokerStartup</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        start(createBrokerController(args));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div><div class="line"></div><div class="line">#org.apache.rocketmq.broker.BrokerController#registerProcessor</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerProcessor</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">/**</span></div><div class="line"><span class="comment">         * SendMessageProcessor</span></div><div class="line"><span class="comment">         */</span></div><div class="line">        SendMessageProcessor sendProcessor = <span class="keyword">new</span> SendMessageProcessor(<span class="keyword">this</span>);</div><div class="line">        sendProcessor.registerSendMessageHook(sendMessageHookList);</div><div class="line">        sendProcessor.registerConsumeMessageHook(consumeMessageHookList);</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.SEND_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.SEND_BATCH_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.CONSUMER_SEND_MSG_BACK, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.SEND_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.SEND_BATCH_MESSAGE, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.fastRemotingServer.registerProcessor(RequestCode.CONSUMER_SEND_MSG_BACK, sendProcessor, <span class="keyword">this</span>.sendMessageExecutor);</div><div class="line">        <span class="comment">/**</span></div><div class="line"><span class="comment">         * PullMessageProcessor</span></div><div class="line"><span class="comment">         */</span></div><div class="line">        <span class="keyword">this</span>.remotingServer.registerProcessor(RequestCode.PULL_MESSAGE, <span class="keyword">this</span>.pullMessageProcessor, <span class="keyword">this</span>.pullMessageExecutor);</div><div class="line">        <span class="keyword">this</span>.pullMessageProcessor.registerConsumeMessageHook(consumeMessageHookList);</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>Broker 将消息处理器注册到核心控制器 <code>BrokerController</code>，<code>Broker</code> 定义了很多种消息处理器，查看 <code>AsyncNettyRequestProcessor</code> 继承图：</p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_Processor_Implemention.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_Processor_Implemention.png" alt=""></p>
 <ul>
 <li>AdminBrokerProcessor</li>
 <li>ClientManageProcessor</li>
@@ -596,12 +596,12 @@
 <hr>
 <h2 id="Broker-接收到发送消息的请求"><a href="#Broker-接收到发送消息的请求" class="headerlink" title="Broker 接收到发送消息的请求"></a>Broker 接收到发送消息的请求</h2><p>如果请求中的标志是 <code>RequestCode.SEND_MESSAGE</code>，那么就会交给 <code>SendMessageProcessor</code> 进行处理，同时底层大量使用线程池技术。</p>
 <p>例如 <code>Debug Broker</code> 端代码：</p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_SendMessageProcessor.png" alt=""></p>
 <p>可以看到，处理的线程名字前缀是 <code>SendMessageThread_</code>，异步回调处理请求。</p>
 <hr>
 <h2 id="Broker-接收到消费消息的请求"><a href="#Broker-接收到消费消息的请求" class="headerlink" title="Broker 接收到消费消息的请求"></a>Broker 接收到消费消息的请求</h2><p>如果请求中的标志是 <code>RequestCode.PULL_MESSAGE</code>，那么就会交给 <code>PullMessageProcessor</code> 来进行处理，代码细节可以后续跟进看看。</p>
 <p>测试发送消息的接口为：<code>org.springframework.messaging.core.AbstractMessageSendingTemplate#convertAndSend(D, java.lang.Object)</code></p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Broker_SendMessageProcessor_flow.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Broker/RocketMQ_Broker_SendMessageProcessor_flow.png" alt=""></p>
 <p>核心方法：<code>org.apache.rocketmq.broker.processor.SendMessageProcessor#asyncProcessRequest(io.netty.channel.ChannelHandlerContext, org.apache.rocketmq.remoting.protocol.RemotingCommand, org.apache.rocketmq.remoting.netty.RemotingResponseCallback)</code></p>
 <ul>
 <li>反序列化请求头 requestHeader</li>

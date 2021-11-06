@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="1 前言先来回顾一下 Flink 基础的三兄弟：  数据来源 DataSource 数据转换 Transaformation 数据存储 DataSink  前面两篇笔记已经写了数据来源和转换如何使用，那么这篇当然就到了数据存储，接下来将会从以下角度介绍一下（喜闻乐见的 What / Why / How）~：  1 为什么要用 Sink 2 DataSink 是什么 3 如何使用（进阶使用，滑动时间">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/sinkfuncaiton_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/sinkfunction_printsinkfunction_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_demo_flow_chart.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/sinkfunction_source&job.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/sinkfunction_data_flow.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/sinkfunction_verify.png">
-<meta property="og:updated_time" content="2019-12-22T07:41:59.065Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfuncaiton_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_printsinkfunction_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/flink_demo_flow_chart.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_source&job.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_data_flow.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_verify.png">
+<meta property="og:updated_time" content="2021-11-02T15:48:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink 基础学习(五)数据存储 DataSink">
 <meta name="twitter:description" content="1 前言先来回顾一下 Flink 基础的三兄弟：  数据来源 DataSource 数据转换 Transaformation 数据存储 DataSink  前面两篇笔记已经写了数据来源和转换如何使用，那么这篇当然就到了数据存储，接下来将会从以下角度介绍一下（喜闻乐见的 What / Why / How）~：  1 为什么要用 Sink 2 DataSink 是什么 3 如何使用（进阶使用，滑动时间">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/sinkfuncaiton_diagram.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfuncaiton_diagram.png">
 
 
 
@@ -378,7 +378,7 @@
 <h1 id="2-为什么要用-DataSink"><a href="#2-为什么要用-DataSink" class="headerlink" title="2 为什么要用 DataSink"></a>2 为什么要用 DataSink</h1><p>在处理数据的最后一步，一般要进行验证和之后统计，如果没有将计算结果存储下来，后面的操作也很难展开，<strong>所以结果的存储或者更新就显得很必要</strong>。</p>
 <h1 id="3-DataSink-是什么"><a href="#3-DataSink-是什么" class="headerlink" title="3 DataSink 是什么"></a>3 DataSink 是什么</h1><p><code>Flink</code> 基础操作与一个处理数据 <code>Http</code> 接口的生命周期很像，<strong>接受数据 -&gt; 处理数据 -&gt; 存储数据</strong>，而 <code>Sink</code> 在翻译有表示【下沉】的意思，也就是我们经常对处理数据后做的一件事：<strong>存储</strong>。</p>
 <p>下面来看下 <code>RickSinkFunction</code> 类的继承体系图：</p>
-<p><img src="http://img.sevenyuan.cn/sinkfuncaiton_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfuncaiton_diagram.png" alt=""></p>
 <p><strong>个人觉得跟数据源 <code>RichSourceFunction</code> 很像，都继承了 <code>AbstractRichFunction</code> 抽象类，实现了 <code>RichFunction</code> 中的 <code>open</code> 和 <code>close</code> 等基础方法。两者的区别在于，数据源 <code>DataSource</code> 另外实现的是 <code>SourceFunction</code> 接口，而我们本篇文章的主角 <code>DataSink</code> 实现的就是 <code>SinkFunction</code> 接口。</strong></p>
 <h1 id="4-官方支持的连接器-Connector"><a href="#4-官方支持的连接器-Connector" class="headerlink" title="4 官方支持的连接器 Connector"></a>4 官方支持的连接器 Connector</h1><p>在流式计算框架 <code>Flink</code> 中，可以通过 <code>Sink</code> 进行存储操作。官方给出更推荐的说法是<strong>连接器 <code>Connector</code>， 第三方中间件作为连接器，既可以当成数据源，也能当成目的地，取决于上面提到实现的接口（<code>SourceFunction</code>/<code>SinkFunction</code>）</strong></p>
 <p><strong>以下是官方支持的连接器，感兴趣的可以点击参考资料三去详细了解~</strong></p>
@@ -396,7 +396,7 @@
 <p>其中结尾的 <code>source</code> 表示数据源，<code>sink</code> 表示数据的发送地，例如常见的消息中间件 <code>Apache Kafka</code>，<strong>它既可以作为数据源，也能成为数据的发送目的地</strong>。</p>
 <h1 id="5-PrintSinkFunction"><a href="#5-PrintSinkFunction" class="headerlink" title="5 PrintSinkFunction"></a>5 PrintSinkFunction</h1><p>在我们平时编码中，常用的验证结果的方式是<strong>将结果输出到控制台</strong>，例如 <code>IDEA</code> 的快捷键 <code>SOUT</code>，可以很快的将结果输出到底部控制台中。</p>
 <p>在 <code>Flink</code> 的世界中，流式计算因为要一直接收数据进行处理，常用的操作对象是 <code>DataStream</code>，它是一个流对象，有特定的打印 <code>Print</code> 方法，就是我接下来要介绍的 <code>PrintSinkFunction</code>。</p>
-<p><img src="http://img.sevenyuan.cn/sinkfunction_printsinkfunction_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_printsinkfunction_diagram.png" alt=""></p>
 <p>从结构图看出，<code>PrintSinkFunction</code> 继承自 <code>RichSinkFunction</code>，重写了其中两个关键方法 <code>open</code> 和 <code>invoke</code>，在这两个方法中，实现了输出功能。</p>
 <blockquote>
 <p>PrintSinkFunction.java</p>
@@ -408,11 +408,11 @@
 <p>官方库中的 <code>PrintSinkFunction</code> 在日常开发中常使用，通过控制台输出结果进行验证数据是否跟自己预期的一致。所以先以常用的类进行介绍，可以更快的对 <code>SinkFunction</code> 的整体结构有个更清晰的了解。</p>
 <h1 id="6-自定义-SinkFunction（存储到-MySQL）"><a href="#6-自定义-SinkFunction（存储到-MySQL）" class="headerlink" title="6 自定义 SinkFunction（存储到 MySQL）"></a>6 自定义 SinkFunction（存储到 MySQL）</h1><p>除了官方支持的 <code>Connector</code> 外，还提供了途径，让我们扩展存储方式，通过 <code>addSink()</code> 方法，添加自定义的 <code>SinkFunction</code>。</p>
 <p>前面都是单独介绍数据源 <code>DataSource</code> 和转换 <code>Transformation</code>，这次终于将三者串了起来，下面来看下完整的流程，通过例子来说下自定义的存储方法如何实现。</p>
-<h2 id="6-1-Demo-流程图"><a href="#6-1-Demo-流程图" class="headerlink" title="6.1 Demo 流程图"></a>6.1 Demo 流程图</h2><p><img src="http://img.sevenyuan.cn/flink_demo_flow_chart.png" alt=""></p>
+<h2 id="6-1-Demo-流程图"><a href="#6-1-Demo-流程图" class="headerlink" title="6.1 Demo 流程图"></a>6.1 Demo 流程图</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/flink_demo_flow_chart.png" alt=""></p>
 <p>上面是 <code>Demo</code> 的流程图，一共包含三个模块，其中有两个模块（数据源和转换），在前面的文章 <a href="">Flink 基础学习(三)数据源 DataSource</a> 已经有详细例子，请参考下图两个核心类的代码编写。</p>
-<p><img src="http://img.sevenyuan.cn/sinkfunction_source&amp;job.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_source&amp;job.png" alt=""></p>
 <p><strong>在主程序中，使用了 <code>map</code> 算子进行一对一映射，从单条字符消息转换成应用中的实体对象，接着使用 <code>timeWindowAll</code> 算子进行数据的时间窗口聚合，时间窗口大小是 10s，在这个时间段中接收的数据都会在一个窗口中。</strong></p>
-<h2 id="6-2-Demo-输入输出示意"><a href="#6-2-Demo-输入输出示意" class="headerlink" title="6.2 Demo 输入输出示意"></a>6.2 Demo 输入输出示意</h2><p><img src="http://img.sevenyuan.cn/sinkfunction_data_flow.png" alt=""></p>
+<h2 id="6-2-Demo-输入输出示意"><a href="#6-2-Demo-输入输出示意" class="headerlink" title="6.2 Demo 输入输出示意"></a>6.2 Demo 输入输出示意</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_data_flow.png" alt=""></p>
 <p><strong>上面是程序的输入和输出示意图</strong>，在 <code>Input</code> 中，以秒为单位，<code>TimeWindow</code> 以 10s 为间隔，将输入的数据放在一个窗口中（在一个窗口中的数据，可以进行聚合 <code>reduce</code> 操作，然后进行输出），<strong>最后 <code>Sink</code> 到常用的存储地，这里以 <code>MySQL</code> 进行数据的落库作为示例~</strong></p>
 <p>上面每个窗口搜集的数据如下：</p>
 <ul>
@@ -434,7 +434,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> test.student</div><div class="line">(</div><div class="line">	<span class="keyword">id</span> <span class="built_in">int</span> auto_increment</div><div class="line">		primary <span class="keyword">key</span>,</div><div class="line">	<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="literal">null</span>,</div><div class="line">	age <span class="built_in">int</span>(<span class="number">3</span>) <span class="literal">null</span>,</div><div class="line">	address <span class="built_in">varchar</span>(<span class="number">120</span>) <span class="literal">null</span>,</div><div class="line">	create_time <span class="keyword">timestamp</span> <span class="keyword">default</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="literal">null</span>,</div><div class="line">	modify_date datetime <span class="keyword">default</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">not</span> <span class="literal">null</span> <span class="keyword">on</span> <span class="keyword">update</span> <span class="keyword">CURRENT_TIMESTAMP</span> <span class="keyword">comment</span> <span class="string">'修改时间'</span></div><div class="line">)<span class="keyword">charset</span>=utf8;</div></pre></td></tr></table></figure>
 <p>编写好代码以及数据库创表，<strong>在启动 <code>KafkaUtils</code> 和 <code>DataSourceFromKafka</code> 两个程序（点击 main 方法就能启动啦）之前</strong>，请一定要记得启动 <code>Zookeeper</code> 和 <code>Kafka</code>，遗忘的话请回顾一下 <a href="">Flink 基础学习(三)数据源 DataSource</a> ~</p>
 <p>最后我们去数据库验证落库结果：</p>
-<p><img src="http://img.sevenyuan.cn/sinkfunction_verify.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasink/sinkfunction_verify.png" alt=""></p>
 <p>从数据的创建时间上，10s 的时间窗口操作得到了成功验证。</p>
 <h1 id="7-单次操作和聚合操作"><a href="#7-单次操作和聚合操作" class="headerlink" title="7 单次操作和聚合操作"></a>7 单次操作和聚合操作</h1><p>在 <code>RichSinkFunction&lt;IN&gt;</code> 类中， <code>IN</code> 是一个泛型参数，表示我们传入的参数可以自定义。</p>
 <p>在前面简单的 <code>map</code> 一对一映射后，得到的输出也是单个的，<code>IN</code> 是 <code>Student</code> 类型；而在 <code>timedWindowAll</code> 时间窗口后，输出的一个 List<code>&lt;</code>Student<code>&gt;</code> 类型。</p>

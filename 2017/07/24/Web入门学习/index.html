@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="首先十分感谢祥哥的建议: 一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。 但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。 不过从职场的角度，可能开始走广度会更有利于以后发展。 深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。  项目中常使用到的技术（基于SSM）   分布式技术">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/dubbo-architecture.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/dubbo-relation.png">
-<meta property="og:updated_time" content="2018-11-11T14:28:37.000Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/dubbo/dubbo-admin/dubbo-architecture.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/dubbo/dubbo-admin/dubbo-relation.png">
+<meta property="og:updated_time" content="2021-10-30T17:05:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web入门学习">
 <meta name="twitter:description" content="首先十分感谢祥哥的建议: 一般刚接触web，会多建议走广度，了解web技术的全貌，spring，缓存，消息队列，分布式等等。 但是深度也不是不没用，毕竟深度决定潜力。如果想往深度走，例如把spring吃透，也是很不错的。 不过从职场的角度，可能开始走广度会更有利于以后发展。 深度可以在某个时间段进行，例如你做到架构，就需要沉淀技术深度的东西。  项目中常使用到的技术（基于SSM）   分布式技术">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/dubbo-architecture.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/dubbo/dubbo-admin/dubbo-architecture.png">
 
 
 
@@ -378,7 +378,7 @@
 <p><strong>Dubbo和Zookeeper</strong></p>
 </blockquote>
 <p><strong>Dubbo</strong>是Alibaba的开源框架，最大的特点是按照分层的方式来架构，使用这种技术可以使各个层之间解耦。<br>Dubbo采用的是一种简单的模型，要么是提供者提供服务，要么是消费者消费服务，可以抽象出服务提供者（Provider）和服务消费者（Consumer）。</p>
-<p>下图是Dubbo框架模型：一共有十层<br><img src="http://img.sevenyuan.cn/dubbo-architecture.png" alt="Dubbo框架模型"></p>
+<p>下图是Dubbo框架模型：一共有十层<br><img src="https://gitee.com/vip-augus/blog-picture/raw/master/dubbo/dubbo-admin/dubbo-architecture.png" alt="Dubbo框架模型"></p>
 <p>Dubbo作为一个分布式服务框架，主要具有如下几个核心的要点：</p>
 <ul>
 <li>服务定义：<br>服务是围绕服务提供方和服务消费方的，服务提供方实现服务，而服务消费方调用服务。</li>
@@ -387,7 +387,7 @@
 <li>服务调用</li>
 </ul>
 <p>最后简单介绍一下Dubbo基于RPC层，服务提供方和服务消费方之间的关系</p>
-<p><img src="http://img.sevenyuan.cn/dubbo-relation.png" alt="Dubbo调用关系"><br>上图中蓝色的表示与业务有交互，绿色的表示只对Dubbo内部交互。上述图所描述的调用流程如下：<br>​    1. 服务提供方发布服务到服务注册中心；<br>​    2. 服务消费方从服务注册中心订阅服务；<br>​    3. 服务消费方调用已经注册的可用服务。</p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/dubbo/dubbo-admin/dubbo-relation.png" alt="Dubbo调用关系"><br>上图中蓝色的表示与业务有交互，绿色的表示只对Dubbo内部交互。上述图所描述的调用流程如下：<br>​    1. 服务提供方发布服务到服务注册中心；<br>​    2. 服务消费方从服务注册中心订阅服务；<br>​    3. 服务消费方调用已经注册的可用服务。</p>
 <p>更多调用流程请看这篇文章：<strong><a href="http://shiyanjun.cn/archives/325.html" target="_blank" rel="noopener">Dubbo文章参考</a></strong></p>
 <p><strong>Zookeeper</strong><br>用来注册服务和进行负载均衡，哪一个服务由哪一个机器来提供必须让调用者知道。<br>zookeeper通过心跳机制可以检测挂掉的机器并将挂掉机器的ip和服务对应关系从列表中删除。<br>通过添加新的机器向zookeeper注册服务，服务的提供者增加，能够服务的客户就能增加。</p>
 <p><strong>Zookeeper与Dubbo的关系</strong><br>   Dubbo的将注册中心进行抽象，是得它可以外接不同的存储媒介给注册中心提供服务，有ZooKeeper，Memcached，Redis等。<br>​      引入了ZooKeeper作为存储媒介，也就把ZooKeeper的特性引进来。首先是负载均衡，单注册中心的承载能力是有限的，在流量达到一定程度的时候就需要分流，负载均衡就是为了分流而存在的，一个ZooKeeper群配合相应的Web应用就可以很容易达到负载均衡；资源同步，单单有负载均衡还不够，节点之间的数据和资源需要同步，ZooKeeper集群就天然具备有这样的功能；命名服务，将树状结构用于维护全局的服务地址列表，服务提供者在启动的时候，向ZK上的指定节点/dubbo/${serviceName}/providers目录下写入自己的URL地址，这个操作就完成了服务的发布。其他特性还有Mast选举，分布式锁等。</p>

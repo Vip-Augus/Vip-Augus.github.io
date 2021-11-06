@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="前面的例子中有出现过 时间窗口 TimeWindow 这个词语，其实是两个概念，时间 Time 和窗口 Window。 本篇文章比较干货，主要翻译自官网（参考资料一）， 来讲下关于 Time 的学习、理解以及配套的概念 Watermark。 Watermark 有两种译法：水位线、水印。由于个人暂时分不清，所以后面一律以英文 Watermark 出现">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_time_introduction.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/stream_watermark_in_order.svg">
-<meta property="og:image" content="http://img.sevenyuan.cn/stream_watermark_out_of_order.svg">
-<meta property="og:image" content="http://img.sevenyuan.cn/parallel_streams_watermarks.svg">
-<meta property="og:updated_time" content="2019-12-22T07:41:53.650Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/flink_time_introduction.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_in_order.svg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_out_of_order.svg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/parallel_streams_watermarks.svg">
+<meta property="og:updated_time" content="2021-11-02T15:48:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink 基础学习(六)时间 Time 和 Watermark">
 <meta name="twitter:description" content="前面的例子中有出现过 时间窗口 TimeWindow 这个词语，其实是两个概念，时间 Time 和窗口 Window。 本篇文章比较干货，主要翻译自官网（参考资料一）， 来讲下关于 Time 的学习、理解以及配套的概念 Watermark。 Watermark 有两种译法：水位线、水印。由于个人暂时分不清，所以后面一律以英文 Watermark 出现">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/flink_time_introduction.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/flink_time_introduction.png">
 
 
 
@@ -366,7 +366,7 @@
 <a id="more"></a>
 <hr>
 <h1 id="Time"><a href="#Time" class="headerlink" title="Time"></a>Time</h1><p>一共有三种时间类型：<code>Processing Time</code>、<code>Event Time</code> 和 <code>Ingestion Time</code></p>
-<p><img src="http://img.sevenyuan.cn/flink_time_introduction.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/flink_time_introduction.png" alt=""></p>
 <p>图片参考官网，加上了一些注释配合理解，三种时间类型对应了三个发生位置，下面具体说下三种时间类型的区别。</p>
 <hr>
 <h2 id="Processing-Time-处理时间"><a href="#Processing-Time-处理时间" class="headerlink" title="Processing Time 处理时间"></a>Processing Time 处理时间</h2><p><strong><code>Processing Time</code>是指事件正在执行所在机器（部署应用服务器）的系统时间。</strong></p>
@@ -414,9 +414,9 @@
 <hr>
 <h2 id="Watermark-图示"><a href="#Watermark-图示" class="headerlink" title="Watermark 图示"></a>Watermark 图示</h2><p><strong><code>Flink</code> 中用于衡量事件时间进度的机制是水印 <code>Watermark</code>。 <code>Watermark</code> 作为数据流的一部分流动，并带有时间戳 <code>t</code>。 <code>Watermark(t)</code> 声明事件时间已在该流中达到时间 <code>t</code>，这意味着该流中不应再有时间戳 <code>t&#39;&lt;= t</code> 的元素（即时间戳早于或等于 <code>Watermark</code> 的事件）。</strong></p>
 <p>下图显示了带有（逻辑）时间戳记的事件流，以及串联的 <code>Watermark</code>。 在此示例中，事件是按顺序（<code>In Order</code>）排列的（相对于其时间戳），这意味着 <code>Watermark</code> 只是流中的周期性标记。</p>
-<p><img src="http://img.sevenyuan.cn/stream_watermark_in_order.svg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_in_order.svg" alt=""></p>
 <p><strong><code>Watermark</code> 对于乱序流（<code>Out Of Order</code>）至关重要，如下图所示，其中事件不是按其时间戳排序的。</strong> 通常，<code>Watermark</code> 是一种声明，即到流中的那个点，直到某个时间戳的所有事件都应该到达。一旦 <code>Watermark</code> 到达 <code>Operator</code>，<code>Operator</code> 就可以将其内部事件时钟提前到 <code>Watermark</code> 的值。</p>
-<p><img src="http://img.sevenyuan.cn/stream_watermark_out_of_order.svg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_out_of_order.svg" alt=""></p>
 <blockquote>
 <p>请注意，<code>Evnet Time</code> 是由新创建的一个（或多个）流元素从产生它们的事件或触发了创建这些元素的 <code>Watermark</code> 中继承的。</p>
 </blockquote>
@@ -425,7 +425,7 @@
 <p>随着 <code>Watermark</code> 在流媒体程序中的流动，它们会提前到达其到达的 <code>Operator</code> 的 <code>Event Time</code>。 每当 <code>Operator</code> 提前其事件时间时，都会为其后续 <code>Operator</code> 在下游生成新的 <code>Watermark</code>。</p>
 <p>一些运算符消费多个输入流；例如，并集 <code>union</code>、键控 <code>keyBy(…)</code> 或分区 <code>partition(…)</code> 函数的运算符。这样的 <code>Operator</code> 的当前事件时间是其输入流的事件时间中的最小值。 随着其输入流更新其事件时间，<code>Operator</code> 也将更新。</p>
 <p>下图显示了流过并行流的事件和 <code>Watermark</code> 的示例，<code>Operator</code> 跟踪事件时间。</p>
-<p><img src="http://img.sevenyuan.cn/parallel_streams_watermarks.svg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/parallel_streams_watermarks.svg" alt=""></p>
 <p>（并行流用的不多，这里留个坑吧，待之后用到再来补=-=）</p>
 <hr>
 <h1 id="延迟的元素"><a href="#延迟的元素" class="headerlink" title="延迟的元素"></a>延迟的元素</h1><p>某些元素可能会违反 <code>Watermark</code> 条件，这意味着即使在发生 <code>Watermark(t)</code> 之后，也会出现更多时间戳为 <code>t&#39;&lt;= t</code> 的元素。实际上，在许多现实世界的设置中，某些元素可以任意延迟，从而无法指定某个事件时间戳记的所有元素都将发生的时间。此外，即使可以限制延迟，通常也不希望将 <code>Watermark</code> 延迟太多，因为这会导致事件时间窗的评估延迟过多。</p>

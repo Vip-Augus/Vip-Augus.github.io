@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="用了这么久 Redis，想起来实现分布式锁🔐">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/waterway-3161256_1920.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/redis/20200404122113.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/redis/redis_lock_error.png">
-<meta property="og:updated_time" content="2020-04-16T12:15:41.937Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/waterway-3161256_1920.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/20200404122113.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/redis_lock_error.png">
+<meta property="og:updated_time" content="2021-11-02T16:20:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用注解形式实现 Redis 分布式锁">
 <meta name="twitter:description" content="用了这么久 Redis，想起来实现分布式锁🔐">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/waterway-3161256_1920.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/waterway-3161256_1920.jpg">
 
 
 
@@ -359,7 +359,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/waterway-3161256_1920.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/waterway-3161256_1920.jpg" alt=""></p>
 <center><strong>用了这么久 Redis，想起来实现分布式锁🔐</strong></center>
 
 <a id="more"></a>
@@ -378,7 +378,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 线程池，每个 JVM 使用一个线程去维护 keyAliveTime，定时执行 runnable</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ScheduledExecutorService SCHEDULER = </div><div class="line"><span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">1</span>, </div><div class="line"><span class="keyword">new</span> BasicThreadFactory.Builder().namingPattern(<span class="string">"redisLock-schedule-pool"</span>).daemon(<span class="keyword">true</span>).build());</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">static</span> &#123;</div><div class="line">    SCHEDULER.scheduleAtFixedRate(() -&gt; &#123;</div><div class="line">        <span class="comment">// do something to extend time</span></div><div class="line">    &#125;, <span class="number">0</span>,  <span class="number">2</span>, TimeUnit.SECONDS);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
 <h2 id="三、设计方案"><a href="#三、设计方案" class="headerlink" title="三、设计方案"></a>三、设计方案</h2><p>经过上面的分析，同事小🐟设计出了这个方案：</p>
-<p><img src="http://img.sevenyuan.cn/redis/20200404122113.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/20200404122113.png" alt=""></p>
 <p>前面已经说了整体流程，这里强调一下几个核心步骤：</p>
 <ul>
 <li><strong>拦截注解 @RedisLock，获取必要的参数</strong></li>
@@ -416,7 +416,7 @@
 <p>测试结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">2020-04-04 14:55:50.864  INFO 9326 --- [nio-8081-exec-1] c.s.demo.controller.BookController       : 睡眠执行前</div><div class="line">2020-04-04 14:55:52.855  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 0</div><div class="line">2020-04-04 14:55:54.851  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 1</div><div class="line">2020-04-04 14:55:56.851  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 2</div><div class="line">2020-04-04 14:55:58.852  INFO 9326 --- [k-schedule-pool] c.s.demo.aop.lock.RedisLockAspect        : businessKey : [Business1:1024], try count : 3</div><div class="line">2020-04-04 14:56:00.857  INFO 9326 --- [nio-8081-exec-1] c.s.demo.controller.BookController       : has some error</div><div class="line"></div><div class="line">java.lang.InterruptedException: sleep interrupted</div><div class="line">	at java.lang.Thread.sleep(Native Method) [na:1.8.0_221]</div></pre></td></tr></table></figure></p>
 <p>我这里测试的是重试次数过多，失败的场景，如果减少睡眠时间，就能让业务正常执行。</p>
 <p>如果同时请求，你将会发现以下错误信息：</p>
-<p><img src="http://img.sevenyuan.cn/redis/redis_lock_error.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/redis_lock_error.png" alt=""></p>
 <p>表示我们的锁🔐的确生效了，避免了重复请求。</p>
 <hr>
 <h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p>对于耗时业务和核心数据，不能让重复的请求同时操作数据，避免数据的不正确，所以要使用分布式锁来对它们进行保护。</p>

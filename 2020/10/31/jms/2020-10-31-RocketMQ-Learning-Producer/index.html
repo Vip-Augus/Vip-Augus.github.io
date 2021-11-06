@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="学习一下火箭消息 - 生产者的原理和使用🚀">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png#align=left&display=inline&height=288&margin=%5Bobject%20Object%5D&originHeight=288&originWidth=895&size=0&status=done&style=none&width=895">
-<meta property="og:updated_time" content="2020-11-22T14:14:29.822Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Transcation/RocketMQ_Transaction_Message.png">
+<meta property="og:updated_time" content="2021-11-02T16:30:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RocketMQ Producer 深入学习">
 <meta name="twitter:description" content="学习一下火箭消息 - 生产者的原理和使用🚀">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
 
 
 
@@ -358,11 +358,11 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/Mazezilla_ZH-CN8502282112_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Mazezilla_ZH-CN8502282112_1920x1080.jpg" alt=""></p>
 <center><strong>学习一下火箭消息 - 生产者的原理和使用🚀</strong></center>
 
 <a id="more"></a>
-<h2 id="1、事务消息"><a href="#1、事务消息" class="headerlink" title="1、事务消息"></a>1、事务消息</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png#align=left&amp;display=inline&amp;height=288&amp;margin=%5Bobject%20Object%5D&amp;originHeight=288&amp;originWidth=895&amp;size=0&amp;status=done&amp;style=none&amp;width=895" alt=""></p>
+<h2 id="1、事务消息"><a href="#1、事务消息" class="headerlink" title="1、事务消息"></a>1、事务消息</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Transcation/RocketMQ_Transaction_Message.png" alt=""></p>
 <p>主要分为两个流程：</p>
 <h3 id="1-1-正常消息的发送、提交"><a href="#1-1-正常消息的发送、提交" class="headerlink" title="1.1 正常消息的发送、提交"></a>1.1 正常消息的发送、提交</h3><p>(1) producer 发送 Half 消息<br>(2) broker 本地写入 Half 消息（将 Topic 改成 RMQ_SYS_TRANS_HALF_TOPIC，该阶段 Consumer 由于没有订阅关系，无法消费）<br>(3) producer 根据 broker 写入消息结果，成功的话，执行本地事务；写入消息失败，producer 不执行本地事务<br>(4) 根据本地事务结果，往 broker 发送 Commit 或者 Rollback（如果是 Commit，将会将 Half 消息转回 Real Topic，生成消息索引，订阅者可以进行消费）</p>
 <h3 id="1-2-补偿流程："><a href="#1-2-补偿流程：" class="headerlink" title="1.2 补偿流程："></a>1.2 补偿流程：</h3><p>(1) 半消息发送成功，但 broker 没收到 Commit 或 Rollback，进行状态回查（上图的第五步）<br>(2) Producer 收到回查消息，检查本地事务状态<br>(3) 根据本地事务状态，重新发送 Commit 或者 Rollback</p>

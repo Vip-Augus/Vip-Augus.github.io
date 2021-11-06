@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="Spring AOP Demo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png">
-<meta property="og:updated_time" content="2019-03-19T15:21:13.567Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring%20AOP/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring%20AOP/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png">
+<meta property="og:updated_time" content="2021-10-30T16:37:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring自定义注解实现AOP">
 <meta name="twitter:description" content="Spring AOP Demo">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg">
 
 
 
@@ -370,7 +370,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/SeptimiusSeverus_ZH-CN0799811992_1920x1080.jpg" alt=""></p>
 <center><strong>Spring AOP Demo</strong></center>
 
 <a id="more"></a>
@@ -393,7 +393,7 @@
 <li><p>使用切面进行统一管理。使用自定义注解或者@Aspect进行管理，减少了胶水代码，同时便于管理。</p>
 </li>
 </ol>
-<p><img src="http://img.sevenyuan.cn/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring%20AOP/%E4%B8%9A%E5%8A%A1%E8%AE%BE%E8%AE%A1.png" alt=""></p>
 <p>通过上图对比，切面可以使代码更加整洁和管理，唯一的缺点可能就类膨胀，多了很多个类=-=，可是为了编程水平的提高，我选择了切面管理嘿嘿~</p>
 <hr>
 <h2 id="Demo思路"><a href="#Demo思路" class="headerlink" title="Demo思路"></a>Demo思路</h2><ol>
@@ -407,7 +407,7 @@
 </ol>
 <hr>
 <h2 id="Demo代码"><a href="#Demo代码" class="headerlink" title="Demo代码"></a>Demo代码</h2><p><strong>项目结构：</strong></p>
-<p><img src="http://img.sevenyuan.cn/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring%20AOP/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png" alt=""></p>
 <p>先看主要的注解和XML文件如何配置：</p>
 <hr>
 <h3 id="自定义注解TypeCheck"><a href="#自定义注解TypeCheck" class="headerlink" title="自定义注解TypeCheck"></a>自定义注解TypeCheck</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义了该Annotation被保留的时间长短，RUNTIME表示在运行时有效</span></div><div class="line"><span class="meta">@Retention</span>(RUNTIME)</div><div class="line"><span class="comment">//说明了Annotation所修饰的对象范围，可以定义为package、parameter</span></div><div class="line"><span class="comment">//在这里我用的是METHOD，表示修饰范围是方法</span></div><div class="line"><span class="meta">@Target</span>(ElementType.METHOD)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> TypeCheck &#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">    * 加一些自定义的属性吧</span></div><div class="line"><span class="comment">    **/</span></div><div class="line">    <span class="function">Type <span class="title">type</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">paramIndex</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>

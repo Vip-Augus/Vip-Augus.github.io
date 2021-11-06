@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="填坑，分析循环依赖">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/circle_use_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/circle_method_error.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/deal_with_circle_depend.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/circle_reference_debug.gif">
-<meta property="og:updated_time" content="2019-07-21T03:23:53.254Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_use_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_method_error.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/deal_with_circle_depend.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_reference_debug.gif">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(五)循环依赖">
 <meta name="twitter:description" content="填坑，分析循环依赖">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
 
 
 
@@ -361,7 +361,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg" alt=""></p>
 <center>填坑，分析循环依赖</center>
 
 <a id="more"></a>
@@ -370,13 +370,13 @@
 <hr>
 <h1 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h1><p>循环依赖就是循环引用，就是两个或者多个 <code>bean</code> 相互之间的持有对方，最后形成一个环。例如 <code>A</code> 引用了 <code>B</code>，<code>B</code> 引用了 <code>C</code>，<code>C</code> 引用了 <code>A</code>。</p>
 <p>可以参照下图理解（<strong>图中展示的类的互相依赖，但循环调用指的是方法之间的环调用，下面代码例子会展示方法环调用</strong>）：</p>
-<p><img src="http://img.sevenyuan.cn/circle_use_diagram.png" alt="circle_use"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_use_diagram.png" alt="circle_use"></p>
 <p>如果学过数据库的同学，可以将循环依赖简单的理解为死锁，互相持有对方的资源，形成一个环，然后不释放资源，导致死锁发生。</p>
 <p>在循环调用中，除非出现终结条件，否则将会无限循环，最后导致内存溢出错误。（<a href="https://juejin.im/post/5ce9067df265da1bc4142f18" target="_blank" rel="noopener">我也遇到过一次 OOM，也是无限循环导致的</a>）</p>
 <hr>
 <p>书中的例子是用了三个类进行环调用，我为了简单理解和演示，使用了两个类进行环调用：</p>
 <p>在 <code>Spring</code> 中，循环依赖分为以下三种情况：</p>
-<h2 id="构造器循环依赖"><a href="#构造器循环依赖" class="headerlink" title="构造器循环依赖"></a>构造器循环依赖</h2><p><img src="http://img.sevenyuan.cn/circle_method_error.png" alt="circle_method"></p>
+<h2 id="构造器循环依赖"><a href="#构造器循环依赖" class="headerlink" title="构造器循环依赖"></a>构造器循环依赖</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_method_error.png" alt="circle_method"></p>
 <p>通过上图的配置方法，在初始化的时候就会抛出 <code>BeanCurrentlyInCreationException</code> 异常</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	<span class="comment">// 报错原因： Requested bean is currently in creation: Is there an unresolvable circular reference?</span></div><div class="line">	ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"circle/circle.xml"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>从上一篇笔记中知道，<code>Spring</code> 容器将每一个正在创建的 <code>bean</code> 标识符放入一个 “当前创建 bean 池（<code>prototypesCurrentlyInCreation</code>)” 中，<code>bean</code> 标识符在创建过程中将一直保持在这个池中。</p>
@@ -444,7 +444,7 @@
 <p>如果这三个条件都满足的话，就会执行 <code>addSingletonFactory</code> 操作。要想着，写的代码都有用处，所以接下来看下这个操作解决的什么问题和在哪里使用到吧</p>
 <hr>
 <h3 id="解决场景"><a href="#解决场景" class="headerlink" title="解决场景"></a>解决场景</h3><p>用一开始创建的 <code>CircleA</code> 和 <code>CircleB</code> 这两个循环引用的类作为例子：</p>
-<p><img src="http://img.sevenyuan.cn/deal_with_circle_depend.png" alt="deal_with_circle_depend"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/deal_with_circle_depend.png" alt="deal_with_circle_depend"></p>
 <p><code>A</code> 类中含有属性 <code>B</code>，<code>B</code> 类中含有属性 <code>A</code>，这两个类在初始化的时候经历了以下的步骤：</p>
 <ol>
 <li>创建 <code>beanA</code>，先记录对应的 <code>beanName</code> 然后将 <code>beanA</code> 的<strong>创建工厂 beanFactoryA</strong> 放入缓存中</li>
@@ -473,7 +473,7 @@
 <p>虽然 <code>CircleB</code> 引用了 <code>CircleA</code>，但在之前的方法 <code>addSingletonFactory</code> 时，<code>CircleA</code> 的 <code>beanFactory</code> 就提前暴露。</p>
 <p>所以 <code>CircleB</code> 在获取单例 <code>getSingleton()</code> 时，能够拿到 <code>CircleA</code> 的信息，所以 <code>CircleB</code> 顺利加载完成，同时将自己的信息加入到缓存和注册表中，接着返回去继续加载 <code>CircleA</code>，由于它的依赖已经加载到缓存中，所以 <code>CircleA</code> 也能够顺利完成加载，最终整个加载操作完成~</p>
 <p><strong>结合解决场景的流程图和关键代码流程，比较完善的介绍了循环依赖处理方法，下面还有一个 <code>debug</code> 流程图，希望能加深你的理解~</strong></p>
-<p><img src="http://img.sevenyuan.cn/circle_reference_debug.gif" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_reference_debug.gif" alt=""></p>
 <hr>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>写这篇总结的目的是为了填坑，因为之前在解析类加载的文章中只是简单的过了一下循环依赖的概念，想要将在类加载中留下的坑填掉。</p>
 <p>在分析循环依赖的过程中，发现之前对作用域 <code>scope</code> 的不了解，于是补充了一下这个知识点，接着又发现对循环依赖中使用到的缓存和详细处理不熟悉，于是查阅了相关资料，跟踪源码，一步一步进行分析，所以发现越写越多，解决了一个困惑，增加了几个疑问，所以在不断排查和了解中，加深了对 <code>Spring</code> 的理解。</p>

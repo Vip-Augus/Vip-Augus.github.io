@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="前言前面讲了时间 Time 的概念和实际解决问题后，本篇来看下经常搭配使用的另一个关键工具：窗口 Window。 窗口也有三种类型可供选择使用：  Tumbling Windows：滚动窗口 Sliding Windows：滑动窗口 Session Windows：会话窗口  友情提示，本篇主要翻译自官网以及参考了 wuchong 大神的博客，内容比较干货，介绍这三种窗口的概念以及使用场景，希望看">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_window_xmind.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/jark_window_intro.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink/window/window_assigner_impls.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink/window/trigger_impls.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink/window/evictor_impls.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_window_mechanism.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_hello_world_time_winodw.png">
-<meta property="og:updated_time" content="2019-12-22T07:41:45.810Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_window_xmind.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/jark_window_intro.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink/window/window_assigner_impls.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink/window/trigger_impls.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink/window/evictor_impls.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_window_mechanism.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_hello_world_time_winodw.png">
+<meta property="og:updated_time" content="2021-11-02T15:48:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink 基础学习(七) 窗口 Window">
 <meta name="twitter:description" content="前言前面讲了时间 Time 的概念和实际解决问题后，本篇来看下经常搭配使用的另一个关键工具：窗口 Window。 窗口也有三种类型可供选择使用：  Tumbling Windows：滚动窗口 Sliding Windows：滑动窗口 Session Windows：会话窗口  友情提示，本篇主要翻译自官网以及参考了 wuchong 大神的博客，内容比较干货，介绍这三种窗口的概念以及使用场景，希望看">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/flink_window_xmind.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_window_xmind.png">
 
 
 
@@ -383,7 +383,7 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">stream</div><div class="line">    .windowAll(...)            &lt;-  required: <span class="string">"assigner"</span></div><div class="line">    [.trigger(...)]            &lt;-  optional: <span class="string">"trigger"</span> (<span class="keyword">else</span> <span class="keyword">default</span> trigger)</div><div class="line">    [.evictor(...)]            &lt;-  optional: <span class="string">"evictor"</span> (<span class="keyword">else</span> no evictor)</div><div class="line">    [.allowedLateness(...)]    &lt;-  optional: <span class="string">"lateness"</span> (<span class="keyword">else</span> zero)</div><div class="line">    [.sideOutputLateData(...)] &lt;-  optional: <span class="string">"output tag"</span> (<span class="keyword">else</span> no side output <span class="keyword">for</span> late data)</div><div class="line">    .reduce/aggregate/fold/apply()      &lt;-  required: <span class="string">"function"</span></div><div class="line">    [.getSideOutput(...)]      &lt;-  optional: <span class="string">"output tag"</span></div></pre></td></tr></table></figure>
 <hr>
-<h1 id="Window-按驱动类型分类"><a href="#Window-按驱动类型分类" class="headerlink" title="Window 按驱动类型分类"></a>Window 按驱动类型分类</h1><p><img src="http://img.sevenyuan.cn/flink_window_xmind.png" alt=""></p>
+<h1 id="Window-按驱动类型分类"><a href="#Window-按驱动类型分类" class="headerlink" title="Window 按驱动类型分类"></a>Window 按驱动类型分类</h1><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_window_xmind.png" alt=""></p>
 <p>上图按照不同驱动类型，将窗口分成三类。</p>
 <ul>
 <li><strong>时间驱动（Time Window，例如：每 10 秒钟）</strong></li>
@@ -396,7 +396,7 @@
 <blockquote>
 <p><strong>我们举个具体的场景来形象地理解不同窗口的概念。假设，淘宝网会记录每个用户每次购买的商品个数，我们要做的是统计不同窗口中用户购买商品的总数。下图给出了几种经典的窗口切分概述图（圈中的数字代表该用户本次购买的商品个数）：</strong></p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/jark_window_intro.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/jark_window_intro.png" alt=""></p>
 <p>从上图能够看出，<code>Raw stream data</code> 是原始数据流，数据输入方向为【从左到右】，根据左侧不同的窗口分类，将会得到右边相应的窗口，依据设定的窗口大小和时间间隔，每个窗口将会搜集到相应的数据（一个颜色块表示一个窗口）。</p>
 <p>下面将分别介绍这三种窗口类型，其中计数 <code>Count</code> 和时间 <code>Time</code> 窗口可以选择使用滚动 <code>Tumbling</code> 或滑动 <code>Sliding</code> 功能，区别在于统计窗口计算的触发时机和窗口是否有重叠。</p>
 <hr>
@@ -424,21 +424,21 @@
 <hr>
 <h1 id="Window-开放的三大核心-API"><a href="#Window-开放的三大核心-API" class="headerlink" title="Window 开放的三大核心 API"></a>Window 开放的三大核心 API</h1><p><strong>核心有三个组件：窗口分配器  Window Assigner 、触发器 Trigger、’驱逐者’ Evictor，下面来 一一介绍</strong></p>
 <h2 id="Window-Assigner"><a href="#Window-Assigner" class="headerlink" title="Window Assigner"></a>Window Assigner</h2><p>该组件主要功能是决定数据该分发到哪个窗口，它的作用可以类比于 <code>Spring MVC</code> 中的 <code>Dispatcher</code>。</p>
-<p><img src="http://img.sevenyuan.cn/flink/window/window_assigner_impls.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink/window/window_assigner_impls.png" alt=""></p>
 <p>上图左侧是 <code>Flink</code> 窗口实现的包结构，三大组件在对应的目录下，清晰明了。</p>
 <p>底部是 <code>Window Assigner</code> 的继承类，在调用 <code>WindowedStream&lt;T, KEY, W&gt; window(WindowAssigner&lt;? super T, W&gt; assigner)</code> 这类方法时，可以传入上述的窗口分发器，在里面实现自定义的窗口分发逻辑。</p>
 <h2 id="Trigger"><a href="#Trigger" class="headerlink" title="Trigger"></a>Trigger</h2><p>每个窗口都有一个触发器，该触发器决定何时评估或清除该窗口。</p>
 <p>对于每个插入到窗口中的元素以及先前注册的计时器超时时，将触发该触发器。</p>
-<p><img src="http://img.sevenyuan.cn/flink/window/trigger_impls.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink/window/trigger_impls.png" alt=""></p>
 <p>上图展示了触发器的继承类，从中可以看出，它可以根据时间或者计数来触发，表示这个窗口的数据已收集完成，可以触发计算逻辑。</p>
 <h2 id="Evictor"><a href="#Evictor" class="headerlink" title="Evictor"></a>Evictor</h2><p>直译为 ‘驱逐者’，作用类似于过滤器 <code>fliter</code>，在 <code>trigger</code> 后执行，如果设定了 <code>evictor</code>，将会去除不符合条件的数据（默认是不设定的，不会驱逐）</p>
-<p><img src="http://img.sevenyuan.cn/flink/window/evictor_impls.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink/window/evictor_impls.png" alt=""></p>
 <p>通过这三大组件，可以实现自定义窗口逻辑，决定数据如何分配、何时触发计算以及哪些数据要被提前去除，详细使用例子可以参考官网的示例：<a href="https://flink.apache.org/news/2015/12/04/Introducing-windows.html" target="_blank" rel="noopener">https://flink.apache.org/news/2015/12/04/Introducing-windows.html</a></p>
 <h1 id="剖析-Window-实现机制"><a href="#剖析-Window-实现机制" class="headerlink" title="剖析 Window 实现机制"></a>剖析 Window 实现机制</h1><p><strong>前面介绍了三大组件，接下来就来看下在实际应用中，它们的流程是如何串起来。</strong></p>
 <p><code>Flink</code> 的内置时间和计数窗口涵盖了各种常见的窗口用例。</p>
 <p>但是，当然有些应用程序需要自定义窗口逻辑，而 <code>Flink</code> 的内置窗口无法解决这些逻辑。为了也支持需要非常特定的窗口语义的应用程序，<code>DataStream API</code> 公开了其窗口机制内部的接口。</p>
 <p>这些接口可以非常精细地控制窗口的构建和评估方式。下图描述了 <code>Flink</code> 的窗口机制，并介绍了其中涉及的组件。</p>
-<p><img src="http://img.sevenyuan.cn/flink_window_mechanism.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_window_mechanism.png" alt=""></p>
 <p>到达窗口运算符的元素将传递给 <code>WindowAssigner</code>。<code>WindowAssigner</code> 将元素分配给一个或多个窗口，可能会创建新窗口。窗口本身只是元素列表的标识符，并且可以提供一些可选的元信息，例如在使用 <code>TimeWindow</code> 时的开始和结束时间。请注意，可以将元素添加到多个窗口，这也意味着元素可以同时存在于多个窗口（图中的元素 6 就存在于第一个和第三个窗口中）。</p>
 <p>每个窗口都有一个触发器 <code>Trigger</code>，该触发器决定该窗口何时被计算或清除。对于每个插入到窗口中的元素以及先前注册的计时器超时时，将触发对应的 <code>Trigger</code>。</p>
 <p>对于每个事件，触发器都可以决定触发（即计算），清除（删除窗口并丢弃其内容），或者触发然后清除窗口。仅触发的触发器会计算窗口并保持其原样，即所有元素保留在窗口中，并在下次触发时再次计算。一个窗口可以被计算多次，并且一直存在，直到被清除为止。请注意，在清除窗口之前，它会一直消耗内存。</p>
@@ -450,7 +450,7 @@
 <h1 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h1><p>这里需要翻出前面写的 <a href="https://github.com/Vip-Augus/flink-learning-note/blob/master/note/2019-10-13-flink_learn_hello_world.md" target="_blank" rel="noopener">HelloWorld 的例子</a>，参考以下 <code>Demo</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SocketWindowWordCount</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        String hostName = <span class="string">"127.0.0.1"</span>;</div><div class="line">        <span class="keyword">int</span> port = <span class="number">9000</span>;</div><div class="line">        <span class="keyword">final</span> StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</div><div class="line">        DataStream&lt;String&gt; text = env.socketTextStream(<span class="string">"localhost"</span>, port, <span class="string">"\n"</span>);</div><div class="line">        DataStream&lt;WordWithCount&gt; windowCounts = text</div><div class="line">                .flatMap(<span class="keyword">new</span> FlatMapFunction&lt;String, WordWithCount&gt;() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">flatMap</span><span class="params">(String value, Collector&lt;WordWithCount&gt; out)</span> </span>&#123;</div><div class="line">                        <span class="keyword">for</span> (String word : value.split(<span class="string">"\\s"</span>)) &#123;</div><div class="line">                            out.collect(<span class="keyword">new</span> WordWithCount(word, <span class="number">1L</span>));</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;)</div><div class="line">                .keyBy(<span class="string">"word"</span>)</div><div class="line">                .timeWindow(Time.seconds(<span class="number">5</span>), Time.seconds(<span class="number">1</span>))</div><div class="line">                .reduce(<span class="keyword">new</span> ReduceFunction&lt;WordWithCount&gt;() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="function"><span class="keyword">public</span> WordWithCount <span class="title">reduce</span><span class="params">(WordWithCount a, WordWithCount b)</span> </span>&#123;</div><div class="line">                        <span class="keyword">return</span> <span class="keyword">new</span> WordWithCount(a.getWord(), a.getCount() + b.getCount());</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line"></div><div class="line">        <span class="comment">// print the results with a single thread, rather than in parallel</span></div><div class="line">        windowCounts.print().setParallelism(<span class="number">1</span>);</div><div class="line">        env.execute(<span class="string">"Socket Window WordCount"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>打开 9000 端口，往窗口发送数据，程序接收到数据进行解析，接着使用 <code>timeWindow</code> 时间窗口搜集数据，窗口大小为 5s，滑动统计的时间间隔为 1s，于是就有了下图的输出结果：</p>
-<p><img src="http://img.sevenyuan.cn/flink_hello_world_time_winodw.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/window/flink_hello_world_time_winodw.png" alt=""></p>
 <p>每秒输出当前 5s 内搜集到的数据，时间窗口统计正确运行。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>Time</code> 时间和 <code>Window</code> 窗口是 <code>Flink</code> 的亮点，所以这两篇对它们的学习是十分必要的，了解它们的概念和原理，可以更好的去使用它们。</p>
 <p><code>Flink</code> 是一个流处理器，提供了非常强大的运算符，帮助我们计算、聚合数据。同时提供了窗口机制，将流划分成一个个区间，对于区间，也就是窗口中的元素进行计算，达到批处理的作用。</p>

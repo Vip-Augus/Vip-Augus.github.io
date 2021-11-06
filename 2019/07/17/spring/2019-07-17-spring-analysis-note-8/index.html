@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="我们在业务开发中，使用得最多的是面向对象编程（OOP），因为它的代码逻辑直观，从上往下就能查看完整的执行链路。 在这个基础上延伸，出现了面向切面编程（AOP），将可以重复性的横切逻辑抽取到统一的模块中。 例如日志打印、安全监测，如果按照 OOP 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 AOP 编程， AOP 所关注的方向是横向的，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/idea_find_file_source.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/annotation_aware_aspectJ_auto_proxy_creator_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/proxy_factory_create_aop_proxy.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/after_post_bean_processor.png">
-<meta property="og:updated_time" content="2019-07-21T03:22:48.642Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/idea_find_file_source.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/annotation_aware_aspectJ_auto_proxy_creator_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/proxy_factory_create_aop_proxy.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/after_post_bean_processor.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(八) AOP 使用和实现原理">
 <meta name="twitter:description" content="我们在业务开发中，使用得最多的是面向对象编程（OOP），因为它的代码逻辑直观，从上往下就能查看完整的执行链路。 在这个基础上延伸，出现了面向切面编程（AOP），将可以重复性的横切逻辑抽取到统一的模块中。 例如日志打印、安全监测，如果按照 OOP 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 AOP 编程， AOP 所关注的方向是横向的，">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg">
 
 
 
@@ -361,7 +361,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/BurrowingOwlet_ZH-CN5583013899_1920x1080.jpg" alt=""></p>
 <p>我们在业务开发中，使用得最多的是<strong>面向对象编程（OOP）</strong>，因为它的代码逻辑直观，从上往下就能查看完整的执行链路。</p>
 <p>在这个基础上延伸，出现了<strong>面向切面编程（AOP）</strong>，将可以重复性的横切逻辑抽取到统一的模块中。</p>
 <p>例如日志打印、安全监测，如果按照 <code>OOP</code> 的思想，在每个方法的前后都要加上重复的代码，之后要修改的话，更改的地方就会太多，导致不好维护。所以出现了 <code>AOP</code> 编程， <code>AOP</code> 所关注的方向是<strong>横向</strong>的，不同于 <code>OOP</code> 的<strong>纵向</strong>。 </p>
@@ -382,7 +382,7 @@
 <p>使用起来很方便，接下来一起来看看 <code>Spring</code> 是如何实现 <code>AOP</code> 功能的吧~</p>
 <hr>
 <h1 id="动态-AOP-自定义标签"><a href="#动态-AOP-自定义标签" class="headerlink" title="动态 AOP 自定义标签"></a>动态 AOP 自定义标签</h1><p>之前在介绍自定义标签时，提到了 <code>AOP</code> 的实现也借助了自定义注解，根据自定义标签的思想：<strong>每个自定义的标签，都有对应的解析器</strong>，然后借助强大的开发工具 <code>IDEA</code> 定位功能，找到解析器注册的地方：</p>
-<p><img src="http://img.sevenyuan.cn/idea_find_file_source.png" alt="idea_find_file_source"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/idea_find_file_source.png" alt="idea_find_file_source"></p>
 <ol>
 <li><strong>按住 <code>ctrl</code>，定位标签对应的 <code>xsd</code> 文件</strong></li>
 <li><strong>根据命名文件，在 <code>META-INF</code> 目录下找到了 <code>spring.handlers</code> 文件</strong></li>
@@ -430,7 +430,7 @@
 <hr>
 <h1 id="创建-AOP-代理"><a href="#创建-AOP-代理" class="headerlink" title="创建 AOP 代理"></a>创建 AOP 代理</h1><p>前面主要围绕着自动代理器 <code>AnnotationAwareAspectJAutoProxyCreator</code> 的注册流程来讲解，接下来看自动代理器做了什么来完成 <code>AOP</code> 的操作。</p>
 <p>下面是 <code>AnnotationAwareAspectJAutoProxyCreator</code> 的继承体系：</p>
-<p><img src="http://img.sevenyuan.cn/annotation_aware_aspectJ_auto_proxy_creator_diagram.png" alt="annotation_aware_aspectJ_auto_proxy_creator_diagram"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/annotation_aware_aspectJ_auto_proxy_creator_diagram.png" alt="annotation_aware_aspectJ_auto_proxy_creator_diagram"></p>
 <p>在图片右上角，发现它实现了 <code>BeanPostProcessor</code> 接口，之前文章提到过，它是一个后处理器，可以在 <code>bean</code> 实例化前后进行扩展。查看了实现了该接口的两个方法，<code>postProcessBeforeInitialization</code> 没有做处理，直接返回该对象。</p>
 <p><strong>实际进行处理的是 <code>postProcessAfterInitialization</code> 方法，在 <code>bean</code> 实例化之后的处理，在这一步中进行里代理增强，所以来看下这个方法：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">postProcessAfterInitialization</span><span class="params">(@Nullable Object bean, String beanName)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">// 组装 key</span></div><div class="line">		Object cacheKey = getCacheKey(bean.getClass(), beanName);</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.earlyProxyReferences.remove(cacheKey) != bean) &#123;</div><div class="line">			<span class="comment">// 如果适合被代理，则需要封装指定的 bean</span></div><div class="line">			<span class="keyword">return</span> wrapIfNecessary(bean, beanName, cacheKey);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> bean;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">wrapIfNecessary</span><span class="params">(Object bean, String beanName, Object cacheKey)</span> </span>&#123;</div><div class="line">	<span class="comment">// 如果已经处理过</span></div><div class="line">	<span class="keyword">if</span> (StringUtils.hasLength(beanName) &amp;&amp; <span class="keyword">this</span>.targetSourcedBeans.contains(beanName)) &#123;</div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 不需增强</span></div><div class="line">	<span class="keyword">if</span> (Boolean.FALSE.equals(<span class="keyword">this</span>.advisedBeans.get(cacheKey))) &#123;</div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 给定的 bean 类是否代表一个基础设施类，基础设置类不应代理 || 配置了指定 bean 不需要代理</span></div><div class="line">	<span class="keyword">if</span> (isInfrastructureClass(bean.getClass()) || shouldSkip(bean.getClass(), beanName)) &#123;</div><div class="line">		<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 如果存在增强方法则创建代理</span></div><div class="line">	Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, <span class="keyword">null</span>);</div><div class="line">	<span class="keyword">if</span> (specificInterceptors != DO_NOT_PROXY) &#123;</div><div class="line">		<span class="comment">// 增强方法不为空</span></div><div class="line">		<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.TRUE);</div><div class="line">		<span class="comment">// 创建代理</span></div><div class="line">		Object proxy = createProxy(bean.getClass(), beanName, specificInterceptors, <span class="keyword">new</span> SingletonTargetSource(bean));</div><div class="line">		<span class="keyword">this</span>.proxyTypes.put(cacheKey, proxy.getClass());</div><div class="line">		<span class="keyword">return</span> proxy;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.FALSE);</div><div class="line">	<span class="keyword">return</span> bean;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -487,7 +487,7 @@
 <p>从上面代码中能看出，根据了<strong>几个关键属性，判断创建的是哪种类型的 <code>AopProxy</code>，一种是 JDK 动态代理，另一种是 CGLIB 动态代理。</strong></p>
 <p>前面提到过的 <code>proxy-target-class</code> 属性和 <code>targetClass</code> 属性，在这里判断了应该创建哪一个代理。</p>
 <hr>
-<h3 id="获取代理-getProxy"><a href="#获取代理-getProxy" class="headerlink" title="获取代理 getProxy()"></a>获取代理 getProxy()</h3><p><img src="http://img.sevenyuan.cn/proxy_factory_create_aop_proxy.png" alt=""></p>
+<h3 id="获取代理-getProxy"><a href="#获取代理-getProxy" class="headerlink" title="获取代理 getProxy()"></a>获取代理 getProxy()</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/proxy_factory_create_aop_proxy.png" alt=""></p>
 <p>观察图片以及前面分析，可以知道有两种代理方式：<strong>[JDK 动态代理] 和 [CGLIB 动态代理]</strong></p>
 <p>同时先说下<strong>动态代理的含义：抽象类在编译期间是未确定具体实现子类，在运行时才生成最终对象。</strong></p>
 <hr>
@@ -515,7 +515,7 @@
 <hr>
 <h3 id="代理增强结果"><a href="#代理增强结果" class="headerlink" title="代理增强结果"></a>代理增强结果</h3><p>通过前面一系列步骤，解析标签、属性、增强方法，到最后获取 <code>CGLIB</code> 代理，通过代理创建 <code>bean</code></p>
 <p>来看下最后被代理的 <code>bean</code> 内部：</p>
-<p><img src="http://img.sevenyuan.cn/after_post_bean_processor.png" alt="after_post_bean_processor"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring8/after_post_bean_processor.png" alt="after_post_bean_processor"></p>
 <p><strong>从图中可以看到，最终创建的是被修饰后的 <code>bean</code>，内部很明显是 <code>CGGLIB</code> 代理生成的代码，我们在不修改业务代码的情况下，实现了方法增强。</strong></p>
 <hr>
 <h1 id="静态-AOP"><a href="#静态-AOP" class="headerlink" title="静态 AOP"></a>静态 AOP</h1><p>既然有动态代理，那么也会有静态代理。</p>

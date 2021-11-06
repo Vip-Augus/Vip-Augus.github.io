@@ -92,19 +92,19 @@
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记一次使用 Arthas 热更新线上代码（误）">
-<meta property="og:url" content="http://yoursite.com/2019/10/03/java/2019-09-14-arthas_hot_update/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/09/14/java/2019-09-14-arthas_hot_update/index.html">
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="引用参考第二条 -  Arthas提醒您： 诊断千万条，规范第一条，热更不规范，同事两行泪">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/arthas_summary.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/arthas_tutorials.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/jad_defects.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/idea_class_position.png">
-<meta property="og:updated_time" content="2019-11-03T15:11:59.480Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/arthas_summary.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/arthas_tutorials.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/jad_defects.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/idea_class_position.png">
+<meta property="og:updated_time" content="2021-11-06T05:07:35.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次使用 Arthas 热更新线上代码（误）">
 <meta name="twitter:description" content="引用参考第二条 -  Arthas提醒您： 诊断千万条，规范第一条，热更不规范，同事两行泪">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/arthas_summary.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/arthas_summary.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/03/java/2019-09-14-arthas_hot_update/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/09/14/java/2019-09-14-arthas_hot_update/"/>
 
 
 
@@ -266,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/03/java/2019-09-14-arthas_hot_update/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/14/java/2019-09-14-arthas_hot_update/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
@@ -295,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-03T10:50:35+08:00">
-                2019-10-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-14T20:02:44+08:00">
+                2019-09-14
               </time>
             
 
@@ -372,14 +372,14 @@
 <p><strong>如果你的应用体积不小，而且线上机器很多，花费的时间可能足够喝很多杯 <code>Java</code> :-O</strong></p>
 <hr>
 <h1 id="Arthas"><a href="#Arthas" class="headerlink" title="Arthas"></a>Arthas</h1><p>之前使用过 <code>Alibaba</code> 开源的诊断工具 <code>Arthas</code> ，下图是官方文档中提到的功能：</p>
-<p><img src="http://img.sevenyuan.cn/arthas_summary.png" alt="arthas_summary"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/arthas_summary.png" alt="arthas_summary"></p>
 <p><strong>不仅可以用来排查问题，还能够使用它 <code>redefine</code> 进行热更新。</strong></p>
 <p><strong>刚好之前也看到一篇文章介绍如何进行 <code>一条龙更新</code>，所以就开始了尝试，先从本地开发测试开始。</strong></p>
 <hr>
 <h1 id="选择方案"><a href="#选择方案" class="headerlink" title="选择方案"></a>选择方案</h1><h2 id="方案一：jad-mc-redefine线上热更新一条龙"><a href="#方案一：jad-mc-redefine线上热更新一条龙" class="headerlink" title="方案一：jad/mc/redefine线上热更新一条龙"></a>方案一：jad/mc/redefine线上热更新一条龙</h2><p>开发时写下的 <code>java</code> 程序是高级语言，需要通过编译生成 <code>.class</code> 文件才能在 <code>jvm</code> 中运行。</p>
 <p><strong>所以在一个运行中的程序中进行热更新，需要先将它使用 <code>jad</code> [Java decompile]反编译，修改 <code>.java</code> 文件后使用 <code>mc</code> [Memory complile] 编译出 <code>.class</code> 文件，最后使用 <code>redefine</code> 命令更新虚拟机中的程序。</strong></p>
 <p>首先可以跟着教程来一次尝试 <a href="https://alibaba.github.io/arthas/arthas-tutorials?language=cn&amp;id=arthas-advanced" target="_blank" rel="noopener">https://alibaba.github.io/arthas/arthas-tutorials?language=cn&amp;id=arthas-advanced</a></p>
-<p><img src="http://img.sevenyuan.cn/arthas_tutorials.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/arthas_tutorials.png" alt=""></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 反编译</span></div><div class="line">$ jad --<span class="built_in">source</span>-only com.example.demo.arthas.user.UserController &gt; /tmp/UserController.java</div><div class="line"><span class="comment"># 修改文件</span></div><div class="line">$ vim /tmp/UserController.java</div><div class="line"><span class="comment"># 查找加载的 ClassLoader</span></div><div class="line">$ $ sc -d *UserController | grep classLoaderHash</div><div class="line"> classLoaderHash   6bc28484</div><div class="line"><span class="comment"># 编译</span></div><div class="line">$ mc -c 6bc28484 /tmp/UserController.java -d /tmp</div><div class="line"><span class="comment"># 热更新</span></div><div class="line">$ redefine /tmp/com/example/demo/arthas/user/UserController.class</div><div class="line">redefine success, size: 1</div></pre></td></tr></table></figure>
 <p>跟着教程 <code>demo</code>，发现代码逻辑被修改，返回我修改后的结果，心里在狂喜，可以不用喝这些多咖啡！</p>
 <hr>
@@ -391,7 +391,7 @@
 <hr>
 <h3 id="反编译失败原因"><a href="#反编译失败原因" class="headerlink" title="反编译失败原因"></a>反编译失败原因</h3><p>开源的好处的是，大家可以一起参与到其中，提出问题和解决问题，在 <code>github</code> 项目 <code>arthas</code> 的 <code>issue</code> 中，通过关键字 <code>jad 反编译</code> 找到了原因</p>
 <p><a href="https://github.com/alibaba/arthas/issues/763" target="_blank" rel="noopener">横云断岭 Arthas源码分析–jad反编译原理</a>：</p>
-<p><img src="http://img.sevenyuan.cn/jad_defects.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/jad_defects.png" alt=""></p>
 <p><strong>可能好巧不巧，实际项目中的代码，就遇上了这 1% 情况（顺便看了其它类，发现这种情况还不少…)</strong></p>
 <p>当时对于 <code>jad</code> 机制是有点不了解，所以想先通过上面的提示的工具 <code>dumpclass</code> 去精确获取 <code>java</code> 字节码，但奈何有些难用，尝试了几遍还是没能拿下来，于是开始换种思路。</p>
 <hr>
@@ -399,7 +399,7 @@
 <p><strong>于是与一个前辈讨论后，他建议我使用 <code>IDEA</code> 工具编译后的 <code>.class</code> 文件</strong></p>
 <p>于是将本地代码进行修改，进行打包编译，得到想要的 <code>.class</code> 文件，然后将这个文件上传到测试环境，进行替换。</p>
 <p>文件地址类似下图：</p>
-<p><img src="http://img.sevenyuan.cn/idea_class_position.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/arthas/idea_class_position.png" alt=""></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[arthas@63]$ redefine /tmp/xxxxxx.class</div><div class="line">redefine success, size: 1</div></pre></td></tr></table></figure>
 <p><strong>出现了成功的提示，同时进行了接口测试，发现执行的代码是修改后的逻辑！</strong></p>
 <hr>

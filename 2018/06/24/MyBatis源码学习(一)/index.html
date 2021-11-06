@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="昨天的我是个小木匠  图文不符系列😛">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E6%9C%A8%E5%A4%B4.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5.jpg">
-<meta property="og:updated_time" content="2019-05-25T08:04:08.985Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/%E6%9C%A8%E5%A4%B4.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/mybatis/%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/mybatis/%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5.jpg">
+<meta property="og:updated_time" content="2021-10-30T17:02:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyBatis源码学习(一)">
 <meta name="twitter:description" content="昨天的我是个小木匠  图文不符系列😛">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/%E6%9C%A8%E5%A4%B4.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/%E6%9C%A8%E5%A4%B4.png">
 
 
 
@@ -359,7 +359,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/%E6%9C%A8%E5%A4%B4.png"></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/%E6%9C%A8%E5%A4%B4.png"></p>
 <p align="center">昨天的我是个小木匠</p>
 
 <p align="center">图文不符系列😛</p>
@@ -371,8 +371,8 @@
 <p>MyBatis 是一款<strong>优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射</strong>。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Old Java Objects,普通的 Java对象)映射成数据库中的记录。</p>
 <hr>
 <h2 id="图化两个流程"><a href="#图化两个流程" class="headerlink" title="图化两个流程"></a>图化两个流程</h2><p><strong>在<a href="https://github.com/mybatis/mybatis-3" target="_blank" rel="noopener">Github中将源码</a>拉下来，Debug了binding包下的BindingTest类，简单分析整个流程：</strong></p>
-<h3 id="一、数据初始化阶段"><a href="#一、数据初始化阶段" class="headerlink" title="一、数据初始化阶段"></a>一、数据初始化阶段</h3><p><img src="http://img.sevenyuan.cn/%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5.jpg" alt=""></p>
-<h3 id="二、查询阶段"><a href="#二、查询阶段" class="headerlink" title="二、查询阶段"></a>二、查询阶段</h3><p><img src="http://img.sevenyuan.cn/%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5.jpg" alt=""></p>
+<h3 id="一、数据初始化阶段"><a href="#一、数据初始化阶段" class="headerlink" title="一、数据初始化阶段"></a>一、数据初始化阶段</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/mybatis/%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%B6%E6%AE%B5.jpg" alt=""></p>
+<h3 id="二、查询阶段"><a href="#二、查询阶段" class="headerlink" title="二、查询阶段"></a>二、查询阶段</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/mybatis/%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5.jpg" alt=""></p>
 <hr>
 <h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p><strong>代码位置：org.apache.ibatis.binding.BindingTest</strong></p>
 <h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@BeforeClass</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setup</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">  <span class="comment">// 创建一个没有池化的数据源</span></div><div class="line">  DataSource dataSource = BaseDataTest.createBlogDataSource();</div><div class="line">  <span class="comment">// 数据源执行两个SQL脚本，第一个是清除数据，第二个是插入数据</span></div><div class="line">  BaseDataTest.runScript(dataSource, BaseDataTest.BLOG_DDL);</div><div class="line">  BaseDataTest.runScript(dataSource, BaseDataTest.BLOG_DATA);</div><div class="line">  <span class="comment">// 创建jdbc事务工厂和环境</span></div><div class="line">  TransactionFactory transactionFactory = <span class="keyword">new</span> JdbcTransactionFactory();</div><div class="line">  Environment environment = <span class="keyword">new</span> Environment(<span class="string">"Production"</span>, transactionFactory, dataSource);</div><div class="line">  <span class="comment">// 创建配置（配置巨多...），并且设置可延迟加载和注册类别名、添加两个Mapper资源</span></div><div class="line">  Configuration configuration = <span class="keyword">new</span> Configuration(environment);</div><div class="line">  configuration.setLazyLoadingEnabled(<span class="keyword">true</span>);</div><div class="line">  configuration.getTypeAliasRegistry().registerAlias(Blog.class);</div><div class="line">  configuration.getTypeAliasRegistry().registerAlias(Post.class);</div><div class="line">  configuration.getTypeAliasRegistry().registerAlias(Author.class);</div><div class="line">  configuration.addMapper(BoundBlogMapper.class);</div><div class="line">  configuration.addMapper(BoundAuthorMapper.class);</div><div class="line">  <span class="comment">// 构建SqlSessionFactory的工厂，参数是configuration，返回的是DefaultSqlSession</span></div><div class="line">  sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(configuration);</div><div class="line">&#125;</div></pre></td></tr></table></figure>

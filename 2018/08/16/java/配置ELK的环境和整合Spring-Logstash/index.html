@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="在看大型网站的中间件技术，对于Elasticsearch有点兴趣，所以将配置流程记录了一下">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/7097c713gy1fubo38e6pjj21hc0u0aj7.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/ELK%E7%AE%80%E5%8D%95%E6%9E%B6%E6%9E%84.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Kibana_home%E7%95%8C%E9%9D%A2.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/Kibana%E6%B7%BB%E5%8A%A0index.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/Kibana%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Kibana_visualize.png">
-<meta property="og:updated_time" content="2019-05-25T08:33:41.704Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713gy1fubo38e6pjj21hc0u0aj7.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/ELK%E7%AE%80%E5%8D%95%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana_home%E7%95%8C%E9%9D%A2.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana%E6%B7%BB%E5%8A%A0index.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana_visualize.png">
+<meta property="og:updated_time" content="2021-10-30T16:37:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置ELK的环境和整合Spring+Logstash">
 <meta name="twitter:description" content="在看大型网站的中间件技术，对于Elasticsearch有点兴趣，所以将配置流程记录了一下">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713gy1fubo38e6pjj21hc0u0aj7.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713gy1fubo38e6pjj21hc0u0aj7.jpg">
 
 
 
@@ -362,7 +362,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/7097c713gy1fubo38e6pjj21hc0u0aj7.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713gy1fubo38e6pjj21hc0u0aj7.jpg" alt=""></p>
 <center>在看大型网站的中间件技术，对于Elasticsearch有点兴趣，所以将配置流程记录了一下</center>
 
 <a id="more"></a>
@@ -370,7 +370,7 @@
 <h2 id="为什么要用ELK"><a href="#为什么要用ELK" class="headerlink" title="为什么要用ELK"></a>为什么要用ELK</h2><blockquote>
 <p>ELK实际上是三个工具，Elastricsearch + LogStash + Kibana，通过ELK，用来收集日志还有进行日志分析，最后通过可视化UI进行展示。一开始业务量比较小的时候，通过简单的SLF4J+Logger在服务器打印日志，通过grep进行简单查询，但是随着业务量增加，数据量也会不断增加，所以使用ELK可以进行大数量的日志收集和分析</p>
 </blockquote>
-<h2 id="简单画了一下架构图"><a href="#简单画了一下架构图" class="headerlink" title="简单画了一下架构图"></a>简单画了一下架构图</h2><p><img src="http://img.sevenyuan.cn/ELK%E7%AE%80%E5%8D%95%E6%9E%B6%E6%9E%84.png" alt=""></p>
+<h2 id="简单画了一下架构图"><a href="#简单画了一下架构图" class="headerlink" title="简单画了一下架构图"></a>简单画了一下架构图</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/ELK%E7%AE%80%E5%8D%95%E6%9E%B6%E6%9E%84.png" alt=""></p>
 <p><strong>在环境配置中，主要介绍Mac和linux配置，windows系统大致相同，当然，前提是大家都安装了JDK1.8及以上版本~</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos ~]# java -version</div><div class="line">java version "1.8.0_161"</div><div class="line">Java(TM) SE Runtime Environment (build 1.8.0_161-b12)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)</div></pre></td></tr></table></figure>
 <blockquote>
@@ -427,7 +427,7 @@
 </blockquote>
 <p><strong>3. 启动</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@VM_234_23_centos kibana]# ./bin/kibana</div></pre></td></tr></table></figure></p>
 <p><strong>4. 访问 <a href="http://localhost:5601/app/kibana#/home?_g=(" target="_blank" rel="noopener">http://localhost:5601/app/kibana#/home?_g=(</a>)</strong></p>
-<p><img src="http://img.sevenyuan.cn/Kibana_home%E7%95%8C%E9%9D%A2.jpg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana_home%E7%95%8C%E9%9D%A2.jpg" alt=""></p>
 <p><strong>界面显示了这么多功能，下面通过整合SLF4J+LogBack</strong></p>
 <hr>
 <h2 id="整合Spring-Logstash"><a href="#整合Spring-Logstash" class="headerlink" title="整合Spring+Logstash"></a>整合Spring+Logstash</h2><p><strong>1. 修改logstash.conf后，重新启动logstash</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">input &#123; </div><div class="line">  # stdin &#123; &#125;</div><div class="line">  tcp &#123; </div><div class="line">    # host:port就是上面appender中的 destination，</div><div class="line">	# 这里其实把logstash作为服务，开启9250端口接收logback发出的消息 </div><div class="line">    host =&gt; &quot;127.0.0.1&quot; port =&gt; 9250 mode =&gt; &quot;server&quot; tags =&gt; [&quot;tags&quot;] codec =&gt; json_lines </div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">output &#123;</div><div class="line">  elasticsearch &#123; hosts =&gt; [&quot;localhost:9200&quot;] &#125;</div><div class="line">  stdout &#123; codec =&gt; rubydebug &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -435,11 +435,11 @@
 <p><strong>3. 在Logback.xml中配置日志输出</strong><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--日志导出的到 Logstash--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"stash"</span></span></div><div class="line"><span class="tag">              <span class="attr">class</span>=<span class="string">"net.logstash.logback.appender.LogstashTcpSocketAppender"</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">destination</span>&gt;</span>localhost:9250<span class="tag">&lt;/<span class="name">destination</span>&gt;</span></div><div class="line">   <span class="comment">&lt;!-- encoder必须配置,有多种可选 --&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">encoder</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span></span></div><div class="line"><span class="tag">            <span class="attr">class</span>=<span class="string">"net.logstash.logback.encoder.LogstashEncoder"</span> &gt;</span></div><div class="line">       <span class="comment">&lt;!-- "appname":"ye_test" 的作用是指定创建索引的名字时用，并且在生成的文档中会多了这个字段  --&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">customFields</span>&gt;</span>&#123;"appname":"ye_test"&#125;<span class="tag">&lt;/<span class="name">customFields</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">appender</span>&gt;</span>  </div><div class="line">    </div><div class="line"><span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"INFO"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"stash"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></div></pre></td></tr></table></figure></p>
 <p><strong>由于我在第一步骤中，没有指定对应的index，所以在服务启动的时候，日志采集器Logstash帮我自动创建了logstash-timestamp的index</strong></p>
 <p><strong>4. 在kibana中添加index索引</strong></p>
-<p><img src="http://img.sevenyuan.cn/Kibana%E6%B7%BB%E5%8A%A0index.jpg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana%E6%B7%BB%E5%8A%A0index.jpg" alt=""></p>
 <p><strong>5. 在左边discover中查看索引信息</strong></p>
-<p><img src="http://img.sevenyuan.cn/Kibana%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana%E7%B4%A2%E5%BC%95%E6%95%B0%E6%8D%AE.png" alt=""></p>
 <p><strong>6. 添加可视化图表Visualize</strong></p>
-<p><img src="http://img.sevenyuan.cn/Kibana_visualize.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/big-data/elk/Kibana_visualize.png" alt=""></p>
 <p><strong>还有更多功能还在探索中，首先环境搭起来才会用动力继续去学习~</strong></p>
 <hr>
 <h2 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><h3 id="启动报错"><a href="#启动报错" class="headerlink" title="启动报错"></a>启动报错</h3><blockquote>

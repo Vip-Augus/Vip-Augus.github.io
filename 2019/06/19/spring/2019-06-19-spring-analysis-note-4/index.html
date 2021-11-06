@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="解析完配置后，来看下 bean 是如何加载的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/OntWarbler_ZH-CN7999782156_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/do_get_bean_sequence_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/factory_bean_use.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/get_object_from_factory_bean.png">
-<meta property="og:updated_time" content="2019-07-21T03:24:13.735Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/OntWarbler_ZH-CN7999782156_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/do_get_bean_sequence_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/factory_bean_use.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/get_object_from_factory_bean.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(四)bean 的加载">
 <meta name="twitter:description" content="解析完配置后，来看下 bean 是如何加载的">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/OntWarbler_ZH-CN7999782156_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/OntWarbler_ZH-CN7999782156_1920x1080.jpg">
 
 
 
@@ -360,7 +360,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/OntWarbler_ZH-CN7999782156_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/OntWarbler_ZH-CN7999782156_1920x1080.jpg" alt=""></p>
 <center>解析完配置后，来看下 bean 是如何加载的</center>
 
 <a id="more"></a>
@@ -377,7 +377,7 @@
 <p>org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean</p>
 </blockquote>
 <p>这个 <code>bean</code> 加载的代码量是有点多的，已经超过 100 行，所以整理了时序图，希望能对加载流程有个清晰的概览：</p>
-<p><img src="http://img.sevenyuan.cn/do_get_bean_sequence_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/do_get_bean_sequence_diagram.png" alt=""></p>
 <p>这个时序图介绍了 <code>bean</code> 加载的大体流程，还有很多细节没在图中进行展示。我们先对整体流程有个了解，然后跟着代码一起深入分析吧。</p>
 <hr>
 <h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p><strong>再提示一下：由于代码量很多，每次贴大段代码看起来会比较吃力，所以展示的是我认为的关键代码，下载项目看完整注释，跟着源码一起分析~</strong></p>
@@ -396,7 +396,7 @@
 <p>当配置文件中的 <code>&lt;bean&gt;</code> 的 <code>class</code> 属性实现类是 <code>FactoryBean</code> 时，通过 <code>getBean()</code> 方法返回的不是 <code>FactoryBean</code> 本身，而是 <code>FactoryBean#getObject()</code> 方法返回的对象。</p>
 </blockquote>
 <p>使用 <code>demo</code> 代码请看下图：</p>
-<p><img src="http://img.sevenyuan.cn/factory_bean_use.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/factory_bean_use.png" alt=""></p>
 <p>扩展 <code>FactoryBean</code> 之后，需要重载图中的两个方法，通过泛型约定返回的类型。在重载的方法中，进行自己个性化的处理。</p>
 <p>在启动类 <code>Demo</code>，通过上下文获取类的方法 <code>context.getBean(&quot;beanName&quot;)</code>，使用区别是 <code>beanName</code> 是否使用 &amp; 前缀，如果有没有 &amp; 前缀，识别到的是 FactoryBean.getObject 返回的 <code>car</code> 类型，如果带上 &amp; 前缀，那么将会返回 <code>FactoryBean</code> 类型的类。</p>
 <p><strong>验证和学习书中的概念，最快的方式是运行一遍示例代码，看输出结果是否符合预期，所以参考书中的例子，自己手打代码，看最后的输出结果，发现与书中说的一致，同时也加深了对 <code>FactoryBean</code> 的了解。</strong></p>
@@ -422,7 +422,7 @@
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 返回对应的实例，有时候存在诸如 BeanFactory 的情况并不是直接返回实例本身</span></div><div class="line"><span class="comment">// 而是返回指定方法返回的实例</span></div><div class="line">bean = getObjectForBeanInstance(sharedInstance, name, beanName, <span class="keyword">null</span>);</div></pre></td></tr></table></figure>
 <p>具体方法实现，搜索 <strong>注释 4.6</strong> 看代码中的注释吧：</p>
-<p><img src="http://img.sevenyuan.cn/get_object_from_factory_bean.png" alt="get_object_from_factory_bean"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring4/get_object_from_factory_bean.png" alt="get_object_from_factory_bean"></p>
 <p>交代一下这个方法的流程：</p>
 <ul>
 <li><strong>验证 <code>bean</code> 类型</strong>：判断是否是工厂 <code>bean</code></li>

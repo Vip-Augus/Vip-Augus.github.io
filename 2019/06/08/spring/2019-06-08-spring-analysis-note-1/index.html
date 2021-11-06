@@ -96,20 +96,20 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="Spring 是这样加载 xml 配置的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/Manhattanhenge_ZH-CN4659585143_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/classpath_xml_application_context_herarchy.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/standard_servlet_environment.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/property_source_herarchy.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/property_store.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/default_listable_bean_factory_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/entity_resolver_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/xml_bean_definition_reader_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/generic_bean_definition_diagram.png">
-<meta property="og:updated_time" content="2019-07-21T03:25:15.755Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/Manhattanhenge_ZH-CN4659585143_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/classpath_xml_application_context_herarchy.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/standard_servlet_environment.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/property_source_herarchy.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/property_store.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/default_listable_bean_factory_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/entity_resolver_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/xml_bean_definition_reader_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/generic_bean_definition_diagram.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(一)-容器的基础结构">
 <meta name="twitter:description" content="Spring 是这样加载 xml 配置的">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/Manhattanhenge_ZH-CN4659585143_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/Manhattanhenge_ZH-CN4659585143_1920x1080.jpg">
 
 
 
@@ -365,7 +365,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/Manhattanhenge_ZH-CN4659585143_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/Manhattanhenge_ZH-CN4659585143_1920x1080.jpg" alt=""></p>
 <center><code>Spring</code> 是这样加载 <code>xml</code> 配置的</center>
 
 <a id="more"></a>
@@ -396,7 +396,7 @@
 <p>通常来说，我们要使用一个对象，需要通过 <code>new</code> 初始化，分配内存空间等操作进行实例化，但有了 <code>Spring</code> 容器后，我们可以将 <code>SimpleBook</code> 交给了 <code>Spring</code> 进行管理，不需要在代码中进行 <code>new SimpleBook</code> 等操作，通过自动注入（例如 <code>@Autowire</code> 注解），或者像例子中的，获取上下文对象，然后使用 <code>getBean()</code>方法，可以方便的获取对象实例~。</p>
 <hr>
 <h2 id="ClassPathXmlApplicationContext"><a href="#ClassPathXmlApplicationContext" class="headerlink" title="ClassPathXmlApplicationContext"></a>ClassPathXmlApplicationContext</h2><p><code>ClassPathXmlApplicationContext</code> 的继承体系结构图：</p>
-<p><img src="http://img.sevenyuan.cn/classpath_xml_application_context_herarchy.png" alt="ClassPathXmlApplicationContext"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/classpath_xml_application_context_herarchy.png" alt="ClassPathXmlApplicationContext"></p>
 <p>这种结构图是通过 <code>IDEA</code> 编辑器的 <code>Diagrams</code> 功能展示的，对当前类右键选择，可以看到继承体系，继承了哪些类和引用了哪些接口，方便我们去了解~ </p>
 <p><code>ClassPathXmlApplicationContext</code> 继承自 <code>AbstractApplicationContext</code>，而 <code>AbstractRefreshableApplicationContext</code> 是 <code>AbstractApplicationContext</code> 的抽象子类，使用的类注册工厂是 <code>DefaultListableBeanFactory</code>，这个注册工厂也很重要，后面会有它的介绍。</p>
 <p><strong>简单来说，<code>DefaultListableBeanFactory</code> 是 <code>Spring</code> 注册及加载 <code>bean</code> 的默认实现，它会将注册的 <code>bean</code>放入 <code>beanDefinitionMap</code> 进行 <code>key-value</code> 形式存储。</strong></p>
@@ -428,7 +428,7 @@
 </ul>
 <hr>
 <h4 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h4><p>首先来看 <code>StandardServletEnvironment</code> 的继承体系:</p>
-<p><img src="http://img.sevenyuan.cn/standard_servlet_environment.png" alt="StandardServletEnvironment"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/standard_servlet_environment.png" alt="StandardServletEnvironment"></p>
 <p>可以看到，顶层接口是 <code>PropertyResolver</code>，它是用来解析属性的，最终解析调用方法的是</p>
 <blockquote>
 <p>PropertyPlaceholderHelper.replacePlaceholders</p>
@@ -450,13 +450,13 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> MutablePropertySources propertySources = <span class="keyword">new</span> MutablePropertySources()</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConfigurablePropertyResolver propertyResolver =</div><div class="line">			<span class="keyword">new</span> PropertySourcesPropertyResolver(<span class="keyword">this</span>.propertySources);</div><div class="line">            </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">AbstractEnvironment</span><span class="params">()</span> </span>&#123;</div><div class="line">	customizePropertySources(<span class="keyword">this</span>.propertySources);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="PropertySource-接口"><a href="#PropertySource-接口" class="headerlink" title="PropertySource 接口"></a>PropertySource 接口</h4><p>继承体系如图：</p>
-<p><img src="http://img.sevenyuan.cn/property_source_herarchy.png" alt="PropertySource"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/property_source_herarchy.png" alt="PropertySource"></p>
 <p>从 <code>PropertySource</code> 继承体系来看，<code>customizePropertySources</code> 方法的调用链路是从子类一直往上调用 ：</p>
 <p><code>AbstractEnvironment</code> -&gt; <code>StandardServletEnvironment</code> -&gt; <code>StandardEnvironment</code></p>
 <p>最终在 <code>StandardEnvironment</code> 使用 <code>CopyOnWriteArrayList</code> 数组进行属性存储</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">customizePropertySources</span><span class="params">(MutablePropertySources propertySources)</span> </span>&#123;</div><div class="line">	propertySources.addLast(<span class="keyword">new</span> MapPropertySource(SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, getSystemProperties()));</div><div class="line">	propertySources.addLast(<span class="keyword">new</span> SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, getSystemEnvironment()));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>例如从上面可以看出，<code>propertySourceList</code> 将会存储系统的参数：</p>
-<p><img src="http://img.sevenyuan.cn/property_store.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/property_store.png" alt=""></p>
 <p>到时这些参数就能在启动的应用中，通过上下文 <code>context</code> 进行获取</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">((MutablePropertySources)((StandardEnvironment)context.environment).propertySources).propertySourceList</div></pre></td></tr></table></figure>
 <hr>
@@ -501,7 +501,7 @@
 <p>这个入口方法很重要，在这一步新建了 <code>bean</code> 容器和解析 <code>bean</code>，并将 <code>bean</code> 注册到容器中。</p>
 <hr>
 <h4 id="BeanFactory-继承体系"><a href="#BeanFactory-继承体系" class="headerlink" title="BeanFactory 继承体系"></a>BeanFactory 继承体系</h4><p>本次例子以及多数情况下，使用的 <code>bean</code> 容器都是 <code>DefaultListableBeanFactory</code>，所以来介绍一下它的继承体系：</p>
-<p><img src="http://img.sevenyuan.cn/default_listable_bean_factory_diagram.png" alt="DefaultListableBeanFactory"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/default_listable_bean_factory_diagram.png" alt="DefaultListableBeanFactory"></p>
 <p>可以看出，继承体系十分庞大，继承了多个注册器和实现多个接口，常用的是单例 <code>Singleton</code> 注册器和别名 <code>Alias</code> 注册器，这两个概念也很庞大，可以先简单熟悉下，知道容器默认的对象是单例模式，还有可以通过别名来找到 <code>bean</code>，之后有机会再详细介绍吧。</p>
 <hr>
 <h4 id="BanFactory-自定义"><a href="#BanFactory-自定义" class="headerlink" title="BanFactory 自定义"></a>BanFactory 自定义</h4><p>具体方法如下，通过这个方法，可以对工厂进行定制化设置，让子类进行自由配置：</p>
@@ -517,14 +517,14 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">loadBeanDefinitions</span><span class="params">(DefaultListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException, IOException </span>&#123;</div><div class="line">	<span class="comment">// Create a new XmlBeanDefinitionReader for the given BeanFactory.</span></div><div class="line">	<span class="comment">// 为给定的BeanFactory创建一个新的XmlBeanDefinitionReader</span></div><div class="line">	XmlBeanDefinitionReader beanDefinitionReader = <span class="keyword">new</span> XmlBeanDefinitionReader(beanFactory);</div><div class="line">	<span class="comment">// Configure the bean definition reader with this context's</span></div><div class="line">	<span class="comment">// resource loading environment.</span></div><div class="line">	beanDefinitionReader.setEnvironment(<span class="keyword">this</span>.getEnvironment());</div><div class="line">	beanDefinitionReader.setResourceLoader(<span class="keyword">this</span>);</div><div class="line">	beanDefinitionReader.setEntityResolver(<span class="keyword">new</span> ResourceEntityResolver(<span class="keyword">this</span>));</div><div class="line">	<span class="comment">// Allow a subclass to provide custom initialization of the reader,</span></div><div class="line">	<span class="comment">// then proceed with actually loading the bean definitions.(空方法，让子类进行扩展实现）</span></div><div class="line">	initBeanDefinitionReader(beanDefinitionReader);</div><div class="line">	loadBeanDefinitions(beanDefinitionReader);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在解析 <code>XML</code> 中，使用到以下两个继承体系：<code>EntityResolver</code> 和 <code>BeanDefinitionReader</code></p>
 <hr>
-<h5 id="EntityResolver"><a href="#EntityResolver" class="headerlink" title="EntityResolver"></a>EntityResolver</h5><p><img src="http://img.sevenyuan.cn/entity_resolver_diagram.png" alt="EntityResolver"></p>
+<h5 id="EntityResolver"><a href="#EntityResolver" class="headerlink" title="EntityResolver"></a>EntityResolver</h5><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/entity_resolver_diagram.png" alt="EntityResolver"></p>
 <p>接口全路径是：<code>org.xml.sax.EntityResolver</code>，具体解析使用的方法是:</p>
 <blockquote>
 <p>org.springframework.beans.factory.xml.ResourceEntityResolver#resolveEntity</p>
 </blockquote>
 <p>该方法是用于解析 <code>schema</code> 和 <code>dtd</code>，具体深究的话也很复杂，但解析 <code>xml</code> 不是我想了解的点，所以先跳过~</p>
 <hr>
-<h5 id="BeanDefinitionReader"><a href="#BeanDefinitionReader" class="headerlink" title="BeanDefinitionReader"></a>BeanDefinitionReader</h5><p><img src="http://img.sevenyuan.cn/xml_bean_definition_reader_diagram.png" alt="BeanDefinitionReader"></p>
+<h5 id="BeanDefinitionReader"><a href="#BeanDefinitionReader" class="headerlink" title="BeanDefinitionReader"></a>BeanDefinitionReader</h5><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/xml_bean_definition_reader_diagram.png" alt="BeanDefinitionReader"></p>
 <p>顶级接口是 <code>BeanDefinitionReader</code>，用于 <code>XML Bean</code> 定义的 <code>Bean</code>定义阅读器。将实际读取的 <code>XML</code> 文档委托给实现。</p>
 <p>这两个类用途很明了，就是将 <code>XML</code> 转成输入流，感兴趣的同学可以继续深入跟踪~</p>
 <hr>
@@ -607,7 +607,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AbstractBeanDefinition <span class="title">createBeanDefinition</span><span class="params">(</span></span></div><div class="line"><span class="function"><span class="params">			@Nullable String parentName, @Nullable String className, @Nullable ClassLoader classLoader)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</div><div class="line">	GenericBeanDefinition bd = <span class="keyword">new</span> GenericBeanDefinition();</div><div class="line">	bd.setParentName(parentName);</div><div class="line">	<span class="keyword">if</span> (className != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="keyword">if</span> (classLoader != <span class="keyword">null</span>) &#123;</div><div class="line">			bd.setBeanClass(ClassUtils.forName(className, classLoader));</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			bd.setBeanClassName(className);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> bd;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>后面就是解析其它标签的内容，之后会补坑~</p>
 <hr>
-<h5 id="BeanDefinition-继承体系"><a href="#BeanDefinition-继承体系" class="headerlink" title="BeanDefinition 继承体系"></a>BeanDefinition 继承体系</h5><p><img src="http://img.sevenyuan.cn/generic_bean_definition_diagram.png" alt="GenericBeanDefinition"></p>
+<h5 id="BeanDefinition-继承体系"><a href="#BeanDefinition-继承体系" class="headerlink" title="BeanDefinition 继承体系"></a>BeanDefinition 继承体系</h5><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring1/generic_bean_definition_diagram.png" alt="GenericBeanDefinition"></p>
 <p>从图中可以看出，<code>BeanDefinition</code> 是一个接口，<code>GenericBeanDefinition</code> 、<code>RootBeanDefinition</code>、<code>ChildBeanDefinition</code>，这三者都继承了 <code>AbstractBeanDefinition</code>。</p>
 <p>其中 <code>BeanDefinition</code> 是配置文件 <code>&lt;bean&gt;</code> 元素标签在容器中的内部表示形式。</p>
 <p><code>&lt;bean&gt;</code> 元素标签拥有 <code>class</code>、 <code>scope</code>、 <code>lazy-init</code> 等配置属性，<code>BeanDefinition</code> 则提供了相应的 <code>beanClass</code>、 <code>scope</code>、<code>lazyInit</code> 属性，两者是互相对应的。</p>

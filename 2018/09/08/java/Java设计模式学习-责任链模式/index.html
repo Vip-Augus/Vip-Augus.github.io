@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="设计模式-责任链">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/7097c713gy1fv1f3z0ui6j21hc0u0guq.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%AF%BE%E5%A0%82%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.gif">
-<meta property="og:updated_time" content="2019-05-25T07:48:30.536Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713gy1fv1f3z0ui6j21hc0u0guq.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E8%AF%BE%E5%A0%82%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.gif">
+<meta property="og:updated_time" content="2021-10-30T16:28:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java设计模式学习 - 责任链模式">
 <meta name="twitter:description" content="设计模式-责任链">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713gy1fv1f3z0ui6j21hc0u0guq.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713gy1fv1f3z0ui6j21hc0u0guq.jpg">
 
 
 
@@ -359,7 +359,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/7097c713gy1fv1f3z0ui6j21hc0u0guq.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713gy1fv1f3z0ui6j21hc0u0guq.jpg" alt=""></p>
 <center><strong>设计模式-责任链</strong></center>
 
 <a id="more"></a>
@@ -367,7 +367,7 @@
 <h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><p><strong>责任链模式（Chain of Responsibility）</strong>：使多个对象都有机会处理同一个请求，从而避免请求的发送者和接收者之间的耦合关系。将这些对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止。</p>
 <hr>
 <h2 id="举个🌰"><a href="#举个🌰" class="headerlink" title="举个🌰"></a>举个🌰</h2><p>一节课堂，有课前、课中和课后，不同老师、不同地点或者不同时间，课堂的内容和实际都有所不同，如果在一个service中写业务逻辑，代码可读性会比较差，别人维护也麻烦，所以使用责任链模式，将每一步分开维护，大概流程如下：</p>
-<p><img src="http://img.sevenyuan.cn/%E8%AF%BE%E5%A0%82%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.png" alt=""> </p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E8%AF%BE%E5%A0%82%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.png" alt=""></p>
 <ul>
 <li>编写课程前、中、后的执行逻辑和回滚逻辑</li>
 <li>一个业务结束后，调用下一个业务的执行逻辑</li>
@@ -385,7 +385,7 @@
 <hr>
 <h3 id="工厂整合类"><a href="#工厂整合类" class="headerlink" title="工厂整合类"></a>工厂整合类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 工厂方法</span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> JingQ at 2018/9/7</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractRuleFactory</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ClassEndRuleHandler classEndRuleHandler;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ClassingRuleHandler classingRuleHandler;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ClassBeginRuleHandler classBeginRuleHandler;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> AbstractRuleHandler ruleHandler;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">AbstractRuleFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 使用了单例模式</span></div><div class="line">    <span class="function"><span class="keyword">public</span> AbstractRuleHandler <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (ruleHandler == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span> (AbstractRuleFactory.class) &#123;</div><div class="line">                <span class="keyword">if</span> (ruleHandler == <span class="keyword">null</span>) &#123;</div><div class="line">                    ruleHandler = classBeginRuleHandler;</div><div class="line">                    ruleHandler.setNextHandler(classingRuleHandler).setNextHandler(classEndRuleHandler);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ruleHandler;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
-<h2 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h2><p><img src="http://img.sevenyuan.cn/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.gif" alt=""></p>
+<h2 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/design-pattern/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F.gif" alt=""></p>
 <p>可以看到，通过<code>factory.getInstance().doHandle(experiment, rule)</code>，责任链会根据设定的顺序进行执行，每个业务操作都进行分开了，代码也更加整洁，维护性也更强了。</p>
 <hr>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>

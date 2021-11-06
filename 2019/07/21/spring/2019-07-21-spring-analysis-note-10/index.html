@@ -96,27 +96,27 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="经过前面的 AOP（面向切面编程） 和 Transaction（事务管理），这次来到了 MVC（Web 应用，进行请求分发和处理） Spring MVC 定义：  分离了控制器（Controller）、模型（Model）、分配器（Adapter）、视图（View）和处理程序对象（Handler，实际上调用的是 Controller 中定义的逻辑）。 基于 Servlet 功能实现，通过实现了 S">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/IndiaLitSpace_ZH-CN5941074986_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/mvc_book_view.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/mvc_responseBody.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/context_loader_listener_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/dispatcher_servlet_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/context_class_setting.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/xml_web_applicaiton_context_refresh_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/spring_mvc_loading_config_locations.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/theme_reslover_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/default_handler_mapping_init_process.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/request_mapping_handler_mapping_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/registry_mapping_method_mapping.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/http_framework_servlet_enter.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/view_name_method_return_value_handler_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/get_model_and_view_process.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/jstl_diagram.png">
-<meta property="og:updated_time" content="2019-07-21T03:22:02.331Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/IndiaLitSpace_ZH-CN5941074986_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/mvc_book_view.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/mvc_responseBody.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/context_loader_listener_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/dispatcher_servlet_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/context_class_setting.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/xml_web_applicaiton_context_refresh_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/spring_mvc_loading_config_locations.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/theme_reslover_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/default_handler_mapping_init_process.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/request_mapping_handler_mapping_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/registry_mapping_method_mapping.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/http_framework_servlet_enter.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/view_name_method_return_value_handler_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/get_model_and_view_process.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/jstl_diagram.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(十) Spring mvc">
 <meta name="twitter:description" content="经过前面的 AOP（面向切面编程） 和 Transaction（事务管理），这次来到了 MVC（Web 应用，进行请求分发和处理） Spring MVC 定义：  分离了控制器（Controller）、模型（Model）、分配器（Adapter）、视图（View）和处理程序对象（Handler，实际上调用的是 Controller 中定义的逻辑）。 基于 Servlet 功能实现，通过实现了 S">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/IndiaLitSpace_ZH-CN5941074986_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/IndiaLitSpace_ZH-CN5941074986_1920x1080.jpg">
 
 
 
@@ -372,7 +372,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/IndiaLitSpace_ZH-CN5941074986_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/IndiaLitSpace_ZH-CN5941074986_1920x1080.jpg" alt=""></p>
 <p><strong>经过前面的 <code>AOP</code>（面向切面编程） 和 <code>Transaction</code>（事务管理），这次来到了 <code>MVC</code>（Web 应用，进行请求分发和处理）</strong></p>
 <p><strong>Spring MVC 定义：</strong></p>
 <blockquote>
@@ -418,16 +418,16 @@
 <blockquote>
 <p><a href="http://localhost:8080/bookView" target="_blank" rel="noopener">http://localhost:8080/bookView</a>   (使用了 JSP 视图进行渲染）</p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/mvc_book_view.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/mvc_book_view.png" alt=""></p>
 <blockquote>
 <p><a href="http://localhost:8080/plain/value" target="_blank" rel="noopener">http://localhost:8080/plain/value</a> （前后端分离的话，常用的是这种，最后可以返回简单字符或者 json 格式的对象等）</p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/mvc_responseBody.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/mvc_responseBody.png" alt=""></p>
 <p>在刚才的 <code>web.xml</code> 中有两个关键配置，所以现在学习下这两个配置具体是干啥的。</p>
 <hr>
 <h1 id="ContextLoaderContext"><a href="#ContextLoaderContext" class="headerlink" title="ContextLoaderContext"></a>ContextLoaderContext</h1><p><strong>作用：在启动 <code>web</code> 容器时，自动装载 <code>ApplicationContext</code> 的配置信息。</strong></p>
 <p>下面是它的继承体系图：</p>
-<p><img src="http://img.sevenyuan.cn/context_loader_listener_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/context_loader_listener_diagram.png" alt=""></p>
 <p>这是一个辅助工具类，可以用来传递配置信息参数，在 <code>web.xml</code> 中，将路径以 <code>context-param</code> 的方式注册并使用 <code>ContextLoaderListener</code> 进行监听读取。 </p>
 <p><strong>从图中能看出，它实现了 <code>ServletContextListener</code> 这个接口，只要在 <code>web.xml</code> 配置了这个监听器，容器在启动时，就会执行 <code>contextInitialized(ServletContextEvent)</code> 这个方法，进行应用上下文初始化。</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextInitialized</span><span class="params">(ServletContextEvent event)</span> </span>&#123;</div><div class="line">	initWebApplicationContext(event.getServletContext());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -442,7 +442,7 @@
 <p>通过以上步骤，完成了创建 <code>WebApplicationContext</code> 实例，它继承自 <code>ApplicaitonContext</code>，在父类的基础上，追加了一些特定于 <code>web</code> 的操作和属性，可以把它当成我们之前初始化 <code>Spring</code> 容器时所用到的 <code>ClassPathApplicaitonContext</code> 那样使用。</p>
 <hr>
 <h1 id="DispatcherServlet-初始化"><a href="#DispatcherServlet-初始化" class="headerlink" title="DispatcherServlet 初始化"></a>DispatcherServlet 初始化</h1><p>该类是 <code>spring-mvc</code> 的核心，该类进行真正逻辑实现，<code>DisptacherServlet</code> 实现了 <code>Servlet</code> 接口。</p>
-<p><img src="http://img.sevenyuan.cn/dispatcher_servlet_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/dispatcher_servlet_diagram.png" alt=""></p>
 <p><strong>介绍：</strong></p>
 <blockquote>
 <p><code>servlet</code> 是一个 <code>Java</code> 编写的程序，基于 <code>Http</code> 协议，例如我们常用的 <code>Tomcat</code>，也是按照 <code>servlet</code> 规范编写的一个 <code>Java</code> 类</p>
@@ -487,7 +487,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> WebApplicationContext <span class="title">createWebApplicationContext</span><span class="params">(@Nullable WebApplicationContext parent)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> createWebApplicationContext((ApplicationContext) parent);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> WebApplicationContext <span class="title">createWebApplicationContext</span><span class="params">(@Nullable ApplicationContext parent)</span> </span>&#123;</div><div class="line">	<span class="comment">// 允许我们自定义容器的类型，通过 contextClass 属性进行配置</span></div><div class="line">	<span class="comment">// 但是类型必须要继承 ConfigurableWebApplicationContext，不然将会报错</span></div><div class="line">	Class&lt;?&gt; contextClass = getContextClass();</div><div class="line">	<span class="keyword">if</span> (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) &#123;</div><div class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> ApplicationContextException();</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 通过反射来创建 contextClass</span></div><div class="line">	ConfigurableWebApplicationContext wac =</div><div class="line">			(ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);</div><div class="line">	wac.setEnvironment(getEnvironment());</div><div class="line">	wac.setParent(parent);</div><div class="line">	<span class="comment">// 获取 contextConfigLocation 属性，配置在 servlet 初始化函数中</span></div><div class="line">	String configLocation = getContextConfigLocation();</div><div class="line">    wac.setConfigLocation(configLocation);</div><div class="line">	<span class="comment">// 初始化 Spring 环境包括加载配置环境</span></div><div class="line">	configureAndRefreshWebApplicationContext(wac);</div><div class="line">	<span class="keyword">return</span> wac;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="获取上下文类-contextClass"><a href="#获取上下文类-contextClass" class="headerlink" title="获取上下文类 contextClass"></a>获取上下文类 contextClass</h4><p><strong>默认使用的是 <code>XmlWebApplicationContext</code>，但如果需要配置自定义上下文，可以在 <code>web.xml</code> 中的 <code>&lt;init-param&gt;</code> 标签中修改 <code>contextClass</code> 属性对应的 <code>value</code>，但需要注意图中提示：</strong></p>
-<p><img src="http://img.sevenyuan.cn/context_class_setting.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/context_class_setting.png" alt=""></p>
 <hr>
 <h4 id="configureAndRefreshWebApplicationContext"><a href="#configureAndRefreshWebApplicationContext" class="headerlink" title="configureAndRefreshWebApplicationContext"></a>configureAndRefreshWebApplicationContext</h4><p>使用该方法，用来对已经创建的 <code>WebApplicaitonContext</code> 进行配置以及刷新</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configureAndRefreshWebApplicationContext</span><span class="params">(ConfigurableWebApplicationContext wac)</span> </span>&#123;</div><div class="line">    <span class="comment">// 遍历 ApplicationContextInitializer，执行 initialize 方法</span></div><div class="line">	applyInitializers(wac);</div><div class="line">	<span class="comment">// 关键的刷新，加载配置文件及整合 parent 到 wac</span></div><div class="line">	wac.refresh();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -502,13 +502,13 @@
 <blockquote>
 <p>org.springframework.context.support.AbstractApplicationContext#refresh</p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/xml_web_applicaiton_context_refresh_diagram.png" alt="xml_web_applicaiton_context_refresh_diagram"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/xml_web_applicaiton_context_refresh_diagram.png" alt="xml_web_applicaiton_context_refresh_diagram"></p>
 <p>从图中能够看出，刷新方法的代码逻辑与之前一样，通过父类 <code>AbstractApplicationContext</code> 的 <code>refresh</code> 方法，进行了配置文件的加载。</p>
 <p>在例子中的 <code>web.xml</code> 配置中，指定了加载 <code>spring-mvc.xml</code> 配置文件</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 配置 DispatcherServlet --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>dispatcherServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>/WEB-INF/spring-mvc.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></div></pre></td></tr></table></figure>
 <hr>
 <h4 id="注册-mvc-解析器"><a href="#注册-mvc-解析器" class="headerlink" title="注册 mvc 解析器"></a>注册 mvc 解析器</h4><p>由于我们配置了 <code>contextConfigLocation</code>，指定了加载资源的路径，所以在 <code>XmlWebApplicationContext</code> 初始化的时候，加载的 <code>Spring</code> 配置文件路径是我们指定 <code>spring-mvc.xml</code>：</p>
-<p><img src="http://img.sevenyuan.cn/spring_mvc_loading_config_locations.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/spring_mvc_loading_config_locations.png" alt=""></p>
 <p>在 <code>spring-mvc.xml</code> 配置中，主要配置了三项</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--扫描包,自动注入bean--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"web.controller"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--使用注解开发spring mvc--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!--视图解析器--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.view.InternalResourceViewResolver"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"prefix"</span> <span class="attr">value</span>=<span class="string">"/WEB-INF/views/"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"suffix"</span> <span class="attr">value</span>=<span class="string">".jsp"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>同样老套路，使用了 <code>&lt;mvc:annotation&gt;</code> 自定义注解的话，要注册相应的解析器后，<code>Spring</code> 容器才能解析元素：</p>
@@ -551,7 +551,7 @@
 <hr>
 <h3 id="ThemeResolver-主题更换相关"><a href="#ThemeResolver-主题更换相关" class="headerlink" title="ThemeResolver 主题更换相关"></a>ThemeResolver 主题更换相关</h3><p>主题是一组静态资源（例如样式表 css 和图片 image），也可以理解为应用皮肤，使用 <code>Theme</code> 更改主题风格，改善用户体验。</p>
 <p>默认注册的 <code>id</code> 是 <code>themeResolver</code>，类型是 <code>FixedThemeResolver</code>，表示使用的是一个固定的主题，以下是它的继承体系图：</p>
-<p><img src="http://img.sevenyuan.cn/theme_reslover_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/theme_reslover_diagram.png" alt=""></p>
 <p>工作原理是通过拦截器拦截，配置对应的主题解析器，然后返回主题名称，还是使用上面的解析器作为例子：</p>
 <blockquote>
 <p>FixedThemeResolver#resolveThemeName</p>
@@ -562,7 +562,7 @@
 <p><strong>如注释所说，至少得保证有一个 <code>HandlerMapping</code>，如果前面两个分支都没寻找到，那么就进行默认策略加载。</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initHandlerMappings</span><span class="params">(ApplicationContext context)</span> </span>&#123;</div><div class="line">	<span class="keyword">this</span>.handlerMappings = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.detectAllHandlerMappings) &#123;</div><div class="line">		<span class="comment">// 默认情况下，寻找应用中所有的 HandlerMapping ，包括祖先容器（其实就是 Spring 容器啦）</span></div><div class="line">		Map&lt;String, HandlerMapping&gt; matchingBeans =</div><div class="line">				BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, <span class="keyword">true</span>, <span class="keyword">false</span>);</div><div class="line">		<span class="keyword">if</span> (!matchingBeans.isEmpty()) &#123;</div><div class="line">			<span class="keyword">this</span>.handlerMappings = <span class="keyword">new</span> ArrayList&lt;&gt;(matchingBeans.values());</div><div class="line">			<span class="comment">// handlerMapping 有优先级，需要排序</span></div><div class="line">			AnnotationAwareOrderComparator.sort(<span class="keyword">this</span>.handlerMappings);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="comment">// 从上下文中，获取名称为 handlerMapping 的 bean</span></div><div class="line">		HandlerMapping hm = context.getBean(HANDLER_MAPPING_BEAN_NAME, HandlerMapping.class);</div><div class="line">		<span class="keyword">this</span>.handlerMappings = Collections.singletonList(hm);</div><div class="line"></div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 需要保证，至少有一个 HandlerMapping</span></div><div class="line">	<span class="comment">// 如果前面两步都没找到 mapping，将会由这里加载默认策略</span></div><div class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.handlerMappings == <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="keyword">this</span>.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>通过 <code>Debug</code> 得知，之前在加载 <code>Spring</code> 配置时，就已经注入了 <code>RequestMappingHandlerMapping</code> 和 <code>BeanNameUrlHandlerMapping</code></p>
-<p><img src="http://img.sevenyuan.cn/default_handler_mapping_init_process.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/default_handler_mapping_init_process.png" alt=""></p>
 <hr>
 <h3 id="HandlerAdapter-适配器"><a href="#HandlerAdapter-适配器" class="headerlink" title="HandlerAdapter 适配器"></a>HandlerAdapter 适配器</h3><p>套路与前面的一样，使用的默认策略是：<code>HttpRequestHandlerAdapter</code> 、<code>SimpleControllerHandlerAdapter</code>、 <code>RequestMappingHandlerAdapter</code> 和 <code>HandlerFunctionAdapter</code>。</p>
 <p>说到适配器，可以将它理解为，将一个类的接口适配成用户所期待的，将两个接口不兼容的工作类，通过适配器连接起来。</p>
@@ -587,7 +587,7 @@
 <hr>
 <h2 id="RequestMappingHandler"><a href="#RequestMappingHandler" class="headerlink" title="RequestMappingHandler"></a>RequestMappingHandler</h2><p><strong>该类作用：配合 <code>@Controller</code> 和 <code>@RequestMapping</code> 注解使用，通过 <code>URL</code> 来找到对应的处理器。</strong></p>
 <p>前面在 <code>spring-mvc.xml</code> 文件加载时，初始化了两个重要配置，其中一个就是下面要说的 <code>RequestMappingHandler</code>，先来看它的继承体系图：</p>
-<p><img src="http://img.sevenyuan.cn/request_mapping_handler_mapping_diagram.png" alt="request_mapping_handler_mapping_diagram"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/request_mapping_handler_mapping_diagram.png" alt="request_mapping_handler_mapping_diagram"></p>
 <p>从继承图中看到，它实现了 <code>InitializingBean</code> 接口，所以在初始化时，将会执行 <code>afterPropertiesSet</code> 方法（图片中注释写错方法，请以下面为准），核心调用的初始化方法是父类 <code>AbstractHandlerMethodMapping#initHandlerMethods</code> 方法</p>
 <blockquote>
 <p>AbstractHandlerMethodMapping#initHandlerMethods</p>
@@ -598,7 +598,7 @@
 <h3 id="MappingRegistry"><a href="#MappingRegistry" class="headerlink" title="MappingRegistry"></a>MappingRegistry</h3><p><strong>该类是 <code>AbstractHandlerMethodMapping</code> 的内部类，是个工具类，用来保存所有 <code>Mapping</code> 和 <code>handler method</code>，通过暴露加锁的公共方法，避免了多线程对该类的内部变量的覆盖修改。</strong></p>
 <p>下面是注册的逻辑：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(T mapping, Object handler, Method method)</span> </span>&#123;</div><div class="line">	<span class="keyword">this</span>.readWriteLock.writeLock().lock();</div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		<span class="comment">// 包装 bean 和方法</span></div><div class="line">		HandlerMethod handlerMethod = createHandlerMethod(handler, method);</div><div class="line">		<span class="comment">// 校验</span></div><div class="line">		validateMethodMapping(handlerMethod, mapping);</div><div class="line">		<span class="keyword">this</span>.mappingLookup.put(mapping, handlerMethod);</div><div class="line">		List&lt;String&gt; directUrls = getDirectUrls(mapping);</div><div class="line">		<span class="keyword">for</span> (String url : directUrls) &#123;</div><div class="line">			<span class="keyword">this</span>.urlLookup.add(url, mapping);</div><div class="line">		&#125;</div><div class="line">		String name = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">if</span> (getNamingStrategy() != <span class="keyword">null</span>) &#123;</div><div class="line">			name = getNamingStrategy().getName(handlerMethod, mapping);</div><div class="line">			addMappingName(name, handlerMethod);</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 跨域参数</span></div><div class="line">		CorsConfiguration corsConfig = initCorsConfiguration(handler, method, mapping);</div><div class="line">		<span class="keyword">if</span> (corsConfig != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">this</span>.corsLookup.put(handlerMethod, corsConfig);</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// 将映射关系放入  Map&lt;T, MappingRegistration&lt;T&gt;&gt; registry</span></div><div class="line">		<span class="keyword">this</span>.registry.put(mapping, <span class="keyword">new</span> MappingRegistration&lt;&gt;(mapping, handlerMethod, directUrls, name));</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">finally</span> &#123;</div><div class="line">		<span class="keyword">this</span>.readWriteLock.writeLock().unlock();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://img.sevenyuan.cn/registry_mapping_method_mapping.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/registry_mapping_method_mapping.png" alt=""></p>
 <p>通过前面的包装和校验方法，最后映射关系将会放入这里 <code>Map&lt;T, MappingRegistration&lt;T&gt;&gt; registry</code>。它是一个泛型的 <code>Map</code>，<strong><code>key</code> 类型是 <code>RequestMappingInfo</code>，保存了 <code>@RequestMapping</code> 各种属性的集合，<code>value</code> 类型是 <code>AbstractHandlerMethodMapping</code>，保存的是我们的映射关系。</strong></p>
 <p><strong>从图中可以看出，如果输入的 <code>URL</code> 是 <code>/plain/{name}</code>，将会找到对应的处理方法 <code>web.controller.BookController#plain{String}</code>。</strong></p>
 <hr>
@@ -610,7 +610,7 @@
 <p><strong>所以看到这个适配器中，初始化了很多工具变量，用来处理 <code>@ControllerAdvice</code> 、<code>InitBinder</code> 等注解和参数。不过核心还是待会要讲到的 <code>handleInternal()</code> 方法，它将适配处理器调用，然后返回 <code>ModelView</code> 视图。</strong></p>
 <hr>
 <h1 id="DispatcherServlet-的逻辑处理"><a href="#DispatcherServlet-的逻辑处理" class="headerlink" title="DispatcherServlet 的逻辑处理"></a>DispatcherServlet 的逻辑处理</h1><p>请求处理的入口定义在 <code>HttpServlet</code>，主要有以下几个方法：</p>
-<p><img src="http://img.sevenyuan.cn/http_framework_servlet_enter.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/http_framework_servlet_enter.png" alt=""></p>
 <p>当然，父类 <code>HttpServlet</code> 只是给出了定义，直接调用父类这些方法将会报错，所以 <code>FrameworkServlet</code> 将它们覆盖重写了处理逻辑：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</div><div class="line">	<span class="comment">// 注解 10. 具体调用的是 processRequest 方法</span></div><div class="line">	processRequest(request, response);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</div><div class="line">	processRequest(request, response);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>可以看到 <code>doGet</code> 、<code>doPost</code> 这些方法，底层调用的都是 <code>processRequest</code> 方法进行处理，关键方法是委托给子类 <code>DispatcherServlet</code> 的 <code>doServie()</code> 方法</strong></p>
@@ -679,7 +679,7 @@
 <p>通过给定的参数，<code>doInvoke</code> 使用了反射操作，执行了 <code>Controller</code> 方法的逻辑。</p>
 <hr>
 <h3 id="返回值解析"><a href="#返回值解析" class="headerlink" title="返回值解析"></a>返回值解析</h3><p><strong>拿 <code>http://localhost:8080/bookView</code> 作为例子，经过前面的逻辑处理后，返回的只是试图名称 <code>bookView</code>，在这时，使用到了 <code>ViewNameMethodReturnValueHandler</code></strong></p>
-<p><img src="http://img.sevenyuan.cn/view_name_method_return_value_handler_diagram.png" alt="view_name_method_return_value_handler_diagram"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/view_name_method_return_value_handler_diagram.png" alt="view_name_method_return_value_handler_diagram"></p>
 <p>可以看到它实现了 <code>HandlerMethodReturnValueHandler</code> 接口的两个方法</p>
 <blockquote>
 <p>ViewNameMethodReturnValueHandler#supportsReturnType; 表示支持处理的返回类型</p>
@@ -690,7 +690,7 @@
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleReturnValue</span><span class="params">(@Nullable Object returnValue, MethodParameter returnType,</span></span></div><div class="line"><span class="function"><span class="params">		ModelAndViewContainer mavContainer, NativeWebRequest webRequest)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">	<span class="keyword">if</span> (returnValue <span class="keyword">instanceof</span> CharSequence) &#123;</div><div class="line">		String viewName = returnValue.toString();</div><div class="line">		mavContainer.setViewName(viewName);</div><div class="line">		<span class="keyword">if</span> (isRedirectViewName(viewName)) &#123;</div><div class="line">			mavContainer.setRedirectModelScenario(<span class="keyword">true</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>最后在适配器中包装成了 <code>ModelAndView</code> 对象</strong></p>
-<p><img src="http://img.sevenyuan.cn/get_model_and_view_process.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/get_model_and_view_process.png" alt=""></p>
 <hr>
 <h2 id="视图渲染"><a href="#视图渲染" class="headerlink" title="视图渲染"></a>视图渲染</h2><p>根据处理器执行完成后，适配器包装成了 <code>ModelAndView</code> 返回给 <code>DispatcherServlet</code> 继续进行处理，来到了视图渲染的步骤：</p>
 <blockquote>
@@ -699,7 +699,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processDispatchResult</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></div><div class="line"><span class="function"><span class="params">		@Nullable HandlerExecutionChain mappedHandler, @Nullable ModelAndView mv,</span></span></div><div class="line"><span class="function"><span class="params">		@Nullable Exception exception)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">	<span class="keyword">boolean</span> errorView = <span class="keyword">false</span>;</div><div class="line">	<span class="comment">// 跳过了异常判断 =-=</span></div><div class="line">	<span class="comment">// Did the handler return a view to render?</span></div><div class="line">	<span class="keyword">if</span> (mv != <span class="keyword">null</span> &amp;&amp; !mv.wasCleared()) &#123;</div><div class="line">		<span class="comment">// 如果视图不为空并且 clear 属性为 false， 进行视图渲染</span></div><div class="line">		render(mv, request, response);</div><div class="line">		<span class="keyword">if</span> (errorView) &#123;</div><div class="line">			WebUtils.clearErrorRequestAttributes(request);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (WebAsyncUtils.getAsyncManager(request).isConcurrentHandlingStarted()) &#123;</div><div class="line">		<span class="comment">// Concurrent handling started during a forward</span></div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (mappedHandler != <span class="keyword">null</span>) &#123;</div><div class="line">		mappedHandler.triggerAfterCompletion(request, response, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
 <h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>还记得我们使用的是 <code>jsp</code> 视图进行渲染么，引用的依赖是 <code>jstl</code>，所以视图渲染的是 <code>JstlView</code> 类提供的方法，以下是它的继承体系：</p>
-<p><img src="http://img.sevenyuan.cn/jstl_diagram.png" alt="jstl_diagram"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring10/jstl_diagram.png" alt="jstl_diagram"></p>
 <p>渲染调用的是其父类的方法：</p>
 <blockquote>
 <p>InternalResourceView#renderMergedOutputModel</p>

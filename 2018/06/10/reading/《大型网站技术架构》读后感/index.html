@@ -96,14 +96,14 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~ 这段时间又剁手买了很多书=-=">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/Sparrowhawk.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E9%9B%86%E7%BE%A4.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91.png">
-<meta property="og:updated_time" content="2018-11-11T14:24:22.000Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Sparrowhawk.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/archetype-book-study/%E9%9B%86%E7%BE%A4.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/archetype-book-study/%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91.png">
+<meta property="og:updated_time" content="2021-10-30T16:37:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《大型网站技术架构》读后感">
 <meta name="twitter:description" content="结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~ 这段时间又剁手买了很多书=-=">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/Sparrowhawk.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Sparrowhawk.jpg">
 
 
 
@@ -337,7 +337,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/Sparrowhawk.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Sparrowhawk.jpg" alt=""></p>
 <p></p><p align="center">结束了毕业答辩和提交论文最终稿，又可以开心地去玩耍和学习了~~</p><p></p>
 <p></p><p align="center">这段时间又剁手买了很多书=-=</p><br><a id="more"></a><p></p>
 <hr>
@@ -348,7 +348,7 @@
 <p>应用和数据分离之后，不同特性的服务器承担不同的服务角色，可以很好的改善网站的并发能力和数据存储空间。</p>
 <hr>
 <h2 id="集群和负载均衡"><a href="#集群和负载均衡" class="headerlink" title="集群和负载均衡"></a>集群和负载均衡</h2><p>前期功能不复杂的话，可能跟在学校做作业一样，使用单机就能解决。随着访问量和处理数据越来越多，单机的性能便会达到瓶颈，这是就需要增加机器，搭成集群，减少单机的压力，处理更多请求。</p>
-<p><img src="http://img.sevenyuan.cn/%E9%9B%86%E7%BE%A4.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/archetype-book-study/%E9%9B%86%E7%BE%A4.png" alt=""></p>
 <p>如图所示，当前端接收到请求后，根据负载均衡算法，路由到某个应用服务器上，将处理好的结果返回给前端，进行之后的业务操作。通过负载均衡技术将用户请求分发到不同的服务器上，以应对大量用户同时访问时产生的高并发负载压力。</p>
 <hr>
 <h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><h3 id="HTTP重定向负载均衡"><a href="#HTTP重定向负载均衡" class="headerlink" title="HTTP重定向负载均衡"></a>HTTP重定向负载均衡</h3><p>HTTP重定向服务器是一台普通的俄、应用服务器，其唯一的功能就是根据用户的HTTP请求计算一台真实的WEB服务器地址，并将该Web服务器地址写入HTTP重定向响应中返回给用户游览器。</p>
@@ -356,7 +356,7 @@
 <p>每次域名解析请求都会根据负载均衡算法计算一个不同的IP地址返回，这样<strong>A记录中配置的多个服务器就构成一个集群</strong>，并可以实现负载均衡。</p>
 <p>该做法的优点是将负载均衡的工作交给了DNS，同时需要DNS还支持基于地理位置的域名解析，将域名解析成距离用户地理最近的一个服务器地址，加快用户访问速度，改善性能。但是同样也有缺点，目前的DNS是多级解析，每一级DNS都可能缓存A记录，当下线某台服务器之后（修改DNS的A记录），使其生效需要一段时间，在这段时间DNS仍然会解析到已下线的服务器，导致用户访问失败。</p>
 <h3 id="反向代理负载均衡"><a href="#反向代理负载均衡" class="headerlink" title="反向代理负载均衡"></a>反向代理负载均衡</h3><p>我们常用的Nginx就是通过反向代理，进行访问的负载均衡。反向代理服务器处于Web服务器前面，<strong>将请求根据分在均衡算法转发到不同Web服务器上</strong>。Web服务器处理完成的响应也需要通过反向代理服务器返回给用户。</p>
-<p><img src="http://img.sevenyuan.cn/%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/archetype-book-study/%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91.png" alt=""></p>
 <p>如图所示，游览器发起请求，反向代理服务器根据负载均衡算法计算到真实无理服务器的地址，将请求转发给节点三。</p>
 <hr>
 <h2 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h2><p>大型网站一般都在使用分布式，进行性能平衡和伸缩扩展。无论是持久化数据、缓存还是应用程序，都可以通过增加机器，搭建集群，以增加计算处理能力和减缓原有的机器压力。</p>

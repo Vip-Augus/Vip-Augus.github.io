@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="学习一下火箭消息 - 消费者的原理和使用🚀">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/TorontoSky_ZH-CN6932705886_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Consumer_Consume_Type.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocketmq/RocketMQ-Part-Order-Message.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/RocketMQ_Idemponent_Consume_Design.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/broker/RocektMQ_Consumer_Acquire_Message.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/RocketMQ_Consumer_MessageQueue_Allocate.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/rocket/RocketMQ_Subscribe_Not_Equal.png">
-<meta property="og:updated_time" content="2020-11-23T00:26:27.128Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/TorontoSky_ZH-CN6932705886_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Consumer_Consume_Type.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Introduction/RocketMQ-Part-Order-Message.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Idemponent_Consume_Design.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocektMQ_Consumer_Acquire_Message.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Consumer_MessageQueue_Allocate.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Subscribe_Not_Equal.png">
+<meta property="og:updated_time" content="2021-11-02T16:28:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RocketMQ Consumer 深入学习">
 <meta name="twitter:description" content="学习一下火箭消息 - 消费者的原理和使用🚀">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/TorontoSky_ZH-CN6932705886_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/TorontoSky_ZH-CN6932705886_1920x1080.jpg">
 
 
 
@@ -363,19 +363,19 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/TorontoSky_ZH-CN6932705886_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/TorontoSky_ZH-CN6932705886_1920x1080.jpg" alt=""></p>
 <center><strong>学习一下火箭消息 - 消费者的原理和使用🚀</strong></center>
 
 <a id="more"></a>
 <hr>
 <h1 id="消费模式"><a href="#消费模式" class="headerlink" title="消费模式"></a>消费模式</h1><p>消息消费有两种模式：</p>
-<p><img src="http://img.sevenyuan.cn/rocket/broker/RocketMQ_Consumer_Consume_Type.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Consumer_Consume_Type.png" alt=""></p>
 <h2 id="1、并发消费"><a href="#1、并发消费" class="headerlink" title="1、并发消费"></a>1、并发消费</h2><p>并发消费是默认的处理方法，一个消费者使用线程池技术，可以并发消费多条消息，提升机器的资源利用率。默认配置是 20 个线程，所以一台机器默认情况下，同一瞬间可以消费 20 个消息。</p>
 <p>其中 <code>ConsumeMessageConcurrentlyService</code> 的构造函数如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ConsumeMessageConcurrentlyService</span><span class="params">(DefaultMQPushConsumerImpl defaultMQPushConsumerImpl,</span></span></div><div class="line"><span class="function"><span class="params">        MessageListenerConcurrently messageListener)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.defaultMQPushConsumerImpl = defaultMQPushConsumerImpl;</div><div class="line">        <span class="keyword">this</span>.messageListener = messageListener;</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.defaultMQPushConsumer = <span class="keyword">this</span>.defaultMQPushConsumerImpl.getDefaultMQPushConsumer();</div><div class="line">        <span class="keyword">this</span>.consumerGroup = <span class="keyword">this</span>.defaultMQPushConsumer.getConsumerGroup();</div><div class="line">        <span class="keyword">this</span>.consumeRequestQueue = <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;();</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.consumeExecutor = <span class="keyword">new</span> ThreadPoolExecutor(</div><div class="line">            <span class="keyword">this</span>.defaultMQPushConsumer.getConsumeThreadMin(),</div><div class="line">            <span class="keyword">this</span>.defaultMQPushConsumer.getConsumeThreadMax(),</div><div class="line">            <span class="number">1000</span> * <span class="number">60</span>,</div><div class="line">            TimeUnit.MILLISECONDS,</div><div class="line">            <span class="keyword">this</span>.consumeRequestQueue,</div><div class="line">            <span class="keyword">new</span> ThreadFactoryImpl(<span class="string">"ConsumeMessageThread_"</span>));</div><div class="line"></div><div class="line">        <span class="keyword">this</span>.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(<span class="keyword">new</span> ThreadFactoryImpl(<span class="string">"ConsumeMessageScheduledThread_"</span>));</div><div class="line">        <span class="keyword">this</span>.cleanExpireMsgExecutors = Executors.newSingleThreadScheduledExecutor(<span class="keyword">new</span> ThreadFactoryImpl(<span class="string">"CleanExpireMsgScheduledThread_"</span>));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <h2 id="2、顺序消费"><a href="#2、顺序消费" class="headerlink" title="2、顺序消费"></a>2、顺序消费</h2><p>有些业务场景，消息的消费需要顺序性，例如购物时，下订单、库存校验、支付、发送物流，虽然都属于「购物」这个场景的子任务，但他们之间是有顺序性的。如果它们业务处理通过消息解耦，那消息消费也得要有顺序性。</p>
 <p><code>RocketMQ</code> 的做法就是分区有序性，首先需要发送者，将有顺序的消息发往 <code>Topic</code> 下同一个 <code>MessageQueue</code>，然后消费者，顺序地一个一个进行消费，消费失败将会一直重试，前面消息消费完成才能进行下一个，所以需要在业务上确保消息失败机制，避免消息阻塞。</p>
-<p><img src="http://img.sevenyuan.cn/rocketmq/RocketMQ-Part-Order-Message.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Introduction/RocketMQ-Part-Order-Message.png" alt=""></p>
 <hr>
 <h1 id="幂等消费"><a href="#幂等消费" class="headerlink" title="幂等消费"></a>幂等消费</h1><p>在 <code>RocketMQ</code> 的设计中，是不保证消息的幂等性，这时候需要业务方自行保证，重复消费消费不会对数据造成影响，从数学意义上来说，<code>f(x) = f(f(x))</code>，多次计算的结果都是一致的。</p>
 <p><code>RocketMQ</code> 保证存储在 <code>Broker</code> 的消息最少投递一次，该特性保证消息一定会被消费，但由于网络抖动或者其它场景，导致一条消息可能被消费多次。</p>
@@ -387,7 +387,7 @@
 <p>第一个场景很好理解，一条相同类型的消息被不同的消费者同时拉取，可能是不同发送者同时发送的，例如喜闻乐见的 <code>A B</code> 转账问题。</p>
 <p>第二个场景比较难遇到，默认情况，消息处理超过 15 分钟后，将会重新投递消费，如果原来服务器 <code>A</code> 还在处理中，重新投递的消息被服务器 <code>B</code> 拉取了；另一种就是手动重发消息，通过控制台可以重新发送一模一样的消息，<code>MessageID</code> 和消息体跟之前一样，这两种情况下也会造成消息重复消费。</p>
 <p>于是设计上，考虑了使用 <code>Redis</code> 做分布式锁，通过竞争锁来避免同时消息，以及用 <code>Redis</code> 暂存消费状态，设计如下：</p>
-<p><img src="http://img.sevenyuan.cn/rocket/RocketMQ_Idemponent_Consume_Design.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Idemponent_Consume_Design.png" alt=""></p>
 <p><strong>注意点：</strong></p>
 <p>1、锁资源 key 的组装规则（【消费组】+【:】+【主题 topic】+【:】+【messageId 或者 messageKey】</p>
 <p>2、锁对应的状态流转（Processing or Successed)</p>
@@ -396,7 +396,7 @@
 <p>5、根据 Redis 中保存的状态，过滤重复的消息</p>
 <p>在消息 <code>SDK</code> 代码实现上，通过装饰器模式，将 <code>MessageConsumer</code> 包装起来，在业务逻辑不需改动太大情况下，动态增加了幂等消费的功能。</p>
 <hr>
-<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p><img src="http://img.sevenyuan.cn/rocket/broker/RocektMQ_Consumer_Acquire_Message.png" alt=""></p>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocektMQ_Consumer_Acquire_Message.png" alt=""></p>
 <p>上图展示了，在一个 <code>pullRequestQueue</code>，可能获取到多个消息 <code>MessageExt</code>，然后每个消息将会进入消费线程池中消费。</p>
 <p>Consumer 端使用 <code>RebalanceImpl</code> 来实现负载均衡，所以想要理解拉取消息的流程，需要重点查看它实现。</p>
 <p>Consumer 实例启动时，在工厂 <code>MQClientInstance</code> 中能够看到 <code>new RebalanceService(this);</code>，启动了一个后台线程，每隔 20s 进行重平衡操作 <code>mqClientFactory.doRebalance()</code></p>
@@ -408,12 +408,12 @@
 <p>底层通过发送 <code>RequestCode.GET_CONSUMER_LIST_BY_GROUP</code> 请求码的 <code>RemotingCommand</code> 到 <code>Broker</code> 查询在线消费者列表，拿到结果后反序列化</p>
 <h2 id="三、分配-MessageQueue"><a href="#三、分配-MessageQueue" class="headerlink" title="三、分配 MessageQueue"></a>三、分配 MessageQueue</h2><p>根据分配策略，确定当前消费者实例要从哪些 MessageQueue 获取消息</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">List&lt;MessageQueue&gt; allocateResult = </div><div class="line">    strategy.allocate(<span class="keyword">this</span>.consumerGroup,</div><div class="line">                      <span class="keyword">this</span>.mQClientFactory.getClientId(),</div><div class="line">                      mqAll,</div><div class="line">                      cidAll);</div></pre></td></tr></table></figure>
-<p><img src="http://img.sevenyuan.cn/rocket/RocketMQ_Consumer_MessageQueue_Allocate.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Consumer_MessageQueue_Allocate.png" alt=""></p>
 <p>默认分配策略是平均分配，取当前下标 <code>index</code>，队列数取余机器数 <code>mod</code>，然后按照区间给当前应用分配。</p>
 <p>例如有 8 个队列，2 台在线服务器，那平均消费 4 个队列，4 4 分配；3 台服务器的，按照 3 3 2 分配。</p>
 <p><strong>注意：</strong></p>
 <p>目前遇到很多业务团队，在开发过程中，使用了相同的分组名，但是订阅信息不一致，例如之前已经部署了两台应用，本期开发时，新增了 Topic 后，反馈有些消息无法消费，查看 Topic 消费情况表现如下：</p>
-<p><img src="http://img.sevenyuan.cn/rocket/RocketMQ_Subscribe_Not_Equal.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Consumer/RocketMQ_Subscribe_Not_Equal.png" alt=""></p>
 <p>根本原因就是前面说的 <code>MessageQueue</code> 平均分配后，之前的应用没有订阅新 <code>Topic</code>，于是这些消息状态一直处于 <code>Not Consumed Yet</code>， <strong>解决方法就是统一订阅信息或者更换 <code>ConsumerGroup</code> 进行测试。</strong></p>
 <h2 id="四、刷新本地缓存-amp-构建请求列表"><a href="#四、刷新本地缓存-amp-构建请求列表" class="headerlink" title="四、刷新本地缓存 &amp; 构建请求列表"></a>四、刷新本地缓存 &amp; 构建请求列表</h2><p>接下来，会根据前面分配的消息队列，来构建获取消息的请求 <code>pullRequest</code> 队列</p>
 <blockquote>

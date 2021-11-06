@@ -96,20 +96,20 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="前言一个适合后端仔排查问题的 iterm2 终端应该是这样的：  交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（实际上服务器数量比这个更多:-O）">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/itemr2/eight_terminal.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/eight_terminal.png">
 <meta property="og:image" content="https://camo.githubusercontent.com/5c385f15f3eaedb72cfcfbbaf75355b700ac0757/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6f686d797a73682f6f682d6d792d7a73682d6c6f676f2e706e67">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/effect_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/themes_directory.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/remove_prompt_context.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_profile.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_triggers.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_tab.gif">
-<meta property="og:image" content="http://img.sevenyuan.cn/iterm2/iterm2_boardcast.gif">
-<meta property="og:updated_time" content="2020-01-11T17:29:04.675Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/effect_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/themes_directory.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/remove_prompt_context.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_profile.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_triggers.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_tab.gif">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_boardcast.gif">
+<meta property="og:updated_time" content="2021-11-02T16:23:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="收集了这么多实用技巧，帮助你的 iterm2 成为最帅的那个!">
 <meta name="twitter:description" content="前言一个适合后端仔排查问题的 iterm2 终端应该是这样的：  交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（实际上服务器数量比这个更多:-O）">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/itemr2/eight_terminal.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/eight_terminal.png">
 
 
 
@@ -366,7 +366,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>一个适合后端仔排查问题的 iterm2 终端应该是这样的：</strong></p>
-<p><img src="http://img.sevenyuan.cn/itemr2/eight_terminal.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/eight_terminal.png" alt=""></p>
 <p>交代下为啥要开这么多个窗口，目前我们的应用是单机部署，一个服务部署在很多台 Linux 服务器上，构建分布式架构。（<strong>实际上服务器数量比这个更多:-O</strong>）</p>
 <a id="more"></a>
 <p>当然，我们也有日志监控平台，从 UI 上查询信息也很方便，但看过《鸟哥的 Linux 私房菜》后，感觉里面的命令十分有用，所以在排查问题时，更喜欢直接在终端进行信息统计（grep、awk、sed、wc 和正则表达式来一套），而且终端查询比网页查询更快，所以决定好好改造 iterm2 这个工具！</p>
@@ -379,7 +379,7 @@
 <p>当然，上面的介绍是 「谷歌专业翻译+个人渣翻译」，就是为了突出 zsh 的强大，下面来看下具体如何配置吧</p>
 <h3 id="个性化打造"><a href="#个性化打造" class="headerlink" title="个性化打造"></a>个性化打造</h3><p>关于 <strong>「iTerm2 + Oh My Zsh 打造舒适终端体验」</strong>，这篇文章已经说得很全面了：<a href="https://segmentfault.com/a/1190000014992947" target="_blank" rel="noopener">https://segmentfault.com/a/1190000014992947</a></p>
 <p>我按照上面的提示和步骤，一步一步往下实践，也成功完成了自己的 iterm2 改造：</p>
-<p><img src="http://img.sevenyuan.cn/iterm2/effect_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/effect_diagram.png" alt=""></p>
 <p>来介绍下上面出现过的插件：</p>
 <ul>
 <li>PowerLine：<br>Powerline 是一个比较酷炫的状态栏工具，主要用于显示状态行和提示信息（上面蓝色的状态栏，当然还有其它主题，读者慢慢去发掘吧）：<a href="https://github.com/powerline/powerline" target="_blank" rel="noopener">https://github.com/powerline/powerline</a></li>
@@ -394,9 +394,9 @@
 <ul>
 <li>定位到主题文件：<br>打开「访达」，点击顶部状态栏「前往 -&gt; 前往文件夹」（或者按快捷键 Shift + ⌘（command） + G)，接着定位到该目录：~/.oh-my-zsh/themes/</li>
 </ul>
-<p><img src="http://img.sevenyuan.cn/iterm2/themes_directory.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/themes_directory.png" alt=""></p>
 <p>例如我选择的是 agnoster 主题，于是打开了 agnoster.zsh-theme 文件，然后在最底部的添加了注释符：</p>
-<p><img src="http://img.sevenyuan.cn/iterm2/remove_prompt_context.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/remove_prompt_context.png" alt=""></p>
 <p>加上 # 前缀后，注释掉上下文提示符，然后记得保存，接着打开新的终端窗口，就看不到长长的主机名啦~</p>
 <h2 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h2><p>既然是远端 Linux 服务器，我们需要通过 SSH 进行登录，常用以下形式进行操作：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> ssh root@ip</span></div><div class="line"><span class="meta">#</span><span class="bash"> <span class="keyword">if</span> you first login, alter this</span></div><div class="line">The authenticity of host 'host (xxx)' can't be established.</div><div class="line">...</div><div class="line">Are you sure you want to continue connecting (yes/no)?</div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash">after enter</span></div><div class="line"></div><div class="line">[entery your password]</div></pre></td></tr></table></figure>
@@ -432,7 +432,7 @@
 <li><strong>保存 profile 信息</strong></li>
 </ul>
 <p>在这里设置配置文件信息</p>
-<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_profile.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_profile.png" alt=""></p>
 <p>左下角的 + 号，进行添加一个配置文件，接着在右边的 Command 栏，输入以下命令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/iterm2login.sh port root ip password</div></pre></td></tr></table></figure>
 <table>
@@ -489,7 +489,7 @@
 <li><strong>添加触发器</strong></li>
 </ul>
 <p>定位到 Perferences -&gt; Profiles -&gt; Advanced -&gt; Triggers -&gt; Edit</p>
-<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_triggers.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_triggers.png" alt=""></p>
 <p>左下角的 + 号，添加以下两个触发器：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">一、SZ 命令</div><div class="line">Regular expression: \*\*B0100</div><div class="line">Action: Run Silent Coprocess</div><div class="line">Parameters: /usr/local/bin/iterm2-send-zmodem.sh</div><div class="line"></div><div class="line">二、RZ 命令</div><div class="line">Regular expression: \*\*B00000000000000</div><div class="line">Action: Run Silent Coprocess</div><div class="line">Parameters: /usr/local/bin/iterm2-recv-zmodem.sh</div></pre></td></tr></table></figure>
 <ul>
@@ -498,10 +498,10 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 上传本地文件到服务器，直接输入 rz 命令，将会弹出文件选择框</span></div><div class="line"><span class="meta">$</span><span class="bash"> rz</span></div><div class="line"><span class="meta">#</span><span class="bash"> 将服务器的文件发送到本地，输入 sz 命令，同时后面接上服务器的文件路径</span></div><div class="line"><span class="meta">$</span><span class="bash"> sz /&#123;patch&#125;/file.out</span></div></pre></td></tr></table></figure>
 <p>通过上面的配置方式，就可以愉快上传和下载文件了~</p>
 <h2 id="快捷键推荐"><a href="#快捷键推荐" class="headerlink" title="快捷键推荐"></a>快捷键推荐</h2><p>像一开始，在一个窗口打开过个 tab 页，是通过拖拽 tab 形式实现的：</p>
-<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_tab.gif" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_tab.gif" alt=""></p>
 <p>接着，在命令发送到所有窗口，是通过广播命令实现的，广播命令也分很多种，例如全部 window 的面板，或者是当前 window 的面板，我使用的是当前 window：</p>
 <p>快捷键：「⌘（command） + Shift + i」</p>
-<p><img src="http://img.sevenyuan.cn/iterm2/iterm2_boardcast.gif" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/iterm2/iterm2_boardcast.gif" alt=""></p>
 <p>使用广播命令，在一个窗口上输入指令，可以将它们发送到其它窗口上，实现多个服务器同时执行指令的功能。</p>
 <p>还有更多快捷键，可以参考这篇文章：<a href="https://www.jianshu.com/p/a0249778872e" target="_blank" rel="noopener">https://www.jianshu.com/p/a0249778872e</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在工作中，一点一点小工具的使用和积累，逐渐形成习惯，本次将 iterm2 这个工具常用的技巧记录下来，做个备忘，同时希望能帮到大家~</p>

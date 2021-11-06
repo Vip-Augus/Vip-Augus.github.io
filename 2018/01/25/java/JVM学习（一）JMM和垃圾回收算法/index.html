@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="经常使用 Java，但对它的底层使用却不太熟悉，还有在出现 StackOverFlow 或 OOM 的时候，没能去找到原因而懊恼，于是就开始了学习 JVM。 最近看的是周志明大神写的《深入理解JVM》，觉得他写的概念比较深，所以看完一遍后，再去结合网络上的文章一起理解会更好吸收。 首先来了解一下Java虚拟机的内存模型（Java Memory Model）  Java虚拟机的内存模型(JMM)ja">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/JMM.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Mark-Sweep.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Copying.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Mark-Compact.png">
-<meta property="og:updated_time" content="2019-05-25T09:18:31.341Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/JMM.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/Mark-Sweep.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/Copying.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/Mark-Compact.png">
+<meta property="og:updated_time" content="2021-10-30T16:28:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM学习（一）JMM和垃圾回收算法">
 <meta name="twitter:description" content="经常使用 Java，但对它的底层使用却不太熟悉，还有在出现 StackOverFlow 或 OOM 的时候，没能去找到原因而懊恼，于是就开始了学习 JVM。 最近看的是周志明大神写的《深入理解JVM》，觉得他写的概念比较深，所以看完一遍后，再去结合网络上的文章一起理解会更好吸收。 首先来了解一下Java虚拟机的内存模型（Java Memory Model）  Java虚拟机的内存模型(JMM)ja">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/JMM.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/JMM.png">
 
 
 
@@ -364,7 +364,7 @@
 <p>最近看的是周志明大神写的《深入理解JVM》，觉得他写的概念比较深，所以看完一遍后，再去结合网络上的文章一起理解会更好吸收。</p>
 <p>首先来了解一下Java虚拟机的内存模型（Java Memory Model）</p>
 <hr>
-<h2 id="Java虚拟机的内存模型-JMM"><a href="#Java虚拟机的内存模型-JMM" class="headerlink" title="Java虚拟机的内存模型(JMM)"></a>Java虚拟机的内存模型(JMM)</h2><p>java 运行时,数据区域划分为五个方面:<br><img src="http://img.sevenyuan.cn/JMM.png" alt="JMM模型"></p>
+<h2 id="Java虚拟机的内存模型-JMM"><a href="#Java虚拟机的内存模型-JMM" class="headerlink" title="Java虚拟机的内存模型(JMM)"></a>Java虚拟机的内存模型(JMM)</h2><p>java 运行时,数据区域划分为五个方面:<br><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/JMM.png" alt="JMM模型"></p>
 <p>其中<strong>虚拟机栈，本地方法栈和程序计数器</strong>都是<strong>线程私有</strong>的，<strong>Java堆</strong>和<strong>方法区</strong>是<strong>各个线程共享的内存区域</strong>。</p>
 <p>下面简单介绍一下这五个区域的作用：</p>
 <ul>
@@ -400,12 +400,12 @@
 <h3 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3><ul>
 <li><p><strong>标记-清除算法</strong><br>最基础的收集算法是“标记-清除”（Mark-Sweep）算法：两个阶段，首先标记所有需要回收的对象，在标记完成后统一回收掉所有被标记的对象。</p>
 <p>同样有两个缺点：第一个是<strong>效率问题</strong>，标记和清除过程的效率都不高；第二个是<strong>空间问题</strong>，标记清除之后会产生大量不连续的内存碎片，空间碎片太多可能会导致程序在以后的运行过程中需要分配较大对象时无法找到足够的连续内存而不得不提前触发另一次垃圾收集动作。</p>
-<p><img src="http://img.sevenyuan.cn/Mark-Sweep.png" alt="标记-清除算法"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/Mark-Sweep.png" alt="标记-清除算法"></p>
 </li>
 <li><p><strong>复制算法</strong><br>为了解决效率问题，它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。<br>当这一块的内存用完之后，就将还存活着的对象复制到另外一块上面，然后再把已使用过的内存空间一次清理掉。<br>好处是，只要移动堆顶指针，按顺序分配内存即可，实现简单，运行高效，但这种算法的代价是将内存缩小为原来的一半，感觉有点得不偿失…</p>
 </li>
 </ul>
-<p><img src="http://img.sevenyuan.cn/Copying.png" alt="Copying"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/Copying.png" alt="Copying"></p>
 <p>书中提到，现在大部分Java虚拟机都采用这种收集算法来回收新生代。</p>
 <p>新生代中的对象98%是朝生晚死的，所以并不需要按照1：1的比例来划分内存空间，而是将内存分为一块较大的Eden空间和两块较小的Survivor空间，每次使用Eden和其中一块Survivor。当回收时，将Eden和Survivor中还存活着的对象一次性拷贝到另外一块Survivor空间上，最后清理掉Eden和刚才用过的Survivor的空间。</p>
 <p>HotSpot虚拟机默认<strong>Eden和Survivor的大小比例是8：1</strong>，也就是每次新生代中空内存空间为整个新生代容量的90%（80%+10%）。当然，我们没有办法保证每次回收都只有不多于10%的对象存活，当Survivor空间不够用时，需要依赖于老年代进行分配担保（Handle Promotion）。</p>
@@ -413,7 +413,7 @@
 <li><strong>标记-整理算法（Mark-Compact）</strong><br>复制收集算法，在对象存活率较高时就要执行较多的复制操作，效率将会变低。所以老年代不采用复制收集算法，而是使用标记整理算法（Mark-Compact）。</li>
 </ul>
 <p>标记过程仍然与“标记-清除”算法一样，但后续步骤不是直接对可回收对象进行清理，而是让所有<strong>存活的对象都向一端移动</strong>，然后直接清理掉边界以外的内存。</p>
-<p><img src="http://img.sevenyuan.cn/Mark-Compact.png" alt="Mark-Compact"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/Mark-Compact.png" alt="Mark-Compact"></p>
 <ul>
 <li>分代收集算法<br>“分代收集算法”（Generational Collectio），根据对象的生存周期的不同将内存划分为几块，一般是把Java堆分成新生代和老年代，这样就可以根据各个年代的特点采用最合适的收集算法。<br>例如在新生代中，每次垃圾收集都会有大量的对象死去，只有少量的存活，那就选用复制算法，只需要付出少量存活对象的复制成本就可以完成收集。而老年代中，因为对象的存活率高，没有额外的空间对它进行分配担保，就必须使用“标记-清理”或“标记-整理”算法进行回收。</li>
 </ul>

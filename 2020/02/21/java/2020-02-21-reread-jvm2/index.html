@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/parnew_flow.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/parnew_gc_memory.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cms_gc_flow.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cmsold_flow.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/cms_gc_log.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/consweep_parnew.png">
-<meta property="og:updated_time" content="2020-05-16T16:13:35.633Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/gc_roots_analysis.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/parnew_flow.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/parnew_gc_memory.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/cms_gc_flow.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/cmsold_flow.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/cms_gc_log.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/consweep_parnew.png">
+<meta property="og:updated_time" content="2021-11-02T16:40:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重读 JVM - ParNew &amp; CMS GC">
 <meta name="twitter:description" content="这次来复习一下常用的 ParNew 和 CMS GC 的概念和一些调优建议">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/gc_roots_analysis.png">
 
 
 
@@ -375,7 +375,7 @@
 <li><strong>可达性分析 Reachability Analysis</strong></li>
 </ul>
 <p>以 <code>GC Roots</code> 为起点，根据引用关系往下搜索，搜索过程中走过的路称为”引用连“（Reference Chain)，如果与 GC Roots 对象可连接，说明对象还在使用，反之表示不可达，说明这些对象不使用，可以被回收掉。</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/gc_roots_analysis.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/gc_roots_analysis.png" alt=""></p>
 <p>其中关于 GC Roots 这些对象，有我们熟悉的，各个线程中调用的方法堆栈中的参数、局部变量、临时变量等，还有其它作为根路径的对象，可以参考书籍 3.2 章节</p>
 <h3 id="画图，说明-ParNew-和-CMS-回收垃圾的流程"><a href="#画图，说明-ParNew-和-CMS-回收垃圾的流程" class="headerlink" title="画图，说明 ParNew 和 CMS 回收垃圾的流程"></a>画图，说明 ParNew 和 CMS 回收垃圾的流程</h3><p>前面说了有哪些方法可以说明对象不可用，这里来说下用什么垃圾回收器去回收♻️</p>
 <p>在看完第二版之后，jdk8 之前的常用 gc 算法基本掌握，大多基于「分代收集」<code>Generational Collection</code>，主要分为了新生代 <code>Young</code> 区，存储一些朝生夕死的对象，另一个是老年代 <code>Old</code> 区，存储一些使用时间比较长，熬过了多次垃圾回收的对象</p>
@@ -389,7 +389,7 @@
 <p>区别于初始版本的线性 Serial 垃圾回收器，Serial 只能单线程操作，目前常用的都是多线程操作，跟多一双手多一份力一样，多线程能够提高垃圾回收的速度，常看到的 ParNew 和 Parallel Scanvenge，其中 <code>Parallel</code> 表示并行的意思，并行操作以降低用户线程（应用）因垃圾收集而导致的停顿。</p>
 <h3 id="ParNew-收集器"><a href="#ParNew-收集器" class="headerlink" title="ParNew 收集器"></a>ParNew 收集器</h3><p><code>ParNew</code> 收集器用于回收新生代资源，是 Serial 收集器的并行版本。</p>
 <p>为何要选择 ParNew 作为新生代的回收器，答案是目前好像除了 Serial 收集器外，只有它能够与老年代的 CMS 回收器搭配使用，在 jvm 启动参数中可以通过 <code>+XX:+/-UseParNewGC</code> 来开启或者关闭使用该收集器。</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/parnew_flow.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/parnew_flow.png" alt=""></p>
 <p>顺便来介绍一下其它几个 jvm 参数：</p>
 <ul>
 <li><strong>-XX:SurvivorRatio</strong></li>
@@ -412,7 +412,7 @@
 <p><strong>而在 jdk8 之后，元空间并不在虚拟机中，而是使用本地内存，所以它的大小仅受到本地内存，也就是系统实际可用空间控制。</strong></p>
 <p>默认情况下，元空间是没有大小限制的，不过还是建议分配一个初始和最大值，例如 <code>-XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m</code>，虽然还是有可能触发 Full GC，这个时候就要排查定位出什么类导致元空间这么庞大，然后进行解决。</p>
 <h3 id="新生代-GC"><a href="#新生代-GC" class="headerlink" title="新生代 GC"></a>新生代 GC</h3><p>可以看下新生代 GC 前后的内存分布情况：(蓝色表示使用情况)</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/parnew_gc_memory.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/parnew_gc_memory.png" alt=""></p>
 <p>验证了前面说的场景，拷贝 Eden 区和其中一块使用的 Survivor 区 S1 中的还在使用对象到另一个 Survivor 区 S0，如果新生代放不下或者对象熬过多次垃圾回收，就会进入到老年代。</p>
 <p>翻看 gc 日志，回收新生代的日志格式如下：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2020-02-20T11:02:44.255+0800: 3346835.272: [GC (Allocation Failure) 2020-02-20T11:02:44.255+0800: 3346835.273: [ParNew: 1123543K-&gt;11470K(1258304K), 0.0113857 secs] 2211645K-&gt;1099617K(4054528K), 0.0118211 secs] [Times: user=0.00 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
@@ -445,11 +445,11 @@
 <p>因为多线程的原因，通常来说总耗时 real 会比前两个少，所以我们实际关注更多的地方在 real 字段上，实际对用户线程造成了多少中断。</p>
 <h3 id="CMS-收集器"><a href="#CMS-收集器" class="headerlink" title="CMS 收集器"></a>CMS 收集器</h3><p><strong>CMS（Concurrent Mark Sweep）收集器是一种以获取最短回收停顿时间为目标的收集器。</strong></p>
 <p>目前很大一部分的Java应用集中在互联网网站或者基于浏览器的B/S系统的服务端上，这类应用通常都会较为关注服务的响应速度，希望系统停顿时间尽可能短，以给用户带来良好的交互体验。出于稳定性，G1 垃圾回收器有点超前，出了问题的维护成本会比较大，所以希望尽可能短的停顿时间，目前我们在用的是 CMS 垃圾回收期。</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/cms_gc_flow.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/cms_gc_flow.png" alt=""></p>
 <h3 id="老年代回收"><a href="#老年代回收" class="headerlink" title="老年代回收"></a>老年代回收</h3><p><strong><code>-XX:CMSInitiatingOccupancyFraction=70</code> 默认情况下，当老年代的使用空间达到 70% 时，将会触发老年代回收</strong></p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/cmsold_flow.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/cmsold_flow.png" alt=""></p>
 <p><code>Concurrent Mark Sweep</code>，并发标记清理，CMS 收集器是用于老年代GC，从上图可以看出，使用 CMS 收集器后，老年代回收对象之后，不会进行压缩整理，所以老年代出现了不连续的内存空间。</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/cms_gc_log.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/cms_gc_log.png" alt=""></p>
 <p>上面是 CMS 收集时的日志格式，同时从时间上可以看出，1~2 天才出现一次老年代的 GC，表示老年代的 GC 频率不高，验证了大多数对象都是朝生夕死的，在 <code>Minor GC</code> 就被回收掉了，下面来记录每个字段的含义。</p>
 <ul>
 <li><strong>初始标记 Initial Mark</strong></li>
@@ -490,7 +490,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[CMS-concurrent-sweep-start]</div><div class="line">[CMS-concurrent-sweep: 1.613/1.618 secs] [Times: user=2.30 sys=0.01, real=1.62 secs]</div></pre></td></tr></table></figure>
 <p>清理 sweep 阶段与用户线程是并发运行的，不会 STW</p>
 <p>也有可能出现这种场景：</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/consweep_parnew.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/consweep_parnew.png" alt=""></p>
 <p>在 <code>con-sweep</code> 阶段中，发生了新生代 GC，说明新生代的 GC 和老年代的 GC 可以并发进行</p>
 <ul>
 <li><strong>并发重置 concurrent reset</strong></li>

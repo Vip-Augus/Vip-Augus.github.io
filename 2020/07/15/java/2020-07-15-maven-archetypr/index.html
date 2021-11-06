@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="避免重复工作，记录制作 maven 模板">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/header/LavaShip_ZH-CN3924445486_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/maven_archetypr/archetype_create_from_idea.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/maven_archetypr/target_directory_archetype.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/maven_archetypr/maven_archetype_complete_demo.png">
-<meta property="og:updated_time" content="2020-08-23T11:50:26.688Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/LavaShip_ZH-CN3924445486_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/maven_archetype/archetype_create_from_idea.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/maven_archetype/target_directory_archetype.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/maven_archetype/maven_archetype_complete_demo.png">
+<meta property="og:updated_time" content="2021-11-02T16:37:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 mvn archetype 创建模板工程">
 <meta name="twitter:description" content="避免重复工作，记录制作 maven 模板">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/header/LavaShip_ZH-CN3924445486_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/LavaShip_ZH-CN3924445486_1920x1080.jpg">
 
 
 
@@ -360,7 +360,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/header/LavaShip_ZH-CN3924445486_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/LavaShip_ZH-CN3924445486_1920x1080.jpg" alt=""></p>
 <center>避免重复工作，记录制作 maven 模板</center>
 
 <a id="more"></a>
@@ -374,7 +374,7 @@
 <h2 id="配置-demo-工程"><a href="#配置-demo-工程" class="headerlink" title="配置 demo 工程"></a>配置 demo 工程</h2><p>一般制作的话，使用公司内常用的中间件依赖，制作一份统一的模板，后续新建项目就能更加快速和模块分级合理化。</p>
 <p>这里记录的是常规项目模板制作：</p>
 <p>打开 IDEA，新建一个工程（同样可以使用 IDEA 工具中自带的模板）</p>
-<p><img src="http://img.sevenyuan.cn/maven_archetypr/archetype_create_from_idea.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/maven_archetype/archetype_create_from_idea.png" alt=""></p>
 <p>新建模块 module，制定合适的模块层级</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">├── test-controller</div><div class="line">│   ├── pom.xml </div><div class="line">│   └── src </div><div class="line">├── test-core </div><div class="line">│   ├── pom.xml </div><div class="line">│   └── src </div><div class="line">├── test-dao </div><div class="line">│   ├── pom.xml </div><div class="line">│   └── src </div><div class="line">├── test-deploy </div><div class="line">│   ├── pom.xml </div><div class="line">│   └── src </div><div class="line">....// 其它扩展模块 </div><div class="line">├── README.md </div><div class="line">├── .gitignore </div><div class="line">└── pom.xml</div></pre></td></tr></table></figure>
 <p>例如上面那样结构，在 src 目录下方 java、resource、webapp 等文件</p>
@@ -383,7 +383,7 @@
 <p>在项目目录下，输入该指令，等待执行完</p>
 <p>可以在本地模式下测试模板是否符合预期，进入 target 目录下的 archetype 目录</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd $&#123;Your Project File Directory&#125;/target/generated-sources/archetype</div></pre></td></tr></table></figure>
-<p><img src="http://img.sevenyuan.cn/maven_archetypr/target_directory_archetype.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/maven_archetype/target_directory_archetype.png" alt=""></p>
 <p>例如上图，确认项目结构无误后，将模板安装到本地</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn install</div></pre></td></tr></table></figure>
 <p>接着就能在 .m2/repository 目录下看到 archetype-catalog.xml，在里面多了刚才生成的模板</p>
@@ -401,7 +401,7 @@
 <li><code>artifactId</code>：自己应用的 artifact ID</li>
 </ul>
 <p>例如我使用了 cn.sevenyuan 这个组织名，生成的目录结构如下</p>
-<p><img src="http://img.sevenyuan.cn/maven_archetypr/maven_archetype_complete_demo.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/maven_archetype/maven_archetype_complete_demo.png" alt=""></p>
 <hr>
 <h2 id="上传模板到仓库"><a href="#上传模板到仓库" class="headerlink" title="上传模板到仓库"></a>上传模板到仓库</h2><p>需要在 <code>target/generated-sources/archetype</code> 目录下的 <code>pom</code> 文件中加入仓库地址，例如如下示范</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--运行 mvn deploy 时上传构件到本地仓库 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>xxx-releases<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus Release Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://xxx.com/nexus/content/repositories/xxx-release/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">snapshotRepository</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>xxx-snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus Snapshot Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://xxx.com/nexus/content/repositories/xxx-test/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">snapshotRepository</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></div></pre></td></tr></table></figure>

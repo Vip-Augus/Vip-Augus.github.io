@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="看了这篇，自定义 Spring 标签不是梦~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/NFLDfog_ZH-CN4846953507_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/myname_default_define.png">
-<meta property="og:updated_time" content="2019-07-21T03:24:34.368Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/NFLDfog_ZH-CN4846953507_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring3/myname_default_define.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(三)自定义标签">
 <meta name="twitter:description" content="看了这篇，自定义 Spring 标签不是梦~">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/NFLDfog_ZH-CN4846953507_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/NFLDfog_ZH-CN4846953507_1920x1080.jpg">
 
 
 
@@ -358,7 +358,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/NFLDfog_ZH-CN4846953507_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/NFLDfog_ZH-CN4846953507_1920x1080.jpg" alt=""></p>
 <center>看了这篇，自定义 Spring 标签不是梦~</center>
 
 <a id="more"></a>
@@ -398,7 +398,7 @@
 <p>作为一个有追求的程序员，当然不能满足于框架自带默认的标签，为了扩展性和配置化要求，这时候就需要学习自定义标签和使用自定义标签~</p>
 <hr>
 <h2 id="官方例子"><a href="#官方例子" class="headerlink" title="官方例子"></a>官方例子</h2><p>先来看一张源码图片（红框框圈着是重点哟）</p>
-<p><img src="http://img.sevenyuan.cn/myname_default_define.png" alt="myname_default_define"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring3/myname_default_define.png" alt="myname_default_define"></p>
 <p>刚才说了缓存和事务，那就拿这两个举例，还有一个标签 <code>&lt;myname:&gt;</code>（这个我也不太清楚，网上查的资料也不多，所以按照我的理解大家跟说下）</p>
 <p>首先我们看到，<code>&lt;tx&gt;</code> <code>&lt;cache&gt;</code> <code>&lt;mvc&gt;</code> 和 <code>&lt;myname&gt;</code> 都是自定义标签，左一是配置文件，进行 <code>bean</code> 的定义，顶部的 <code>xmlns</code> 是命名空间，表示标签所属的定义文件，像事务、缓存、<code>MVC</code> 的命名空间都是固定的。</p>
 <p><strong>而 <code>myname</code> 相当于万金油，既可以定义为事务，又可以定义为缓存，只要我们在命名空间中进行相应的定义就能正确的识别。这个就是我们待会要使用到的自定义标签，通过命名空间定位到我们想要的处理逻辑。</strong></p>

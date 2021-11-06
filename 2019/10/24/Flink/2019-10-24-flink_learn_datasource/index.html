@@ -96,17 +96,17 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="为何要使用 Flink因为本篇文章中，有个 Kafka 数据源的 Demo，在一开始解答小伙伴有可能的困惑： Question：既然监听 Kafka 消息，为何不建立一个简单的消息消费者，使用简单的代码就能进行消息的消费？ Answer：在普通的消费者逻辑中，只能做到对传送过来的一条消息进行单条处理。而在 Flink 这个优秀的流计算框架中，能够使用窗口进行多样化处理。提供了窗口处理函数，可以对一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_streaming_dataflow.svg">
-<meta property="og:image" content="http://img.sevenyuan.cn/StreamExecutionEnvironment_DataSource.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_rich_source_function.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_datasource_kafka.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_datasource_kafka_result.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_datasource_mind.png">
-<meta property="og:updated_time" content="2019-12-22T07:42:10.683Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_streaming_dataflow.svg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/StreamExecutionEnvironment_DataSource.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_rich_source_function.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_datasource_kafka.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_datasource_kafka_result.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_datasource_mind.png">
+<meta property="og:updated_time" content="2021-11-02T15:47:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink 基础学习(三)数据源 DataSource">
 <meta name="twitter:description" content="为何要使用 Flink因为本篇文章中，有个 Kafka 数据源的 Demo，在一开始解答小伙伴有可能的困惑： Question：既然监听 Kafka 消息，为何不建立一个简单的消息消费者，使用简单的代码就能进行消息的消费？ Answer：在普通的消费者逻辑中，只能做到对传送过来的一条消息进行单条处理。而在 Flink 这个优秀的流计算框架中，能够使用窗口进行多样化处理。提供了窗口处理函数，可以对一">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/flink_streaming_dataflow.svg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_streaming_dataflow.svg">
 
 
 
@@ -368,14 +368,14 @@
 <p><strong>还有 <code>Flink</code> 拥有状态管理，能够保存 <code>checkpoint</code>，如果程序出现错误，也能够之前的检查点恢复，继续程序的处理，于是拥有这些好处的优秀框架，希望小伙伴也加入进来，一起学习~</strong></p>
 <a id="more"></a>
 <h1 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h1><p>接下来的几篇文章，都会围绕着下面这张图，整体上来说，就是 <code>DataStreamAPI</code> 编程的练习：</p>
-<p><img src="http://img.sevenyuan.cn/flink_streaming_dataflow.svg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_streaming_dataflow.svg" alt=""></p>
 <p><strong>分别是 <code>Source</code>、<code>Transformation</code> 和 <code>Sink</code> 进行逐一学习。</strong></p>
 <hr>
 <h1 id="2、DataSource-介绍"><a href="#2、DataSource-介绍" class="headerlink" title="2、DataSource 介绍"></a>2、DataSource 介绍</h1><p>直译：数据来源</p>
 <p>计算引擎，不管是批出来还是流处理，最重要的是数据来源，根据源源不断的数据进行处理，加工成更有价值的数据。</p>
 <p><strong><code>Flink</code> 官方包中提供了如下基于集合、文件、套接字等 <code>API</code>，然后第三方例如 <code>Kafka</code>、<code>RabbitMq</code> 等也提供了方便的集成库。</strong></p>
 <p>由于我们测试时，使用的是 <code>StreamExecutionEnvironment.getExecutionEnvironment()</code> 来获取流执行环境类进行操作，所以我们来看下这个类的返回类型是 <code>DataStreamSource</code> 的方法：</p>
-<p><img src="http://img.sevenyuan.cn/StreamExecutionEnvironment_DataSource.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/StreamExecutionEnvironment_DataSource.png" alt=""></p>
 <hr>
 <h1 id="3、集合"><a href="#3、集合" class="headerlink" title="3、集合"></a>3、集合</h1><p>集合数据源主要有三种：<code>collection</code>、<code>element</code> 和 <code>generateSequence</code>。</p>
 <ul>
@@ -425,7 +425,7 @@
 <h1 id="6、自定义-DataSource"><a href="#6、自定义-DataSource" class="headerlink" title="6、自定义 DataSource"></a>6、自定义 DataSource</h1><p>从前面介绍中看到，<code>Flink</code> 提供了一个 <code>addSource(SourceFunction&lt;OUT&gt;)</code> 的方法，其中 <code>SourceFunction</code> 是实现自定义数据源的关键接口，而我们常用来扩展的是它的抽象子类 <code>RichSourceFunction</code> </p>
 <hr>
 <h2 id="6-1、RichSourceFunction"><a href="#6-1、RichSourceFunction" class="headerlink" title="6.1、RichSourceFunction"></a>6.1、RichSourceFunction</h2><p>进行自定义扩展数据源前，来看下这个类的继承体系：</p>
-<p><img src="http://img.sevenyuan.cn/flink_rich_source_function.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_rich_source_function.png" alt=""></p>
 <p>下面是我测试的一个场景：</p>
 <ol>
 <li>启动 <code>Redis</code>，手动不断设置某个 <code>key</code> 的值，模拟应用不断对它的修改</li>
@@ -457,7 +457,7 @@
 <p>cn.sevenyuan.datasource.custom.DataSourceFromKafka</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DataStreamSource&lt;String&gt; dataStreamSource = env.addSource(</div><div class="line">    <span class="keyword">new</span> FlinkKafkaConsumer&lt;String&gt;(</div><div class="line">            KafkaUtils.TOPIC_STUDENT,</div><div class="line">            <span class="keyword">new</span> SimpleStringSchema(),</div><div class="line">            props</div><div class="line">    )).setParallelism(<span class="number">1</span>);</div></pre></td></tr></table></figure>
-<h2 id="7-1、测试场景示意"><a href="#7-1、测试场景示意" class="headerlink" title="7.1、测试场景示意"></a>7.1、测试场景示意</h2><p><img src="http://img.sevenyuan.cn/flink_datasource_kafka.png" alt=""></p>
+<h2 id="7-1、测试场景示意"><a href="#7-1、测试场景示意" class="headerlink" title="7.1、测试场景示意"></a>7.1、测试场景示意</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_datasource_kafka.png" alt=""></p>
 <p><strong>测试场景如上图，模拟一个 <code>A</code> 应用系统，不断的往 <code>Kafka</code> 发送消息，接着我们的 <code>Flink</code> 监听到 <code>Kafka</code> 的数据变动，搜集在一个时间窗口内（例如 10s）的数据，对窗口内的数据进行转换操作，最后进行存储（简单演示，使用的是 <code>Print</code> 打印）</strong></p>
 <h2 id="7-2、前置环境安装和启动"><a href="#7-2、前置环境安装和启动" class="headerlink" title="7.2、前置环境安装和启动"></a>7.2、前置环境安装和启动</h2><p>如果在本地测试 <code>Kafka</code> 数据源，需要做这三步前置操作：</p>
 <p><strong>1. 安装 <code>ZooKeeper</code></strong>，启动命令：<br><code>zkServer start</code></p>
@@ -479,12 +479,12 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</div><div class="line">    <span class="comment">// 省略 kafka 的参数配置，具体请看代码</span></div><div class="line">    Properties props = <span class="keyword">new</span> Properties();</div><div class="line">    DataStreamSource&lt;String&gt; dataStreamSource = env.addSource(<span class="keyword">new</span> FlinkKafkaConsumer&lt;String&gt;(</div><div class="line">            KafkaUtils.TOPIC_STUDENT,</div><div class="line">            <span class="keyword">new</span> SimpleStringSchema(),</div><div class="line">            props</div><div class="line">    )).setParallelism(<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 数据转换 &amp; 打印</span></div><div class="line">    <span class="comment">// 从 kafka 读数据，然后进行 map 映射转换</span></div><div class="line">    DataStream&lt;Student&gt; dataStream = dataStreamSource.map(value -&gt; JSONObject.parseObject(value, Student.class));</div><div class="line">    <span class="comment">// 不需要 keyBy 分类，所以使用 windowAll，每 10s 统计接收到的数据，批量插入到数据库中</span></div><div class="line">    dataStream</div><div class="line">            .timeWindowAll(Time.seconds(<span class="number">10</span>))</div><div class="line">            .apply(<span class="keyword">new</span> AllWindowFunction&lt;Student, List&lt;Student&gt;, TimeWindow&gt;() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(TimeWindow window, Iterable&lt;Student&gt; values, Collector&lt;List&lt;Student&gt;&gt; out)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">                    List&lt;Student&gt; students = Lists.newArrayList(values);</div><div class="line">                    <span class="keyword">if</span> (students.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">                        System.out.println(<span class="string">"最近 10 秒汇集到 "</span> + students.size() + <span class="string">" 条数据"</span>);</div><div class="line">                        out.collect(students);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;)</div><div class="line">            .print();</div><div class="line">        env.execute(<span class="string">"test custom kafka datasource"</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p><strong>上述代码主要有三个步骤，获取 <code>Kafka</code> 数据源 —&gt; 数据转换（通过 <code>map</code> 映射操作，时间窗口搜集数据） —&gt; 最后的数据存储（简单的 <code>print</code>）。</strong></p>
 <p>点击执行代码后，我们就能在控制台中看到如下输出结果：</p>
-<p><img src="http://img.sevenyuan.cn/flink_datasource_kafka_result.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_datasource_kafka_result.png" alt=""></p>
 <p>可以看到，按照发送消息的速度，我们能够在 10s 内搜集到 3-4 条数据，从输出结果能够验证 <code>Flink</code> 程序的正确性。</p>
 <p>安装操作请参考网上资源，更多详细添加 <code>Kafka</code> 数据源的操作可以看<strong>项目中的测试类 <code>DataSourceFromKafka</code>和 <code>zhisheng</code> 写的 <a href="http://www.54tianzhisheng.cn/2018/10/30/flink-create-source/" target="_blank" rel="noopener">Flink 从 0 到 1 学习 —— 如何自定义 Data Source </a></strong></p>
 <hr>
 <h1 id="8、总结"><a href="#8、总结" class="headerlink" title="8、总结"></a>8、总结</h1><p>本章总结大致可以用下面这张思维导图概括：</p>
-<p><img src="http://img.sevenyuan.cn/flink_datasource_mind.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/datasource/flink_datasource_mind.png" alt=""></p>
 <ul>
 <li>集合、文件：读取本地数据，比较适合在本地测试时使用</li>
 <li>套接字：监听主机地址和端口号，获取数据，比较少用</li>

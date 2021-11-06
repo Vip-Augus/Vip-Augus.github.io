@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="这是一个未解的疑问">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/7097c713ly1fxscony6ooj21hc0u0guq.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/CPU.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E6%9F%A5%E8%AF%A21.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/jstack.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/ACTIVEMQ.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%80%97%E6%97%B61.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/%E8%80%97%E6%97%B62.jpg">
-<meta property="og:updated_time" content="2019-05-25T09:09:45.280Z">
+<meta property="og:image" content="https://gitee.com/Vip-Augus/blog-picture/raw/master/front-picture/7097c713ly1fxscony6ooj21hc0u0guq.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98/CPU.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//%E6%9F%A5%E8%AF%A21.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98/jstack.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//ACTIVEMQ.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//%E8%80%97%E6%97%B61.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//%E8%80%97%E6%97%B62.jpg">
+<meta property="og:updated_time" content="2021-10-30T16:05:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务器CPU负载过高问题查询记录">
 <meta name="twitter:description" content="这是一个未解的疑问">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713ly1fxscony6ooj21hc0u0guq.jpg">
+<meta name="twitter:image" content="https://gitee.com/Vip-Augus/blog-picture/raw/master/front-picture/7097c713ly1fxscony6ooj21hc0u0guq.jpg">
 
 
 
@@ -363,27 +363,27 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/7097c713ly1fxscony6ooj21hc0u0guq.jpg" alt=""></p>
+        <p><img src="https://gitee.com/Vip-Augus/blog-picture/raw/master/front-picture/7097c713ly1fxscony6ooj21hc0u0guq.jpg" alt=""></p>
 <center><strong>这是一个未解的疑问</strong></center>
 
 <a id="more"></a>
 <hr>
 <p>周四晚上，有一台服务器遇到一个很怪异的现象：有流量访问时，CPU负载升到100%，但是内存使用量不大，通过NGINX切流，不接受HTTP请求，服务器又自动恢复了，原本打算准时游泳的脚步，就被问题缠住了=-=</p>
-<p><img src="http://img.sevenyuan.cn/CPU.png" alt="噩梦般的高负荷"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98/CPU.png" alt="噩梦般的高负荷"></p>
 <p>于是我们就开始登陆有问题的服务器，通过日志和监控查看具体问题。在这切流前后，ActiveMQ消息服务和DUBBO的RPC调用，都是处于运行中的，区别在于，切流前的CPU负载突然升高到100%，但是内存使用量只是升高，没到OOM的地步（所以没有dump文件）。</p>
-<h2 id="开始查看服务器："><a href="#开始查看服务器：" class="headerlink" title="开始查看服务器："></a>开始查看服务器：</h2><h3 id="1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100"><a href="#1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100" class="headerlink" title="1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100%"></a>1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100%</h3><p><img src="http://img.sevenyuan.cn/%E6%9F%A5%E8%AF%A21.jpg" alt=""></p>
+<h2 id="开始查看服务器："><a href="#开始查看服务器：" class="headerlink" title="开始查看服务器："></a>开始查看服务器：</h2><h3 id="1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100"><a href="#1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100" class="headerlink" title="1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100%"></a>1：通过top服务器，定位到PID为30284的jvm进程占用CPU到达100%</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//%E6%9F%A5%E8%AF%A21.jpg" alt=""></p>
 <h3 id="2：显示线程列表，按照CPU占用高的线程排序"><a href="#2：显示线程列表，按照CPU占用高的线程排序" class="headerlink" title="2：显示线程列表，按照CPU占用高的线程排序"></a>2：显示线程列表，按照CPU占用高的线程排序</h3><p>[admin@xxxxx]#  top -Hp  30284</p>
 <h3 id="3：找到最耗时线程的PID，然后将它转成16进制的格式"><a href="#3：找到最耗时线程的PID，然后将它转成16进制的格式" class="headerlink" title="3：找到最耗时线程的PID，然后将它转成16进制的格式"></a>3：找到最耗时线程的PID，然后将它转成16进制的格式</h3><p>[admin@xxxxx]#  printf “%x\n”  31448<br>77e0</p>
 <h3 id="4：通过jstack命令查看jvm，grep耗时线程的详细堆栈信息"><a href="#4：通过jstack命令查看jvm，grep耗时线程的详细堆栈信息" class="headerlink" title="4：通过jstack命令查看jvm，grep耗时线程的详细堆栈信息"></a>4：通过jstack命令查看jvm，grep耗时线程的详细堆栈信息</h3><p>[admin@xxxx] # jstack 30284 |  grep 77e0 -A  60</p>
-<p><img src="http://img.sevenyuan.cn/jstack.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98/jstack.png" alt=""></p>
 <hr>
 <h2 id="进一步分析"><a href="#进一步分析" class="headerlink" title="进一步分析"></a>进一步分析</h2><p>堆栈信息比较多的是MQ线程处于TIME_WAIT状态，等待消息出队，通过观察源码，发现这里一直在计算，不过MQClient一直在要等待消息处理，所以这个状态好像也没啥问题=-=</p>
-<p><img src="http://img.sevenyuan.cn/ACTIVEMQ.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//ACTIVEMQ.png" alt=""></p>
 <p>通过查看业务日志，发现消息消费onMessage特别耗时</p>
-<p><img src="http://img.sevenyuan.cn/%E8%80%97%E6%97%B61.jpg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//%E8%80%97%E6%97%B61.jpg" alt=""></p>
 <p>有些消息处理已经超过100000ms，根本算不上正常(ಥ_ಥ)，对比与其它几台服务器，同样的应用，但消息处理速度很正常，其它各项指标也是正常，只能先将这台服务器切流，初步怀疑这台服务器的MQ消费有特殊的问题 。</p>
 <p>另外跟踪几个消费的消息，发现有个数据库查询方法特别耗时，导致整个消息处理变慢</p>
-<p><img src="http://img.sevenyuan.cn/%E8%80%97%E6%97%B62.jpg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/linux/%E6%9C%AA%E8%A7%A3%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8CPU%E8%B4%9F%E8%BD%BD%E9%AB%98%E9%97%AE%E9%A2%98//%E8%80%97%E6%97%B62.jpg" alt=""></p>
 <p>查看其它服务器的消息处理情况，这个查询方法速度虽然也要一到两秒，但也算是正常。但这台机器查询速度慢应该是受到服务器CPU高负载的影响，毕竟redis和JDBC连接也会受到影响。</p>
 <p>将这台服务器暂时切下，等待消息处理结束，服务器就自动恢复了，但是是什么引起服务器的CPU负载升高的“元凶”还没找到，怎么也解释不通，还需要继续观察。</p>
 <hr>

@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/compiler_java.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/class_format.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/version_unsupport.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/man_javap.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/reread/jvm/javap_explaination.png">
-<meta property="og:updated_time" content="2020-02-21T06:48:52.366Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/compiler_java.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/class_format.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/version_unsupport.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/man_javap.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/javap_explaination.png">
+<meta property="og:updated_time" content="2021-11-02T16:40:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重读 JVM - javac &amp; javap">
 <meta name="twitter:description" content="最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/reread/jvm/compiler_java.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/compiler_java.png">
 
 
 
@@ -364,7 +364,7 @@
         <p>最近看到周志明大神的《深入理解 Java 虚拟机》出了第三版，想想之前看完了第二版，当时处于一知半解的状态，所以趁着这个机会，重新学习，看完了第三版，于是做个记录。</p>
 <a id="more"></a>
 <h2 id="class"><a href="#class" class="headerlink" title="class"></a>class</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>class 文件出现的目的是为了平台兼容性，Java 的口号是「一次编写，到处运行」 “Write once，run anywhere”，所以用 Java 这门高级语言的编写 .java 文件后，通过编译器编译输出 .class 这种平台无关的字节码文件，不需要关注是哪个厂商生产的 jvm。</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/compiler_java.png" alt="compiler_java"></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/compiler_java.png" alt="compiler_java"></p>
 <p>在上图中，实现平台无关性的核心在于虚拟机和字节码存储格式的 .class 文件，了解到，通过其它语言编写的程序也能在 jvm 上运行，例如 ruby、groovy 语言等，是通过 jruby、groovyc 编译器，输出字节码格式的 .class 文件，最终能够在 jvm 上运行。</p>
 <h3 id="java-gt-class-javac"><a href="#java-gt-class-javac" class="headerlink" title=".java -&gt; .class, javac"></a>.java -&gt; .class, javac</h3><p>从编写的 .java 文件到 .class 文件，可以通过 javac 命令进行编译</p>
 <p>例如编写一个 TestClass.java</p>
@@ -377,7 +377,7 @@
 <p>class 文件是一组以 8 个字节为基础单位的二进制流，每个数据项严格按照顺序紧凑地排列在文件中，中间没有间隔符。</p>
 <p>下图使用的是 <code>UltraEdit</code> 这个软件，打开 .class 字节码文件的内容（这里来复习一下计算机的字节码格式，一个字节有 8 位，每一位是 0 或 1，是机器能够识别的二进制语言）</p>
 <p>打开文件能看到里面是 16 进制的文本信息</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/class_format.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/class_format.png" alt=""></p>
 <ul>
 <li><strong>magic number</strong></li>
 </ul>
@@ -388,7 +388,7 @@
 <p>魔数后面的四个字节：第五和第六的「00 00」表示次版本号（minor version）,第七和第八字节「00 34」表示的是主版本号（Major version），第一代 jvm 1.1 的版本号是 45，十六进制的 0x34 转换成十进制为 3 <em> $16^1$ + 4 </em> $16^0$ = 52，所以与第一代相隔 7 个版本， 表示我使用的是 jdk8，第八代 jvm。</p>
 <p>设置版本号的原因是，jvm 不能执行比自己版本高的 class 文件，也就是说，如果使用 jdk9 编译的代码，是不能再 jvm8 上运行的，但可以向下兼容，使用 jdk7 编译的代码，能在 jvm8 上运行。</p>
 <p>如果用低版本 jdk 运行高版本的 class 字节码，将会报以下错误：</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/version_unsupport.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/version_unsupport.png" alt=""></p>
 <ul>
 <li><strong>常量池 constant pool</strong></li>
 </ul>
@@ -496,7 +496,7 @@
 <p>数据项之间有着完全不同的结构，如果要手工参考这么多张表找出实际含义，有点费眼，所以推荐下面这个字节码反编译工具：javap</p>
 <h2 id="分析工具-javap"><a href="#分析工具-javap" class="headerlink" title="分析工具 javap"></a>分析工具 javap</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>javap 全称是 <code>Java class file disassembler</code>，/jdk/bin 目录下的字节码反编译工具，使用该工具，可以反编译出当前类对应的类名、版本号、常量池和代码区（code）等信息，反编译出来的信息更加清晰和直观。</p>
 <p>通过 <code>man javap</code> 命令就能在终端下初步了解 <code>javap</code> 的用法</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/man_javap.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/man_javap.png" alt=""></p>
 <p>使用方式：<code>javap [ options ] class</code></p>
 <p>其中, 可能的选项 <code>[ options ]</code> 包括:</p>
 <table>
@@ -575,7 +575,7 @@
 <p>在输出信息头部，能看到  <code>minor version</code>、 <code>major version</code> 和 <code>Constant pool</code> 等前面提到的信息，比根据字节码去查找一一对应看得更舒适。</p>
 <p>刚开始看代码去里的 aload_0 、iadd 和 iconst_1 等可能有些疑惑，反编译出来 <code>JVM</code> 指令集可以参考 <code>oracle</code> 官方文档：<a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html" target="_blank" rel="noopener">The Java Virtual Machine Instruction Set</a></p>
 <p>例如 aload_0 指令可以这样搜索查看：</p>
-<p><img src="http://img.sevenyuan.cn/reread/jvm/javap_explaination.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Java/jvm/javap_explaination.png" alt=""></p>
 <p>参考文档后，可以大致理解我们 <code>inc()</code> 方法在操作系统下底层的逻辑：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public int inc();</div><div class="line">    descriptor: ()I</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=2, locals=1, args_size=1</div><div class="line">         0: aload_0                          // 0处的局部变量中的objectref被压入操作数堆栈，这里的是 this 对象</div><div class="line">         1: getfield      #2                  // Field number:I，从操作数堆栈中弹出的引用类型为objectref，这里获取的是 number 对象引用</div><div class="line">         4: iconst_1                        // 将int常量 1 压入操作数堆栈</div><div class="line">         5: iadd                            // 弹出栈中的 number 值和 int 常量 1，进行加操作，并将结果压入栈</div><div class="line">         6: ireturn                         // 从方法返回int</div><div class="line">      LineNumberTable:</div><div class="line">        line 7: 0</div></pre></td></tr></table></figure>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>常规开发中，使用的是 java 高级语言，可能没有多少关注到 jvm 底层执行逻辑，这次了解学习 class 字节码，直接查看十六位进制文件有点吃力，所以通过 <code>javap</code> 命令来查看反编译后的信息，学习 jvm 指令集。</p>

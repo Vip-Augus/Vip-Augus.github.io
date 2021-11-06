@@ -96,24 +96,24 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="为什么要学 Flink在 18 年时，就听说过 Flink 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。 由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。 于是规划了基于以下的系统架构：  可以看到，业务数据库与数据分析进行了">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/system_architecture.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/bounded-unbounded.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/event_ingestion_processing_time.svg">
-<meta property="og:image" content="http://img.sevenyuan.cn/api-stack.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_architecture.jpeg">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_streaming_dataflow.svg">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_storm_throughput_contrast.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_strom_delayed_contrast.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_jobManager_worker.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_distract_architecture.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/flink_state_checkpoint_introducation.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/Flink_study_diagram.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/alibaba_flink_preview.jpeg">
-<meta property="og:updated_time" content="2019-12-22T07:42:24.568Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/system_architecture.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/bounded-unbounded.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/event_ingestion_processing_time.svg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/api-stack.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_architecture.jpeg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_streaming_dataflow.svg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_storm_throughput_contrast.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_strom_delayed_contrast.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_jobManager_worker.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_distract_architecture.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_state_checkpoint_introducation.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/Flink_study_diagram.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/alibaba_flink_preview.jpeg">
+<meta property="og:updated_time" content="2021-11-02T15:30:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink 基础学习(一)初识和基础概念">
 <meta name="twitter:description" content="为什么要学 Flink在 18 年时，就听说过 Flink 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。 由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。 于是规划了基于以下的系统架构：  可以看到，业务数据库与数据分析进行了">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/system_architecture.png">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/system_architecture.png">
 
 
 
@@ -372,7 +372,7 @@
         <h1 id="为什么要学-Flink"><a href="#为什么要学-Flink" class="headerlink" title="为什么要学 Flink"></a>为什么要学 Flink</h1><p>在 18 年时，就听说过 <code>Flink</code> 流式计算引擎，是阿里调研选型选择的新一代大数据框计算架，当时就记住了这个新框架。</p>
 <p>由于工作中，常写的还是业务开发，没有系统的去学习它，恰好在今年，<strong>我们的数据增长越来越快，架构师提出可以根据数据进行加工，通过数据分析得到更多指标性的计算结果，提供更多有价值的业务给用户。</strong></p>
 <p>于是规划了基于以下的系统架构：</p>
-<p><img src="http://img.sevenyuan.cn/system_architecture.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/system_architecture.png" alt=""></p>
 <p><strong>可以看到，业务数据库与数据分析进行了剥离，避免了对核心业务的影响，基于数据分析的结果存储到线下备份库，查询大量的分析结果也不会影响核心业务。</strong></p>
 <p>同时，在数据处理上，选择了 <code>Flink</code> 这个分布式处理引擎。随着深入的调研和了解，从它的描述、性能、接口编程和容错恢复上进行了学习，觉得它十分适合我们的场景，所以接下来我分享一下调研的结果~</p>
 <a id="more"></a>
@@ -382,23 +382,23 @@
 <p>官网也有中文版的文档，但是翻译的并不是很全面，经常跳转到英文博文，<strong>这里推荐一个国内网站 <a href="https://ververica.cn/" target="_blank" rel="noopener">https://ververica.cn/</a>，上面的翻译和技术分享都十分的棒</strong>，一开始就看英文文档还是比较吃力的，所以可以先从国内牛人的分享中学习起来~</p>
 <hr>
 <h2 id="基础语义"><a href="#基础语义" class="headerlink" title="基础语义"></a>基础语义</h2><p>基础语义很重要，高层语法都是基础基础语义加工的，所以需要对它们有个了解，这里推荐的是 <a href="https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/" target="_blank" rel="noopener"><code>ververica</code></a> 中的介绍：</p>
-<h3 id="1、流-Stream"><a href="#1、流-Stream" class="headerlink" title="1、流 Stream"></a>1、流 Stream</h3><p><img src="http://img.sevenyuan.cn/bounded-unbounded.png" alt=""></p>
+<h3 id="1、流-Stream"><a href="#1、流-Stream" class="headerlink" title="1、流 Stream"></a>1、流 Stream</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/bounded-unbounded.png" alt=""></p>
 <p>从上图中看出，分为 <strong>有界（bounded）</strong> 和 <strong>无界（unbounded）</strong> 数据流。二者的区别在于无限数据流的数据会随着时间的推演而持续增加，计算持续进行且不存在结束的状态，相对的有限数据流大小固定，计算最终会完成并处于结束的状态。</p>
 <p>同样还有 <strong>实时</strong> 和 <strong>历史记录</strong> 属性。流中的数据一生成就得到实时处理；另一种可能时效性要求不高，只需要在凌晨统计前一天完整的数据，可以先将数据流持久化到存储系统中，然后再进行批处理。</p>
 <h3 id="2、状态-State"><a href="#2、状态-State" class="headerlink" title="2、状态 State"></a>2、状态 State</h3><p>状态时计算过程中的数据信息，在容错恢复和 <code>Checkpoint</code> 中有重要的作用，流计算在本质上是增量处理，因此需要不断查询保持状态；另外，为了保证 <code>Excatly-once</code> 语义，还需要将数据写入到状态中，用来保证在故障发生时，通过保存在状态中的数据，进行恢复，保证一致性；还有持久化存储，能够保证在整个分布式系统运行失败或者挂掉的情况下做到 <code>Exactly-once</code>，这是状态的另一个价值。</p>
-<h3 id="3、时间-Time"><a href="#3、时间-Time" class="headerlink" title="3、时间 Time"></a>3、时间 Time</h3><p><img src="http://img.sevenyuan.cn/event_ingestion_processing_time.svg" alt=""></p>
+<h3 id="3、时间-Time"><a href="#3、时间-Time" class="headerlink" title="3、时间 Time"></a>3、时间 Time</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/event_ingestion_processing_time.svg" alt=""></p>
 <p>分为<strong>事件时间（Event Time）</strong>、<strong>摄入时间（Ingestion Time）</strong>、<strong>处理时间（Processing Time）</strong>，<code>Flink</code> 的无限数据流是一个持续的过程，时间是我们判断业务状态是否滞后，数据处理是否及时的重要依据。</p>
 <p><code>事件时间</code>：事件发生的时间，一般数据源携带的一个字段，指明事件发生的时间。</p>
 <p><code>处理时间</code>：事件被处理的时间，也就是由机器的系统时间决定。</p>
 <p><code>摄入时间</code>：时间进入 <code>Flink</code> 的时间，在数据源处，事件将会以当源的操作时间作为时间戳。</p>
 <p><strong>三个时间出现的位置在上图的底部，具体的之后会专门讲述~</strong></p>
-<h3 id="4、接口-API"><a href="#4、接口-API" class="headerlink" title="4、接口 API"></a>4、接口 API</h3><p><img src="http://img.sevenyuan.cn/api-stack.png" alt=""></p>
+<h3 id="4、接口-API"><a href="#4、接口-API" class="headerlink" title="4、接口 API"></a>4、接口 API</h3><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/api-stack.png" alt=""></p>
 <p>从上往下有三层，分别是 <code>SQL/Table API</code>、<code>DataStream API</code> 和 <code>ProcessFunction</code>，<code>API</code> 的表达能力及业务抽象能力都非常强大，但越接近 <code>SQL</code> 层，表达能力会逐步减弱，抽象能力会增强（由于是基础了解，所以没有对于 <code>SQL API</code> 层深入学习，感兴趣的同学可以深入了解）。</p>
 <p>反之， <code>ProessFunction</code> 层 <code>API</code> 的表达能力非常强，可以进行多种灵活方便的操作，但抽象能力也相对越小。</p>
 <p><strong>结合上面说的，平时用到最多的是中间 <code>DataStream</code> 这层的 <code>API</code>，后面的内容学习基本也是围绕着它~</strong></p>
 <hr>
 <h2 id="架构介绍"><a href="#架构介绍" class="headerlink" title="架构介绍"></a>架构介绍</h2><p>来源 <a href="https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/" target="_blank" rel="noopener">https://ververica.cn/developers/flink-basic-tutorial-1-basic-concept/</a></p>
-<p><img src="http://img.sevenyuan.cn/flink_architecture.jpeg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_architecture.jpeg" alt=""></p>
 <h3 id="1、有界和无界数据流"><a href="#1、有界和无界数据流" class="headerlink" title="1、有界和无界数据流"></a>1、有界和无界数据流</h3><p><code>Flink</code> 具有统一的框架处理有界和无界两种数据流的能力（流处理是无界的，批处理是有界的，给无界的流处理加上窗口 <code>Window</code> 就相当于有界的批处理，由于 <code>API</code> 是一致的，所以算子写完后可以进行复用）</p>
 <h3 id="2、部署灵活"><a href="#2、部署灵活" class="headerlink" title="2、部署灵活"></a>2、部署灵活</h3><p><code>Flink</code> 底层支持多种资源调度器，包括 <code>Yarn</code>、<code>Kubernetes</code> 等。<code>Flink</code> 自身带的 <code>Standalone</code> 的调度器，在部署上也十分灵活。（<code>Standalone</code> 也是我们本地开发常用的模式）</p>
 <hr>
@@ -408,7 +408,7 @@
 <h1 id="特性和优点"><a href="#特性和优点" class="headerlink" title="特性和优点"></a>特性和优点</h1><p>上面是对于 <code>Flink</code> 的定义以及架构上的介绍，下面来看下关于它更具体一点的信息，<strong>在官网中，分为了【架构】、【应用】和【运维】三个方面来介绍</strong>。</p>
 <p>这里不会太深入分析，主要简单介绍它的特性和优点，有个大致的了解，由浅入深，在之后的文章中慢慢加深学习~</p>
 <h2 id="处理流程"><a href="#处理流程" class="headerlink" title="处理流程"></a>处理流程</h2><p><code>Flink</code> 程序的基本构建块是流和转换。 （请注意，<code>Flink</code> 的 <code>DataSet API</code>中使用的 <code>DataSet</code>也是内部流）从概念上讲，流是数据记录流（可能永无止境），而转换是将一个或多个流作为一个操作的操作。一个输入，可以产生一个（例如 <code>map</code>）或多个输出流（例如 <code>flatMap</code>）。</p>
-<p><img src="http://img.sevenyuan.cn/flink_streaming_dataflow.svg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_streaming_dataflow.svg" alt=""></p>
 <p>上图是数据处理流程，可以看到有几个核心组件：</p>
 <h3 id="1、数据源-Source"><a href="#1、数据源-Source" class="headerlink" title="1、数据源 Source"></a>1、数据源 Source</h3><p>自带的 <code>api</code> 中，可以读取数据如下：集合数据（fromCollection）、文件数据（readFile）、网络套接字（socket）以及更多扩展来源（addSource），更多扩展中通过自定义来实现 <code>RichSourceFuncation</code>，实现读取更多来源的数据。</p>
 <p>像图中获取的数据源是 <code>Kafka</code>，与其它中间件整合中，也封装了很多方便的方法，调用它们可以更方便获取数据源的数据。</p>
@@ -423,17 +423,17 @@
 <li><a href="https://ververica.cn/developers/stream-computing-framework/" target="_blank" rel="noopener">流计算框架 Flink 与 Storm 的性能对比 https://ververica.cn/developers/stream-computing-framework/</a></li>
 </ul>
 <p>下面简单列出它俩的<strong>吞吐量和作业延迟的比较</strong></p>
-<p><img src="http://img.sevenyuan.cn/flink_storm_throughput_contrast.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_storm_throughput_contrast.png" alt=""></p>
 <p>上图的数据源是 <code>Kafka Source</code>，蓝色是 <code>Storm</code>，橙色是 <code>Flink</code>，在一个分区 <code>partition</code> 情况下，<code>Flink</code> 吞吐约为 <code>Storm</code> 的 3.2 倍；而在 8 个分区情况下，性能提高到 4.6 倍。</p>
-<p><img src="http://img.sevenyuan.cn/flink_strom_delayed_contrast.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_strom_delayed_contrast.png" alt=""></p>
 <p>上图采用的的 <code>outTime-eventTime</code> 作为延迟，可以看出，<code>Flink</code> 的延迟还是比 <code>Storm</code> 的要低。</p>
-<h2 id="管理方式-JobManager、TaskWorker"><a href="#管理方式-JobManager、TaskWorker" class="headerlink" title="管理方式 JobManager、TaskWorker"></a>管理方式 JobManager、TaskWorker</h2><p><img src="http://img.sevenyuan.cn/flink_jobManager_worker.jpg" alt=""></p>
+<h2 id="管理方式-JobManager、TaskWorker"><a href="#管理方式-JobManager、TaskWorker" class="headerlink" title="管理方式 JobManager、TaskWorker"></a>管理方式 JobManager、TaskWorker</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_jobManager_worker.jpg" alt=""></p>
 <p>上面是官方示意图，阐述了 <code>Flink</code> 提交作业的流程，应用程序 <code>Flink Program</code>、<code>JobManage</code> 和 <code>TaskManager</code> 之间的关系。</p>
-<p><img src="http://img.sevenyuan.cn/flink_distract_architecture.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_distract_architecture.png" alt=""></p>
 <p>上面是我对它的理解，个人觉得 <code>zhisheng</code> 大佬写的更加详细，可以参考这篇文章：<a href="http://www.54tianzhisheng.cn/2018/10/13/flink-introduction/" target="_blank" rel="noopener">http://www.54tianzhisheng.cn/2018/10/13/flink-introduction/</a></p>
 <h2 id="高可用-HA、状态恢复"><a href="#高可用-HA、状态恢复" class="headerlink" title="高可用 HA、状态恢复"></a>高可用 HA、状态恢复</h2><p><code>High Availablity</code> 是个老生常谈的话题了，服务难免会遇到无法预测的意外，如何在出现异常情况下并尽快恢复，继续处理之前的数据，保证一致性，这是个考量服务稳定性的标准。</p>
 <p><code>Flink</code> 提供了丰富的状态访问（例如有 <code>List</code>、<code>Map</code>、<code>Aggregate</code> 等数据类型），以及高效的容错机制，存储状态 <code>State</code>，然后通过存储了状态的 <code>Checkpoint</code> 和 <code>Savepoint</code> 来帮助应用进行快速恢复。</p>
-<p><img src="http://img.sevenyuan.cn/flink_state_checkpoint_introducation.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/flink_state_checkpoint_introducation.png" alt=""></p>
 <p>详细请参考这两篇：</p>
 <ul>
 <li><a href="https://ververica.cn/developers/state-management/" target="_blank" rel="noopener">Apache Flink 零基础入门（七）：状态管理及容错机制 https://ververica.cn/developers/state-management/</a></li>
@@ -457,10 +457,10 @@
 <p>IDE : IDEA</p>
 <p>Java Version : 1.8</p>
 </blockquote>
-<p><img src="http://img.sevenyuan.cn/Flink_study_diagram.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/Flink_study_diagram.png" alt=""></p>
 <p>上图是我在学习过程中整理的一些知识点，之后将会根据罗列的知识点慢慢进行梳理和记录~</p>
 <h1 id="总结：未来的计算方式"><a href="#总结：未来的计算方式" class="headerlink" title="总结：未来的计算方式"></a>总结：未来的计算方式</h1><p>从调研的结果中能看出，无论从性能、接口编程和容错上，<code>Flink</code> 都是一个不错的计算引擎。 <code>github</code> 拥有 1w 多个 <code>star</code>，这么多人支持以及阿里巴巴的大力推广，还有在 2019.09 参加的云栖大会，演讲嘉宾对 <code>Flink</code> 的展望</p>
-<p><img src="http://img.sevenyuan.cn/alibaba_flink_preview.jpeg" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/introduction/alibaba_flink_preview.jpeg" alt=""></p>
 <ul>
 <li><strong><code>Apache Flink</code> 已经是非常优秀和成熟的流计算引擎</strong></li>
 <li><strong><code>Apache Flink</code> 已经成为优秀的批处理引擎的挑战者</strong></li>
@@ -506,7 +506,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/03/java/2019-09-14-arthas_hot_update/" rel="next" title="记一次使用 Arthas 热更新线上代码（误）">
+              <a href="/2019/09/14/java/2019-09-14-arthas_hot_update/" rel="next" title="记一次使用 Arthas 热更新线上代码（误）">
                 <i class="fa fa-chevron-left"></i> 记一次使用 Arthas 热更新线上代码（误）
               </a>
             

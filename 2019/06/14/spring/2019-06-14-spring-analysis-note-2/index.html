@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="Spring 解析默认标签~">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://img.sevenyuan.cn/PittingGalesPoint_ZH-CN4893591142_1920x1080.jpg">
-<meta property="og:image" content="http://img.sevenyuan.cn/bean_label_meta_attribute.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/bean_label_look_up_method.png">
-<meta property="og:image" content="http://img.sevenyuan.cn/bean_label_replaced_method.png">
-<meta property="og:updated_time" content="2019-07-21T03:24:56.245Z">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/PittingGalesPoint_ZH-CN4893591142_1920x1080.jpg">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/bean_label_meta_attribute.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/bean_label_look_up_method.png">
+<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/bean_label_replaced_method.png">
+<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(二)默认标签解析">
 <meta name="twitter:description" content="Spring 解析默认标签~">
-<meta name="twitter:image" content="http://img.sevenyuan.cn/PittingGalesPoint_ZH-CN4893591142_1920x1080.jpg">
+<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/PittingGalesPoint_ZH-CN4893591142_1920x1080.jpg">
 
 
 
@@ -360,7 +360,7 @@
       
 
       
-        <p><img src="http://img.sevenyuan.cn/PittingGalesPoint_ZH-CN4893591142_1920x1080.jpg" alt=""></p>
+        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/PittingGalesPoint_ZH-CN4893591142_1920x1080.jpg" alt=""></p>
 <center><code>Spring</code> 解析默认标签~</center>
 
 <a id="more"></a>
@@ -448,7 +448,7 @@
 <h3 id="解析-meta-属性"><a href="#解析-meta-属性" class="headerlink" title="解析 meta 属性"></a>解析 meta 属性</h3><p>先讲下 <code>meta</code> 属性的使用（汗，在没了解前，基本没使用该属性=-=）</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"book"</span> <span class="attr">class</span>=<span class="string">"domain.SimpleBook"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--	元标签	--&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">key</span>=<span class="string">"test_key"</span> <span class="attr">value</span>=<span class="string">"test_value"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>这个元属性不会体现在对象的属性中，而是一个额外的声明，在 <code>parseMetaElements(ele, bd);</code> 方法中进行获取，具体实现是 <code>element</code> 对象的 <code>getAttribute(key)</code>，将设定的元属性放入 <code>BeanMetadataAttributeAccessor</code> 对象中</p>
-<p><img src="http://img.sevenyuan.cn/bean_label_meta_attribute.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/bean_label_meta_attribute.png" alt=""></p>
 <p>因为代码比较简单，所以通过图片进行说明：</p>
 <p>最终属性值是以 <code>key-value</code> 形式保存在链表中 <code>Map&lt;String, Object&gt; attributes</code>，之后使用只需要根据 <code>key</code> 值就能获取到 <code>value</code> 。想到之后在代码设计上，为了扩展性，也可以进行 <code>key-value</code> 形式存储和使用。</p>
 <hr>
@@ -457,7 +457,7 @@
 <p>通常将它成为获取器注入。获取器注入是一个特殊的方法注入，它是把一个方法声明为返回某种类型的 <code>bean</code>，但实际要返回的 <code>bean</code> 是在配置文件里面配置的，次方法可用在设计有些可插拔的功能上，解除程序依赖。</p>
 </blockquote>
 <p>代码写的有点多，我贴张图片，介绍一下关键信息:</p>
-<p><img src="http://img.sevenyuan.cn/bean_label_look_up_method.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/bean_label_look_up_method.png" alt=""></p>
 <p>首先我定义了一个基础对象 <code>BaseBook</code> 和两个继承对象 <code>SimpleBook</code>、 <code>ComplexBook</code>，还新建一个抽象类，并且设定了一个方法 <code>getDomain</code>，返回类型是基础对象。</p>
 <p>我觉得是因为抽象类无法被实例化，必须要有具体实现类，所以在这个时候，<code>Spring</code> 容器要加载 <code>AbstractGetBookTest</code> 对象，可以用到 <code>&lt;lookup method&gt;</code> 属性，通过注入特定实现类，来完成类的加载。</p>
 <blockquote>
@@ -470,7 +470,7 @@
 <hr>
 <h3 id="解析-replaced-method-属性"><a href="#解析-replaced-method-属性" class="headerlink" title="解析 replaced-method 属性"></a>解析 replaced-method 属性</h3><p>这个方法的用途：可以在运行时用新的方法替换现有的方法。不仅可以动态地替换返回实体 <code>bean</code>，还能动态地更改原有方法的逻辑。</p>
 <p>简单来说，就是将某个类定义的方法，在运行时替换成另一个方法，例如明明看到代码中调用的是 <code>A</code> 方法，但实际运行的却是 <code>B</code> 方法。</p>
-<p><img src="http://img.sevenyuan.cn/bean_label_replaced_method.png" alt=""></p>
+<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring2/bean_label_replaced_method.png" alt=""></p>
 <p>从图片中看出，输出框打印出我替换后的文案，实现起来也不难，替换者需要实现 <code>org.springframework.beans.factory.support.MethodReplacer</code> 接口，然后重写 <code>reimplement</code> 方法，关键点在配置文件的 <code>&lt;replaced-method&gt;</code> 属性：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"beforeMethodReplaced"</span> <span class="attr">class</span>=<span class="string">"base.label.parsing.BeforeMethodReplaced"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 注释 2.7 方法替换 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">replaced-method</span> <span class="attr">name</span>=<span class="string">"printDefaultName"</span> <span class="attr">replacer</span>=<span class="string">"testMethodReplaced"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>同样的，<code>Spring</code> 会识别这个 <code>replaced-method</code> 元素中的 <code>name</code> 属性所指定的方法，替换成指定 <code>bean</code> 实例对象的 <code>reimplement</code> 方法。</p>
