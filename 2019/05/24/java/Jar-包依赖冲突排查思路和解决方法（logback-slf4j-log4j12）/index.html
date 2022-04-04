@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Java," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Java,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="Jar 包依赖冲突排查思路和解决方法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/front-picture/CuracaoTurtle_ZH-CN5468901173_1920x1080.jpg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/two_similar_java.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/%E4%B8%8D%E5%90%8C%E4%BE%9D%E8%B5%96%E4%B8%AD%E7%9B%B8%E5%90%8C%E8%B7%AF%E5%BE%84%E5%90%8C%E5%90%8D%E7%9A%84%E7%B1%BB.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/maven_helper%E4%BD%BF%E7%94%A8.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/classloader.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/%E6%AD%A3%E5%B8%B8%E7%9A%84%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/uat_conflict.png">
-<meta property="og:updated_time" content="2021-10-30T16:12:51.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/CuracaoTurtle_ZH-CN5468901173_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/two_similar_java.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E4%B8%8D%E5%90%8C%E4%BE%9D%E8%B5%96%E4%B8%AD%E7%9B%B8%E5%90%8C%E8%B7%AF%E5%BE%84%E5%90%8C%E5%90%8D%E7%9A%84%E7%B1%BB.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/maven_helper%E4%BD%BF%E7%94%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/classloader.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%AD%A3%E5%B8%B8%E7%9A%84%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/uat_conflict.png">
+<meta property="og:updated_time" content="2019-05-24T10:20:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jar 包依赖冲突排查思路和解决方法（logback + slf4j-log4j12）">
 <meta name="twitter:description" content="Jar 包依赖冲突排查思路和解决方法">
-<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/blob/master/front-picture/CuracaoTurtle_ZH-CN5468901173_1920x1080.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/CuracaoTurtle_ZH-CN5468901173_1920x1080.jpg">
 
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/24/java/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/05/24/java/Jar-包依赖冲突排查思路和解决方法（logback-slf4j-log4j12）/">
 
 
 
@@ -170,7 +170,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -200,7 +200,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -210,7 +210,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -220,7 +220,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -230,7 +230,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -273,8 +273,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -309,7 +309,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -342,7 +342,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -363,7 +363,7 @@
       
 
       
-        <p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/front-picture/CuracaoTurtle_ZH-CN5468901173_1920x1080.jpg" alt=""></p>
+        <p><img src="http://img.sevenyuan.cn/CuracaoTurtle_ZH-CN5468901173_1920x1080.jpg" alt></p>
 <center>Jar 包依赖冲突排查思路和解决方法</center>
 
 <a id="more"></a>
@@ -372,27 +372,27 @@
 <hr>
 <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>喜大普奔，本期发布中，我们的应用从 jdk7 升级到 jdk8，终于可以用上新特性的语法进行代码编写，通过几轮开发、测试和验证后，在上预发环境时，应用突然无法启动，查看 tomcat 报错原因，发现是 <strong>类转换失败 <code>ClassCastException</code></strong></p>
 <h3 id="报错原因①"><a href="#报错原因①" class="headerlink" title="报错原因①"></a>报错原因①</h3><p><strong>Class path contains multiple SLF4J binding</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">23</span>-May-<span class="number">2019</span> <span class="number">16</span>:<span class="number">04</span>:<span class="number">25.300</span> INFO [localhost-startStop-<span class="number">1</span>] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned <span class="keyword">for</span> TLDs yet contained no TLDs. Enable debug logging <span class="keyword">for</span> <span class="keyword">this</span> logger <span class="keyword">for</span> a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.</div><div class="line">SLF4J: Class path contains multiple SLF4J bindings.</div><div class="line">SLF4J: Found binding in [jar:file:/home/admin/xxx/WEB-INF/lib/slf4j-log4j12-<span class="number">1.6</span>.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]</div><div class="line">SLF4J: Found binding in [jar:file:/home/admin/xxx/WEB-INF/lib/logback-classic-<span class="number">1.1</span>.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]</div><div class="line">SLF4J: See http:<span class="comment">//www.slf4j.org/codes.html#multiple_bindings for an explanation.</span></div><div class="line">SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">23</span>-May-<span class="number">2019</span> <span class="number">16</span>:<span class="number">04</span>:<span class="number">25.300</span> INFO [localhost-startStop-<span class="number">1</span>] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned <span class="keyword">for</span> TLDs yet contained no TLDs. Enable debug logging <span class="keyword">for</span> <span class="keyword">this</span> logger <span class="keyword">for</span> a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.</span><br><span class="line">SLF4J: Class path contains multiple SLF4J bindings.</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/admin/xxx/WEB-INF/lib/slf4j-log4j12-1.6.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/admin/xxx/WEB-INF/lib/logback-classic-1.1.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: See http:<span class="comment">//www.slf4j.org/codes.html#multiple_bindings for an explanation.</span></span><br><span class="line">SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]</span><br></pre></td></tr></table></figure>
 <h3 id="报错原因②"><a href="#报错原因②" class="headerlink" title="报错原因②"></a>报错原因②</h3><p><strong>org.slf4j.impl.Log4jLoggerFactory cannot be cast to ch.qos.logback.classic.LoggerContext</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'cn.com.xxx.framework.log.integration.LogbackInitializer#0' defined in class path resource [spring/spring-log-init.xml]: Invocation of init method failed; nested exception is java.lang.ClassCastException: org.slf4j.impl.Log4jLoggerFactory cannot be cast to ch.qos.logback.classic.LoggerContext</div><div class="line">    ...    </div><div class="line">Caused by: java.lang.ClassCastException: org.slf4j.impl.Log4jLoggerFactory cannot be cast to ch.qos.logback.classic.LoggerContext</div><div class="line">    # 出问题的加载地方</div><div class="line">	at ch.qos.logback.ext.spring.LogbackConfigurer.initLogging(LogbackConfigurer.java:<span class="number">72</span>)</div><div class="line">	at cn.com.xxx.framework.log.integration.LogbackInitializer.init(LogbackInitializer.java:<span class="number">49</span>)</div><div class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div><div class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</div><div class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</div><div class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</div><div class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeCustomInitMethod(AbstractAutowireCapableBeanFactory.java:<span class="number">1706</span>)</div><div class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:<span class="number">1645</span>)</div><div class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:<span class="number">1574</span>)</div><div class="line">	... <span class="number">26</span> more</div><div class="line"><span class="number">23</span>-May-<span class="number">2019</span> <span class="number">15</span>:<span class="number">59</span>:<span class="number">12.398</span> SEVERE [localhost-startStop-<span class="number">1</span>] org.apache.catalina.core.StandardContext.startInternal One or more listeners failed to start. Full details will be found in the appropriate container log file</div></pre></td></tr></table></figure>
-<h3 id="查看报错代码"><a href="#查看报错代码" class="headerlink" title="查看报错代码"></a>查看报错代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initLogging</span><span class="params">(String location)</span> <span class="keyword">throws</span> FileNotFoundException, JoranException </span>&#123;</div><div class="line">   String resolvedLocation = SystemPropertyUtils.resolvePlaceholders(location);</div><div class="line">   URL url = ResourceUtils.getURL(resolvedLocation);</div><div class="line">   LoggerContext loggerContext = (LoggerContext)StaticLoggerBinder.getSingleton().getLoggerFactory();</div><div class="line">   loggerContext.reset();</div><div class="line">   <span class="keyword">new</span> ContextInitializer(loggerContext).configureByResource(url);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'cn.com.xxx.framework.log.integration.LogbackInitializer#0' defined in class path resource [spring/spring-log-init.xml]: Invocation of init method failed; nested exception is java.lang.ClassCastException: org.slf4j.impl.Log4jLoggerFactory cannot be cast to ch.qos.logback.classic.LoggerContext</span><br><span class="line">    ...    </span><br><span class="line">Caused by: java.lang.ClassCastException: org.slf4j.impl.Log4jLoggerFactory cannot be cast to ch.qos.logback.classic.LoggerContext</span><br><span class="line">    # 出问题的加载地方</span><br><span class="line">	at ch.qos.logback.ext.spring.LogbackConfigurer.initLogging(LogbackConfigurer.java:<span class="number">72</span>)</span><br><span class="line">	at cn.com.xxx.framework.log.integration.LogbackInitializer.init(LogbackInitializer.java:<span class="number">49</span>)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeCustomInitMethod(AbstractAutowireCapableBeanFactory.java:<span class="number">1706</span>)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:<span class="number">1645</span>)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:<span class="number">1574</span>)</span><br><span class="line">	... <span class="number">26</span> more</span><br><span class="line"><span class="number">23</span>-May-<span class="number">2019</span> <span class="number">15</span>:<span class="number">59</span>:<span class="number">12.398</span> SEVERE [localhost-startStop-<span class="number">1</span>] org.apache.catalina.core.StandardContext.startInternal One or more listeners failed to start. Full details will be found in the appropriate container log file</span><br></pre></td></tr></table></figure>
+<h3 id="查看报错代码"><a href="#查看报错代码" class="headerlink" title="查看报错代码"></a>查看报错代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initLogging</span><span class="params">(String location)</span> <span class="keyword">throws</span> FileNotFoundException, JoranException </span>&#123;</span><br><span class="line">   String resolvedLocation = SystemPropertyUtils.resolvePlaceholders(location);</span><br><span class="line">   URL url = ResourceUtils.getURL(resolvedLocation);</span><br><span class="line">   LoggerContext loggerContext = (LoggerContext)StaticLoggerBinder.getSingleton().getLoggerFactory();</span><br><span class="line">   loggerContext.reset();</span><br><span class="line">   <span class="keyword">new</span> ContextInitializer(loggerContext).configureByResource(url);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到，通过 <code>StaticLoggerBinder.getSingleton().getLoggerFactory()</code> 获取 logger 上下文这段代码报错了，通过仔细定位，发现了有两个 <code>StaticLoggerBinder</code> 类</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/two_similar_java.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/two_similar_java.png" alt></p>
 <p><strong>更重要的是，他们两兄弟竟然虽然不是同一个 jar 包，但是包路径和名称都一模一样！！！</strong></p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/%E4%B8%8D%E5%90%8C%E4%BE%9D%E8%B5%96%E4%B8%AD%E7%9B%B8%E5%90%8C%E8%B7%AF%E5%BE%84%E5%90%8C%E5%90%8D%E7%9A%84%E7%B1%BB.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/%E4%B8%8D%E5%90%8C%E4%BE%9D%E8%B5%96%E4%B8%AD%E7%9B%B8%E5%90%8C%E8%B7%AF%E5%BE%84%E5%90%8C%E5%90%8D%E7%9A%84%E7%B1%BB.png" alt></p>
 <p>由于我们需要的是 <code>logback</code> 包，而不是 <code>slf4j-log4j12</code> 包，所以需要排除掉 <code>slf4j-log4j12</code> 依赖。</p>
 <hr>
 <h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>① 通过 POM 文件排查包冲突</p>
 <p>② 安装 IDEA 的插件 <code>Maven Helper</code></p>
 <p>③ 定位到编译 WAR 包的 POM 文件（我们框架定义的在 Deploy 模块中）</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/maven_helper%E4%BD%BF%E7%94%A8.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/maven_helper%E4%BD%BF%E7%94%A8.png" alt></p>
 <p>④ 在搜索框中，输入搜索内容，点击右键可以看到选项框</p>
 <ul>
 <li>Jump To Source（跳转到源文件处）</li>
 <li>Exclude（排除掉）</li>
 </ul>
 <p>例如我点击了 <code>Exclude</code> ，就能看到 pom 文件中，这个依赖就被排除掉了</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.com.xxx<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>framework-conf-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;xqy.framework.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.com.xxx<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>framework-conf-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;xqy.framework.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>排除依赖后，提交代码，重新打包，部署一条龙，顺利启动~</p>
 <hr>
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>包冲突解决是简单的，通过 maven 插件可以精确找到依赖，然后进行 Exclude，可是在本地开发、测试环境都没有出现的问题，却在预发环境出现了，所以排除了业务逻辑代码的原因，简单考虑了几个因素和原因：</p>
@@ -405,7 +405,7 @@
 <p>由于 jdk 和 tomcat 这两者没有明显的报错原因，所以先去排查类的加载机制</p>
 <hr>
 <h3 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h3><p><strong>复习一下类加载机制</strong></p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/classloader.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/classloader.png" alt></p>
 <p>我们写的 Java 应用代码，一般是通过 <code>App ClassLoader</code> 应用加载器进行加载，它不会自己先去加载它，而是通过 <code>Extension ClassLoader</code> 扩展类加载器进行加载（其中扩展类加载器又会去找 <code>Bootstrap ClassLoader</code> 启动类加载器进行加载），只有父加载器无法加载情况下，才会让下级加载器进行加载。</p>
 <p>引用自zthgreat</p>
 <blockquote>
@@ -414,7 +414,7 @@
 <hr>
 <h3 id="ClassLoader"><a href="#ClassLoader" class="headerlink" title="ClassLoader"></a>ClassLoader</h3><p>Java 使用的是双亲委派加载机制，通过查看 <code>ClassLoader</code> 类，可以对此有所了解。</p>
 <p>类被成功加载后，将被放入到内存中，内存中存放 Class 实例对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="keyword">boolean</span> resolve)</div><div class="line">    <span class="keyword">throws</span> ClassNotFoundException</div><div class="line">&#123;</div><div class="line">    <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</div><div class="line">        <span class="comment">// First, check if the class has already been loaded</span></div><div class="line">        <span class="comment">// 首先，检查 class 是否已经被加载</span></div><div class="line">        Class&lt;?&gt; c = findLoadedClass(name);</div><div class="line">        <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">// 如果没有被加载</span></div><div class="line">            <span class="keyword">long</span> t0 = System.nanoTime();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;</div><div class="line">                    <span class="comment">// 寻找 parent 加载器</span></div><div class="line">                    c = parent.loadClass(name, <span class="keyword">false</span>);</div><div class="line">                &#125; <span class="keyword">else</span> &#123;</div><div class="line">                    <span class="comment">// 如果父加载器不存在，则委托给启动类加载器加载</span></div><div class="line">                    c = findBootstrapClassOrNull(name);</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">                <span class="comment">// ClassNotFoundException thrown if class not found</span></div><div class="line">                <span class="comment">// from the non-null parent class loader</span></div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="comment">// If still not found, then invoke findClass in order</span></div><div class="line">                <span class="comment">// to find the class.</span></div><div class="line">                <span class="comment">// 如果仍然无法加载，才会尝试自身加载</span></div><div class="line">                <span class="keyword">long</span> t1 = System.nanoTime();</div><div class="line">                c = findClass(name);</div><div class="line"></div><div class="line">                <span class="comment">// this is the defining class loader; record the stats</span></div><div class="line">                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);</div><div class="line">                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);</div><div class="line">                sun.misc.PerfCounter.getFindClasses().increment();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (resolve) &#123;</div><div class="line">            resolveClass(c);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> c;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="keyword">boolean</span> resolve)</span><br><span class="line">    <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</span><br><span class="line">        <span class="comment">// First, check if the class has already been loaded</span></span><br><span class="line">        <span class="comment">// 首先，检查 class 是否已经被加载</span></span><br><span class="line">        Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 如果没有被加载</span></span><br><span class="line">            <span class="keyword">long</span> t0 = System.nanoTime();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// 寻找 parent 加载器</span></span><br><span class="line">                    c = parent.loadClass(name, <span class="keyword">false</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 如果父加载器不存在，则委托给启动类加载器加载</span></span><br><span class="line">                    c = findBootstrapClassOrNull(name);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                <span class="comment">// ClassNotFoundException thrown if class not found</span></span><br><span class="line">                <span class="comment">// from the non-null parent class loader</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// If still not found, then invoke findClass in order</span></span><br><span class="line">                <span class="comment">// to find the class.</span></span><br><span class="line">                <span class="comment">// 如果仍然无法加载，才会尝试自身加载</span></span><br><span class="line">                <span class="keyword">long</span> t1 = System.nanoTime();</span><br><span class="line">                c = findClass(name);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// this is the defining class loader; record the stats</span></span><br><span class="line">                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);</span><br><span class="line">                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);</span><br><span class="line">                sun.misc.PerfCounter.getFindClasses().increment();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (resolve) &#123;</span><br><span class="line">            resolveClass(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h3 id="类加载顺序"><a href="#类加载顺序" class="headerlink" title="类加载顺序"></a>类加载顺序</h3><p>从代码中了解到，如果某个名字的类被加载后，类加载器是不会再重新加载，所以我们的问题根本原因可以是出现在：</p>
 <p><strong>先加载了 <code>org.slf4j</code> 包的 <code>org.slf4j.impl.StaticLoggerBinder</code>，同名的 <code>ch.qos.logback</code> 包下的 <code>StaticLoggerBinder</code> 类没有被加载</strong></p>
@@ -425,7 +425,7 @@
 </blockquote>
 <hr>
 <h3 id="查看加载顺序"><a href="#查看加载顺序" class="headerlink" title="查看加载顺序"></a>查看加载顺序</h3><p>在 jvm 启动脚本中，添加 <code>-verbose</code> 参数或者 <code>-XX:+TraceClassLoading</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[Loaded java.lang.CloneNotSupportedException from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.lang.Thread$State from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.util.TreeMap$NavigableSubMap from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.util.TreeMap$AscendingSubMap from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.util.TreeMap$NavigableSubMap$EntrySetView from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.util.TreeMap$AscendingSubMap$AscendingEntrySetView from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.util.TreeMap$NavigableSubMap$SubMapIterator from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div><div class="line">[Loaded java.util.TreeMap$NavigableSubMap$SubMapEntryIterator from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Loaded java.lang.CloneNotSupportedException from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.lang.Thread$State from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.util.TreeMap$NavigableSubMap from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.util.TreeMap$AscendingSubMap from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.util.TreeMap$NavigableSubMap$EntrySetView from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.util.TreeMap$AscendingSubMap$AscendingEntrySetView from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.util.TreeMap$NavigableSubMap$SubMapIterator from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br><span class="line">[Loaded java.util.TreeMap$NavigableSubMap$SubMapEntryIterator from /Users/jingqi/.jrebel/bootcache/jrebel-bootstrap-<span class="number">89f</span>567048120ef32b965233b5ba2f7ca.jar]</span><br></pre></td></tr></table></figure>
 <p>之前在本地开发中，IDEA 优化先加载了 <code>ch.qos.logback</code> 的 <code>StaticLoggerBinder</code> 类，然后后面的 <code>org.slf4j</code> 包下的同名类就没有被加载。</p>
 <p>但这样也有个不明白，按理说加载顺序按照<strong>字母顺序</strong>加载，预发环境还是能够跟本地开发一样，加载到我们需要的类。实际上，加载器加载到的是另一个类，导致应用无法启动。</p>
 <p>通过查找资料</p>
@@ -437,10 +437,10 @@
 <p>为了验证 <code>inode</code> 是否是问题的原因，我做了以下测试：</p>
 <hr>
 <h3 id="inode-测试加载顺序"><a href="#inode-测试加载顺序" class="headerlink" title="inode 测试加载顺序"></a>inode 测试加载顺序</h3><h4 id="本地-Tomcat8-测试（正常启动）"><a href="#本地-Tomcat8-测试（正常启动）" class="headerlink" title="本地 Tomcat8 测试（正常启动）"></a>本地 Tomcat8 测试（正常启动）</h4><p>将之前在 uat 环境有问题的代码版本重新打包，不使用 idea 工具，直接用 tomcat8 启动，并且在 <code>catalina.sh</code> 脚本中加入类加载打印参数 <code>-XX:+TraceClassLoading</code></p>
-<p>catalina.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Register custom URL handlers</div><div class="line"># Do this here so custom URL handles (specifically &apos;war:...&apos;) can be used in the security policy</div><div class="line">JAVA_OPTS=&quot;$JAVA_OPTS -XX:+TraceClassLoading&quot;</div></pre></td></tr></table></figure></p>
+<p>catalina.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Register custom URL handlers</span><br><span class="line"># Do this here so custom URL handles (specifically &apos;war:...&apos;) can be used in the security policy</span><br><span class="line">JAVA_OPTS=&quot;$JAVA_OPTS -XX:+TraceClassLoading&quot;</span><br></pre></td></tr></table></figure></p>
 <p>查看 <code>catalina.out</code> 输入日志，发现先加载的是 logback 包中 <code>StaticLoggerBinder</code></p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/%E6%AD%A3%E5%B8%B8%E7%9A%84%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F.png" alt=""></p>
-<p> 在 <code>WEB-INF/lib</code> 下比较 inode 大小（正常解压和启动 logback &lt; slf4j)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</div><div class="line">34153162 -rw-r-----  1 jingqi  staff   274K  8  1  2018 logback-classic-1.1.3.jar</div><div class="line">34153180 -rw-r-----  1 jingqi  staff   9.5K 10 17  2018 slf4j-log4j12-1.6.1.jar</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.sevenyuan.cn/%E6%AD%A3%E5%B8%B8%E7%9A%84%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F.png" alt></p>
+<p> 在 <code>WEB-INF/lib</code> 下比较 inode 大小（正常解压和启动 logback &lt; slf4j)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</span><br><span class="line">34153162 -rw-r-----  1 jingqi  staff   274K  8  1  2018 logback-classic-1.1.3.jar</span><br><span class="line">34153180 -rw-r-----  1 jingqi  staff   9.5K 10 17  2018 slf4j-log4j12-1.6.1.jar</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h4 id="本地-Tomcat8-测试（删包，先添加-slf4j，后添加-logback）"><a href="#本地-Tomcat8-测试（删包，先添加-slf4j，后添加-logback）" class="headerlink" title="本地 Tomcat8 测试（删包，先添加 slf4j，后添加 logback）"></a>本地 Tomcat8 测试（删包，先添加 slf4j，后添加 logback）</h4><ul>
 <li>清理掉 catalina.out</li>
@@ -449,16 +449,16 @@
 <li>重新启动，查看类加载日志</li>
 </ul>
 <p><strong>比较 inode 大小（发现 slf4j &lt; logback)</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</div><div class="line">34162396 -rw-r--r--  1 jingqi  staff   274K  8  1  2018 logback-classic-1.1.3.jar</div><div class="line">34162361 -rw-r--r--  1 jingqi  staff   9.5K 10 17  2018 slf4j-log4j12-1.6.1.jar</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</span><br><span class="line">34162396 -rw-r--r--  1 jingqi  staff   274K  8  1  2018 logback-classic-1.1.3.jar</span><br><span class="line">34162361 -rw-r--r--  1 jingqi  staff   9.5K 10 17  2018 slf4j-log4j12-1.6.1.jar</span><br></pre></td></tr></table></figure>
 <p>重新启动后，查看 <code>catalina.out</code> 日志，发现类加载顺序与之前的一致，应用也能正常启动，所以本地开发无法复现 =-=</p>
 <hr>
 <h4 id="在-uat-环境服务器测试"><a href="#在-uat-环境服务器测试" class="headerlink" title="在 uat 环境服务器测试"></a>在 uat 环境服务器测试</h4><p>在 <code>WEB-INF/lib</code> 路径下，先将这两个包删掉，尝试有不同的上传顺序，模拟 tomcat 解压 war 包</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[admin@uat-96-0-248 lib]$ rm logback-classic-1.1.3.jar  slf4j-log4j12-1.6.1.jar</div><div class="line">[admin@uat-96-0-248 lib]$ rz</div><div class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/slf4j-log4j12-1.6.1.jar</div><div class="line">[admin@uat-96-0-248 lib]$ rz</div><div class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/logback-classic-1.1.3.jar</div><div class="line"># 第一次上传顺序 1、slf4j-log4j12-1.6.1.jar 2、logback-classic-1.1.3.jar</div><div class="line"># inode 比较：slf4j &lt; logback</div><div class="line">[admin@uat-96-0-248 lib]$ ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</div><div class="line">396731 -rw-r--r-- 1 admin admin 280928 8月   1 2018 logback-classic-1.1.3.jar</div><div class="line">394075 -rw-r--r-- 1 admin admin   9753 10月 17 2018 slf4j-log4j12-1.6.1.jar</div><div class="line">[admin@uat-96-0-248 lib]$ rm logback-classic-1.1.3.jar  slf4j-log4j12-1.6.1.jar</div><div class="line">[admin@uat-96-0-248 lib]$ rz</div><div class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/logback-classic-1.1.3.jar</div><div class="line">[admin@uat-96-0-248 lib]$ rz</div><div class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/slf4j-log4j12-1.6.1.jar</div><div class="line"># 第二次上传顺序 1、logback-classic-1.1.3.jar 2、slf4j-log4j12-1.6.1.jar</div><div class="line"># inode 比较：logback &lt; slf4j</div><div class="line">[admin@uat-96-0-248 lib]$ ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</div><div class="line">394075 -rw-r--r-- 1 admin admin 280928 8月   1 2018 logback-classic-1.1.3.jar</div><div class="line">396731 -rw-r--r-- 1 admin admin   9753 10月 17 2018 slf4j-log4j12-1.6.1.jar</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[admin@uat-96-0-248 lib]$ rm logback-classic-1.1.3.jar  slf4j-log4j12-1.6.1.jar</span><br><span class="line">[admin@uat-96-0-248 lib]$ rz</span><br><span class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/slf4j-log4j12-1.6.1.jar</span><br><span class="line">[admin@uat-96-0-248 lib]$ rz</span><br><span class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/logback-classic-1.1.3.jar</span><br><span class="line"># 第一次上传顺序 1、slf4j-log4j12-1.6.1.jar 2、logback-classic-1.1.3.jar</span><br><span class="line"># inode 比较：slf4j &lt; logback</span><br><span class="line">[admin@uat-96-0-248 lib]$ ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</span><br><span class="line">396731 -rw-r--r-- 1 admin admin 280928 8月   1 2018 logback-classic-1.1.3.jar</span><br><span class="line">394075 -rw-r--r-- 1 admin admin   9753 10月 17 2018 slf4j-log4j12-1.6.1.jar</span><br><span class="line">[admin@uat-96-0-248 lib]$ rm logback-classic-1.1.3.jar  slf4j-log4j12-1.6.1.jar</span><br><span class="line">[admin@uat-96-0-248 lib]$ rz</span><br><span class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/logback-classic-1.1.3.jar</span><br><span class="line">[admin@uat-96-0-248 lib]$ rz</span><br><span class="line">[admin@uat-96-0-248 lib]$ # Received /Users/jingqi/Downloads/slf4j-log4j12-1.6.1.jar</span><br><span class="line"># 第二次上传顺序 1、logback-classic-1.1.3.jar 2、slf4j-log4j12-1.6.1.jar</span><br><span class="line"># inode 比较：logback &lt; slf4j</span><br><span class="line">[admin@uat-96-0-248 lib]$ ll -i logback-classic-1.1.3.jar slf4j-log4j12-1.6.1.jar</span><br><span class="line">394075 -rw-r--r-- 1 admin admin 280928 8月   1 2018 logback-classic-1.1.3.jar</span><br><span class="line">396731 -rw-r--r-- 1 admin admin   9753 10月 17 2018 slf4j-log4j12-1.6.1.jar</span><br></pre></td></tr></table></figure>
 <p>分别测试了两种场景，发现只要这两个包都存在的情况下，无论 <code>inode</code> 两者的大小，都是先加载了 <code>slf4j</code> 包的类，导致启动报错</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/blob/master/java/jar-version-conflict/uat_conflict.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/uat_conflict.png" alt></p>
 <hr>
 <h3 id="测试结束"><a href="#测试结束" class="headerlink" title="测试结束"></a>测试结束</h3><p>通过多种测试场景，发现本地开发、测试环境都无法复现的问题，在 uat 环境下，只要这两个包同时存在，都会启动报错，系统版本是这个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[admin@uat-96-0-248 lib]$ cat /proc/version</div><div class="line">Linux version 3.10.0-514.26.2.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-11) (GCC) ) #1 SMP Tue Jul 4 15:04:05 UTC 2017</div><div class="line"># jdk 和 tomcat 版本</div><div class="line">Server version: Apache Tomcat/8.5.34</div><div class="line">Server built:   Sep 4 2018 22:28:22 UTC</div><div class="line">Server number:  8.5.34.0</div><div class="line">OS Name:        Linux</div><div class="line">OS Version:     3.10.0-514.26.2.el7.x86_64</div><div class="line">Architecture:   amd64</div><div class="line">JVM Version:    1.8.0_192-b12</div><div class="line">JVM Vendor:     Oracle Corporation</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[admin@uat-96-0-248 lib]$ cat /proc/version</span><br><span class="line">Linux version 3.10.0-514.26.2.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-11) (GCC) ) #1 SMP Tue Jul 4 15:04:05 UTC 2017</span><br><span class="line"># jdk 和 tomcat 版本</span><br><span class="line">Server version: Apache Tomcat/8.5.34</span><br><span class="line">Server built:   Sep 4 2018 22:28:22 UTC</span><br><span class="line">Server number:  8.5.34.0</span><br><span class="line">OS Name:        Linux</span><br><span class="line">OS Version:     3.10.0-514.26.2.el7.x86_64</span><br><span class="line">Architecture:   amd64</span><br><span class="line">JVM Version:    1.8.0_192-b12</span><br><span class="line">JVM Vendor:     Oracle Corporation</span><br></pre></td></tr></table></figure>
 <p>最后在<a href="https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/classpath.html" target="_blank" rel="noopener">官方文档</a>发现这个：</p>
 <blockquote>
 <p>The order in which the JAR files in a directory are enumerated in the expanded class path is not specified and may vary from platform to platform and even from moment to moment on the same machine. A well-constructed application should not depend upon any particular order. If a specific order is required, then the JAR files can be enumerated explicitly in the class path.</p>
@@ -577,7 +577,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -588,9 +588,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -725,10 +723,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

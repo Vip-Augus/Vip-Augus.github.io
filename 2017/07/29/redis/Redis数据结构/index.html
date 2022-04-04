@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Redis," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Redis,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -96,18 +96,18 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="1. 简单动态字符串(SDS)Redis没有直接使用C语言传统的字符串表示(以空字符结尾的字符数据)，而是自己构建了一种名为简单动态字符串(simple dynamic string, SDS)的抽象类型，并将SDS用作Redis的默认字符串表示。 在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。 1.1 SDS的定义每个sds.h/sdshdr结构表示一个SDS值： 1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/SDS%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E8%B7%B3%E8%B7%83%E8%A1%A8.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png">
-<meta property="og:updated_time" content="2021-10-30T16:52:14.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/SDS%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E8%B7%B3%E8%B7%83%E8%A1%A8.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png">
+<meta property="og:updated_time" content="2019-05-25T06:57:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis数据结构">
 <meta name="twitter:description" content="1. 简单动态字符串(SDS)Redis没有直接使用C语言传统的字符串表示(以空字符结尾的字符数据)，而是自己构建了一种名为简单动态字符串(simple dynamic string, SDS)的抽象类型，并将SDS用作Redis的默认字符串表示。 在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。 1.1 SDS的定义每个sds.h/sdshdr结构表示一个SDS值： 1">
-<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/SDS%E7%BB%93%E6%9E%84.png">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/SDS%E7%BB%93%E6%9E%84.png">
 
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/29/redis/Redis数据结构/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/29/redis/Redis数据结构/">
 
 
 
@@ -170,7 +170,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -200,7 +200,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -210,7 +210,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -220,7 +220,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -230,7 +230,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -273,8 +273,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -309,7 +309,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -353,7 +353,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -378,8 +378,8 @@
 <h3 id="1-简单动态字符串-SDS"><a href="#1-简单动态字符串-SDS" class="headerlink" title="1. 简单动态字符串(SDS)"></a><strong>1. 简单动态字符串(SDS)</strong></h3><p>Redis没有直接使用C语言传统的字符串表示(以空字符结尾的字符数据)，<br>而是自己构建了一种名为简单动态字符串(simple dynamic string, SDS)的抽象类型，并将<br>SDS用作Redis的默认字符串表示。</p>
 <p>在Redis的数据库里面,包含字符串值得键值对在底层都是由SDS实现的。</p>
 <h4 id="1-1-SDS的定义"><a href="#1-1-SDS的定义" class="headerlink" title="1.1 SDS的定义"></a><strong>1.1 SDS的定义</strong></h4><p>每个sds.h/sdshdr结构表示一个SDS值：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">struct sdshdr&#123;</div><div class="line">    //记录buf数组中已使用字节的数量</div><div class="line">    //等于SDS所保存字符串的长度</div><div class="line">    int len;</div><div class="line">    //记录buf数组中未使用字节的数量</div><div class="line">    int free;</div><div class="line">    //字节数组,用于保存字符串</div><div class="line">    char buf[];</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/SDS%E7%BB%93%E6%9E%84.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct sdshdr&#123;</span><br><span class="line">    //记录buf数组中已使用字节的数量</span><br><span class="line">    //等于SDS所保存字符串的长度</span><br><span class="line">    int len;</span><br><span class="line">    //记录buf数组中未使用字节的数量</span><br><span class="line">    int free;</span><br><span class="line">    //字节数组,用于保存字符串</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.sevenyuan.cn/SDS%E7%BB%93%E6%9E%84.png" alt></p>
 <p>SDS遵循C字符串以空字符结尾的管理，保存空字符的1空间不计算在SDS的len属性里面，<br>并且为空字符分配而额外的1字节空间，以及添加空字符到字符串末尾等操作，都是由SDS函数自动完成的。</p>
 <hr>
 <h4 id="1-2-简单比较一下C字符串："><a href="#1-2-简单比较一下C字符串：" class="headerlink" title="1.2 简单比较一下C字符串："></a><strong>1.2 简单比较一下C字符串：</strong></h4><p><strong>常数复杂度获取字符串长度</strong><br>​    可以直接通过len属性获取SDS本身的长度，时间复杂对是O（1）。</p>
@@ -401,16 +401,16 @@
 <p>惰性控件释放用于优化SDS的字符串缩短操作：当SDS的API需要缩短SDS保存的字符串时，<br>程序并不立即使用内存重分配来回收缩短后多的字节，而是使用free属性将这些字节的数量记录起来，<br>并等待将来使用。<br>​<br><strong>二进制安全</strong></p>
 <p>通过使用二进制安全的 SDS ， 而不是 C 字符串， 使得 Redis 不仅可以保存文本数据， 还可以保存任意格式的二进制数据。</p>
 <p><strong>兼容部分 C 字符串函数</strong></p>
-<p>通过遵循 C 字符串以空字符结尾的惯例， SDS 可以在有需要时重用 <string.h> 函数库， 从而避免了不必要的代码重复。</string.h></p>
+<p>通过遵循 C 字符串以空字符结尾的惯例， SDS 可以在有需要时重用 &lt;string.h&gt; 函数库， 从而避免了不必要的代码重复。</p>
 <hr>
 <h3 id="2-链表"><a href="#2-链表" class="headerlink" title="2. 链表"></a><strong>2. 链表</strong></h3><p>链表提供了高效的节点重排能力，以及顺序型的结点访问形式，并且可以通过增删节点来灵活地<br>调整链表的长度。</p>
 <h4 id="2-1-链表和链表节点的实现"><a href="#2-1-链表和链表节点的实现" class="headerlink" title="2.1 链表和链表节点的实现"></a><strong>2.1 链表和链表节点的实现</strong></h4><p>每个链表节点使用一个adlist.h/listNode结构来表示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">typedef strtct listNode &#123;</div><div class="line">    //前置节点</div><div class="line">    struct listNode *prev;</div><div class="line">    //后置节点</div><div class="line">    struct listNode *next;</div><div class="line">    //节点的值</div><div class="line">    void *value;</div><div class="line">&#125;listNode;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef strtct listNode &#123;</span><br><span class="line">    //前置节点</span><br><span class="line">    struct listNode *prev;</span><br><span class="line">    //后置节点</span><br><span class="line">    struct listNode *next;</span><br><span class="line">    //节点的值</span><br><span class="line">    void *value;</span><br><span class="line">&#125;listNode;</span><br></pre></td></tr></table></figure>
 <p>多个listNode可以通过prev和next指针组成双端链表，如下图</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png" alt=""></p>
-<p>还有一个list结构adlist.h/list来持有链表，操作起来更方便：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">typedef struct list &#123;</div><div class="line">    //表头节点</div><div class="line">    listNode *head;</div><div class="line">    //表尾节点</div><div class="line">    listNode *tail;</div><div class="line">    //链表所包含的节点数量</div><div class="line">    unsigned long len;</div><div class="line">    //节点值复制函数</div><div class="line">    void *(*dup) (void *ptr);</div><div class="line">    //节点值释放函数</div><div class="line">    void (*free) (void *ptr);</div><div class="line">    //节点值对比函数</div><div class="line">    int (*match) (void *ptr, void *key);</div><div class="line">&#125;list;</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.sevenyuan.cn/%E5%A4%9A%E4%B8%AAlistNode%E7%BB%84%E6%88%90%E7%9A%84%E5%8F%8C%E7%AB%AF%E9%93%BE%E8%A1%A8.png" alt></p>
+<p>还有一个list结构adlist.h/list来持有链表，操作起来更方便：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">typedef struct list &#123;</span><br><span class="line">    //表头节点</span><br><span class="line">    listNode *head;</span><br><span class="line">    //表尾节点</span><br><span class="line">    listNode *tail;</span><br><span class="line">    //链表所包含的节点数量</span><br><span class="line">    unsigned long len;</span><br><span class="line">    //节点值复制函数</span><br><span class="line">    void *(*dup) (void *ptr);</span><br><span class="line">    //节点值释放函数</span><br><span class="line">    void (*free) (void *ptr);</span><br><span class="line">    //节点值对比函数</span><br><span class="line">    int (*match) (void *ptr, void *key);</span><br><span class="line">&#125;list;</span><br></pre></td></tr></table></figure></p>
 <p>list结构：</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/%E7%94%B1list%E7%BB%93%E6%9E%84%E5%92%8ClistNode%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90%E7%9A%84%E9%93%BE%E8%A1%A8.png" alt></p>
 <p><strong>Redis的链表实现的特性可以总结如下:</strong></p>
 <ul>
 <li>双端：链表节点带有prev和next指针，获取某个节点的前置和后置节点的复杂度都是O（1）。</li>
@@ -422,11 +422,12 @@
 <hr>
 <h3 id="3-字典"><a href="#3-字典" class="headerlink" title="3. 字典"></a><strong>3. 字典</strong></h3><p>字典，又称为符号表（symbol table）、关联数组（associativce array）或映射（map），<br>是一种用于保存键值对（key-value pair）的抽象数据结构。</p>
 <h4 id="3-1-字典的实现"><a href="#3-1-字典的实现" class="headerlink" title="3.1 字典的实现"></a><strong>3.1 字典的实现</strong></h4><p>Redis的字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。</p>
-<h5 id="3-1-1-哈希表"><a href="#3-1-1-哈希表" class="headerlink" title="3.1.1 哈希表"></a><strong>3.1.1 哈希表</strong></h5><p>Redis字典所使用的哈希表由dict.h/dictht结构定义:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictht</span> &#123;</span></div><div class="line">    <span class="comment">//哈希表数组</span></div><div class="line">    dictEntry **table;</div><div class="line">    <span class="comment">//哈希表大小</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> size;</div><div class="line">    <span class="comment">//哈希表大小掩码，用于计算索引值</span></div><div class="line">    <span class="comment">//总是等于size-1</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sizemask;</div><div class="line">    <span class="comment">//该哈希表已有节点的数量</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> used;</div><div class="line">&#125;dictht;</div></pre></td></tr></table></figure></p>
+<h5 id="3-1-1-哈希表"><a href="#3-1-1-哈希表" class="headerlink" title="3.1.1 哈希表"></a><strong>3.1.1 哈希表</strong></h5><p>Redis字典所使用的哈希表由dict.h/dictht结构定义:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">dictht</span> &#123;</span></span><br><span class="line">    <span class="comment">//哈希表数组</span></span><br><span class="line">    dictEntry **table;</span><br><span class="line">    <span class="comment">//哈希表大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> size;</span><br><span class="line">    <span class="comment">//哈希表大小掩码，用于计算索引值</span></span><br><span class="line">    <span class="comment">//总是等于size-1</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sizemask;</span><br><span class="line">    <span class="comment">//该哈希表已有节点的数量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> used;</span><br><span class="line">&#125;dictht;</span><br></pre></td></tr></table></figure></p>
 <p>table属性是一个数组，数组中的每个元素都是一个指向dict.h/dictEntry结构的指针，每个dictEntry结构保存着一个键值对。</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png" alt=""></p>
-<h5 id="3-1-2-字典结构"><a href="#3-1-2-字典结构" class="headerlink" title="3.1.2 字典结构"></a><strong>3.1.2 字典结构</strong></h5><p>Redis中的字典由dict.h/dict结构表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">typedef struct *type &#123;</div><div class="line">    //类型特定函数</div><div class="line">    dictType *type;</div><div class="line">    //私有数据</div><div class="line">    void *privdata;</div><div class="line">    //哈希表</div><div class="line">    dictht ht[2];</div><div class="line">    //rehash 索引</div><div class="line">    //当rehash不在进行时，值为-1</div><div class="line">    in trehashidx; /*rehashing not in progress if rehashidx == -1*/</div><div class="line">&#125;dict;</div></pre></td></tr></table></figure></p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png" alt="普通状态下的字典"></p>
+<center><br><img src="http://img.sevenyuan.cn/%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84%E5%93%88%E5%B8%8C%E8%A1%A8.png" alt><br></center>
+
+<h5 id="3-1-2-字典结构"><a href="#3-1-2-字典结构" class="headerlink" title="3.1.2 字典结构"></a><strong>3.1.2 字典结构</strong></h5><p>Redis中的字典由dict.h/dict结构表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">typedef struct *type &#123;</span><br><span class="line">    //类型特定函数</span><br><span class="line">    dictType *type;</span><br><span class="line">    //私有数据</span><br><span class="line">    void *privdata;</span><br><span class="line">    //哈希表</span><br><span class="line">    dictht ht[2];</span><br><span class="line">    //rehash 索引</span><br><span class="line">    //当rehash不在进行时，值为-1</span><br><span class="line">    in trehashidx; /*rehashing not in progress if rehashidx == -1*/</span><br><span class="line">&#125;dict;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://img.sevenyuan.cn/%E6%99%AE%E9%80%9A%E7%8A%B6%E6%80%81%E4%B8%8B%E7%9A%84%E5%AD%97%E5%85%B8.png" alt="普通状态下的字典"></p>
 <h4 id="3-2-哈希算法"><a href="#3-2-哈希算法" class="headerlink" title="3.2 哈希算法"></a><strong>3.2 哈希算法</strong></h4><p>当要将一个新的键值对添加到字典里面时，程序需要先更具键值对的键计算出哈希值和索引值，然后再根据<strong>索引值</strong>，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p>
 <p>#计算哈希值的方法：<br>hash = dict -&gt; type =&gt; hashFunction(key);</p>
 <p>#使用哈希表的sizemask属性和哈希值，计算出索引值：<br>index = hash &amp; dict -&gt; ht[x].sizemask;</p>
@@ -453,7 +454,7 @@
 <p>跳跃表支持平均O（logN）、最坏O（N）复杂度的节点查找，还可以通过顺序性操作来批量处理节点。</p>
 <p>Redis 只在两个地方用到了跳跃表，一个是实现有序集合键，另一个是在集群节点中用作内部数据结构。</p>
 <h4 id="4-1-跳跃表的实现"><a href="#4-1-跳跃表的实现" class="headerlink" title="4.1 跳跃表的实现"></a><strong>4.1 跳跃表的实现</strong></h4><p>Redis 的跳跃表由 <strong>redis.h/zskiplistNode</strong> 和 <strong>redis.h/zskiplist</strong> 两个结构定义，其中 zskipistNode 结构用于表示跳跃表节点，而 zskiplist 结构则用于保存跳跃表节点的相关信息，比如节点的数量，以及指向及表头节点和表尾节点的指针等等。</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E8%B7%B3%E8%B7%83%E8%A1%A8.png" alt="跳跃表结构"></p>
+<p><img src="http://img.sevenyuan.cn/%E8%B7%B3%E8%B7%83%E8%A1%A8.png" alt="跳跃表结构"></p>
 <p>zskiplist 比较简单，用于存放 zskiplistNode，属性值也比较易懂。</p>
 <p>zskiplistNode 的<strong>结构</strong>：</p>
 <ul>
@@ -462,7 +463,7 @@
 <li>分值（score）：各个节点中的 1.0、2.0 和 3.0 都是节点所保存的分支。在跳跃表中，节点按各自所保存的分值从最小到大排列。</li>
 <li>成员对象（obj）：各个节点中的 o1、o2 和 o3 以及所保存的成员对象。</li>
 </ul>
-<h5 id="4-1-1-跳跃表节点"><a href="#4-1-1-跳跃表节点" class="headerlink" title="4.1.1 跳跃表节点"></a><strong>4.1.1 跳跃表节点</strong></h5><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> &#123;</span></div><div class="line">    <span class="comment">//层</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistLevel</span> &#123;</span></div><div class="line">        <span class="comment">//前进指针</span></div><div class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> * <span class="title">forward</span>;</span></div><div class="line">        <span class="comment">//跨度</span></div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> span;</div><div class="line">    &#125; level[];</div><div class="line">    <span class="comment">//后退指针</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">backward</span>;</span></div><div class="line">    <span class="comment">//分数</span></div><div class="line">    <span class="keyword">double</span> score;</div><div class="line">    <span class="comment">//成员对象</span></div><div class="line">    robj *obj;</div><div class="line">&#125; zskiplistNode;</div></pre></td></tr></table></figure>
+<h5 id="4-1-1-跳跃表节点"><a href="#4-1-1-跳跃表节点" class="headerlink" title="4.1.1 跳跃表节点"></a><strong>4.1.1 跳跃表节点</strong></h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> &#123;</span></span><br><span class="line">    <span class="comment">//层</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistLevel</span> &#123;</span></span><br><span class="line">        <span class="comment">//前进指针</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> * <span class="title">forward</span>;</span></span><br><span class="line">        <span class="comment">//跨度</span></span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> span;</span><br><span class="line">    &#125; level[];</span><br><span class="line">    <span class="comment">//后退指针</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">zskiplistNode</span> *<span class="title">backward</span>;</span></span><br><span class="line">    <span class="comment">//分数</span></span><br><span class="line">    <span class="keyword">double</span> score;</span><br><span class="line">    <span class="comment">//成员对象</span></span><br><span class="line">    robj *obj;</span><br><span class="line">&#125; zskiplistNode;</span><br></pre></td></tr></table></figure>
 <p>有以下属性：</p>
 <ul>
 <li>层：跳跃表节点的 level 数字可以包含多个元素，程序可以通过这些层来加快访问其它节点的速度。<br> level 数组大小就是层的“高度”。</li>
@@ -471,11 +472,11 @@
 <li>后退指针：节点的后腿指针（backward 属性）用于从表尾向表头方向访问节点，每个节点只有一个后退指针，所以每次只能后退至前一个节点。</li>
 <li>分值和成员：节点的分值（score 属性）是一个double类型的浮点数，跳跃表中的所有节点都按分值从小到大排序。<br>节点的成员对象（obj 对象）是一个指针，它指向一个字符串对象，而字符串对象则保存着一个 SDS 值。</li>
 </ul>
-<h4 id="4-1-2-跳跃表"><a href="#4-1-2-跳跃表" class="headerlink" title="4.1.2 跳跃表"></a><strong>4.1.2 跳跃表</strong></h4><p>通过一个zskiplist结构来持有节点，程序可以更方便地对整个跳跃表进行处理。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplist</span> &#123;</span></div><div class="line">    <span class="comment">//表头节点和表尾节点</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">skiplistNode</span> *<span class="title">header</span>, *<span class="title">tail</span>;</span></div><div class="line">    <span class="comment">//表中节点的数量</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> length;</div><div class="line">    <span class="comment">//表中层数最大的节点的层数（不包括表头节点）</span></div><div class="line">    <span class="keyword">int</span> level;</div><div class="line">&#125;zskiplist;</div></pre></td></tr></table></figure></p>
+<h4 id="4-1-2-跳跃表"><a href="#4-1-2-跳跃表" class="headerlink" title="4.1.2 跳跃表"></a><strong>4.1.2 跳跃表</strong></h4><p>通过一个zskiplist结构来持有节点，程序可以更方便地对整个跳跃表进行处理。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zskiplist</span> &#123;</span></span><br><span class="line">    <span class="comment">//表头节点和表尾节点</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">skiplistNode</span> *<span class="title">header</span>, *<span class="title">tail</span>;</span></span><br><span class="line">    <span class="comment">//表中节点的数量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> length;</span><br><span class="line">    <span class="comment">//表中层数最大的节点的层数（不包括表头节点）</span></span><br><span class="line">    <span class="keyword">int</span> level;</span><br><span class="line">&#125;zskiplist;</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="5-整数集合"><a href="#5-整数集合" class="headerlink" title="5. 整数集合"></a><strong>5. 整数集合</strong></h3><p>整数集合（intest）是集合键的底层实现之一，当一个集合只包含整数值元素，并且这个集合的元素数量不多时，Redis就会使用整数集合作为集合键的底层实现。</p>
 <h4 id="5-1-整数集合的实现"><a href="#5-1-整数集合的实现" class="headerlink" title="5.1 整数集合的实现"></a><strong>5.1 整数集合的实现</strong></h4><p>整数集合（intset）是 Redis 用于保存整数值的集合抽象数据结构，它可以保存类型为 int16_t、int32_t、int64_t的整数值，并且保证集合中不会出现重复元素。</p>
-<p>每个 intset.h/intset 结构表示一个整数集合：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">intset</span> &#123;</span></div><div class="line">    <span class="comment">//编码方式</span></div><div class="line">    <span class="keyword">unint32_t</span> encoding;</div><div class="line">    <span class="comment">//集合包含的元素数量</span></div><div class="line">    <span class="keyword">unint32_t</span> length;</div><div class="line">    <span class="comment">//保存元素的数组</span></div><div class="line">    <span class="keyword">int8_t</span> contents[];</div><div class="line">&#125;intset;</div></pre></td></tr></table></figure></p>
+<p>每个 intset.h/intset 结构表示一个整数集合：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">intset</span> &#123;</span></span><br><span class="line">    <span class="comment">//编码方式</span></span><br><span class="line">    <span class="keyword">unint32_t</span> encoding;</span><br><span class="line">    <span class="comment">//集合包含的元素数量</span></span><br><span class="line">    <span class="keyword">unint32_t</span> length;</span><br><span class="line">    <span class="comment">//保存元素的数组</span></span><br><span class="line">    <span class="keyword">int8_t</span> contents[];</span><br><span class="line">&#125;intset;</span><br></pre></td></tr></table></figure></p>
 <h4 id="5-2-升级"><a href="#5-2-升级" class="headerlink" title="5.2 升级"></a><strong>5.2 升级</strong></h4><p>当添加一个新元素添加到整数集合里面，并且新元素的类型那个比整数集合现有所有元素的类型都要长时，整数集合需要先进行升级（upgrade），然后才能将新元素添加到整数集合里面。</p>
 <p>升级整数集合并添加新元素共分为三步进行：</p>
 <ol>
@@ -531,7 +532,7 @@
 </tbody>
 </table>
 <h4 id="6-2-压缩列表节点的构成"><a href="#6-2-压缩列表节点的构成" class="headerlink" title="6.2 压缩列表节点的构成"></a><strong>6.2 压缩列表节点的构成</strong></h4><p>每个压缩列表节点（上面提到的entryX）可以保存一个字节数组或者一个整数值。</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Redis/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png" alt="压缩列表节点的各个组成部分"></p>
+<p><img src="http://img.sevenyuan.cn/%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8%E8%8A%82%E7%82%B9%E7%9A%84%E5%90%84%E4%B8%AA%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86.png" alt="压缩列表节点的各个组成部分"></p>
 <ol>
 <li>previous_entry_legth 的作用：<br> 节点的 previous_entry_lenght 属性记录了前一个节点的长度，程序通过当前节点的起始地址计算出前一个节点的起始地址： p = c - current_entry_length;</li>
 <li>encoding:<br> 该属性记录了节点的content属性所保存数据的类型以及长度</li>
@@ -640,7 +641,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -651,9 +652,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -788,10 +787,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

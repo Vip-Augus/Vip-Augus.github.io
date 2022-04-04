@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Java," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Java,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="拖了很久，总算来简单总结下看完并发编程的感想">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713ly1fx46myddamj21hc0u0thk.jpg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/thread_safe_define.jpg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/threadpool_paramter.jpg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/nonfair_lock_timing.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/reentrant_lock_nonfair_fair_compare.png">
-<meta property="og:updated_time" content="2021-11-02T16:43:39.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/7097c713ly1fx46myddamj21hc0u0thk.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/thread/thread_safe_define.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/thread/threadpool_paramter.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/thread/nonfair_lock_timing.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/thread/reentrant_lock_nonfair_fair_compare.png">
+<meta property="og:updated_time" content="2020-05-16T17:53:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发编程读后感 &amp; AQS 初探">
 <meta name="twitter:description" content="拖了很久，总算来简单总结下看完并发编程的感想">
-<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713ly1fx46myddamj21hc0u0thk.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/7097c713ly1fx46myddamj21hc0u0thk.jpg">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/05/15/java/2020-05-16-java-concurrent-book-learn/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/05/15/java/2020-05-16-java-concurrent-book-learn/">
 
 
 
@@ -168,7 +168,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -198,7 +198,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -208,7 +208,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -218,7 +218,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -228,7 +228,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -271,8 +271,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -307,7 +307,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -340,7 +340,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -361,7 +361,7 @@
       
 
       
-        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/7097c713ly1fx46myddamj21hc0u0thk.jpg"></p>
+        <p><img src="http://img.sevenyuan.cn/7097c713ly1fx46myddamj21hc0u0thk.jpg"></p>
 <center>拖了很久，总算来简单总结下看完并发编程的感想</center>
 
 <a id="more"></a>
@@ -369,7 +369,7 @@
 <blockquote>
 <p>摘自书中的描述</p>
 </blockquote>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/thread_safe_define.jpg" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/thread/thread_safe_define.jpg" alt></p>
 <p>本书分为四个部分：</p>
 <ul>
 <li><p><strong>基础知识：</strong></p>
@@ -395,7 +395,7 @@
 </li>
 </ul>
 <p>其中一些核心知识点和笔记：</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/threadpool_paramter.jpg" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/thread/threadpool_paramter.jpg" alt></p>
 <p><strong>前面四部分内容，做了一个简单的小介绍，我不觉得看过一次后能够完全掌握它，所以本次先做个初步学习，并且挑了一个最感兴趣的 <font color="RED">知识点 <code>AQS</code> 去深入学习</font>，学习大佬底层框架的设计理念。</strong></p>
 <h2 id="AQS-初探"><a href="#AQS-初探" class="headerlink" title="AQS 初探"></a>AQS 初探</h2><p><code>AQS</code> 全称是 <code>Abstract Queue Synchronizer</code>，抽象队列同步器，是 <code>JUC</code> 包下，众多同步工具类的父类，基于 <code>AQS</code> 的扩展使用。</p>
 <p><code>AQS</code> 定义了状态依赖管理，查看了 <code>ReentrantLock</code> 可重入锁，底层的公平锁 <code>FairSync</code> 和非公平锁 <code>NonfairSync</code>，都是间接扩展自 <code>AbstractQueuedSynchronizer</code>，底层的加锁 <code>lock</code> 调用了 <code>AQS</code> 的 <code>acquire(1)</code>，解锁方法 <code>unlock()</code> 调用了 <code>AQS</code> 的 <code>release(1)</code>，所以可以来好好看看这个同步器的原理实现。</p>
@@ -408,18 +408,18 @@
 <p>数据结构：</p>
 </blockquote>
 <p>既然是实现了 <code>Lock</code> 接口，根据语义，多个线程操作时，例如线程 A 抢到资源，正在处理中，那么线程 B 就无法获取相同的资源，这时候需要放置一个地方进行等待，<font color="RED">于是就有了 <code>CLH</code> 同步队列（从注释中看出，这是三个人名）</font></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">* &lt;p&gt;The wait queue is a variant of a <span class="string">"CLH"</span> (Craig, Landin, and</div><div class="line">* Hagersten) lock queue. CLH locks are normally used <span class="keyword">for</span></div><div class="line">* spinlocks.  We instead use them <span class="keyword">for</span> blocking synchronizers, but</div><div class="line">* use the same basic tactic of holding some of the control</div><div class="line">* information about a thread in the predecessor of its node.</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* &lt;p&gt;The wait queue is a variant of a <span class="string">"CLH"</span> (Craig, Landin, and</span><br><span class="line">* Hagersten) lock queue. CLH locks are normally used <span class="keyword">for</span></span><br><span class="line">* spinlocks.  We instead use them <span class="keyword">for</span> blocking synchronizers, but</span><br><span class="line">* use the same basic tactic of holding some of the control</span><br><span class="line">* information about a thread in the predecessor of its node.</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>CLH 锁通常用于自旋锁。我们使用它们来实现阻塞同步器，但使用持有某些控件的相同基本策略，在前置节点 prev 中来保存有关其节点的的线程信息。</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">* &lt;p&gt;To enqueue into a CLH lock, you atomically splice it in as <span class="keyword">new</span></div><div class="line">* tail. To dequeue, you just set the head field.</div><div class="line">* &lt;pre&gt;</div><div class="line">*      +------+  prev +-----+       +-----+</div><div class="line">* head |      | &lt;---- |     | &lt;---- |     |  tail</div><div class="line">*      +------+       +-----+       +-----+</div><div class="line">* &lt;/pre&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">* &lt;p&gt;To enqueue into a CLH lock, you atomically splice it in as <span class="keyword">new</span></span><br><span class="line">* tail. To dequeue, you just set the head field.</span><br><span class="line">* &lt;pre&gt;</span><br><span class="line">*      +------+  prev +-----+       +-----+</span><br><span class="line">* head |      | &lt;---- |     | &lt;---- |     |  tail</span><br><span class="line">*      +------+       +-----+       +-----+</span><br><span class="line">* &lt;/pre&gt;</span><br></pre></td></tr></table></figure>
 <p>在资源争夺失败情况下，会进入等待队列，<code>CLH</code> 是一个双向队列，该数据结构有前节点指针 <code>pre</code> 和后节点指针 <code>next</code>，指向对应的节点 <code>Node</code>。</p>
 <p>有关等待队列的详细实现，可以查看 <code>AbstractQueuedSynchronizer.java</code> 实现~</p>
-<h2 id="非公平锁加锁实例"><a href="#非公平锁加锁实例" class="headerlink" title="非公平锁加锁实例"></a>非公平锁加锁实例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// CAS操作，抢占公共变量：状态 state</span></div><div class="line">    <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</div><div class="line">        setExclusiveOwnerThread(Thread.currentThread());</div><div class="line">    <span class="keyword">else</span></div><div class="line">        acquire(<span class="number">1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="非公平锁加锁实例"><a href="#非公平锁加锁实例" class="headerlink" title="非公平锁加锁实例"></a>非公平锁加锁实例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// CAS操作，抢占公共变量：状态 state</span></span><br><span class="line">    <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">        setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        acquire(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>整理了一下非公平锁实现的 <code>lock</code> 时序图：</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/nonfair_lock_timing.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/thread/nonfair_lock_timing.png" alt></p>
 <p>对比了公平锁 <code>FairLock</code>，两者的区别在于，非公平锁有两次机会直接抢占资源，不按照队列的 <code>FIFO</code> 顺序等待资源，而公平锁将会严格按照 <code>FIFO</code> 顺序来争夺锁资源：</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/book-reading/concurrent_lock/reentrant_lock_nonfair_fair_compare.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/thread/reentrant_lock_nonfair_fair_compare.png" alt></p>
 <p>配合时序图和代码实现，可以了解到同步资源管理器的强大，底层框架封装好了，并发工具包下，<code>ReentrantLock</code>、<code>Semaphore</code>、<code>CountDownLatch</code> 等都是基于 <code>AQS</code> 扩展的，在多线程同时处理情况下，保证共享资源操作的正确性。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>从本次学习总结中，看完书籍后，对于多线程的作用和线程安全性有了更新的了解，想要深入往下扒 <code>AQS</code> 的实现原理却遇到了难处。</p>
 <p>一方面是使用的比较少，另一方面看出我对操作系统底层和数据结构的确有很多不熟悉的知识点，例如 <code>ReentrantLock</code> 的分层设计、等待队列的实现细节，失败处理、中断处理，还有 <code>unsafe</code> 包下与操作系统的操作，都是后续要加深学习的知识点。</p>
@@ -524,7 +524,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -535,9 +535,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -672,10 +670,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

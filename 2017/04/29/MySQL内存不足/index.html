@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="MySQL," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="MySQL,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/04/29/MySQL内存不足/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/04/29/MySQL内存不足/">
 
 
 
@@ -167,7 +167,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -197,7 +197,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -207,7 +207,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -217,7 +217,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -227,7 +227,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -270,8 +270,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -306,7 +306,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -350,7 +350,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -372,10 +372,10 @@
 
       
         <p>现在使用的 <em>Centos7.2</em> 系统,数据库版本是 <em>Mariadb5.5.52.</em><br>很多次打开网站时提示数据库链接错误,于是进入命令行中查找数据库日志文件查找原因:</p>
-<p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png" alt=""></a></p>
+<p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/Log报错信息.png" alt></a></p>
 <p>发现了是内存不足导致数据库自动关闭.<br>运行下列语句查看服务器内存使用情况:</p>
 <pre><code>#[root@VM_247_254_centos ~]free -m
-</code></pre><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png" alt=""></a></p>
+</code></pre><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/内存信息.png" alt></a></p>
 <p>Swap空间的作用可简单描述为：当系统的物理内存不够用的时候，就需要将物理内存中的一部分空间释放出来，以供当前运行的程序使用.<br>于是在服务器内存不足的情况下,不能使用swap分区,导致了数据库意外关闭.</p>
 <p>现在来创建一个1024MB的Swap分区</p>
 <h3 id="1-创建swapfile"><a href="#1-创建swapfile" class="headerlink" title="1. 创建swapfile"></a>1. 创建swapfile</h3><pre><code>[root@VM_247_254_centos ~]# dd if=/dev/zero of=/swapfile bs=1024 count=1048576
@@ -392,8 +392,8 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
 </code></pre><p>使用vi进入到/etc/stab文件,然后通过i命令在文件最后插入下面这句</p>
 <pre><code>/swapfile swap swap defaults 0 0
 </code></pre><p>最后该文件应该是这样的</p>
-<p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png" alt=""></a></p>
-<h3 id="5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况"><a href="#5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况" class="headerlink" title="5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况"></a>5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况</h3><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png" alt=""></a></p>
+<p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/fstab文件.png" alt></a></p>
+<h3 id="5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况"><a href="#5-使用-cat-proc-swaps或-free-m-查看-swapfile-的生效情况" class="headerlink" title="5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况"></a>5.使用 cat /proc/swaps或 free -m 查看 swapfile 的生效情况</h3><p><a href="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png" target="_blank" rel="noopener"><img src="http://www.sevenyuan.cn/wp-content/uploads/2017/04/swap分区生效情况.png" alt></a></p>
 <h3 id="6-重启httpd服务和mariadb服务"><a href="#6-重启httpd服务和mariadb服务" class="headerlink" title="6.重启httpd服务和mariadb服务"></a>6.重启httpd服务和mariadb服务</h3><pre><code>[root@VM_247_254_centos ~]# systemctl restart httpd.service
 [root@VM_247_254_centos ~]# systemctl restart mariadb.service
 </code></pre><p>在这时应该能够解决数据库内存不足的问题了.</p>
@@ -495,7 +495,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -506,9 +506,7 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -643,10 +641,10 @@ swapon: /swapfile: insecure permissions 0644, 0600 suggested.
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

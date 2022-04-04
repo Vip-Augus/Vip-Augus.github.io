@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="ZooKeeper," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="ZooKeeper,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/15/ZooKeeper基础学习/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/15/ZooKeeper基础学习/">
 
 
 
@@ -162,7 +162,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -192,7 +192,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -202,7 +202,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -212,7 +212,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -222,7 +222,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -265,8 +265,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -301,7 +301,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -345,7 +345,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -424,7 +424,7 @@
 <h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>规定了任何时候都需要保证只有一个主进程负责进行消息广播，而如果主进程崩溃了，就需要选举一个新的主进程。主进程的选举机制和消息广播机制是紧密相关的。</p>
 <h4 id="主进程周期"><a href="#主进程周期" class="headerlink" title="主进程周期"></a>主进程周期</h4><p>为了保证主进程每次广播出来的事务消息都是一致的，必须确保ZAB协议只有在充分完成崩溃恢复阶段之后，新的主进程才可以开始新的事务消息广播。假设各个进程都实现类似于ready(e)这样的一个函数调用，在运行过程中，ZAB协议能够非常明确地告知上层系统是否可以开始进行事务消息的广播。</p>
 <h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><p>假设存在类似于transaction(v,z)这样的函数调用，来实现主进程对状态变更的广播。</p>
-<p>主进程每次对transaction(v,z)函数的调用都包含了两个字段：事务内容v和事务标致z，而每一个事务标致z=<e,c>也包含了两个组成部分，前者是主进程周期e，后者是当前主进程周期内的事务计数c。</e,c></p>
+<p>主进程每次对transaction(v,z)函数的调用都包含了两个字段：事务内容v和事务标致z，而每一个事务标致z=&lt;e,c&gt;也包含了两个组成部分，前者是主进程周期e，后者是当前主进程周期内的事务计数c。</p>
 <p>针对每一个新的事务，主进程都会首先将事务计数递增。</p>
 <h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><blockquote>
 <p>细分为三个阶段：<br>1、发现（discovery）：<br>2、同步（Synchronization）<br>3、广播（Broadcast）</p>
@@ -529,7 +529,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -540,9 +540,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -677,10 +675,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

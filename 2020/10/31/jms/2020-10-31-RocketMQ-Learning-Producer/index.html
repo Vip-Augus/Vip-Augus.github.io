@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="RocketMQ," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="RocketMQ,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -96,13 +96,13 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="学习一下火箭消息 - 生产者的原理和使用🚀">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Transcation/RocketMQ_Transaction_Message.png">
-<meta property="og:updated_time" content="2021-11-02T16:30:42.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png#align=left&display=inline&height=288&margin=%5Bobject%20Object%5D&originHeight=288&originWidth=895&size=0&status=done&style=none&width=895">
+<meta property="og:updated_time" content="2020-11-22T14:14:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RocketMQ Producer 深入学习">
 <meta name="twitter:description" content="学习一下火箭消息 - 生产者的原理和使用🚀">
-<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/Mazezilla_ZH-CN8502282112_1920x1080.jpg">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/10/31/jms/2020-10-31-RocketMQ-Learning-Producer/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/10/31/jms/2020-10-31-RocketMQ-Learning-Producer/">
 
 
 
@@ -165,7 +165,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -195,7 +195,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -205,7 +205,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -215,7 +215,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -225,7 +225,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -268,8 +268,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -304,7 +304,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -337,7 +337,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -358,11 +358,11 @@
       
 
       
-        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/Mazezilla_ZH-CN8502282112_1920x1080.jpg" alt=""></p>
+        <p><img src="http://img.sevenyuan.cn/Mazezilla_ZH-CN8502282112_1920x1080.jpg" alt></p>
 <center><strong>学习一下火箭消息 - 生产者的原理和使用🚀</strong></center>
 
 <a id="more"></a>
-<h2 id="1、事务消息"><a href="#1、事务消息" class="headerlink" title="1、事务消息"></a>1、事务消息</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/RocketMQ/Transcation/RocketMQ_Transaction_Message.png" alt=""></p>
+<h2 id="1、事务消息"><a href="#1、事务消息" class="headerlink" title="1、事务消息"></a>1、事务消息</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/347495/1604122475376-89d9f72b-d889-4200-9de9-0f0e4a66d3bc.png#align=left&amp;display=inline&amp;height=288&amp;margin=%5Bobject%20Object%5D&amp;originHeight=288&amp;originWidth=895&amp;size=0&amp;status=done&amp;style=none&amp;width=895" alt></p>
 <p>主要分为两个流程：</p>
 <h3 id="1-1-正常消息的发送、提交"><a href="#1-1-正常消息的发送、提交" class="headerlink" title="1.1 正常消息的发送、提交"></a>1.1 正常消息的发送、提交</h3><p>(1) producer 发送 Half 消息<br>(2) broker 本地写入 Half 消息（将 Topic 改成 RMQ_SYS_TRANS_HALF_TOPIC，该阶段 Consumer 由于没有订阅关系，无法消费）<br>(3) producer 根据 broker 写入消息结果，成功的话，执行本地事务；写入消息失败，producer 不执行本地事务<br>(4) 根据本地事务结果，往 broker 发送 Commit 或者 Rollback（如果是 Commit，将会将 Half 消息转回 Real Topic，生成消息索引，订阅者可以进行消费）</p>
 <h3 id="1-2-补偿流程："><a href="#1-2-补偿流程：" class="headerlink" title="1.2 补偿流程："></a>1.2 补偿流程：</h3><p>(1) 半消息发送成功，但 broker 没收到 Commit 或 Rollback，进行状态回查（上图的第五步）<br>(2) Producer 收到回查消息，检查本地事务状态<br>(3) 根据本地事务状态，重新发送 Commit 或者 Rollback</p>
@@ -371,7 +371,7 @@
 <blockquote>
 <p>org.apache.rocketmq.client.producer.TransactionListener</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TransactionListener</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 当发送 Half 消息成功后，执行本地事务</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function">LocalTransactionState <span class="title">executeLocalTransaction</span><span class="params">(<span class="keyword">final</span> Message msg, <span class="keyword">final</span> Object arg)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 如果 Commit 或者 Rollback 发送丢失，broker 进行消息回查，检查本地事务状态，重新发送 Commit 或 Rollback</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="function">LocalTransactionState <span class="title">checkLocalTransaction</span><span class="params">(<span class="keyword">final</span> MessageExt msg)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TransactionListener</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 当发送 Half 消息成功后，执行本地事务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">LocalTransactionState <span class="title">executeLocalTransaction</span><span class="params">(<span class="keyword">final</span> Message msg, <span class="keyword">final</span> Object arg)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 如果 Commit 或者 Rollback 发送丢失，broker 进行消息回查，检查本地事务状态，重新发送 Commit 或 Rollback</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">LocalTransactionState <span class="title">checkLocalTransaction</span><span class="params">(<span class="keyword">final</span> MessageExt msg)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="2、如何选择发送目的地（MessageQueue）"><a href="#2、如何选择发送目的地（MessageQueue）" class="headerlink" title="2、如何选择发送目的地（MessageQueue）"></a>2、如何选择发送目的地（MessageQueue）</h2><p><strong>手动指定 MessageQueue 目的：分区有序性，实现顺序消费</strong></p>
 <p>例如 Topic 创建策略，默认分配单 Broker 上分配 8 个 MessageQueue。</p>
 <p>Producer 在了解到要发往的 Topic 有 8 个消息队列，默认情况将会轮询发送，尽量让每个队列存储到的消息数量一致。</p>
@@ -380,7 +380,7 @@
 <blockquote>
 <p>org.apache.rocketmq.client.impl.producer.DefaultMQProducerImpl#sendSelectImpl</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> SendResult <span class="title">sendSelectImpl</span><span class="params">(Message msg, MessageQueueSelector selector, Object arg, <span class="keyword">final</span> CommunicationMode communicationMode, <span class="keyword">final</span> SendCallback sendCallback, <span class="keyword">final</span> <span class="keyword">long</span> timeout)</span> </span>&#123;</div><div class="line">    <span class="keyword">long</span> beginStartTime = System.currentTimeMillis();</div><div class="line">    <span class="keyword">this</span>.makeSureStateOK();</div><div class="line">    TopicPublishInfo topicPublishInfo = <span class="keyword">this</span>.tryToFindTopicPublishInfo(msg.getTopic());</div><div class="line"></div><div class="line">    MessageQueue mq = <span class="keyword">null</span>;</div><div class="line">    List&lt;MessageQueue&gt; messageQueueList =</div><div class="line">        mQClientFactory.getMQAdminImpl().parsePublishMessageQueues(topicPublishInfo.getMessageQueueList());</div><div class="line">    Message userMessage = MessageAccessor.cloneMessage(msg);</div><div class="line">    String userTopic = NamespaceUtil.withoutNamespace(userMessage.getTopic(), mQClientFactory.getClientConfig().getNamespace());</div><div class="line">    userMessage.setTopic(userTopic);</div><div class="line">    </div><div class="line">    <span class="comment">// 这一步 selector.select(messageQueueList, userMessage, arg)，选出特定的 MessageQueue</span></div><div class="line">    mq = mQClientFactory.getClientConfig().queueWithNamespace(selector.select(messageQueueList, userMessage, arg));</div><div class="line">    <span class="keyword">long</span> costTime = System.currentTimeMillis() - beginStartTime;</div><div class="line">    <span class="comment">// 发送</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.sendKernelImpl(msg, mq, communicationMode, sendCallback, <span class="keyword">null</span>, timeout - costTime);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> SendResult <span class="title">sendSelectImpl</span><span class="params">(Message msg, MessageQueueSelector selector, Object arg, <span class="keyword">final</span> CommunicationMode communicationMode, <span class="keyword">final</span> SendCallback sendCallback, <span class="keyword">final</span> <span class="keyword">long</span> timeout)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> beginStartTime = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">this</span>.makeSureStateOK();</span><br><span class="line">    TopicPublishInfo topicPublishInfo = <span class="keyword">this</span>.tryToFindTopicPublishInfo(msg.getTopic());</span><br><span class="line"></span><br><span class="line">    MessageQueue mq = <span class="keyword">null</span>;</span><br><span class="line">    List&lt;MessageQueue&gt; messageQueueList =</span><br><span class="line">        mQClientFactory.getMQAdminImpl().parsePublishMessageQueues(topicPublishInfo.getMessageQueueList());</span><br><span class="line">    Message userMessage = MessageAccessor.cloneMessage(msg);</span><br><span class="line">    String userTopic = NamespaceUtil.withoutNamespace(userMessage.getTopic(), mQClientFactory.getClientConfig().getNamespace());</span><br><span class="line">    userMessage.setTopic(userTopic);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 这一步 selector.select(messageQueueList, userMessage, arg)，选出特定的 MessageQueue</span></span><br><span class="line">    mq = mQClientFactory.getClientConfig().queueWithNamespace(selector.select(messageQueueList, userMessage, arg));</span><br><span class="line">    <span class="keyword">long</span> costTime = System.currentTimeMillis() - beginStartTime;</span><br><span class="line">    <span class="comment">// 发送</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.sendKernelImpl(msg, mq, communicationMode, sendCallback, <span class="keyword">null</span>, timeout - costTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="待补充"><a href="#待补充" class="headerlink" title="待补充"></a>待补充</h2><p>分组的作用，例如消费者分组 consumerGroup 是为了消息消费的负载均衡，区分不同的消费者</p>
 <p>生产者分组 producerGroup 的作用是为了 <strong>事务消息</strong> 的回查，根据分组进行二次确认，后续相关内容需要深入研究…</p>
 
@@ -480,7 +480,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -491,9 +491,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -628,10 +626,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

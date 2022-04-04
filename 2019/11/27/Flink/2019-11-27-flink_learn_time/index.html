@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Flink," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Flink,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -96,15 +96,15 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="前面的例子中有出现过 时间窗口 TimeWindow 这个词语，其实是两个概念，时间 Time 和窗口 Window。 本篇文章比较干货，主要翻译自官网（参考资料一）， 来讲下关于 Time 的学习、理解以及配套的概念 Watermark。 Watermark 有两种译法：水位线、水印。由于个人暂时分不清，所以后面一律以英文 Watermark 出现">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/flink_time_introduction.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_in_order.svg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_out_of_order.svg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/parallel_streams_watermarks.svg">
-<meta property="og:updated_time" content="2021-11-02T15:48:23.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/flink_time_introduction.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/stream_watermark_in_order.svg">
+<meta property="og:image" content="http://img.sevenyuan.cn/stream_watermark_out_of_order.svg">
+<meta property="og:image" content="http://img.sevenyuan.cn/parallel_streams_watermarks.svg">
+<meta property="og:updated_time" content="2019-12-22T07:41:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink 基础学习(六)时间 Time 和 Watermark">
 <meta name="twitter:description" content="前面的例子中有出现过 时间窗口 TimeWindow 这个词语，其实是两个概念，时间 Time 和窗口 Window。 本篇文章比较干货，主要翻译自官网（参考资料一）， 来讲下关于 Time 的学习、理解以及配套的概念 Watermark。 Watermark 有两种译法：水位线、水印。由于个人暂时分不清，所以后面一律以英文 Watermark 出现">
-<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/flink_time_introduction.png">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/flink_time_introduction.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/11/27/Flink/2019-11-27-flink_learn_time/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/11/27/Flink/2019-11-27-flink_learn_time/">
 
 
 
@@ -167,7 +167,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -197,7 +197,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -207,7 +207,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -217,7 +217,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -227,7 +227,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -270,8 +270,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -306,7 +306,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -339,7 +339,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -366,7 +366,7 @@
 <a id="more"></a>
 <hr>
 <h1 id="Time"><a href="#Time" class="headerlink" title="Time"></a>Time</h1><p>一共有三种时间类型：<code>Processing Time</code>、<code>Event Time</code> 和 <code>Ingestion Time</code></p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/flink_time_introduction.png" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/flink_time_introduction.png" alt></p>
 <p>图片参考官网，加上了一些注释配合理解，三种时间类型对应了三个发生位置，下面具体说下三种时间类型的区别。</p>
 <hr>
 <h2 id="Processing-Time-处理时间"><a href="#Processing-Time-处理时间" class="headerlink" title="Processing Time 处理时间"></a>Processing Time 处理时间</h2><p><strong><code>Processing Time</code>是指事件正在执行所在机器（部署应用服务器）的系统时间。</strong></p>
@@ -391,7 +391,7 @@
 <p><strong>在 <code>Flink DataStream</code> 程序的起始步骤，通常设置基准时间特征。</strong></p>
 <p>该设置定义数据流源的行为方式（例如，它们是否将分配时间戳），以及诸如 <code>KeyedStream.timeWindow(Time.seconds(30))</code> 之类的窗口操作应使用什么时间概念。</p>
 <p>以下示例显示了一个 <code>Flink</code> 程序，该程序统计时间窗口（每小时）事件。 窗口的行为与时间特征相适应。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</div><div class="line">env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);</div><div class="line"><span class="comment">// 另外可选:</span></div><div class="line"><span class="comment">// env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);</span></div><div class="line"><span class="comment">// env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);</span></div><div class="line">DataStream&lt;MyEvent&gt; stream = env.addSource(<span class="keyword">new</span> FlinkKafkaConsumer09&lt;MyEvent&gt;(topic, schema, props));</div><div class="line"></div><div class="line">stream</div><div class="line">    .keyBy( (event) -&gt; event.getUser() )</div><div class="line">    .timeWindow(Time.hours(<span class="number">1</span>))</div><div class="line">    .reduce( (a, b) -&gt; a.add(b) )</div><div class="line">    .addSink(...);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);</span><br><span class="line"><span class="comment">// 另外可选:</span></span><br><span class="line"><span class="comment">// env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);</span></span><br><span class="line"><span class="comment">// env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);</span></span><br><span class="line">DataStream&lt;MyEvent&gt; stream = env.addSource(<span class="keyword">new</span> FlinkKafkaConsumer09&lt;MyEvent&gt;(topic, schema, props));</span><br><span class="line"></span><br><span class="line">stream</span><br><span class="line">    .keyBy( (event) -&gt; event.getUser() )</span><br><span class="line">    .timeWindow(Time.hours(<span class="number">1</span>))</span><br><span class="line">    .reduce( (a, b) -&gt; a.add(b) )</span><br><span class="line">    .addSink(...);</span><br></pre></td></tr></table></figure>
 <p>请注意，为了在事件时间中运行上面示例程序，程序需要使用直接为数据定义 <code>Processing Time</code> 并自己设定 <code>Watermark</code> 的生成规则，或者程序必须在源之后注入 <code>Timestamp Assigner</code> ＆ <code>Watermark Generator</code> 。这些功能描述了如何访问事件时间戳，以及事件流呈现出何种程度的乱序。</p>
 <hr>
 <h1 id="Event-Time-and-Watermarks"><a href="#Event-Time-and-Watermarks" class="headerlink" title="Event Time and Watermarks"></a>Event Time and Watermarks</h1><p>在为什么使用事件时间和 <code>Watermark</code> 这个问题上，引用了参考资料三的描述</p>
@@ -405,7 +405,7 @@
 <h2 id="乱序事件场景"><a href="#乱序事件场景" class="headerlink" title="乱序事件场景"></a>乱序事件场景</h2><p>如果数据源是 <code>kafka</code> 消息数据源，按照事件时间 <code>Event Time</code> 来统计，在理想情况下，消息按照事件顺序依次到达，时间窗口刚好收集的该时间段的事件，但很可惜，由于不可预估的外力阻挠，导致消息延迟，时间窗口内的数据将会少了延迟到达的事件。</p>
 <p><strong>所以使用 <code>Watermark</code> 来记录事件进行的进度，用收集到的消息来评估事件进度，判断还有没有事件没有到达，只有 <code>Watermark</code> 越过了时间窗口设定的时间，才认为窗口已经收集好数据</strong></p>
 <p>举个具体一点的例子，设定了一个 3s 的时间窗口还有 10s 的乱序延时：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">long</span> maxUnOrderWatermark = <span class="number">10000L</span>;</div><div class="line"><span class="comment">// watermark 设定成 当前时间戳 - 延时</span></div><div class="line"><span class="keyword">new</span> Watermark(currentTimeStamp - maxUnOrderWatermark);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> maxUnOrderWatermark = <span class="number">10000L</span>;</span><br><span class="line"><span class="comment">// watermark 设定成 当前时间戳 - 延时</span></span><br><span class="line"><span class="keyword">new</span> Watermark(currentTimeStamp - maxUnOrderWatermark);</span><br></pre></td></tr></table></figure>
 <p>在 [00:01 : 00:03] 窗口时间过去后，搜集到了 3 个时间，但是窗口先不触发计算，等待有可能延迟的事件。</p>
 <p>例如在 06s 又有一个前面窗口的事件到来，由于在设定的延时时间内，它会被分配到正确窗口中，窗口中的元素变成了 4 个，然后在后续有新事件来临，<code>watermark</code> 被更新成大于 00:03，<strong>这时 <code>Watermark</code> &gt; 窗口结束时间，触发窗口计算，解决了事件延时到达的问题。</strong></p>
 <hr>
@@ -414,9 +414,9 @@
 <hr>
 <h2 id="Watermark-图示"><a href="#Watermark-图示" class="headerlink" title="Watermark 图示"></a>Watermark 图示</h2><p><strong><code>Flink</code> 中用于衡量事件时间进度的机制是水印 <code>Watermark</code>。 <code>Watermark</code> 作为数据流的一部分流动，并带有时间戳 <code>t</code>。 <code>Watermark(t)</code> 声明事件时间已在该流中达到时间 <code>t</code>，这意味着该流中不应再有时间戳 <code>t&#39;&lt;= t</code> 的元素（即时间戳早于或等于 <code>Watermark</code> 的事件）。</strong></p>
 <p>下图显示了带有（逻辑）时间戳记的事件流，以及串联的 <code>Watermark</code>。 在此示例中，事件是按顺序（<code>In Order</code>）排列的（相对于其时间戳），这意味着 <code>Watermark</code> 只是流中的周期性标记。</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_in_order.svg" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/stream_watermark_in_order.svg" alt></p>
 <p><strong><code>Watermark</code> 对于乱序流（<code>Out Of Order</code>）至关重要，如下图所示，其中事件不是按其时间戳排序的。</strong> 通常，<code>Watermark</code> 是一种声明，即到流中的那个点，直到某个时间戳的所有事件都应该到达。一旦 <code>Watermark</code> 到达 <code>Operator</code>，<code>Operator</code> 就可以将其内部事件时钟提前到 <code>Watermark</code> 的值。</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/stream_watermark_out_of_order.svg" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/stream_watermark_out_of_order.svg" alt></p>
 <blockquote>
 <p>请注意，<code>Evnet Time</code> 是由新创建的一个（或多个）流元素从产生它们的事件或触发了创建这些元素的 <code>Watermark</code> 中继承的。</p>
 </blockquote>
@@ -425,7 +425,7 @@
 <p>随着 <code>Watermark</code> 在流媒体程序中的流动，它们会提前到达其到达的 <code>Operator</code> 的 <code>Event Time</code>。 每当 <code>Operator</code> 提前其事件时间时，都会为其后续 <code>Operator</code> 在下游生成新的 <code>Watermark</code>。</p>
 <p>一些运算符消费多个输入流；例如，并集 <code>union</code>、键控 <code>keyBy(…)</code> 或分区 <code>partition(…)</code> 函数的运算符。这样的 <code>Operator</code> 的当前事件时间是其输入流的事件时间中的最小值。 随着其输入流更新其事件时间，<code>Operator</code> 也将更新。</p>
 <p>下图显示了流过并行流的事件和 <code>Watermark</code> 的示例，<code>Operator</code> 跟踪事件时间。</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/flink/time/parallel_streams_watermarks.svg" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/parallel_streams_watermarks.svg" alt></p>
 <p>（并行流用的不多，这里留个坑吧，待之后用到再来补=-=）</p>
 <hr>
 <h1 id="延迟的元素"><a href="#延迟的元素" class="headerlink" title="延迟的元素"></a>延迟的元素</h1><p>某些元素可能会违反 <code>Watermark</code> 条件，这意味着即使在发生 <code>Watermark(t)</code> 之后，也会出现更多时间戳为 <code>t&#39;&lt;= t</code> 的元素。实际上，在许多现实世界的设置中，某些元素可以任意延迟，从而无法指定某个事件时间戳记的所有元素都将发生的时间。此外，即使可以限制延迟，通常也不希望将 <code>Watermark</code> 延迟太多，因为这会导致事件时间窗的评估延迟过多。</p>
@@ -441,7 +441,7 @@
 <p>以及本篇时间 <code>Time</code> 的介绍有点“太干”，学起来有点费力，如有其它学习建议或文章不对之处，请与我联系~</p>
 <hr>
 <h1 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h1><p><a href="https://github.com/Vip-Augus/flink-learning-note" target="_blank" rel="noopener">https://github.com/Vip-Augus/flink-learning-note</a></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/Vip-Augus/flink-learning-note</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/Vip-Augus/flink-learning-note</span><br></pre></td></tr></table></figure>
 <hr>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
 <li><a href="https://ci.apache.org/projects/flink/flink-docs-release-1.9/zh/dev/event_time.html" target="_blank" rel="noopener">Event Time</a></li>
@@ -548,7 +548,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -559,9 +559,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -696,10 +694,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

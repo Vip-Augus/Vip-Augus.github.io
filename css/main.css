@@ -1073,7 +1073,7 @@ pre .javascript .function {
   bottom: 19px;
 }
 .header {
-  background: url("https://gitee.com/vip-augus/blog-picture/raw/master/front-picture/seagulls.jpg");
+  background: url("http://img.sevenyuan.cn/seagulls.jpg");
 }
 .header-inner {
   position: relative;
@@ -1811,7 +1811,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #608ce8;
+  background: #73ffc7;
 }
 .links-of-blogroll {
   font-size: 13px;

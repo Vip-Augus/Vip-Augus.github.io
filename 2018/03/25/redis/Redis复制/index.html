@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Redis," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Redis,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -130,7 +130,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/25/redis/Redis复制/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/25/redis/Redis复制/">
 
 
 
@@ -164,7 +164,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -194,7 +194,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -204,7 +204,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -214,7 +214,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -224,7 +224,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -267,8 +267,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -303,7 +303,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -347,7 +347,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -372,9 +372,9 @@
 <p>之前记录了关于Redis的数据结构和对象的知识（可以点Redis标签看看），下面开始填坑。</p>
 <hr>
 <h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><p>在Redis中，用户可以通过执行 SLAVEOF 命令或者设置 slaveof 选项，让一个服务去复制（replicate）另一个服务器。<strong>被复制</strong>的服务器为<strong>主服务器（master）</strong>，另一<strong>个对主服务器进行复制</strong>的服务器则被称为<strong>从服务器（slave）</strong></p>
-<p>举个🌰：(Redis版本是4.0.8）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">在6379端口启动一个redis-server：</div><div class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6379</span></div><div class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6379</span></div><div class="line">127.0.0.1:6379&gt; </div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">在6380端口号启动一个redis-server，接着通过slaveof命令进行复制</div><div class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6380</span></div><div class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6380</span></div><div class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</div><div class="line">OK</div></pre></td></tr></table></figure></p>
+<p>举个🌰：(Redis版本是4.0.8）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">在6379端口启动一个redis-server：</span><br><span class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6379</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6379</span></span><br><span class="line">127.0.0.1:6379&gt; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">在6380端口号启动一个redis-server，接着通过slaveof命令进行复制</span><br><span class="line"><span class="meta">$</span><span class="bash"> redis-server --port 6380</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> redis-cli -p 6380</span></span><br><span class="line">127.0.0.1:6380&gt; slaveof 127.0.0.1 6379</span><br><span class="line">OK</span><br></pre></td></tr></table></figure></p>
 <p>在这里，6379 是主服务器，6380 是从服务器。</p>
-<p>接着能在 6380 的 redis-server 界面中看到日志：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">19092:S 23 Mar 01:00:26.944 * Before turning into a slave, using my master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.</div><div class="line">19092:S 23 Mar 01:00:26.945 * SLAVE OF 127.0.0.1:6379 enabled (user request from 'id=2 addr=127.0.0.1:60778 fd=8 name= age=50 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=slaveof')</div><div class="line">19092:S 23 Mar 01:00:27.234 * Connecting to MASTER 127.0.0.1:6379</div><div class="line">19092:S 23 Mar 01:00:27.234 * MASTER &lt;-&gt; SLAVE sync started</div><div class="line">19092:S 23 Mar 01:00:27.234 * Non blocking connect for SYNC fired the event.</div><div class="line">19092:S 23 Mar 01:00:27.246 * Master replied to PING, replication can continue...</div><div class="line">19092:S 23 Mar 01:00:27.246 * Trying a partial resynchronization (request 2e56cf1343f6b2e864c968bd59b4a16ed78b8f1d:1).</div><div class="line">19092:S 23 Mar 01:00:27.266 * Full resync from master: bf36b20c3942e91ac4f262a2afdc90970b2d7c54:0</div><div class="line">19092:S 23 Mar 01:00:27.266 * Discarding previously cached master state.</div><div class="line">19092:S 23 Mar 01:00:27.441 * MASTER &lt;-&gt; SLAVE sync: receiving 187 bytes from master</div><div class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</div><div class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</div><div class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Finished with success</div></pre></td></tr></table></figure></p>
+<p>接着能在 6380 的 redis-server 界面中看到日志：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">19092:S 23 Mar 01:00:26.944 * Before turning into a slave, using my master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.</span><br><span class="line">19092:S 23 Mar 01:00:26.945 * SLAVE OF 127.0.0.1:6379 enabled (user request from 'id=2 addr=127.0.0.1:60778 fd=8 name= age=50 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=slaveof')</span><br><span class="line">19092:S 23 Mar 01:00:27.234 * Connecting to MASTER 127.0.0.1:6379</span><br><span class="line">19092:S 23 Mar 01:00:27.234 * MASTER &lt;-&gt; SLAVE sync started</span><br><span class="line">19092:S 23 Mar 01:00:27.234 * Non blocking connect for SYNC fired the event.</span><br><span class="line">19092:S 23 Mar 01:00:27.246 * Master replied to PING, replication can continue...</span><br><span class="line">19092:S 23 Mar 01:00:27.246 * Trying a partial resynchronization (request 2e56cf1343f6b2e864c968bd59b4a16ed78b8f1d:1).</span><br><span class="line">19092:S 23 Mar 01:00:27.266 * Full resync from master: bf36b20c3942e91ac4f262a2afdc90970b2d7c54:0</span><br><span class="line">19092:S 23 Mar 01:00:27.266 * Discarding previously cached master state.</span><br><span class="line">19092:S 23 Mar 01:00:27.441 * MASTER &lt;-&gt; SLAVE sync: receiving 187 bytes from master</span><br><span class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</span><br><span class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</span><br><span class="line">19092:S 23 Mar 01:00:27.442 * MASTER &lt;-&gt; SLAVE sync: Finished with success</span><br></pre></td></tr></table></figure></p>
 <p>具体流程如下：</p>
 <ul>
 <li>从服务器发送 <strong>SYNC 命令</strong>到主服务器</li>
@@ -418,9 +418,9 @@
 </li>
 </ul>
 <hr>
-<h3 id="PSYNC命令实现"><a href="#PSYNC命令实现" class="headerlink" title="PSYNC命令实现"></a>PSYNC命令实现</h3><p>具体调用看流程图即可：<br><img src="http://img.sevenyuan.cn/PSYNC%E6%B5%81%E7%A8%8B.png" alt=""></p>
+<h3 id="PSYNC命令实现"><a href="#PSYNC命令实现" class="headerlink" title="PSYNC命令实现"></a>PSYNC命令实现</h3><p>具体调用看流程图即可：<br><img src="http://img.sevenyuan.cn/PSYNC%E6%B5%81%E7%A8%8B.png" alt></p>
 <hr>
-<h3 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h3><p>在命令传播阶段，从服务器默认会以每秒一次的频率，向主服务器发送命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> REPLCONF ACK &lt;replication_offset&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="心跳检测"><a href="#心跳检测" class="headerlink" title="心跳检测"></a>心跳检测</h3><p>在命令传播阶段，从服务器默认会以每秒一次的频率，向主服务器发送命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> REPLCONF ACK &lt;replication_offset&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>其中replication_offset是从服务器当前的复制偏移量。<br>发送REPLCONF ACK有三个作用：</p>
 <ul>
 <li>检测主从服务器的网络连接情况</li>
@@ -531,7 +531,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -542,9 +542,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -679,10 +677,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

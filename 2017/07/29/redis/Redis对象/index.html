@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Redis," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Redis,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/29/redis/Redis对象/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/29/redis/Redis对象/">
 
 
 
@@ -162,7 +162,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -192,7 +192,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -202,7 +202,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -212,7 +212,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -222,7 +222,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -265,8 +265,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -301,7 +301,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -345,7 +345,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -369,7 +369,7 @@
         <hr>
 <p>Redis是基于上一篇文章所说的数据结构创建了一个对象系统，这个系统包含<strong>字符串对象、列表对象、哈希对象、集合对象和有序集合对象</strong>这五种类型的对象。</p>
 <p>Redis的对象系统还实现了基于引用技术技术的内存回收机制，当程序不在使用某个对象的时候，这个对象所占用的内存就会被自动释放。</p>
-<h3 id="对象的类型和编码"><a href="#对象的类型和编码" class="headerlink" title="对象的类型和编码"></a><strong>对象的类型和编码</strong></h3><p>对象结构<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span> &#123;</span></div><div class="line">    <span class="comment">//类型</span></div><div class="line">    <span class="keyword">unsigned</span> type:<span class="number">4</span>;</div><div class="line">    <span class="comment">//编码</span></div><div class="line">    <span class="keyword">unsigned</span> encoding:<span class="number">4</span>;</div><div class="line">    <span class="comment">//指向底层实现数据结构的指针</span></div><div class="line">    <span class="keyword">void</span> *ptr;</div><div class="line">    <span class="comment">//</span></div><div class="line">    ...</div><div class="line">&#125;robj；</div></pre></td></tr></table></figure></p>
+<h3 id="对象的类型和编码"><a href="#对象的类型和编码" class="headerlink" title="对象的类型和编码"></a><strong>对象的类型和编码</strong></h3><p>对象结构<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span> &#123;</span></span><br><span class="line">    <span class="comment">//类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> type:<span class="number">4</span>;</span><br><span class="line">    <span class="comment">//编码</span></span><br><span class="line">    <span class="keyword">unsigned</span> encoding:<span class="number">4</span>;</span><br><span class="line">    <span class="comment">//指向底层实现数据结构的指针</span></span><br><span class="line">    <span class="keyword">void</span> *ptr;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    ...</span><br><span class="line">&#125;robj；</span><br></pre></td></tr></table></figure></p>
 <h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a><strong>类型</strong></h4><p>对象的type属性记录了对象的类型，值是五种基础对象之一。</p>
 <p>对于Redis数据库保存对的键值对来说，键总是一个字符串对象，而值可以是字符串对象、列表对象、哈希对象、集合对象或者有序集合对象的其中一种。</p>
 <table>
@@ -408,7 +408,7 @@
 </tr>
 </tbody>
 </table>
-<p>使用Type命令可以返回数据库键对应的值对象的类型：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash">键为字符串对象，值为字符串对象</span></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SET msg <span class="string">"hello world"</span></span></div><div class="line">OK</div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> TYPE msg</span></div><div class="line">string</div><div class="line"></div><div class="line"><span class="meta">#</span><span class="bash">键为字符串对象，值为列表对象</span></div><div class="line"><span class="meta">redis&gt;</span><span class="bash">RPUSH numbers 1 3 5</span></div><div class="line">(integer) 6</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash">TYPE numbers</span></div><div class="line">list</div><div class="line">·····</div></pre></td></tr></table></figure></p>
+<p>使用Type命令可以返回数据库键对应的值对象的类型：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">键为字符串对象，值为字符串对象</span></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> SET msg <span class="string">"hello world"</span></span></span><br><span class="line">OK</span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> TYPE msg</span></span><br><span class="line">string</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">键为字符串对象，值为列表对象</span></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash">RPUSH numbers 1 3 5</span></span><br><span class="line">(integer) 6</span><br><span class="line"></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash">TYPE numbers</span></span><br><span class="line">list</span><br><span class="line">·····</span><br></pre></td></tr></table></figure></p>
 <h4 id="编码和底层实现"><a href="#编码和底层实现" class="headerlink" title="编码和底层实现"></a><strong>编码和底层实现</strong></h4><p>对象的ptr指针指向对象的底层实现数据结构，而这些数据结构由对象的encoding属性决定。</p>
 <p>encoding属性记录了对象所使用的编码，也即是说这个对象使用了什么数据结构作为对象的底层实现。</p>
 <p>每种类型的对象都至少使用了两种不同的编码。</p>
@@ -478,7 +478,7 @@
 </tr>
 </tbody>
 </table>
-<p>使用 <strong>OBJECT ENCODING</strong> 命令可以查看一个数据库键的值对象的编码：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SET msg <span class="string">"hello wordl"</span></span></div><div class="line">OK</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING msg</span></div><div class="line">"embstr"</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SET story <span class="string">"long long long long long long ago ..."</span></span></div><div class="line">OK</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING story</span></div><div class="line">"raw"</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> SADD numbers 1 3 5</span></div><div class="line">(integer) 3</div><div class="line"></div><div class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING numbers</span></div><div class="line">"intset"</div><div class="line">····</div></pre></td></tr></table></figure></p>
+<p>使用 <strong>OBJECT ENCODING</strong> 命令可以查看一个数据库键的值对象的编码：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">redis&gt;</span><span class="bash"> SET msg <span class="string">"hello wordl"</span></span></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING msg</span></span><br><span class="line">"embstr"</span><br><span class="line"></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> SET story <span class="string">"long long long long long long ago ..."</span></span></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING story</span></span><br><span class="line">"raw"</span><br><span class="line"></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> SADD numbers 1 3 5</span></span><br><span class="line">(integer) 3</span><br><span class="line"></span><br><span class="line"><span class="meta">redis&gt;</span><span class="bash"> OBJECT ENCODING numbers</span></span><br><span class="line">"intset"</span><br><span class="line">····</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="字符串对象"><a href="#字符串对象" class="headerlink" title="字符串对象"></a><strong>字符串对象</strong></h3><p>字符串对象的编码可以是int、raw或者embstr</p>
 <p>如果一个字符串对象保存的是整数值，并且这个整数值可以用long类型来表示，那么字符串对象会将整数值保存在字符串对象结构的<strong>ptr属性</strong>里面。</p>
@@ -506,7 +506,7 @@
 <h3 id="有序集合对象"><a href="#有序集合对象" class="headerlink" title="有序集合对象"></a><strong>有序集合对象</strong></h3><p>有序集合的编码可以是ziplist或者skiplist。</p>
 <p><strong>ziplist编码</strong>的压缩列表对象使用压缩列表作为底层实现，每个集合元素使用两个紧挨在一起的压缩列表节点来保存，第一个节点保存元素的成员（member），而第二个元素则保存元素的分值（score）。</p>
 <p>压缩列表内的集合元素按分值从小到大进行排序，分值较小的元素被放置在靠近表头的位置，而分值较大的元素则被放置在靠近表尾的方向。</p>
-<p><strong>skiplist编码</strong>的有序结合对象使用zset结构作为底层实现，一个zset结构包含一个字典和一个跳跃表：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zset</span>&#123;</span></div><div class="line">    zskiplist *zsl;</div><div class="line">    dict *dict;</div><div class="line">&#125;zset;</div></pre></td></tr></table></figure></p>
+<p><strong>skiplist编码</strong>的有序结合对象使用zset结构作为底层实现，一个zset结构包含一个字典和一个跳跃表：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">zset</span>&#123;</span></span><br><span class="line">    zskiplist *zsl;</span><br><span class="line">    dict *dict;</span><br><span class="line">&#125;zset;</span><br></pre></td></tr></table></figure></p>
 <p>zset结构中的zsl跳跃表按分值从小到大保存了所有集合元素，每个跳跃表节点都保存了一个集合元素：跳跃表节点的object属性保存了元素的成员，而跳跃表节点的score属性则保存了元素的分值。</p>
 <p>通过这个跳跃表，程序可以对有序集合进行范围型操作。、</p>
 <p>除此之外，zset结构中的dict字典为有序集合创建了一个从成员到分值的映射，字典中的每个键值对都保存了一个集合元素：字典的键保存了元素的成员，而字典的值则保存了元素的分值。</p>
@@ -624,7 +624,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -635,9 +635,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -772,10 +770,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

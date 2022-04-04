@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Spring," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="Spring,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -96,16 +96,16 @@
 <meta property="og:site_name" content="JingQ">
 <meta property="og:description" content="填坑，分析循环依赖">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_use_diagram.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_method_error.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/deal_with_circle_depend.png">
-<meta property="og:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_reference_debug.gif">
-<meta property="og:updated_time" content="2021-10-30T17:00:00.000Z">
+<meta property="og:image" content="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
+<meta property="og:image" content="http://img.sevenyuan.cn/circle_use_diagram.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/circle_method_error.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/deal_with_circle_depend.png">
+<meta property="og:image" content="http://img.sevenyuan.cn/circle_reference_debug.gif">
+<meta property="og:updated_time" content="2019-07-21T03:23:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 源码学习(五)循环依赖">
 <meta name="twitter:description" content="填坑，分析循环依赖">
-<meta name="twitter:image" content="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
+<meta name="twitter:image" content="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg">
 
 
 
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-5/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/06/22/spring/2019-06-22-spring-analysis-note-5/">
 
 
 
@@ -168,7 +168,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -198,7 +198,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -208,7 +208,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -218,7 +218,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -228,7 +228,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -271,8 +271,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -307,7 +307,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -340,7 +340,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -361,7 +361,7 @@
       
 
       
-        <p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg" alt=""></p>
+        <p><img src="http://img.sevenyuan.cn/SainteVictoireCezanneBirthday_ZH-CN8216109812_1920x1080.jpg" alt></p>
 <center>填坑，分析循环依赖</center>
 
 <a id="more"></a>
@@ -370,15 +370,15 @@
 <hr>
 <h1 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h1><p>循环依赖就是循环引用，就是两个或者多个 <code>bean</code> 相互之间的持有对方，最后形成一个环。例如 <code>A</code> 引用了 <code>B</code>，<code>B</code> 引用了 <code>C</code>，<code>C</code> 引用了 <code>A</code>。</p>
 <p>可以参照下图理解（<strong>图中展示的类的互相依赖，但循环调用指的是方法之间的环调用，下面代码例子会展示方法环调用</strong>）：</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_use_diagram.png" alt="circle_use"></p>
+<p><img src="http://img.sevenyuan.cn/circle_use_diagram.png" alt="circle_use"></p>
 <p>如果学过数据库的同学，可以将循环依赖简单的理解为死锁，互相持有对方的资源，形成一个环，然后不释放资源，导致死锁发生。</p>
 <p>在循环调用中，除非出现终结条件，否则将会无限循环，最后导致内存溢出错误。（<a href="https://juejin.im/post/5ce9067df265da1bc4142f18" target="_blank" rel="noopener">我也遇到过一次 OOM，也是无限循环导致的</a>）</p>
 <hr>
 <p>书中的例子是用了三个类进行环调用，我为了简单理解和演示，使用了两个类进行环调用：</p>
 <p>在 <code>Spring</code> 中，循环依赖分为以下三种情况：</p>
-<h2 id="构造器循环依赖"><a href="#构造器循环依赖" class="headerlink" title="构造器循环依赖"></a>构造器循环依赖</h2><p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_method_error.png" alt="circle_method"></p>
+<h2 id="构造器循环依赖"><a href="#构造器循环依赖" class="headerlink" title="构造器循环依赖"></a>构造器循环依赖</h2><p><img src="http://img.sevenyuan.cn/circle_method_error.png" alt="circle_method"></p>
 <p>通过上图的配置方法，在初始化的时候就会抛出 <code>BeanCurrentlyInCreationException</code> 异常</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	<span class="comment">// 报错原因： Requested bean is currently in creation: Is there an unresolvable circular reference?</span></div><div class="line">	ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"circle/circle.xml"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 报错原因： Requested bean is currently in creation: Is there an unresolvable circular reference?</span></span><br><span class="line">	ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"circle/circle.xml"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>从上一篇笔记中知道，<code>Spring</code> 容器将每一个正在创建的 <code>bean</code> 标识符放入一个 “当前创建 bean 池（<code>prototypesCurrentlyInCreation</code>)” 中，<code>bean</code> 标识符在创建过程中将一直保持在这个池中。</p>
 <p><strong>检测循环依赖的方法：</strong></p>
 <p>分析上面的例子，在实例化 <code>circleA</code> 时，将自己 <code>A</code> 放入池中，由于依赖了 <code>circleB</code>，于是去实例化 <code>circleB</code>，<code>B</code> 也放入池中，由于依赖了 <code>A</code>，接着想要实例化 <code>A</code>，发现在创建 <code>bean</code>  过程中发现自己已经在 “当前创建 <code>bean</code>” 里时，于是就会抛出 <code>BeanCurrentlyInCreationException</code> 异常。</p>
@@ -400,12 +400,12 @@
 <p>在类的加载中，核心方法 <code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code>，在这一步中有对循环依赖的校验和处理。</p>
 <p>跟进去方法能够发现，如果 <code>bean</code> 是单例，并且允许循环依赖，那么可以通过提前暴露一个单例工厂方法，从而使其他 <code>bean</code> 能引用到，最终解决循环依赖的问题。</p>
 <p>还是按照上面新建的两个类， <code>CircleA</code> 和 <code>CircleB</code>，来讲下 <code>setter</code> 解决方法：</p>
-<p>配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--注释 5.3 setter 方法注入--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"circleA"</span> <span class="attr">class</span>=<span class="string">"base.circle.CircleA"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"circleB"</span> <span class="attr">ref</span>=<span class="string">"circleB"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"circleB"</span> <span class="attr">class</span>=<span class="string">"base.circle.CircleB"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"circleA"</span> <span class="attr">ref</span>=<span class="string">"circleA"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>执行 <code>Demo</code> 和输出：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"circle/circle.xml"</span>);</div><div class="line">	CircleA circleA = (CircleA) context.getBean(<span class="string">"circleA"</span>);</div><div class="line">	circleA.a();</div><div class="line">&#125;</div><div class="line"></div><div class="line">在 a 方法中，输出 A，在 b 方法中，输出B，下面是执行 demo 输出的结果：</div><div class="line">错误提示是因为两个方法互相调用进行输出，然后打印到一定行数提示 main 函数栈溢出了=-=</div><div class="line"></div><div class="line">A</div><div class="line">B</div><div class="line">A</div><div class="line">B</div><div class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: <span class="number">844</span></div><div class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: <span class="number">844</span></div><div class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: <span class="number">844</span></div><div class="line">Exception in thread <span class="string">"main"</span> java.lang.StackOverflowError</div></pre></td></tr></table></figure></p>
+<p>配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--注释 5.3 setter 方法注入--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"circleA"</span> <span class="attr">class</span>=<span class="string">"base.circle.CircleA"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"circleB"</span> <span class="attr">ref</span>=<span class="string">"circleB"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"circleB"</span> <span class="attr">class</span>=<span class="string">"base.circle.CircleB"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"circleA"</span> <span class="attr">ref</span>=<span class="string">"circleA"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>执行 <code>Demo</code> 和输出：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"circle/circle.xml"</span>);</span><br><span class="line">	CircleA circleA = (CircleA) context.getBean(<span class="string">"circleA"</span>);</span><br><span class="line">	circleA.a();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">在 a 方法中，输出 A，在 b 方法中，输出B，下面是执行 demo 输出的结果：</span><br><span class="line">错误提示是因为两个方法互相调用进行输出，然后打印到一定行数提示 main 函数栈溢出了=-=</span><br><span class="line"></span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">A</span><br><span class="line">B</span><br><span class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: <span class="number">844</span></span><br><span class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: <span class="number">844</span></span><br><span class="line">*** java.lang.instrument ASSERTION FAILED ***: <span class="string">"!errorOutstanding"</span> with message transform method call failed at JPLISAgent.c line: <span class="number">844</span></span><br><span class="line">Exception in thread <span class="string">"main"</span> java.lang.StackOverflowError</span><br></pre></td></tr></table></figure></p>
 <p>可以看到通过 <code>setter</code> 注入，成功解决了循环依赖的问题，那解决的具体代码是如何实现的呢，下面来分析一下：</p>
 <hr>
 <h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><p>为了更好的理解循环依赖，首先来看下这三个变量（也叫缓存，可以全局调用的）的含义和用途：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/** Cache of singleton objects: bean name to bean instance. */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;(<span class="number">256</span>);</div><div class="line"></div><div class="line"><span class="comment">/** Cache of singleton factories: bean name to ObjectFactory. */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</div><div class="line"></div><div class="line"><span class="comment">/** Cache of early singleton objects: bean name to bean instance. */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Cache of singleton objects: bean name to bean instance. */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;(<span class="number">256</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Cache of singleton factories: bean name to ObjectFactory. */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Cache of early singleton objects: bean name to bean instance. */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -433,7 +433,7 @@
 <blockquote>
 <p>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</p>
 </blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 是否需要提前曝光，用来解决循环依赖时使用</span></div><div class="line"><span class="keyword">boolean</span> earlySingletonExposure = (mbd.isSingleton() &amp;&amp; <span class="keyword">this</span>.allowCircularReferences &amp;&amp;</div><div class="line">		isSingletonCurrentlyInCreation(beanName));</div><div class="line"><span class="keyword">if</span> (earlySingletonExposure) &#123;</div><div class="line">	<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</div><div class="line">		logger.trace(<span class="string">"Eagerly caching bean '"</span> + beanName +</div><div class="line">				<span class="string">"' to allow for resolving potential circular references"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 注释 5.2 解决循环依赖 第二个参数是回调接口，实现的功能是将切面动态织入 bean</span></div><div class="line">	addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</div><div class="line">Assert.notNull(singletonFactory, <span class="string">"Singleton factory must not be null"</span>);</div><div class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</div><div class="line">		<span class="comment">// 判断 singletonObjects 不存在 beanName</span></div><div class="line">		<span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</div><div class="line">		<span class="comment">// 注释 5.4 放入 beanName -&gt; beanFactory，到时在 getSingleton() 获取单例时，可直接获取创建对应 bean 的工厂，解决循环依赖</span></div><div class="line">		<span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</div><div class="line">		<span class="comment">// 从提前曝光的缓存中移除，之前在 getSingleton() 放入的</span></div><div class="line">		<span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</div><div class="line">		<span class="comment">// 往注册缓存中添加 beanName</span></div><div class="line">		<span class="keyword">this</span>.registeredSingletons.add(beanName);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 是否需要提前曝光，用来解决循环依赖时使用</span></span><br><span class="line"><span class="keyword">boolean</span> earlySingletonExposure = (mbd.isSingleton() &amp;&amp; <span class="keyword">this</span>.allowCircularReferences &amp;&amp;</span><br><span class="line">		isSingletonCurrentlyInCreation(beanName));</span><br><span class="line"><span class="keyword">if</span> (earlySingletonExposure) &#123;</span><br><span class="line">	<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</span><br><span class="line">		logger.trace(<span class="string">"Eagerly caching bean '"</span> + beanName +</span><br><span class="line">				<span class="string">"' to allow for resolving potential circular references"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 注释 5.2 解决循环依赖 第二个参数是回调接口，实现的功能是将切面动态织入 bean</span></span><br><span class="line">	addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">Assert.notNull(singletonFactory, <span class="string">"Singleton factory must not be null"</span>);</span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">		<span class="comment">// 判断 singletonObjects 不存在 beanName</span></span><br><span class="line">		<span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">		<span class="comment">// 注释 5.4 放入 beanName -&gt; beanFactory，到时在 getSingleton() 获取单例时，可直接获取创建对应 bean 的工厂，解决循环依赖</span></span><br><span class="line">		<span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</span><br><span class="line">		<span class="comment">// 从提前曝光的缓存中移除，之前在 getSingleton() 放入的</span></span><br><span class="line">		<span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">		<span class="comment">// 往注册缓存中添加 beanName</span></span><br><span class="line">		<span class="keyword">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>先来看 <code>earlySingletonExposure</code> 这个变量：<br>从字面意思理解就是<strong>需要提前曝光的单例</strong>。</p>
 <p>有以下三个判断条件：</p>
 <ul>
@@ -444,7 +444,7 @@
 <p>如果这三个条件都满足的话，就会执行 <code>addSingletonFactory</code> 操作。要想着，写的代码都有用处，所以接下来看下这个操作解决的什么问题和在哪里使用到吧</p>
 <hr>
 <h3 id="解决场景"><a href="#解决场景" class="headerlink" title="解决场景"></a>解决场景</h3><p>用一开始创建的 <code>CircleA</code> 和 <code>CircleB</code> 这两个循环引用的类作为例子：</p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/deal_with_circle_depend.png" alt="deal_with_circle_depend"></p>
+<p><img src="http://img.sevenyuan.cn/deal_with_circle_depend.png" alt="deal_with_circle_depend"></p>
 <p><code>A</code> 类中含有属性 <code>B</code>，<code>B</code> 类中含有属性 <code>A</code>，这两个类在初始化的时候经历了以下的步骤：</p>
 <ol>
 <li>创建 <code>beanA</code>，先记录对应的 <code>beanName</code> 然后将 <code>beanA</code> 的<strong>创建工厂 beanFactoryA</strong> 放入缓存中</li>
@@ -454,26 +454,26 @@
 <li>检测到 <code>beanFactoryA</code> 已经创建好了，而是直接调用 <code>ObjectFactory</code> 去创建 <code>beanA</code></li>
 </ol>
 <hr>
-<h3 id="结合关键代码梳理流程"><a href="#结合关键代码梳理流程" class="headerlink" title="结合关键代码梳理流程"></a>结合关键代码梳理流程</h3><h4 id="创建原始-bean"><a href="#创建原始-bean" class="headerlink" title="创建原始 bean"></a>创建原始 bean</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">BeanWrapper instanceWrapper = createBeanInstance(beanName, mbd, args);</div><div class="line"><span class="comment">// 原始 bean</span></div><div class="line"><span class="keyword">final</span> Object bean = instanceWrapper.getWrappedInstance();</div></pre></td></tr></table></figure>
+<h3 id="结合关键代码梳理流程"><a href="#结合关键代码梳理流程" class="headerlink" title="结合关键代码梳理流程"></a>结合关键代码梳理流程</h3><h4 id="创建原始-bean"><a href="#创建原始-bean" class="headerlink" title="创建原始 bean"></a>创建原始 bean</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BeanWrapper instanceWrapper = createBeanInstance(beanName, mbd, args);</span><br><span class="line"><span class="comment">// 原始 bean</span></span><br><span class="line"><span class="keyword">final</span> Object bean = instanceWrapper.getWrappedInstance();</span><br></pre></td></tr></table></figure>
 <p>在这一步中，创建的是原始 <code>bean</code>，因为还没到最后一步属性解析，所以这个类里面没有属性值，可以将它想象成 <code>new ClassA</code>，同时没有构造函数等赋值的操作，这个原始 <code>bean</code> 信息将会在下一步使用到。</p>
 <hr>
-<h4 id="addSingleFactory"><a href="#addSingleFactory" class="headerlink" title="addSingleFactory"></a>addSingleFactory</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注释 5.2 解决循环依赖 第二个参数是回调接口，实现的功能是将切面动态织入 bean</span></div><div class="line">addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));</div></pre></td></tr></table></figure>
+<h4 id="addSingleFactory"><a href="#addSingleFactory" class="headerlink" title="addSingleFactory"></a>addSingleFactory</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注释 5.2 解决循环依赖 第二个参数是回调接口，实现的功能是将切面动态织入 bean</span></span><br><span class="line">addSingletonFactory(beanName, () -&gt; getEarlyBeanReference(beanName, mbd, bean));</span><br></pre></td></tr></table></figure>
 <p>前面也提到过这个方法，它会将需要提前曝光的单例加入到缓存中，将单例的 <code>beanName</code> 和 <code>beanFactory</code> 加入到缓存，在之后需要用到的时候，直接从缓存中取出来。</p>
 <hr>
 <h4 id="populateBean-填充属性"><a href="#populateBean-填充属性" class="headerlink" title="populateBean 填充属性"></a>populateBean 填充属性</h4><p>刚才第一步时也说过了，一开始创建的只是初始 <code>bean</code>，没有属性值，所以在这一步会解析类的属性。在属性解析时，会判断属性的类型，如果判断到是 <code>RuntimeBeanReference</code> 类型，将会解析引用。</p>
 <p>就像我们写的例子，<code>CircleA</code> 引用了 <code>CircleB</code>，在加载 <code>CircleA</code>时，发现 <code>CircleB</code> 依赖，于是乎就要去加载 <code>CircleB</code>。</p>
 <p>我们来看下代码中的具体流程吧：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">populateBean</span><span class="params">(String beanName, RootBeanDefinition mbd, @Nullable BeanWrapper bw)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="keyword">if</span> (pvs != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">// 将属性应用到 bean 中，使用深拷贝，将子类的属性一并拷贝</span></div><div class="line">		applyPropertyValues(beanName, mbd, bw, pvs);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">applyPropertyValues</span><span class="params">(String beanName, BeanDefinition mbd, BeanWrapper bw, PropertyValues pvs)</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    String propertyName = pv.getName();</div><div class="line">	Object originalValue = pv.getValue();</div><div class="line">	<span class="comment">// 注释 5.5 解析参数，如果是引用对象，将会进行提前加载</span></div><div class="line">	Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);</div><div class="line">	...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">resolveValueIfNecessary</span><span class="params">(Object argName, @Nullable Object value)</span> </span>&#123;</div><div class="line">	<span class="comment">// 我们必须检查每个值，看看它是否需要一个运行时引用，然后来解析另一个 bean</span></div><div class="line">	<span class="keyword">if</span> (value <span class="keyword">instanceof</span> RuntimeBeanReference) &#123;</div><div class="line">		<span class="comment">// 注释 5.6 在这一步中，如果判断是引用类型，需要解析引用，加载另一个 bean</span></div><div class="line">		RuntimeBeanReference ref = (RuntimeBeanReference) value;</div><div class="line">		<span class="keyword">return</span> resolveReference(argName, ref);</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">populateBean</span><span class="params">(String beanName, RootBeanDefinition mbd, @Nullable BeanWrapper bw)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (pvs != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="comment">// 将属性应用到 bean 中，使用深拷贝，将子类的属性一并拷贝</span></span><br><span class="line">		applyPropertyValues(beanName, mbd, bw, pvs);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">applyPropertyValues</span><span class="params">(String beanName, BeanDefinition mbd, BeanWrapper bw, PropertyValues pvs)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    String propertyName = pv.getName();</span><br><span class="line">	Object originalValue = pv.getValue();</span><br><span class="line">	<span class="comment">// 注释 5.5 解析参数，如果是引用对象，将会进行提前加载</span></span><br><span class="line">	Object resolvedValue = valueResolver.resolveValueIfNecessary(pv, originalValue);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">resolveValueIfNecessary</span><span class="params">(Object argName, @Nullable Object value)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 我们必须检查每个值，看看它是否需要一个运行时引用，然后来解析另一个 bean</span></span><br><span class="line">	<span class="keyword">if</span> (value <span class="keyword">instanceof</span> RuntimeBeanReference) &#123;</span><br><span class="line">		<span class="comment">// 注释 5.6 在这一步中，如果判断是引用类型，需要解析引用，加载另一个 bean</span></span><br><span class="line">		RuntimeBeanReference ref = (RuntimeBeanReference) value;</span><br><span class="line">		<span class="keyword">return</span> resolveReference(argName, ref);</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>跟踪到这里，加载引用的流程比较清晰了，发现是引用类的话，最终会委派 <code>org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveReference</code> 进行引用处理，核心的两行代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注释 5.7 在这里加载引用的 bean</span></div><div class="line">bean = <span class="keyword">this</span>.beanFactory.getBean(refName);</div><div class="line"><span class="keyword">this</span>.beanFactory.registerDependentBean(refName, <span class="keyword">this</span>.beanName);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注释 5.7 在这里加载引用的 bean</span></span><br><span class="line">bean = <span class="keyword">this</span>.beanFactory.getBean(refName);</span><br><span class="line"><span class="keyword">this</span>.beanFactory.registerDependentBean(refName, <span class="keyword">this</span>.beanName);</span><br></pre></td></tr></table></figure>
 <p>在这一步进行 <code>CircleB</code> 的加载，但是我们写的例子中，<code>CircleB</code> 依赖了 <code>CircleA</code>，那它是如何处理的呢，所以这时，我们刚才将 <code>CircleA</code> 放入到缓存中的信息就起到了作用。</p>
 <hr>
 <h4 id="getSingleton"><a href="#getSingleton" class="headerlink" title="getSingleton"></a>getSingleton</h4><p>还记得之前在类加载时学到的只是么，单例模式每次加载都是取同一个对象，如果在缓存中有，可以直接取出来，在缓存中没有的话才进行加载，所以再来熟悉一下取单例的方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, <span class="keyword">boolean</span> allowEarlyReference)</span> </span>&#123;</div><div class="line">	Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</div><div class="line">	<span class="comment">// 检查缓存中是否存在实例</span></div><div class="line">	<span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123;</div><div class="line">		<span class="comment">// 记住，公共变量都需要加锁操作，避免多线程并发修改</span></div><div class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</div><div class="line">			<span class="comment">// 如果此 bean 正在加载则不处理</span></div><div class="line">			singletonObject = <span class="keyword">this</span>.earlySingletonObjects.get(beanName);</div><div class="line">			<span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; allowEarlyReference) &#123;</div><div class="line">				<span class="comment">// 当某些方法需要提前初始化，调用 addSingletonFactory 方法将对应的</span></div><div class="line">				<span class="comment">// objectFactory 初始化策略存储在 earlySingletonObjects，并且从 singletonFactories 移除</span></div><div class="line">				ObjectFactory&lt;?&gt; singletonFactory = <span class="keyword">this</span>.singletonFactories.get(beanName);</div><div class="line">				<span class="keyword">if</span> (singletonFactory != <span class="keyword">null</span>) &#123;</div><div class="line">					singletonObject = singletonFactory.getObject();</div><div class="line">					<span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</div><div class="line">					<span class="keyword">this</span>.singletonFactories.remove(beanName);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> singletonObject;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, <span class="keyword">boolean</span> allowEarlyReference)</span> </span>&#123;</span><br><span class="line">	Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">	<span class="comment">// 检查缓存中是否存在实例</span></span><br><span class="line">	<span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123;</span><br><span class="line">		<span class="comment">// 记住，公共变量都需要加锁操作，避免多线程并发修改</span></span><br><span class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">			<span class="comment">// 如果此 bean 正在加载则不处理</span></span><br><span class="line">			singletonObject = <span class="keyword">this</span>.earlySingletonObjects.get(beanName);</span><br><span class="line">			<span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">				<span class="comment">// 当某些方法需要提前初始化，调用 addSingletonFactory 方法将对应的</span></span><br><span class="line">				<span class="comment">// objectFactory 初始化策略存储在 earlySingletonObjects，并且从 singletonFactories 移除</span></span><br><span class="line">				ObjectFactory&lt;?&gt; singletonFactory = <span class="keyword">this</span>.singletonFactories.get(beanName);</span><br><span class="line">				<span class="keyword">if</span> (singletonFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">					singletonObject = singletonFactory.getObject();</span><br><span class="line">					<span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</span><br><span class="line">					<span class="keyword">this</span>.singletonFactories.remove(beanName);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> singletonObject;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>虽然 <code>CircleB</code> 引用了 <code>CircleA</code>，但在之前的方法 <code>addSingletonFactory</code> 时，<code>CircleA</code> 的 <code>beanFactory</code> 就提前暴露。</p>
 <p>所以 <code>CircleB</code> 在获取单例 <code>getSingleton()</code> 时，能够拿到 <code>CircleA</code> 的信息，所以 <code>CircleB</code> 顺利加载完成，同时将自己的信息加入到缓存和注册表中，接着返回去继续加载 <code>CircleA</code>，由于它的依赖已经加载到缓存中，所以 <code>CircleA</code> 也能够顺利完成加载，最终整个加载操作完成~</p>
 <p><strong>结合解决场景的流程图和关键代码流程，比较完善的介绍了循环依赖处理方法，下面还有一个 <code>debug</code> 流程图，希望能加深你的理解~</strong></p>
-<p><img src="https://gitee.com/vip-augus/blog-picture/raw/master/Spring/spring5/circle_reference_debug.gif" alt=""></p>
+<p><img src="http://img.sevenyuan.cn/circle_reference_debug.gif" alt></p>
 <hr>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>写这篇总结的目的是为了填坑，因为之前在解析类加载的文章中只是简单的过了一下循环依赖的概念，想要将在类加载中留下的坑填掉。</p>
 <p>在分析循环依赖的过程中，发现之前对作用域 <code>scope</code> 的不了解，于是补充了一下这个知识点，接着又发现对循环依赖中使用到的缓存和详细处理不熟悉，于是查阅了相关资料，跟踪源码，一步一步进行分析，所以发现越写越多，解决了一个困惑，增加了几个疑问，所以在不断排查和了解中，加深了对 <code>Spring</code> 的理解。</p>
@@ -610,7 +610,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -621,9 +621,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -758,10 +756,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>

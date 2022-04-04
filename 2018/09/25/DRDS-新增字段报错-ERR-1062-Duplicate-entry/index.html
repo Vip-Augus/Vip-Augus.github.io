@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
-<html class="" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<html class lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -14,8 +14,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -33,7 +33,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -67,21 +67,21 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="MySQL," />
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="MySQL,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/25/DRDS-新增字段报错-ERR-1062-Duplicate-entry/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/25/DRDS-新增字段报错-ERR-1062-Duplicate-entry/">
 
 
 
@@ -162,7 +162,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">JingQ</span>
         <span class="logo-line-after"><i></i></span>
@@ -192,7 +192,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -202,7 +202,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -212,7 +212,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -222,7 +222,7 @@
         <li class="menu-item menu-item-javatech">
           <a href="http://www.justdojava.com/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
             
             Java Geek Tech
           </a>
@@ -265,8 +265,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="JingQ">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="http://img.sevenyuan.cn/panda.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -301,7 +301,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -334,7 +334,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i> 游览
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
             </span>
           
 
@@ -355,17 +355,21 @@
       
 
       
-        <h2 id="具体问题"><a href="#具体问题" class="headerlink" title="具体问题"></a>具体问题</h2><p>上周四下午执行数据库新增字段的时候，中途提示主键冲突，然后执行中断。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'is_base'</span> <span class="keyword">ADD</span> <span class="keyword">COLUMN</span> <span class="string">'cargo_name'</span> <span class="built_in">varchar</span>(<span class="number">200</span>);</div><div class="line">[Err] 1062 - Duplicate entry '1-8186300008005054-4400173320-29228291' for key 'IDX_IS_BASE'.</div></pre></td></tr></table></figure></p>
+        <h2 id="具体问题"><a href="#具体问题" class="headerlink" title="具体问题"></a>具体问题</h2><p>上周四下午执行数据库新增字段的时候，中途提示主键冲突，然后执行中断。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">'is_base'</span> <span class="keyword">ADD</span> <span class="keyword">COLUMN</span> <span class="string">'cargo_name'</span> <span class="built_in">varchar</span>(<span class="number">200</span>);</span><br><span class="line">[Err] 1062 - Duplicate entry '1-8186300008005054-4400173320-29228291' for key 'IDX_IS_BASE'.</span><br></pre></td></tr></table></figure></p>
 <p>然后根据错误原因<code>[ERR] 1062</code>去GOOGLE一下，发现也有小伙伴遇到同样的问题<a href="https://blog.csdn.net/mchdba/article/details/76695325" target="_blank" rel="noopener">RDS 在线DDL诡异报错ERROR 1062 (23000): Duplicate entry</a></p>
 <h2 id="MYSQL文档提示"><a href="#MYSQL文档提示" class="headerlink" title="MYSQL文档提示"></a>MYSQL文档提示</h2><p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-limitations.html" target="_blank" rel="noopener">Online DDL Limitations</a></p>
 <blockquote>
 <p>When running an online DDL operation, the thread that runs the ALTER TABLE statement applies an online log of DML operations that were run concurrently on the same table from other connection threads. When the DML operations are applied, it is possible to encounter a duplicate key entry error (ERROR 1062 (23000): Duplicate entry), even if the duplicate entry is only temporary and would be reverted by a later entry in the online log. This is similar to the idea of a foreign key constraint check in InnoDB in which constraints must hold during a transaction.</p>
+</blockquote>
+<blockquote>
 <p>运行联机DDL操作时，运行ALTER TABLE语句的线程应用从其他连接线程在同一表上并发运行的DML操作的联机日志。<br>应用DML操作时，可能会遇到重复的密钥输入错误（ERROR 1062（23000）：重复条目），即使重复条目只是临时条目，也会被在线日志中的后续条目恢复。<br>这类似于InnoDB中的外键约束检查的想法，其中约束必须在事务期间保持。</p>
 </blockquote>
 <p>大概就是在高并发操作下，有大量的Alter操作，引起了DDL Limitations，然后结果是执行被中断了。所以根据文档，这应该算是MYSQL的预期行为。</p>
 <hr>
 <h2 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h2><h3 id="一、官方建议：Online-DDL-Performance-and-Concurrency"><a href="#一、官方建议：Online-DDL-Performance-and-Concurrency" class="headerlink" title="一、官方建议：Online DDL Performance and Concurrency"></a>一、官方建议：<a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-concurrency.html" target="_blank" rel="noopener">Online DDL Performance and Concurrency</a></h3><blockquote>
 <p>Applications that access the table are more responsive because queries and DML operations on the table can proceed while the DDL operation is in progress. Reduced locking and waiting for MySQL server resources leads to greater scalability, even for operations that are not involved in the DDL operation.<br>(减少锁）</p>
+</blockquote>
+<blockquote>
 <p>In-place operations avoid the disk I/O and CPU cycles associated with the table-copy method, which minimizes overall load on the database. Minimizing load helps maintain good performance and high throughput during the DDL operation.<br>（避免磁盘I/O和CPU处理)</p>
 </blockquote>
 <h3 id="二、rds官方技术支持"><a href="#二、rds官方技术支持" class="headerlink" title="二、rds官方技术支持"></a>二、rds官方技术支持</h3><p><a href="https://help.aliyun.com/knowledge_detail/41734.html" target="_blank" rel="noopener">RDS for MySQL 如何使用 Percona Toolkit</a></p>
@@ -486,7 +490,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -497,9 +501,7 @@
 
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="https://gitee.com/vip-augus/blog-picture/raw/master/panda.jpg"
-               alt="JingQ" />
+          <img class="site-author-image" itemprop="image" src="http://img.sevenyuan.cn/panda.jpg" alt="JingQ">
           <p class="site-author-name" itemprop="name">JingQ</p>
            
               <p class="site-description motion-element" itemprop="description">努力学习</p>
@@ -634,10 +636,10 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright" >
+<div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-JingQ"></i>
   </span>
